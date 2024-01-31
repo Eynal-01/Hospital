@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace HospitalProject.WebUI.Models
+namespace Hospital.WebUI.Models
 {
     public class RegisterViewModel
     {

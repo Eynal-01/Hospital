@@ -1,5 +1,5 @@
 ﻿using Hospital.Entities.Data;
-using HospitalProject.WebUI.Models;
+using Hospital.WebUI.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
