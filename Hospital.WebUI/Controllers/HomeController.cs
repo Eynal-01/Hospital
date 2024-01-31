@@ -6,27 +6,64 @@ namespace Hospital.WebUI.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
-
         public IActionResult Index()
         {
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult About()
         {
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult Appoinment()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View();
+        }
+
+        public IActionResult BlogSindebar()
+        {
+            return View();
+        }
+
+        public IActionResult BlogSingle()
+        {
+            return View();
+        }
+
+        public IActionResult Comfirmation()
+        {
+            return View();
+        }
+
+        public IActionResult Contact()
+        {
+            return View();
+        }
+
+        public IActionResult Department()
+        {
+            return View();
+        }
+
+        public IActionResult DepartmentSingle()
+        {
+            return View();
+        }
+
+        public IActionResult Doctor()
+        {
+            return View();
+        }
+
+        public IActionResult DoctorSingle()
+        {
+            return View();
+        }
+
+        public IActionResult Service()
+        {
+            return View();
         }
     }
 }

@@ -4,6 +4,19 @@ namespace Hospital.WebUI.Controllers
 {
     public class AdminController : Controller
     {
+        public IActionResult Start()
+        {
+            return View();
+        }
+
+        public IActionResult Selected(string selected)
+        {
+            selected = selected.Trim();
+            selected = selected.ToLower();
+
+            return RedirectToAction("Login", "Authentication", new { selected });
+        }
+
         public IActionResult Activities()
         {
             return View();
