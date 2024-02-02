@@ -8,8 +8,8 @@ namespace HospitalProject.Entities.DbEntities
 {
     public class Attendance
     {
-        public ICollection<string>? EmployeeNames { get; set; }
-        public ICollection<int>? Day { get; set; }
+        public string? EmployeeName { get; set; }
+        public Calendar? Calendar { get; set; }
         public bool Active { get; set; }
         public bool Unactive { get; set; }
     }
