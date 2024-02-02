@@ -24,7 +24,5 @@ namespace HospitalProject.Entities.DbEntities
         public string? Status { get; set; }
         public ICollection<Patient>? Patients { get; set; }
         public ICollection<Recipe>? Receipes { get; set; }
-
-
     }
 }
