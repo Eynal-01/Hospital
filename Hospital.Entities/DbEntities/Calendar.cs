@@ -10,7 +10,6 @@ namespace HospitalProject.Entities.DbEntities
     {
         public int Id { get; set; }
         public ICollection<Doctor>? Doctors { get; set; }
-        public ICollection<DateTime>? DoctorAvailableTimes { get; set; }
         public string? Event { get; set; }
     }
 }

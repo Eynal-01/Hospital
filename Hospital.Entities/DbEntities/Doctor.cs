@@ -23,6 +23,6 @@ namespace HospitalProject.Entities.DbEntities
         public string? Education { get; set; }
         public string? Status { get; set; }
         public ICollection<Patient>? Patients { get; set; }
-        public ICollection<Recipe>? Receipes { get; set; }
+        public ICollection<Recipe>? Recipes { get; set; }
     }
 }
