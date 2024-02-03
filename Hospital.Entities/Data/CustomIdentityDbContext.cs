@@ -1,4 +1,5 @@
-﻿using HospitalProject.Entities.DbEntities;
+﻿using Hospital.Entities.DbEntities;
+using HospitalProject.Entities.DbEntities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -16,19 +17,20 @@ namespace Hospital.Entities.Data
         {
         }
 
-        public DbSet<Appointment>? Appointments { get; set; }
-        public DbSet<Admin>? Admins { get; set; }
+        //public DbSet<Appointment>? Appointments { get; set; }
+        //public DbSet<Admin>? Admins { get; set; }
         public DbSet<Doctor>? Doctors { get; set; }
-        public DbSet<Notification>? Notifications { get; set; }
-        public DbSet<Attendance>? Attendances { get; set; }
-        public DbSet<Chat>? Chats { get; set; }
-        public DbSet<Message>? Messages { get; set; }
-        public DbSet<Calendar>? Calendar { get; set; }
+        //public DbSet<Notification>? Notifications { get; set; }
+        //public DbSet<Attendance>? Attendances { get; set; }
+        //public DbSet<Chat>? Chats { get; set; }
+        //public DbSet<Message>? Messages { get; set; }
+        //public DbSet<Calendar>? Calendar { get; set; }
         public DbSet<Department>? Departments { get; set; }
-        public DbSet<DoctorSchedule>? DoctorSchedules { get; set; }
+        //public DbSet<DoctorSchedule>? DoctorSchedules { get; set; }
         public DbSet<Patient>? Patients { get; set; }
-        public DbSet<Payment>? Payments { get; set; }
-        public DbSet<Recipe>? Recipes { get; set; }
-        public DbSet<Salary>? Salaries { get; set; }
+        public DbSet<PatientAndDoctor>? PatientAndDoctors { get; set; }
+        //public DbSet<Payment>? Payments { get; set; }
+        //public DbSet<Recipe>? Recipes { get; set; }
+        //public DbSet<Salary>? Salaries { get; set; }
     }
 }

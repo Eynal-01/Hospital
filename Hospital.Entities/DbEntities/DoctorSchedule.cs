@@ -11,7 +11,7 @@ namespace HospitalProject.Entities.DbEntities
         public ICollection<Doctor>? Doctors { get; set; }
         public ICollection<Department>? Departments { get; set; }
         public string? AvailableDays { get; set; }
-        public ICollection<DateTime>? AvailableTimes { get; set; }
+        //public ICollection<DateTime>? AvailableTimes { get; set; }
         public string? Status { get; set; }
     }
 }
