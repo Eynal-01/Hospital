@@ -22,6 +22,21 @@ namespace Hospital.Entities.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("DoctorPatient", b =>
+                {
+                    b.Property<string>("DoctorsId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("PatientsId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("DoctorsId", "PatientsId");
+
+                    b.HasIndex("PatientsId");
+
+                    b.ToTable("DoctorPatient");
+                });
+
             modelBuilder.Entity("Hospital.Entities.Data.CustomIdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -131,6 +146,40 @@ namespace Hospital.Entities.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PatientAndDoctors");
+                });
+
+            modelBuilder.Entity("HospitalProject.Entities.DbEntities.Appointment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("Age")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("AppointmentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("AppointmentTime")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DoctorId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PatientId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Appointments");
                 });
 
             modelBuilder.Entity("HospitalProject.Entities.DbEntities.Department", b =>
@@ -301,6 +350,41 @@ namespace Hospital.Entities.Migrations
                     b.ToTable("Patients");
                 });
 
+            modelBuilder.Entity("HospitalProject.Entities.DbEntities.Recipe", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DoctorId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("DoctorName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PatientId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("PatientName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("WriteTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DoctorId");
+
+                    b.HasIndex("PatientId");
+
+                    b.ToTable("Recipe");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.Property<int>("Id")
@@ -407,6 +491,36 @@ namespace Hospital.Entities.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("DoctorPatient", b =>
+                {
+                    b.HasOne("HospitalProject.Entities.DbEntities.Doctor", null)
+                        .WithMany()
+                        .HasForeignKey("DoctorsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HospitalProject.Entities.DbEntities.Patient", null)
+                        .WithMany()
+                        .HasForeignKey("PatientsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("HospitalProject.Entities.DbEntities.Recipe", b =>
+                {
+                    b.HasOne("HospitalProject.Entities.DbEntities.Doctor", "Doctor")
+                        .WithMany("Recipes")
+                        .HasForeignKey("DoctorId");
+
+                    b.HasOne("HospitalProject.Entities.DbEntities.Patient", "Patient")
+                        .WithMany("Recipes")
+                        .HasForeignKey("PatientId");
+
+                    b.Navigation("Doctor");
+
+                    b.Navigation("Patient");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Hospital.Entities.Data.CustomIdentityRole", null)
@@ -456,6 +570,16 @@ namespace Hospital.Entities.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("HospitalProject.Entities.DbEntities.Doctor", b =>
+                {
+                    b.Navigation("Recipes");
+                });
+
+            modelBuilder.Entity("HospitalProject.Entities.DbEntities.Patient", b =>
+                {
+                    b.Navigation("Recipes");
                 });
 #pragma warning restore 612, 618
         }
