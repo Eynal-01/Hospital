@@ -9,8 +9,8 @@ namespace HospitalProject.Entities.DbEntities
     public class Recipe
     {
         public int Id { get; set; }
-        public int PatientId { get; set; }
-        public int DoctorId { get; set; }
+        public Patient? Patient { get; set; }
+        public Doctor? Doctor { get; set; }
         public string? Content { get; set; }
         public DateTime? WriteTime { get; set; }
         public string? DoctorName { get; set; }

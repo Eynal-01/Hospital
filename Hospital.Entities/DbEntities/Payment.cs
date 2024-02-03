@@ -9,6 +9,7 @@ namespace HospitalProject.Entities.DbEntities
 {
     public class Payment
     {
+        public int PaymentId { get; set; }
         public Guid InvoiceId { get; set; }
         public CustomIdentityUser? Patient { get; set; }
         public string? PaymentType { get; set; }
