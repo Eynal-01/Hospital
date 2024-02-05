@@ -1,4 +1,6 @@
 ﻿using Hospital.WebUI.Models;
+﻿using Hospital.Business.Abstract;
+using HospitalProject.Entities.DbEntities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,6 +9,20 @@ namespace Hospital.WebUI.Controllers
     //[Authorize(Roles = "admin")]
     public class AdminController : Controller
     {
+        public IDoctorService _doctorService { get; set; }
+        public IPatientService _patientService { get; set; }
+        public IAdminService _adminService { get; set; }
+
+        public AdminController(
+            IDoctorService doctorService,
+            IPatientService patientService, 
+            IAdminService adminService)
+        {
+            _doctorService = doctorService;
+            _patientService = patientService;
+            _adminService = adminService;
+        }
+
         public IActionResult Activities()
         {
             return View();
@@ -156,5 +172,12 @@ namespace Hospital.WebUI.Controllers
         {
             return View();
         }
+
+        public async Task<IEnumerable<Doctor>> GetAllDoctors()
+        {
+            var doctors = await _doctorService.GetAllDoctors();       
+            return doctors;
+        }
+
     }
 }

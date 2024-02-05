@@ -9,9 +9,9 @@ namespace Hospital.Business.Abstract
 {
     public interface IDoctorService
     {
-        Task AddDoctor(Doctor Doctor);
+        Task AddDoctor(Doctor doctor);
         Task DeleteDoctor(string doctorId);
-        Task UpdateDoctor(Doctor Doctor);
+        Task UpdateDoctor(Doctor doctor);
         Task<IEnumerable<Doctor>> GetAllDoctors();
         Task<Doctor> GetDoctorById(string id);  
 

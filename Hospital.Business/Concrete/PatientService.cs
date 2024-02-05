@@ -8,24 +8,24 @@ using System.Threading.Tasks;
 
 namespace Hospital.Business.Concrete
 {
-    public class AppointmentService : IAppointmentService
+    public class PatientService : IPatientService
     {
-        public Task AddAppointment(Appointment appointment)
+        public Task AddPatient(Patient Patient)
         {
             throw new NotImplementedException();
         }
 
-        public Task DeleteAppointment(string appointmentId)
+        public Task DeletePatient(string patientId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Appointment>> GetAppointmentsOfDoctorById(string doctorId)
+        public Task<IEnumerable<Patient>> GetAllPatients()
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Appointment>> GetAppointmentsOfPatientById(string patientId)
+        public Task<Patient> GetPatientById(string id)
         {
             throw new NotImplementedException();
         }

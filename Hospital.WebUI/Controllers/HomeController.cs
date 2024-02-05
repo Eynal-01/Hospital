@@ -1,6 +1,9 @@
 ﻿using Hospital.Entities.Data;
 using Hospital.WebUI.Models;
 using HospitalProject.Entities.DbEntities;
+﻿using Hospital.Business.Abstract;
+using Hospital.Business.Concrete;
+using Hospital.WebUI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -21,9 +24,16 @@ namespace Hospital.WebUI.Controllers
             _dbContext = dbContext;
             _userManager = userManager;
         }
+        private readonly IDoctorService _doctorService;
+
+        public HomeController(IDoctorService doctorService)
+        {
+            _doctorService = doctorService;
+        }
 
         public IActionResult Index()
         {
+            var docs = _doctorService.GetAllDoctors();
             return View();
         }
 

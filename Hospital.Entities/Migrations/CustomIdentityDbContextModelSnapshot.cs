@@ -22,21 +22,6 @@ namespace Hospital.Entities.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("DoctorPatient", b =>
-                {
-                    b.Property<string>("DoctorsId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("PatientsId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("DoctorsId", "PatientsId");
-
-                    b.HasIndex("PatientsId");
-
-                    b.ToTable("DoctorPatient");
-                });
-
             modelBuilder.Entity("Hospital.Entities.Data.CustomIdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -149,8 +134,8 @@ namespace Hospital.Entities.Migrations
                     b.Property<DateTime?>("AppointmentDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("AppointmentTime")
-                        .HasColumnType("int");
+                    b.Property<DateTime?>("AppointmentTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("DepartmentId")
                         .HasColumnType("int");
@@ -159,12 +144,14 @@ namespace Hospital.Entities.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("PatientId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PatientId");
 
                     b.ToTable("Appointments");
                 });
@@ -256,104 +243,6 @@ namespace Hospital.Entities.Migrations
                     b.ToTable("Departments");
                 });
 
-            modelBuilder.Entity("HospitalProject.Entities.DbEntities.Doctor", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Avatar")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Bio")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("BirthDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("CalendarId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("City")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Country")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("DoctorScheduleId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Education")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("ExperienceYear")
-                        .HasColumnType("int");
-
-                    b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Gender")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CalendarId");
-
-                    b.HasIndex("DoctorScheduleId");
-
-                    b.ToTable("Doctors");
-                });
-
             modelBuilder.Entity("HospitalProject.Entities.DbEntities.DoctorSchedule", b =>
                 {
                     b.Property<int>("Id")
@@ -431,67 +320,6 @@ namespace Hospital.Entities.Migrations
                     b.HasIndex("SenderId");
 
                     b.ToTable("Notifications");
-                });
-
-            modelBuilder.Entity("HospitalProject.Entities.DbEntities.Patient", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Age")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("FullName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Patients");
                 });
 
             modelBuilder.Entity("HospitalProject.Entities.DbEntities.Payment", b =>
@@ -718,19 +546,94 @@ namespace Hospital.Entities.Migrations
                     b.HasDiscriminator().HasValue("Admin");
                 });
 
-            modelBuilder.Entity("DoctorPatient", b =>
+            modelBuilder.Entity("HospitalProject.Entities.DbEntities.Doctor", b =>
                 {
-                    b.HasOne("HospitalProject.Entities.DbEntities.Doctor", null)
-                        .WithMany()
-                        .HasForeignKey("DoctorsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasBaseType("Hospital.Entities.Data.CustomIdentityUser");
 
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Doctor_Address");
+
+                    b.Property<string>("Avatar")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Doctor_Avatar");
+
+                    b.Property<string>("Bio")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("BirthDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("Doctor_BirthDate");
+
+                    b.Property<int?>("CalendarId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Doctor_City");
+
+                    b.Property<string>("Country")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Doctor_Country");
+
+                    b.Property<int?>("DoctorScheduleId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Education")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ExperienceYear")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Doctor_FirstName");
+
+                    b.Property<string>("Gender")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Doctor_Gender");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Doctor_LastName");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasIndex("CalendarId");
+
+                    b.HasIndex("DoctorScheduleId");
+
+                    b.HasDiscriminator().HasValue("Doctor");
+                });
+
+            modelBuilder.Entity("HospitalProject.Entities.DbEntities.Patient", b =>
+                {
+                    b.HasBaseType("Hospital.Entities.Data.CustomIdentityUser");
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Patient_Address");
+
+                    b.Property<int>("Age")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DoctorId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("FullName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasIndex("DoctorId");
+
+                    b.HasDiscriminator().HasValue("Patient");
+                });
+
+            modelBuilder.Entity("HospitalProject.Entities.DbEntities.Appointment", b =>
+                {
                     b.HasOne("HospitalProject.Entities.DbEntities.Patient", null)
-                        .WithMany()
-                        .HasForeignKey("PatientsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Appointments")
+                        .HasForeignKey("PatientId");
                 });
 
             modelBuilder.Entity("HospitalProject.Entities.DbEntities.Attendance", b =>
@@ -761,17 +664,6 @@ namespace Hospital.Entities.Migrations
                 {
                     b.HasOne("HospitalProject.Entities.DbEntities.DoctorSchedule", null)
                         .WithMany("Departments")
-                        .HasForeignKey("DoctorScheduleId");
-                });
-
-            modelBuilder.Entity("HospitalProject.Entities.DbEntities.Doctor", b =>
-                {
-                    b.HasOne("HospitalProject.Entities.DbEntities.Calendar", null)
-                        .WithMany("Doctors")
-                        .HasForeignKey("CalendarId");
-
-                    b.HasOne("HospitalProject.Entities.DbEntities.DoctorSchedule", null)
-                        .WithMany("Doctors")
                         .HasForeignKey("DoctorScheduleId");
                 });
 
@@ -886,6 +778,24 @@ namespace Hospital.Entities.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("HospitalProject.Entities.DbEntities.Doctor", b =>
+                {
+                    b.HasOne("HospitalProject.Entities.DbEntities.Calendar", null)
+                        .WithMany("Doctors")
+                        .HasForeignKey("CalendarId");
+
+                    b.HasOne("HospitalProject.Entities.DbEntities.DoctorSchedule", null)
+                        .WithMany("Doctors")
+                        .HasForeignKey("DoctorScheduleId");
+                });
+
+            modelBuilder.Entity("HospitalProject.Entities.DbEntities.Patient", b =>
+                {
+                    b.HasOne("HospitalProject.Entities.DbEntities.Doctor", null)
+                        .WithMany("Patients")
+                        .HasForeignKey("DoctorId");
+                });
+
             modelBuilder.Entity("HospitalProject.Entities.DbEntities.Calendar", b =>
                 {
                     b.Navigation("Doctors");
@@ -896,11 +806,6 @@ namespace Hospital.Entities.Migrations
                     b.Navigation("Messages");
                 });
 
-            modelBuilder.Entity("HospitalProject.Entities.DbEntities.Doctor", b =>
-                {
-                    b.Navigation("Recipes");
-                });
-
             modelBuilder.Entity("HospitalProject.Entities.DbEntities.DoctorSchedule", b =>
                 {
                     b.Navigation("Departments");
@@ -908,8 +813,17 @@ namespace Hospital.Entities.Migrations
                     b.Navigation("Doctors");
                 });
 
+            modelBuilder.Entity("HospitalProject.Entities.DbEntities.Doctor", b =>
+                {
+                    b.Navigation("Patients");
+
+                    b.Navigation("Recipes");
+                });
+
             modelBuilder.Entity("HospitalProject.Entities.DbEntities.Patient", b =>
                 {
+                    b.Navigation("Appointments");
+
                     b.Navigation("Recipes");
                 });
 #pragma warning restore 612, 618
