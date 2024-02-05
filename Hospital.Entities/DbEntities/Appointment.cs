@@ -14,7 +14,7 @@ namespace HospitalProject.Entities.DbEntities
         public Doctor? Doctor { get; set; }
         public Department? Department { get; set; }
         public DateTime? AppointmentDate { get; set; }
-        public int AppointmentTime { get; set; }
+        public DateTime? AppointmentTime { get; set; }
         public string? Status { get; set; }
     }
 }

@@ -9,7 +9,6 @@ namespace HospitalProject.Entities.DbEntities
 {
     public class Admin : CustomIdentityUser
     {
-        public Guid? Id { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public DateTime? BirthDate { get; set; }
