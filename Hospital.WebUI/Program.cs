@@ -1,4 +1,5 @@
 using Hospital.Entities.Data;
+using HospitalProject.Entities.DbEntities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,10 +16,17 @@ builder.Services.AddDbContext<CustomIdentityDbContext>(opt =>
     opt.UseSqlServer(context);
 });
 
-builder.Services.AddIdentity<CustomIdentityUser, CustomIdentityRole>()
+builder.Services.AddIdentity<CustomIdentityUser,CustomIdentityRole>()
     .AddEntityFrameworkStores<CustomIdentityDbContext>()
     .AddDefaultTokenProviders();
 
+//builder.Services.AddIdentity<Doctor, CustomIdentityRole>()
+//    .AddEntityFrameworkStores<CustomIdentityDbContext>()
+//    .AddDefaultTokenProviders();
+
+//builder.Services.AddIdentity<Admin, CustomIdentityRole>()
+//    .AddEntityFrameworkStores<CustomIdentityDbContext>()
+//    .AddDefaultTokenProviders();
 
 var app = builder.Build();
 

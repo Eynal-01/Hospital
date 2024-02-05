@@ -99,7 +99,7 @@ namespace HospitalProject.WebUI.Controllers
         {
             if (ModelState.IsValid && registerViewModel.ConfirmPassword == registerViewModel.Password)
             {
-                CustomIdentityUser signInUser = null;
+                dynamic signInUser = null;
                 if (registerViewModel.Selected == "patient")
                 {
                     signInUser = new Patient
@@ -118,26 +118,45 @@ namespace HospitalProject.WebUI.Controllers
                         PhoneNumber = registerViewModel.MobileNumber.ToString(),
                     };
                 }
-                else if (registerViewModel.Selected == "admin")
+                //else if (registerViewModel.Selected == "admin")
+                //{
+                //    signInUser = new Admin
+                //    {
+                //        Email = registerViewModel.Email,
+                //        UserName = registerViewModel.UserName,
+                //        PhoneNumber = registerViewModel.MobileNumber.ToString(),
+                //    };
+                //}
+
+                var v = new CustomIdentityUser
                 {
-                    signInUser = new Admin
-                    {
-                        Email = registerViewModel.Email,
-                        UserName = registerViewModel.UserName,
-                        PhoneNumber = registerViewModel.MobileNumber.ToString(),
-                    };
-                }
+                    Email = registerViewModel.Email,
+                    UserName = registerViewModel.UserName,
+                    PhoneNumber = registerViewModel.MobileNumber.ToString(),
+                };
 
                 if (signInUser != null)
                 {
-                    var result = await _userManager.CreateAsync(signInUser, registerViewModel.Password);
+                    var result = await _userManager.CreateAsync(v, registerViewModel.Password);
                     if (result.Succeeded)
                     {
+                        if(registerViewModel.Selected == "patient")
+                        {
+                             await _customIdentityDbContext.Patients.AddAsync(signInUser);
+                        }
+                        else if (registerViewModel.Selected == "doctor")
+                        {
+                            await _customIdentityDbContext.Doctors.AddAsync(signInUser);
+                        }
+                        //else if (registerViewModel.Selected == "admin")
+                        //{
+                        //    await _customIdentityDbContext.Admins.Add(signInUser);
+                        //}
                         if (!await _roleManager.RoleExistsAsync(registerViewModel.Selected))
                         {
                             var role = new CustomIdentityRole
                             {
-                                Name = "Patient",
+                                Name = registerViewModel.Selected,
                             };
                             var resul = await _roleManager.CreateAsync(role);
                             if (!resul.Succeeded)
@@ -147,7 +166,7 @@ namespace HospitalProject.WebUI.Controllers
                             }
                         }
 
-                        await _userManager.AddToRoleAsync(signInUser, registerViewModel.Selected);
+                        await _userManager.AddToRoleAsync(v, registerViewModel.Selected);
                         return RedirectToAction("Login", "Authentication", new { registerViewModel.Selected });
                     }
                 }

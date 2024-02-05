@@ -1,4 +1,5 @@
 ﻿using Hospital.Entities.Data;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +8,12 @@ using System.Threading.Tasks;
 
 namespace HospitalProject.Entities.DbEntities
 {
-    public class Doctor : CustomIdentityUser
+    public class Doctor : IdentityUser
     {
+<<<<<<< HEAD
+=======
+        //public Guid? Id { get; set; }
+>>>>>>> a3d3af79db5ec86d43d5266b80f27a3880416117
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public DateTime? BirthDate { get; set; }
