@@ -8,5 +8,6 @@ namespace Hospital.Business.Abstract
 {
     public interface IAttendanceService
     {
+
     }
 }
