@@ -1,4 +1,6 @@
-﻿using Hospital.WebUI.Models;
+﻿using Hospital.Business.Abstract;
+using Hospital.Business.Concrete;
+using Hospital.WebUI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -8,8 +10,16 @@ namespace Hospital.WebUI.Controllers
     [Authorize]
     public class HomeController : Controller
     {
+        private readonly IDoctorService _doctorService;
+
+        public HomeController(IDoctorService doctorService)
+        {
+            _doctorService = doctorService;
+        }
+
         public IActionResult Index()
         {
+            var docs = _doctorService.GetAllDoctors();
             return View();
         }
 

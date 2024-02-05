@@ -1,3 +1,7 @@
+using Hospital.Business.Abstract;
+using Hospital.Business.Concrete;
+using Hospital.DataAccess.Abstract;
+using Hospital.DataAccess.Concrete.EntityFramework;
 using Hospital.Entities.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +18,15 @@ builder.Services.AddDbContext<CustomIdentityDbContext>(opt =>
 {
     opt.UseSqlServer(context);
 });
+
+builder.Services.AddScoped<IDoctorService, DoctorService>();
+builder.Services.AddScoped<IPatientService, PatientService>();
+builder.Services.AddScoped<IAppointmentService, AppointmentService>();
+builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+builder.Services.AddScoped<IDoctorDal, EFDoctorDal>();
+builder.Services.AddScoped<IPatientDal, EFPatientDal>();
+builder.Services.AddScoped<IAppointmentDal, EFAppointmentDal>();
+builder.Services.AddScoped<IDepartmentDal, EFDepartmentDal>();
 
 builder.Services.AddIdentity<CustomIdentityUser, CustomIdentityRole>()
     .AddEntityFrameworkStores<CustomIdentityDbContext>()

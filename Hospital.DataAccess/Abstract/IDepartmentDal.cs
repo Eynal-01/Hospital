@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Hospital.DataAccess.Abstract
 {
-    public interface IChatDal: IEntityRepository<Chat>
+    public interface IDepartmentDal:IEntityRepository<Department>
     {
     }
 }

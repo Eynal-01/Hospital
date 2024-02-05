@@ -1,4 +1,5 @@
-﻿using Hospital.Entities.Data;
+﻿using Hospital.Core.Abstract;
+using Hospital.Entities.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,12 +9,13 @@ using System.Threading.Tasks;
 
 namespace HospitalProject.Entities.DbEntities
 {
-    public class Patient : CustomIdentityUser
+    public class Patient : CustomIdentityUser, IEntity
     {
         public string? FullName { get; set; }
         public int Age { get; set; }
         public string? Address { get; set; }
         public ICollection<Recipe>? Recipes { get; set; }
-        public ICollection<Doctor>? Doctors { get; set; }
+        public ICollection<Appointment>? Appointments { get; set; }
+        //public virtual ICollection<Doctor>? Doctors { get; set; }
     }
 }

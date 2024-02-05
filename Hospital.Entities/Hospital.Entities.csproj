@@ -20,4 +20,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Hospital.Core\Hospital.Core.csproj" />
+  </ItemGroup>
+
 </Project>
