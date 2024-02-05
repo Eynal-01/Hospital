@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Hospital.Business.Abstract
 {
-    internal class fdfew
+    public interface IAttendanceService
     {
     }
 }
