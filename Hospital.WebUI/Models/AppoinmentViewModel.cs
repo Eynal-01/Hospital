@@ -9,7 +9,7 @@ namespace Hospital.WebUI.Models
         public int DoctorId { get; set; }
         public int DepartmentId { get; set; }
         public DateTime Date { get; set; }
-        public int DateInTime { get; set; }
+        public DateTime DateInTime { get; set; }
         public string? Fullname { get; set; }
         public int PhoneNumber { get; set; }
         public string? Message { get; set; }

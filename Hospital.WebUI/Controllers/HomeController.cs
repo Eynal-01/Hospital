@@ -40,7 +40,6 @@ namespace Hospital.WebUI.Controllers
             var viewModel = new AppoinmentViewModel
             {
                 Departments = new List<Department>(),
-                Doctors = new List<Doctor>()
             };
             if (doctors != null)
             {
@@ -82,8 +81,8 @@ namespace Hospital.WebUI.Controllers
             };
             await _dbContext.Appointments.AddAsync(appoinment);
             await _dbContext.SaveChangesAsync();
-            //}
-            return RedirectToAction("Appoinment","Home");
+
+            return RedirectToAction("Appoinment", "Home");
         }
 
         public IActionResult BlogSindebar()

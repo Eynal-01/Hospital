@@ -11,7 +11,7 @@ namespace HospitalProject.Entities.DbEntities
         public int Id { get; set; }
         public int Age { get; set; }
         public DateTime? AppointmentDate { get; set; }
-        public int AppointmentTime { get; set; }
+        public DateTime AppointmentTime { get; set; }
         public string? Status { get; set; }
 
         public string? PatientId { get; set; }
