@@ -118,15 +118,15 @@ namespace HospitalProject.WebUI.Controllers
                         PhoneNumber = registerViewModel.MobileNumber.ToString(),
                     };
                 }
-                //else if (registerViewModel.Selected == "admin")
-                //{
-                //    signInUser = new Admin
-                //    {
-                //        Email = registerViewModel.Email,
-                //        UserName = registerViewModel.UserName,
-                //        PhoneNumber = registerViewModel.MobileNumber.ToString(),
-                //    };
-                //}
+                else
+                {
+                    signInUser = new Admin
+                    {
+                        Email = registerViewModel.Email,
+                        UserName = registerViewModel.UserName,
+                        PhoneNumber = registerViewModel.MobileNumber.ToString(),
+                    };
+                }
 
                 var v = new CustomIdentityUser
                 {
@@ -148,10 +148,10 @@ namespace HospitalProject.WebUI.Controllers
                         {
                             await _customIdentityDbContext.Doctors.AddAsync(signInUser);
                         }
-                        //else if (registerViewModel.Selected == "admin")
-                        //{
-                        //    await _customIdentityDbContext.Admins.Add(signInUser);
-                        //}
+                        else if (registerViewModel.Selected == "admin")
+                        {
+                            await _customIdentityDbContext.Admins.AddAsync(signInUser);
+                        }
                         if (!await _roleManager.RoleExistsAsync(registerViewModel.Selected))
                         {
                             var role = new CustomIdentityRole

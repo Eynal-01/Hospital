@@ -1,4 +1,5 @@
-﻿using Hospital.Entities.Data;
+﻿using Hospital.Core.Abstract;
+using Hospital.Entities.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace HospitalProject.Entities.DbEntities
 {
-    public class Chat
+    public class Chat:IEntity
     {
         /// <summary>
         /// Gets or sets the ID of the chat.

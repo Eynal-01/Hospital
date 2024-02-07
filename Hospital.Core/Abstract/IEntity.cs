@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hospital.Business.Abstract
+namespace Hospital.Core.Abstract
 {
-    public interface IAttendanceService
+    public interface IEntity
     {
-
     }
 }
