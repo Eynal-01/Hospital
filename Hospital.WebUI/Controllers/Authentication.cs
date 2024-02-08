@@ -21,14 +21,10 @@ namespace HospitalProject.WebUI.Controllers
             _customIdentityDbContext = customIdentityDbContext;
         }
 
-        [HttpGet]
-        public IActionResult Login(string selected)
+        public IActionResult Start()
         {
-            var viewModel = new LoginViewModel();
-            viewModel.Selected = selected;
-            return View(viewModel);
+            return View();
         }
-
 
         public IActionResult Selected(string selected)
         {
@@ -38,10 +34,14 @@ namespace HospitalProject.WebUI.Controllers
             return RedirectToAction("Login", "Authentication", new { selected });
         }
 
-        public IActionResult Start()
+        [HttpGet]
+        public IActionResult Login(string selected)
         {
-            return View();
+            var viewModel = new LoginViewModel();
+            viewModel.Selected = selected;
+            return View(viewModel);
         }
+
 
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel loginViewModel)
@@ -54,8 +54,9 @@ namespace HospitalProject.WebUI.Controllers
                 var signIn = await _signInManager.PasswordSignInAsync(loginViewModel.UserName, loginViewModel.Password, true, false);
 
                 if (signIn.Succeeded)
-                {
+                { 
                     var user = _customIdentityDbContext.Users.SingleOrDefault(i => i.UserName == loginViewModel.UserName);
+
                     if (user != null)
                     {
                         _customIdentityDbContext.Update(user);
@@ -77,13 +78,6 @@ namespace HospitalProject.WebUI.Controllers
             }
             return View(loginViewModel);
         }
-        public IActionResult Register()
-        {
-            return View();
-        }
-
-
-
 
         [HttpGet]
         public async Task<IActionResult> Register(string selected)

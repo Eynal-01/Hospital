@@ -14,6 +14,7 @@ namespace HospitalProject.Entities.DbEntities
     {
         public string? FullName { get; set; }
         public int Age { get; set; }
+        public string? Avatar { get; set; } = "userWithoutPicture.png";
         public string? Address { get; set; }
         public ICollection<Recipe>? Recipes { get; set; }
         public ICollection<Appointment>? Appointments { get; set; }

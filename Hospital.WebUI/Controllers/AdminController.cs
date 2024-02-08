@@ -1,19 +1,84 @@
-﻿using Hospital.WebUI.Models;
+﻿using Hospital.Entities.Data;
+using Hospital.WebUI.Helpers;
+using Hospital.WebUI.Models;
+using HospitalProject.Entities.DbEntities;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hospital.WebUI.Controllers
 {
     [Authorize(Roles = "admin")]
     public class AdminController : Controller
     {
+        private UserManager<CustomIdentityUser> _userManager;
+        private IWebHostEnvironment _webHost;
+        private readonly CustomIdentityDbContext _context;
+
+        public AdminController(UserManager<CustomIdentityUser> userManager, CustomIdentityDbContext context, IWebHostEnvironment webHost)
+        {
+            _userManager = userManager;
+            _context = context;
+            _webHost = webHost;
+        }
+
         public IActionResult Activities()
         {
             return View();
         }
 
-        public IActionResult AddApointment()
+        public async Task<Admin> CurrentUser()
         {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var admin = await _context.Admins.FirstOrDefaultAsync(a => a.UserName == user.UserName && a.Email == user.Email);
+            return admin;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AddDoctor()
+        {
+            var user = await CurrentUser();
+
+            var viewModel = new AddDoctorViewModel
+            {
+                ImageUrl = user.Avatar
+            };
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddDoctor(AddDoctorViewModel viewModel)
+        {
+            var user = await CurrentUser();
+
+            if (viewModel != null)
+            {
+                var helper = new ImageHelper(_webHost);
+                if (viewModel.File != null)
+                {
+                    viewModel.ImageUrl = await helper.SaveFile(viewModel.File);
+                    user.Avatar = viewModel.ImageUrl;
+                }
+            }
+
+            var doctor = new Doctor
+            {
+                Address = viewModel.Address,
+                BirthDate = viewModel.DateOfBirth,
+                City = viewModel.City,
+                Country = viewModel.Country,
+                Email = viewModel.Email,
+                FirstName = viewModel.FirstName,
+                Gender = viewModel.Gender,
+                LastName = viewModel.LastName,
+                UserName = viewModel.Username,
+                PhoneNumber = viewModel.MobileNumber.ToString(),
+                Avatar = viewModel.ImageUrl
+            };
+
+            await _context.Doctors.AddAsync(doctor);
+            await _context.SaveChangesAsync();
             return View();
         }
 
@@ -27,7 +92,7 @@ namespace Hospital.WebUI.Controllers
             return View();
         }
 
-        public IActionResult AddDoctor()
+        public IActionResult AddApointment()
         {
             return View();
         }

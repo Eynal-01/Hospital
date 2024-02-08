@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace Hospital.Entities.Data
 {
-    public class CustomIdentityUser:IdentityUser
+    public class CustomIdentityUser : IdentityUser
     {
+        //public string? Discriminator { get; set; }
     }
 }
