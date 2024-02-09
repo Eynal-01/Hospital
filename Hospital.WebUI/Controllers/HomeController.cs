@@ -22,6 +22,11 @@ namespace Hospital.WebUI.Controllers
             _userManager = userManager;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+
         public IActionResult Index()
         {
             return View();
