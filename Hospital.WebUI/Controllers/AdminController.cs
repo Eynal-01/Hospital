@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Hospital.WebUI.Controllers
 {
-    [Authorize(Roles = "admin")]
+    //[Authorize(Roles = "admin")]
     public class AdminController : Controller
     {
         private UserManager<CustomIdentityUser> _userManager;
@@ -23,7 +23,6 @@ namespace Hospital.WebUI.Controllers
             _webHost = webHost;
         }
 
-<<<<<<< HEAD
         public IActionResult Activities()
         {
             return View();
@@ -88,14 +87,12 @@ namespace Hospital.WebUI.Controllers
             return View();
         }
 
-=======
->>>>>>> f69d452233b66c6037cf40f41e3a0ca284ed1f6f
         public IActionResult AddDepartment()
         {
             return View();
         }
 
-        public IActionResult AddApointment()
+        public IActionResult Appointment()
         {
             return View();
         }
@@ -111,11 +108,6 @@ namespace Hospital.WebUI.Controllers
         }
 
         public IActionResult AllDepartments()
-        {
-            return View();
-        }
-
-        public IActionResult Appointment()
         {
             return View();
         }
@@ -176,11 +168,6 @@ namespace Hospital.WebUI.Controllers
         }
 
         public IActionResult Payments()
-        {
-            return View();
-        }
-
-        public IActionResult AddProfile()
         {
             return View();
         }
