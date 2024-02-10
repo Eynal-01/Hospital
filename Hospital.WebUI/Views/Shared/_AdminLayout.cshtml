@@ -1,3 +1,10 @@
+@using Hospital.Entities.Data
+@using Microsoft.AspNetCore.Identity
+@{
+    var userManager = Context.RequestServices.GetService<UserManager<CustomIdentityUser>>();
+    var user = await userManager.GetUserAsync(Context.User);
+}
+
 <!doctype html>
 <html class="no-js " lang="en">
 
@@ -222,8 +229,8 @@
                             <div class="user-info">
                                 <div class="image"><a href="profile.html"><img src="../assets/images/profile_av.jpg" alt="User"></a></div>
                                 <div class="detail">
-                                    <h4>Dr. Charlotte</h4>
-                                    <small>Neurologist</small>
+                                    <h4>@user.</h4>
+                                    <small>Admin</small>
                                 </div>
                             </div>
                         </li>

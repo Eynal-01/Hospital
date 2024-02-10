@@ -23,6 +23,10 @@ namespace Hospital.WebUI.Controllers
             _webHost = webHost;
         }
 
+        /// <summary>
+        /// Activities function for show activities. 
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Activities()
         {
             return View();
