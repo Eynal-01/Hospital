@@ -17,21 +17,6 @@ namespace Hospital.WebUI.Controllers
             return RedirectToAction("Login", "Authentication", new { selected });
         }
 
-        public IActionResult Activities()
-        {
-            return View();
-        }
-
-        public IActionResult AddApointment()
-        {
-            return View();
-        }
-
-        public IActionResult AddBlog()
-        {
-            return View();
-        }
-
         public IActionResult AddDepartment()
         {
             return View();
@@ -47,42 +32,32 @@ namespace Hospital.WebUI.Controllers
             return View();
         }
 
-        public IActionResult AddSalary()
+        public IActionResult AddPayment()
         {
             return View();
         }
 
-        public IActionResult AddSchedule()
+        public IActionResult AllDepartments()
         {
             return View();
         }
 
-        public IActionResult Appointments()
+        public IActionResult Appointment()
         {
             return View();
         }
 
-        public IActionResult Attendance()
+        public IActionResult BlogList()
         {
             return View();
         }
 
-        public IActionResult Calendar()
+        public IActionResult BlogSingle()
         {
             return View();
         }
 
-        public IActionResult ChangePassword()
-        {
-            return View();
-        }
-
-        public IActionResult Chat()
-        {
-            return View();
-        }
-
-        public IActionResult Departments()
+        public IActionResult DoctorProfile()
         {
             return View();
         }
@@ -92,37 +67,7 @@ namespace Hospital.WebUI.Controllers
             return View();
         }
 
-        public IActionResult EditDepartment()
-        {
-            return View();
-        }
-
-        public IActionResult EditDoctor()
-        {
-            return View();
-        }
-
-        public IActionResult EditPatient()
-        {
-            return View();
-        }
-
-        public IActionResult AddProfile()
-        {
-            return View();
-        }
-
-        public IActionResult EditSchedule()
-        {
-            return View();
-        }
-
-        public IActionResult Error404()
-        {
-            return View();
-        }
-
-        public IActionResult Error500()
+        public IActionResult Events()
         {
             return View();
         }
@@ -132,7 +77,22 @@ namespace Hospital.WebUI.Controllers
             return View();
         }
 
-        public IActionResult Login()
+        public IActionResult NewPost()
+        {
+            return View();
+        }
+
+        public IActionResult PageOffline()
+        {
+            return View();
+        }
+
+        public IActionResult PatientInvoice()
+        {
+            return View();
+        }
+
+        public IActionResult PatientProfile()
         {
             return View();
         }
@@ -147,22 +107,27 @@ namespace Hospital.WebUI.Controllers
             return View();
         }
 
-        public IActionResult Profile()
+        public IActionResult AddProfile()
         {
             return View();
         }
 
-        public IActionResult Register()
+        public IActionResult EditSchedule()
         {
             return View();
         }
 
-        public IActionResult Schedule()
+        public IActionResult Error400()
         {
             return View();
         }
 
-        public IActionResult Settings()
+        public IActionResult Error500()
+        {
+            return View();
+        }
+
+        public IActionResult Login()
         {
             return View();
         }
