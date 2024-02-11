@@ -1,4 +1,5 @@
-﻿using Hospital.Entities.Data;
+﻿using Hospital.Core.Abstract;
+using Hospital.Entities.Data;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace HospitalProject.Entities.DbEntities
 {
-    public class Admin : IdentityUser
+    public class Admin : CustomIdentityUser, IEntity
     {
         public string? FirstName { get; set; }
         public string? LastName { get; set; }

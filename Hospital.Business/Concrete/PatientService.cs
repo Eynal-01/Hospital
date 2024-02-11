@@ -1,4 +1,5 @@
 ﻿using Hospital.Business.Abstract;
+using Hospital.DataAccess.Abstract;
 using HospitalProject.Entities.DbEntities;
 using System;
 using System.Collections.Generic;
@@ -10,24 +11,33 @@ namespace Hospital.Business.Concrete
 {
     public class PatientService : IPatientService
     {
-        public Task AddPatient(Patient Patient)
+        private readonly IPatientDal _patientDal;
+
+        public PatientService(IPatientDal patientDal)
         {
-            throw new NotImplementedException();
+            _patientDal = patientDal;
         }
 
-        public Task DeletePatient(string patientId)
+        public async Task AddPatient(Patient patient)
         {
-            throw new NotImplementedException();
+            await _patientDal.AddAsync(patient);
         }
 
-        public Task<IEnumerable<Patient>> GetAllPatients()
+        public async Task DeletePatient(string patientId)
         {
-            throw new NotImplementedException();
+            var patient = await _patientDal.GetAsync(p=>p.Id == patientId); 
+            await _patientDal.DeleteAsync(patient);
         }
 
-        public Task<Patient> GetPatientById(string id)
+        public async Task<IEnumerable<Patient>> GetAllPatients()
         {
-            throw new NotImplementedException();
+            return await _patientDal.GetListAsync();
+        }
+
+        public async Task<Patient> GetPatientById(string id)
+        {
+            return await _patientDal.GetAsync(p=>p.Id== id);       
+            
         }
     }
 }
