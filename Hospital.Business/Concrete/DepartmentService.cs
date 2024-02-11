@@ -9,5 +9,7 @@ namespace Hospital.Business.Concrete
 {
     public class DepartmentService:IDepartmentService
     {
+
+        public DepartmentService() { }  
     }
 }

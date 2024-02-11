@@ -1,8 +1,10 @@
 ﻿using Hospital.Business.Abstract;
+using Hospital.DataAccess.Abstract;
 using HospitalProject.Entities.DbEntities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,24 +12,33 @@ namespace Hospital.Business.Concrete
 {
     public class AppointmentService : IAppointmentService
     {
-        public Task AddAppointment(Appointment appointment)
+        private readonly IAppointmentDal _appointmentDal;
+        public AppointmentService(IAppointmentDal appointmentDal)
         {
-            throw new NotImplementedException();
+            _appointmentDal = appointmentDal;
         }
 
-        public Task DeleteAppointment(string appointmentId)
+        public async Task AddAppointment(Appointment appointment)
         {
-            throw new NotImplementedException();
+            await _appointmentDal.AddAsync(appointment);
         }
 
-        public Task<IEnumerable<Appointment>> GetAppointmentsOfDoctorById(string doctorId)
+        public async Task DeleteAppointment(string appointmentId)
         {
-            throw new NotImplementedException();
+            var appointment = await _appointmentDal.GetAsync(a => a.Id.ToString() == appointmentId);
+            await _appointmentDal.DeleteAsync(appointment);
         }
 
-        public Task<IEnumerable<Appointment>> GetAppointmentsOfPatientById(string patientId)
+        public async Task<IEnumerable<Appointment>> GetAppointmentsOfDoctorById(string doctorId)
         {
-            throw new NotImplementedException();
+            var appointmentsOfDoctor = await _appointmentDal.GetListAsync(a => a.DoctorId.ToString() == doctorId);
+            return appointmentsOfDoctor;
+        }
+
+        public async Task<IEnumerable<Appointment>> GetAppointmentsOfPatientById(string patientId)
+        {
+            var appointmentsOfPatient = await _appointmentDal.GetListAsync(a => a.PatientId == patientId);
+            return appointmentsOfPatient;
         }
     }
 }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace HospitalProject.Entities.DbEntities
 {
-    public class Doctor : IdentityUser, IEntity
+    public class Doctor : CustomIdentityUser, IEntity
     {
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
