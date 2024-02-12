@@ -59,12 +59,12 @@
                             <p class="d-lg-none d-xl-none">Instagram</p>
                         </a>
                     </li>
-                    @if (Model.Selected == "patient")
-                    {
-                        <li class="nav-item">
-                            <a asp-action="Register" asp-controller="Authentication" asp-route-selected="@Model.Selected" class="nav-link btn btn-white btn-round">SIGN UP</a>
-                        </li>
-                    }
+                    @*                    @if (Model.Selected == "patient")
+                    {*@
+                    <li class="nav-item">
+                        <a asp-action="Register" asp-controller="Authentication" asp-route-selected="@Model.Selected" class="nav-link btn btn-white btn-round">SIGN UP</a>
+                    </li>
+                    @*}*@
                 </ul>
             </div>
         </div>
@@ -84,7 +84,7 @@
                         </div>
                         <div style="display:none;">
                             <label asp-for="Selected">Selected</label>
-                            <input asp-for="Selected" type="text"/>
+                            <input asp-for="Selected" type="text" />
                         </div>
                         <div class="content">
                             <div class="input-group">
