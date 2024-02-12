@@ -81,6 +81,10 @@
                             <span>Register a new membership</span>
                         </div>
                         <div class="content">
+                            <div style="display:none;">
+                                <label asp-for="Selected">Selected</label>
+                                <input asp-for="Selected" type="text" />
+                            </div>
                             <div class="input-group">
                                 <input asp-for="UserName" type="text" class="form-control" placeholder="Enter User Name">
                                 <span class="input-group-addon">
@@ -119,8 +123,8 @@
                             </label>
                         </div>
                         <div class="footer text-center">
-                            <a type="submit" class="btn btn-primary btn-round btn-block  waves-effect waves-light">SIGN UP</a>
-                            <h5><a class="link" href="sign-in.html">You already have a membership?</a></h5>
+                            <button class="btn btn-primary btn-round btn-block  waves-effect waves-light" type="submit">SIGN UP</button>
+                            @*<h5><a class="link" href="sign-in.html">You already have a membership?</a></h5>*@
                         </div>
                     </form>
                 </div>
