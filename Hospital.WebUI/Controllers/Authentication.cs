@@ -54,8 +54,20 @@ namespace HospitalProject.WebUI.Controllers
                 var signIn = await _signInManager.PasswordSignInAsync(loginViewModel.UserName, loginViewModel.Password, true, false);
 
                 if (signIn.Succeeded)
-                { 
-                    var user = _customIdentityDbContext.Users.SingleOrDefault(i => i.UserName == loginViewModel.UserName);
+                {
+                    dynamic user;
+                    if (loginViewModel.Selected == "patient")
+                    {
+                        user = _customIdentityDbContext.Patients.SingleOrDefault(i => i.UserName == loginViewModel.UserName);
+                    }
+                    else if (loginViewModel.Selected == "doctor")
+                    {
+                        user = _customIdentityDbContext.Doctors.SingleOrDefault(i => i.UserName == loginViewModel.UserName);
+                    }
+                    else
+                    {
+                        user = _customIdentityDbContext.Admins.SingleOrDefault(i => i.UserName == loginViewModel.UserName);
+                    }
 
                     if (user != null)
                     {
@@ -134,9 +146,9 @@ namespace HospitalProject.WebUI.Controllers
                     var result = await _userManager.CreateAsync(v, registerViewModel.Password);
                     if (result.Succeeded)
                     {
-                        if(registerViewModel.Selected == "patient")
+                        if (registerViewModel.Selected == "patient")
                         {
-                             await _customIdentityDbContext.Patients.AddAsync(signInUser);
+                            await _customIdentityDbContext.Patients.AddAsync(signInUser);
                         }
                         else if (registerViewModel.Selected == "doctor")
                         {
