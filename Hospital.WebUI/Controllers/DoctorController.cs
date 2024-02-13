@@ -1,9 +1,11 @@
 ﻿using Hospital.Entities.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hospital.WebUI.Controllers
 {
+    [Authorize(Roles = "doctor")]
     public class DoctorController : Controller
     {
         private readonly UserManager<CustomIdentityUser> _userManager;
