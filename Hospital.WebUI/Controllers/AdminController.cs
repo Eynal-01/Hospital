@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Hospital.WebUI.Controllers
 {
-    //[Authorize(Roles = "admin")]
+    [Authorize(Roles = "admin")]
     public class AdminController : Controller
     {
         private UserManager<CustomIdentityUser> _userManager;
@@ -115,9 +115,17 @@ namespace Hospital.WebUI.Controllers
         [HttpGet]
         public async Task<IActionResult> AllPatients()
         {
-            var patients = await _patientService.GetAllPatients();
+            var patients = await _context.Patients.ToListAsync();
+            var appoinments = await _context.Appointments.ToListAsync();
+            var appointmentPatients = patients.Where(p=>p.Appointments!=null).ToList();
+            return Ok(appointmentPatients);
+        }
 
-            return Ok(patients.ToList());
+        [HttpGet]
+        public async Task<IActionResult> ShowAllAppointments()
+        {
+            var allAppointments = await _context.Appointments.ToListAsync();
+            return Ok(allAppointments); 
         }
 
         public IActionResult AddPayment()

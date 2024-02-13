@@ -23,11 +23,18 @@ namespace Hospital.WebUI.Hubs
             var role = await _userManager.GetRolesAsync(user);
             string ro = role[0];
             await Clients.Others.SendAsync("Connect", ro);
+            var d = role[0].Trim();
+            await Clients.All.SendAsync("Connect", d);
         }
 
         public override Task OnDisconnectedAsync(Exception? exception)
         {
             return base.OnDisconnectedAsync(exception);
+        }
+
+        public async Task AdminCall(string id)
+        {
+            await Clients.Users(new String[] { id }).SendAsync("AdminRefresh", id);
         }
     }
 }
