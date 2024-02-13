@@ -3,6 +3,7 @@ using Hospital.Business.Concrete;
 using Hospital.DataAccess.Abstract;
 using Hospital.DataAccess.Concrete.EntityFramework;
 using Hospital.Entities.Data;
+using Hospital.WebUI.Hubs;
 using HospitalProject.Entities.DbEntities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +12,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews()
+    .AddJsonOptions(opt =>
+    {
+        opt.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+    });
 
 var context = builder.Configuration.GetConnectionString("mydb");
 
@@ -32,6 +37,8 @@ builder.Services.AddScoped<IDepartmentDal, EFDepartmentDal>();
 builder.Services.AddIdentity<CustomIdentityUser,CustomIdentityRole>()
     .AddEntityFrameworkStores<CustomIdentityDbContext>()
     .AddDefaultTokenProviders();
+
+builder.Services.AddSignalR();
 
 //builder.Services.AddIdentity<Doctor, CustomIdentityRole>()
 //    .AddEntityFrameworkStores<CustomIdentityDbContext>()
@@ -59,8 +66,10 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Authentication}/{action=Start}/{id?}");
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute("Default", "{controller=Authentication}/{action=Start}/{id?}");
+    endpoints.MapHub<UserHub>("/userhub");
+});
 
 app.Run();

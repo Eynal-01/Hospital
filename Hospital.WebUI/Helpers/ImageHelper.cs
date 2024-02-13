@@ -11,7 +11,7 @@
 
         public async Task<string> SaveFile(IFormFile file)
         {
-            var saveImg = Path.Combine(_webHost.WebRootPath, "assets/images/user", file.FileName);
+            var saveImg = Path.Combine(_webHost.WebRootPath, "AccessaryFiles/images", file.FileName);
             using (var img = new FileStream(saveImg, FileMode.OpenOrCreate))
             {
                 await file.CopyToAsync(img);

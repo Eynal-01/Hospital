@@ -1,4 +1,5 @@
-﻿using Hospital.Entities.Data;
+﻿using Hospital.Business.Abstract;
+using Hospital.Entities.Data;
 using Hospital.WebUI.Helpers;
 using Hospital.WebUI.Models;
 using HospitalProject.Entities.DbEntities;
@@ -15,12 +16,14 @@ namespace Hospital.WebUI.Controllers
         private UserManager<CustomIdentityUser> _userManager;
         private IWebHostEnvironment _webHost;
         private readonly CustomIdentityDbContext _context;
+        private readonly IPatientService _patientService;
 
-        public AdminController(UserManager<CustomIdentityUser> userManager, CustomIdentityDbContext context, IWebHostEnvironment webHost)
+        public AdminController(UserManager<CustomIdentityUser> userManager, CustomIdentityDbContext context, IWebHostEnvironment webHost, IPatientService patientService)
         {
             _userManager = userManager;
             _context = context;
             _webHost = webHost;
+            _patientService = patientService;
         }
 
         /// <summary>
@@ -83,7 +86,7 @@ namespace Hospital.WebUI.Controllers
 
             await _context.Doctors.AddAsync(doctor);
             await _context.SaveChangesAsync();
-            return View();
+            return RedirectToAction("AddDoctor", "Admin");
         }
 
         public IActionResult AddBlog()
@@ -104,6 +107,14 @@ namespace Hospital.WebUI.Controllers
         public IActionResult AddPatient()
         {
             return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AllPatients()
+        {
+            var patients = await _patientService.GetAllPatients();
+
+            return Ok(patients.ToList());
         }
 
         public IActionResult AddPayment()

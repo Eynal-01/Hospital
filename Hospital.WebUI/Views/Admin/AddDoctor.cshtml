@@ -60,7 +60,7 @@
                             <div class="form-group">
                                 <label asp-for="DateOfBirth">Date of Birth</label>
                                 <div class="cal-icon">
-                                    <input type="text" class="form-control datetimepicker">
+                                    <input asp-for="DateOfBirth" type="text" class="form-control datetimepicker">
                                 </div>
                             </div>
                         </div>
@@ -110,7 +110,7 @@
                                 <label>Avatar</label>
                                 <div class="profile-upload">
                                     <div class="upload-img">
-                                        <img alt="" src="~/AdminFiles/assets/img/@Model.ImageUrl">
+                                        <img alt="" style="width:100px;height:100px;" src="~/AccessaryFiles/images/@Model.ImageUrl">
                                     </div>
                                     <div class="upload-input">
                                         <input asp-for="File" type="file" class="form-control">
