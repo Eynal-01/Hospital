@@ -1,4 +1,5 @@
 ﻿using HospitalProject.Entities.DbEntities;
+using System.ComponentModel.DataAnnotations;
 
 namespace Hospital.WebUI.Models
 {
@@ -6,8 +7,8 @@ namespace Hospital.WebUI.Models
     {
         public List<Doctor>? Doctors { get; set; }
         public List<Department>? Departments { get; set; }
-        public int DoctorId { get; set; }
-        public int DepartmentId { get; set; }
+        public string? DoctorName { get; set; }
+        public string? DepartmentName { get; set; }
         public DateTime Date { get; set; }
         public DateTime DateInTime { get; set; }
         public string? Fullname { get; set; }

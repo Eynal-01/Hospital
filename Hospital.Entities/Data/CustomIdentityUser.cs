@@ -11,5 +11,6 @@ namespace Hospital.Entities.Data
     public class CustomIdentityUser : IdentityUser
     {
         //public string? Discriminator { get; set; }
+        
     }
 }

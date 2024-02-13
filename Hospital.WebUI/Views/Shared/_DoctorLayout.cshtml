@@ -213,15 +213,7 @@
             <div class="tab-pane stretchRight active" id="dashboard">
                 <div class="menu">
                     <ul class="list">
-                        <li>
-                            <div class="user-info">
-                                <div class="image"><a asp-action="Profile" asp-controller="Doctor"><img src="~/DoctorFiles/images/profile_av.jpg" alt="User"></a></div>
-                                <div class="detail">
-                                    <h4>Dr. Charlotte</h4>
-                                    <small>Neurologist</small>
-                                </div>
-                            </div>
-                        </li>
+                           @await Component.InvokeAsync("AdminInfo");
                         <li class="header">MAIN</li>
                         <li><a asp-action="Index" asp-controller="Doctor"><i class="zmdi zmdi-home"></i><span>Dashboard</span></a></li>
                         <li><a asp-action="Appoinment" asp-controller="Doctor"><i class="zmdi zmdi-calendar-check"></i><span>Appointment</span> </a></li>

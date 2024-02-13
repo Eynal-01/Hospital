@@ -11,12 +11,12 @@ namespace HospitalProject.Entities.DbEntities
     {
         public int Id { get; set; }
         public int Age { get; set; }
-        public int DoctorId { get; set; }
-        public int DepartmentId { get; set; }
+        public string? DoctorId { get; set; }
+        public int? DepartmentId { get; set; }
         public string? PatientId { get; set; }
         public DateTime? AppointmentDate { get; set; }
         public DateTime? AppointmentTime { get; set; }
-        public string? Status { get; set; }
+        public string? Message { get; set; }
 
         //public Patient? Patient { get; set; }
         //public Doctor? Doctor { get; set; }

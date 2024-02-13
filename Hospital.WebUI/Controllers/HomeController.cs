@@ -61,35 +61,23 @@ namespace Hospital.WebUI.Controllers
         public async Task<IActionResult> Appoinment(AppoinmentViewModel viewModel)
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            //if (ModelState.IsValid)
-            //{
             var patient = await _dbContext.Patients.FirstOrDefaultAsync(p => p.Email == user.Email && p.UserName == user.UserName);
-            //var department = await _dbContext.Departments.FirstOrDefaultAsync(d => d.Id == viewModel.DepartmentId);
-            //var doctor = await _dbContext.Doctors.FirstOrDefaultAsync(d => d.Id == viewModel.DoctorId.ToString());
-            //var appoinment = new Appointment
-            //{
-            //    AppointmentDate = viewModel.Date,
-            //    AppointmentTime = viewModel.DateInTime,
-            //    Age = patient.Age,
-            //    DoctorId = 3,
-            //    DepartmentId = 2,
-            //    PatientId = "1"
-            //};
+            var department = await _dbContext.Departments.FirstOrDefaultAsync(d => d.DepartmentName == viewModel.DepartmentName);
+            var doctor = await _dbContext.Doctors.FirstOrDefaultAsync(d => d.FirstName + " " + d.LastName == viewModel.DoctorName);
+
             var appoinment = new Appointment
             {
                 AppointmentDate = viewModel.Date,
                 AppointmentTime = viewModel.DateInTime,
                 Age = patient.Age,
-                //Patient = patient,
-                //Department = department,
-                //Doctor = doctor,
-                DoctorId = viewModel.DoctorId,
-                DepartmentId = viewModel.DepartmentId,
+                DoctorId = doctor.Id,
+                DepartmentId = department.Id,
                 PatientId = patient.Id.ToString(),
+                Message = viewModel.Message,
+
             };
             await _dbContext.Appointments.AddAsync(appoinment);
             await _dbContext.SaveChangesAsync();
-
             return RedirectToAction("Appoinment", "Home");
         }
 

@@ -58,34 +58,37 @@ namespace Hospital.WebUI.Controllers
         public async Task<IActionResult> AddDoctor(AddDoctorViewModel viewModel)
         {
             var user = await CurrentUser();
-
-            if (viewModel != null)
+            if (viewModel.Password == viewModel.ConfirmPassword)
             {
-                var helper = new ImageHelper(_webHost);
-                if (viewModel.File != null)
+                if (viewModel != null)
                 {
-                    viewModel.ImageUrl = await helper.SaveFile(viewModel.File);
-                    user.Avatar = viewModel.ImageUrl;
+                    var helper = new ImageHelper(_webHost);
+                    if (viewModel.File != null)
+                    {
+                        viewModel.ImageUrl = await helper.SaveFile(viewModel.File);
+                        user.Avatar = viewModel.ImageUrl;
+                    }
                 }
+
+                var doctor = new Doctor
+                {
+                    Address = viewModel.Address,
+                    BirthDate = viewModel.DateOfBirth,
+                    City = viewModel.City,
+                    Country = viewModel.Country,
+                    Email = viewModel.Email,
+                    FirstName = viewModel.FirstName,
+                    Gender = viewModel.Gender,
+                    LastName = viewModel.LastName,
+                    UserName = viewModel.Username,
+                    PhoneNumber = viewModel.MobileNumber.ToString(),
+                    Avatar = viewModel.ImageUrl
+                };
+
+                //await _context.Users.AddAsync(doctor);
+                await _context.Doctors.AddAsync(doctor);
+                await _context.SaveChangesAsync();
             }
-
-            var doctor = new Doctor
-            {
-                Address = viewModel.Address,
-                BirthDate = viewModel.DateOfBirth,
-                City = viewModel.City,
-                Country = viewModel.Country,
-                Email = viewModel.Email,
-                FirstName = viewModel.FirstName,
-                Gender = viewModel.Gender,
-                LastName = viewModel.LastName,
-                UserName = viewModel.Username,
-                PhoneNumber = viewModel.MobileNumber.ToString(),
-                Avatar = viewModel.ImageUrl
-            };
-
-            await _context.Doctors.AddAsync(doctor);
-            await _context.SaveChangesAsync();
             return RedirectToAction("AddDoctor", "Admin");
         }
 

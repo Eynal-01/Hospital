@@ -22,22 +22,31 @@ namespace Hospital.WebUI.ViewComponents
         public ViewViewComponentResult Invoke()
         {
             var user = _userManager.GetUserAsync(HttpContext.User).Result;
-            var admin = _context.Admins.FirstOrDefaultAsync(a => a.UserName == user.UserName && a.Email == user.Email).Result;
+            var role = _userManager.GetRolesAsync(user).Result;
+            dynamic userr;
+            if (role[0] == "admin")
+            {
+                userr = _context.Admins.FirstOrDefaultAsync(a => a.UserName == user.UserName && a.Email == user.Email).Result;
+            }
+            else 
+            {
+                userr = _context.Doctors.FirstOrDefaultAsync(a => a.UserName == user.UserName && a.Email == user.Email).Result;
+            }
 
-            if (admin != null)
+            if (userr != null)
             {
                 var info = new AdminInfoViewModel
                 {
-                    Name = admin.UserName,
-                    ImageUrl = admin.Avatar
+                    Name = userr.UserName,
+                    ImageUrl = userr.Avatar,
                 };
                 return View(info);
+
             }
             else
             {
                 return View();
             }
-
         }
     }
 }

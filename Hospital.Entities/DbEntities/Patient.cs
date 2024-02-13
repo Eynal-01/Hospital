@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace HospitalProject.Entities.DbEntities
 {
-    public class Patient : CustomIdentityUser, IEntity
+    public class Patient : IdentityUser, IEntity
     {
         public string? FullName { get; set; }
         public int Age { get; set; }

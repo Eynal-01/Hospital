@@ -9,17 +9,18 @@ using System.Threading.Tasks;
 
 namespace HospitalProject.Entities.DbEntities
 {
-    public class Doctor : CustomIdentityUser, IEntity
+    public class Doctor : IdentityUser, IEntity
     {
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public DateTime? BirthDate { get; set; }
-        public string? Avatar { get; set; } = "userWithoutPicture.png"; 
         public string? Gender { get; set; }
         public string? Address { get; set; }
+        public string? Avatar { get; set; } = "userWithoutPicture.png";
         public string? City { get; set; }
         public string? Country { get; set; }
         public string? Bio { get; set; }
+        public string? DepartmentId { get; set; }
         public int ExperienceYear { get; set; }
         public string? Education { get; set; }
         public string? Status { get; set; }

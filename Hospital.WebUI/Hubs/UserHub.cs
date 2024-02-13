@@ -22,7 +22,7 @@ namespace Hospital.WebUI.Hubs
             var user = await _userManager.GetUserAsync(_contextAccessor.HttpContext.User);
             var role = await _userManager.GetRolesAsync(user);
             string ro = role[0];
-            await Clients.All.SendAsync("Connect", ro);
+            await Clients.Others.SendAsync("Connect", ro);
         }
 
         public override Task OnDisconnectedAsync(Exception? exception)
