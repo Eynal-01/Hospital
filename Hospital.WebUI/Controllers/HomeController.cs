@@ -36,7 +36,10 @@ namespace Hospital.WebUI.Controllers
         {
             return View();
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> Appoinment()
         {
@@ -56,7 +59,11 @@ namespace Hospital.WebUI.Controllers
             }
             return View(viewModel);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="viewModel"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> Appoinment(AppoinmentViewModel viewModel)
         {
