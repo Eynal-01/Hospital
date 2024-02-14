@@ -98,8 +98,13 @@
 
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        <label asp-for="DateInTime">Time</label>
-                                        <input asp-for="DateInTime" id="time" type="time" class="form-control" placeholder="Time">
+                                        <label>Available Times</label>
+                                        <select asp-for="AvailableTime" class="form-control" id="exampleFormControlSelect2">
+                                            @for (int i = 0; i < Model.AvailableTimes.Count(); i++)
+                                            {
+                                                <option>@Model.AvailableTimes[i].StartTime - @Model.AvailableTimes[i].EndTime</option>
+                                            }
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-lg-6">

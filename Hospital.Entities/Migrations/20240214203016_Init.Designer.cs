@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hospital.Entities.Migrations
 {
     [DbContext(typeof(CustomIdentityDbContext))]
-    [Migration("20240214085259_Init")]
+    [Migration("20240214203016_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -116,6 +116,30 @@ namespace Hospital.Entities.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("Hospital.Entities.DbEntities.AvailableTime", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("DoctorId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("EndTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DoctorId");
+
+                    b.ToTable("AvailableTimes");
+                });
+
             modelBuilder.Entity("HospitalProject.Entities.DbEntities.Admin", b =>
                 {
                     b.Property<string>("Id")
@@ -208,6 +232,9 @@ namespace Hospital.Entities.Migrations
 
                     b.Property<DateTime?>("AppointmentTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("AvailableTimeId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("DepartmentId")
                         .HasColumnType("int");
@@ -410,6 +437,12 @@ namespace Hospital.Entities.Migrations
 
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("WorkEndTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("WorkStartTime")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -755,6 +788,13 @@ namespace Hospital.Entities.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Hospital.Entities.DbEntities.AvailableTime", b =>
+                {
+                    b.HasOne("HospitalProject.Entities.DbEntities.Doctor", null)
+                        .WithMany("AvailableTimes")
+                        .HasForeignKey("DoctorId");
+                });
+
             modelBuilder.Entity("HospitalProject.Entities.DbEntities.Appointment", b =>
                 {
                     b.HasOne("HospitalProject.Entities.DbEntities.Department", "Department")
@@ -948,6 +988,8 @@ namespace Hospital.Entities.Migrations
 
             modelBuilder.Entity("HospitalProject.Entities.DbEntities.Doctor", b =>
                 {
+                    b.Navigation("AvailableTimes");
+
                     b.Navigation("Patients");
 
                     b.Navigation("Recipes");

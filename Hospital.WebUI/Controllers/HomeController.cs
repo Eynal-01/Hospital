@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using System;
+using System.Media;
 
 namespace Hospital.WebUI.Controllers
 {
@@ -71,20 +73,34 @@ namespace Hospital.WebUI.Controllers
             var patient = await _dbContext.Patients.FirstOrDefaultAsync(p => p.Email == user.Email && p.UserName == user.UserName);
             var department = await _dbContext.Departments.FirstOrDefaultAsync(d => d.DepartmentName == viewModel.DepartmentName);
             var doctor = await _dbContext.Doctors.FirstOrDefaultAsync(d => d.FirstName + " " + d.LastName == viewModel.DoctorName);
+            var appointments = await _dbContext.Appointments.ToListAsync();
+
 
             var appoinment = new Appointment
             {
                 AppointmentDate = viewModel.Date,
-                AppointmentTime = viewModel.DateInTime,
+                AppointmentTime = viewModel.AvailableTime,
+                AvailableTimeId = viewModel.AvailableTimeId,
                 Age = patient.Age,
                 DoctorId = doctor.Id,
                 DepartmentId = department.Id,
                 PatientId = patient.Id.ToString(),
                 Message = viewModel.Message,
             };
-            var doctor1 = _dbContext.Doctors.FirstOrDefault(d => d.Id == appoinment.DoctorId);
-            await _dbContext.Appointments.AddAsync(appoinment);
-            await _dbContext.SaveChangesAsync();
+            for (int i = 0; i < appointments.Count; i++)
+            {
+                if (appointments[i].AvailableTimeId == appoinment.AvailableTimeId && appointments[i].DoctorId == appoinment.DoctorId)
+                {
+                    Console.Beep();
+                    break;
+                }
+                else
+                {
+                    var doctor1 = _dbContext.Doctors.FirstOrDefault(d => d.Id == appoinment.DoctorId);
+                    await _dbContext.Appointments.AddAsync(appoinment);
+                    await _dbContext.SaveChangesAsync();
+                }
+            }
             return RedirectToAction("Appoinment", "Home");
         }
 

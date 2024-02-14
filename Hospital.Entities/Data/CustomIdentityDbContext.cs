@@ -1,4 +1,5 @@
-﻿using HospitalProject.Entities.DbEntities;
+﻿using Hospital.Entities.DbEntities;
+using HospitalProject.Entities.DbEntities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -34,5 +35,47 @@ namespace Hospital.Entities.Data
         public DbSet<Payment>? Payments { get; set; }
         public DbSet<Recipe>? Recipes { get; set; }
         public DbSet<Salary>? Salaries { get; set; }
+        public DbSet<AvailableTime>? AvailableTimes { get; set; }
+
+
+
+        public override int SaveChanges()
+        {
+            SeedAvailableTimes();
+            return base.SaveChanges();
+        }
+
+        private void SeedAvailableTimes()
+        {
+            if (!Doctors.Any() && !AvailableTimes.Any())
+            {
+                var availableTimes = new List<AvailableTime>
+            {
+                new AvailableTime { StartTime = DateTime.Today.AddHours(9), EndTime = DateTime.Today.AddHours(9).AddMinutes(30)},
+                new AvailableTime { StartTime = DateTime.Today.AddHours(9).AddMinutes(30), EndTime = DateTime.Today.AddHours(10)},
+                new AvailableTime { StartTime = DateTime.Today.AddHours(10), EndTime = DateTime.Today.AddHours(10).AddMinutes(30)},
+                new AvailableTime { StartTime = DateTime.Today.AddHours(10).AddMinutes(30), EndTime = DateTime.Today.AddHours(11)},
+                new AvailableTime { StartTime = DateTime.Today.AddHours(11), EndTime = DateTime.Today.AddHours(11).AddMinutes(30)},
+                new AvailableTime { StartTime = DateTime.Today.AddHours(11).AddMinutes(30), EndTime = DateTime.Today.AddHours(12)},
+
+                new AvailableTime { StartTime = DateTime.Today.AddHours(13).AddMinutes(30), EndTime = DateTime.Today.AddHours(14)},
+                new AvailableTime { StartTime = DateTime.Today.AddHours(14), EndTime = DateTime.Today.AddHours(14).AddMinutes(30)},
+                new AvailableTime { StartTime = DateTime.Today.AddHours(14).AddMinutes(30), EndTime = DateTime.Today.AddHours(15)},
+                new AvailableTime { StartTime = DateTime.Today.AddHours(15), EndTime = DateTime.Today.AddHours(15).AddMinutes(30)},
+                new AvailableTime { StartTime = DateTime.Today.AddHours(15).AddMinutes(30), EndTime = DateTime.Today.AddHours(16)},
+            };
+
+                foreach (var doctor in Doctors)
+                {
+                    doctor.AvailableTimes = availableTimes.Select(at => new AvailableTime
+                    {
+                        DoctorId = doctor.Id,
+                        StartTime = at.StartTime,
+                        EndTime = at.EndTime,
+                    }).ToList();
+                }
+                SaveChanges();
+            }
+        }
     }
 }

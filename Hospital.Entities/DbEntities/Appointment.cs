@@ -17,6 +17,7 @@ namespace HospitalProject.Entities.DbEntities
         public DateTime? AppointmentDate { get; set; }
         public DateTime? AppointmentTime { get; set; }
         public string? Message { get; set; }
+        public string? AvailableTimeId { get; set; }    
 
         public virtual Patient? Patient { get; set; }
         public virtual Doctor? Doctor { get; set; }

@@ -359,6 +359,8 @@ namespace Hospital.Entities.Migrations
                     ExperienceYear = table.Column<int>(type: "int", nullable: false),
                     Education = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    WorkStartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    WorkEndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CalendarId = table.Column<int>(type: "int", nullable: true),
                     DoctorScheduleId = table.Column<int>(type: "int", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -423,6 +425,26 @@ namespace Hospital.Entities.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AvailableTimes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DoctorId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AvailableTimes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AvailableTimes_Doctors_DoctorId",
+                        column: x => x.DoctorId,
+                        principalTable: "Doctors",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Patients",
                 columns: table => new
                 {
@@ -469,7 +491,8 @@ namespace Hospital.Entities.Migrations
                     PatientId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     AppointmentDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     AppointmentTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Message = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Message = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AvailableTimeId = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -577,6 +600,11 @@ namespace Hospital.Entities.Migrations
                 column: "CalendarId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AvailableTimes_DoctorId",
+                table: "AvailableTimes",
+                column: "DoctorId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Chats_ReceiverUserId",
                 table: "Chats",
                 column: "ReceiverUserId");
@@ -672,6 +700,9 @@ namespace Hospital.Entities.Migrations
 
             migrationBuilder.DropTable(
                 name: "Attendances");
+
+            migrationBuilder.DropTable(
+                name: "AvailableTimes");
 
             migrationBuilder.DropTable(
                 name: "Messages");
