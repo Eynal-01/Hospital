@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
 
 namespace Hospital.WebUI.Controllers
 {
@@ -14,16 +15,18 @@ namespace Hospital.WebUI.Controllers
     public class AdminController : Controller
     {
         private UserManager<CustomIdentityUser> _userManager;
+        private RoleManager<CustomIdentityRole> _roleManager;
         private IWebHostEnvironment _webHost;
         private readonly CustomIdentityDbContext _context;
         private readonly IPatientService _patientService;
 
-        public AdminController(UserManager<CustomIdentityUser> userManager, CustomIdentityDbContext context, IWebHostEnvironment webHost, IPatientService patientService)
+        public AdminController(UserManager<CustomIdentityUser> userManager, CustomIdentityDbContext context, IWebHostEnvironment webHost, IPatientService patientService, RoleManager<CustomIdentityRole> roleManager)
         {
             _userManager = userManager;
             _context = context;
             _webHost = webHost;
             _patientService = patientService;
+            _roleManager = roleManager;
         }
 
         /// <summary>
@@ -69,7 +72,7 @@ namespace Hospital.WebUI.Controllers
                         user.Avatar = viewModel.ImageUrl;
                     }
                 }
-
+                var newPassword = HashPassword(viewModel.Password);
                 var doctor = new Doctor
                 {
                     Address = viewModel.Address,
@@ -77,19 +80,88 @@ namespace Hospital.WebUI.Controllers
                     City = viewModel.City,
                     Country = viewModel.Country,
                     Email = viewModel.Email,
+                    NormalizedEmail = viewModel.Email.ToUpper(),
                     FirstName = viewModel.FirstName,
                     Gender = viewModel.Gender,
                     LastName = viewModel.LastName,
                     UserName = viewModel.Username,
+                    NormalizedUserName = viewModel.Username.ToUpper(),
                     PhoneNumber = viewModel.MobileNumber.ToString(),
-                    Avatar = viewModel.ImageUrl
+                    Avatar = viewModel.ImageUrl,
+                    PasswordHash = newPassword,
+                    WorkStartTime = viewModel.WorkStartTime,
+                    WorkEndTime = viewModel.WorkEndTime
                 };
 
-                //await _context.Users.AddAsync(doctor);
+                //var customUser = new CustomIdentityUser()
+                //{
+                //    //Address = viewModel.Address,
+                //    //BirthDate = viewModel.DateOfBirth,
+                //    //City = viewModel.City,
+                //    //Country = viewModel.Country,
+                //    Email = viewModel.Email,
+                //    NormalizedEmail = viewModel.Email.ToUpper(),
+                //    //FirstName = viewModel.FirstName,
+                //    //Gender = viewModel.Gender,
+                //    //LastName = viewModel.LastName,
+                //    UserName = viewModel.Username,
+                //    NormalizedUserName = viewModel.Username.ToUpper(),
+                //    PhoneNumber = viewModel.MobileNumber.ToString(),
+                //    PasswordHash = newPassword,
+                //    //Avatar = viewModel.ImageUrl
+                //};
+
+
+                var customUser = new CustomIdentityUser
+                {
+                    Email = viewModel.Email,
+                    UserName = viewModel.Username,
+                    PhoneNumber = viewModel.MobileNumber.ToString(),
+                };
+
+                var result = await _userManager.CreateAsync(customUser, viewModel.Password);
+
+                if (result.Succeeded)
+                {
+                    if (!await _roleManager.RoleExistsAsync("doctor"))
+                    {
+                        var role = new CustomIdentityRole
+                        {
+                            Name = "doctor"
+                        };
+                        var resul = await _roleManager.CreateAsync(role);
+                        //if (!resul.Succeeded)
+                        //{
+                        //    ModelState.AddModelError("", "Error");
+                        //    return View(registerViewModel);
+                        //}
+                    }
+
+                }
+
+                await _userManager.AddToRoleAsync(customUser, "doctor");
+
+                //await _context.Users.AddAsync(customUser);
                 await _context.Doctors.AddAsync(doctor);
                 await _context.SaveChangesAsync();
             }
             return RedirectToAction("AddDoctor", "Admin");
+        }
+
+        public static string HashPassword(string password)
+        {
+            int saltSize = 16;
+            int bytesRequired = 32;
+            byte[] array = new byte[1 + saltSize + bytesRequired];
+            int iterations = 1000; // 1000, afaik, which is the min recommended for Rfc2898DeriveBytes
+            using (var pbkdf2 = new Rfc2898DeriveBytes(password, saltSize, iterations))
+            {
+                byte[] salt = pbkdf2.Salt;
+                Buffer.BlockCopy(salt, 0, array, 1, saltSize);
+                byte[] bytes = pbkdf2.GetBytes(bytesRequired);
+                Buffer.BlockCopy(bytes, 0, array, saltSize + 1, bytesRequired);
+            }
+            return Convert.ToBase64String(array);
         }
 
         public IActionResult AddBlog()
@@ -131,6 +203,8 @@ namespace Hospital.WebUI.Controllers
                 .ToListAsync();
             return Ok(allAppointments);
         }
+
+
 
         //[HttpGet]
         //public async Task<IActionResult> GetAppointmentDoctor(string id)
