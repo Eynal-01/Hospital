@@ -211,7 +211,7 @@ namespace Hospital.Entities.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("DoctorId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Message")
                         .HasColumnType("nvarchar(max)");
@@ -219,10 +219,11 @@ namespace Hospital.Entities.Migrations
                     b.Property<string>("PatientId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.HasIndex("DoctorId");
 
                     b.HasIndex("PatientId");
 
@@ -754,9 +755,23 @@ namespace Hospital.Entities.Migrations
 
             modelBuilder.Entity("HospitalProject.Entities.DbEntities.Appointment", b =>
                 {
-                    b.HasOne("HospitalProject.Entities.DbEntities.Patient", null)
+                    b.HasOne("HospitalProject.Entities.DbEntities.Department", "Department")
+                        .WithMany()
+                        .HasForeignKey("DepartmentId");
+
+                    b.HasOne("HospitalProject.Entities.DbEntities.Doctor", "Doctor")
+                        .WithMany()
+                        .HasForeignKey("DoctorId");
+
+                    b.HasOne("HospitalProject.Entities.DbEntities.Patient", "Patient")
                         .WithMany("Appointments")
                         .HasForeignKey("PatientId");
+
+                    b.Navigation("Department");
+
+                    b.Navigation("Doctor");
+
+                    b.Navigation("Patient");
                 });
 
             modelBuilder.Entity("HospitalProject.Entities.DbEntities.Attendance", b =>

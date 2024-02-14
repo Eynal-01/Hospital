@@ -49,21 +49,32 @@ function GetAllAppointments() {
         method: "GET",
 
         success: function (data) {
-            let content1 = "";
+            let content = "";
 
             for (var i = 0; i < data.length; i++) {
-
-                content1 += `
+                //var doctor = GetAppointmentDoctor(data[i].doctorId)
+                content += `
                   <tr>
                       <td>${data[i].id}</td>
-                      <td>${data[i].appointmentDate}</td>
-                      <td>${data[i].patientId}</td>
+                      <td>${data[i].appointmentDate} ${data[i].appointmentTime}</td>
+                      <td>${data[i].patient.userName}</td>
                       <td>32</td>
-                      <td>${data[i].doctorId}</td>
-                      <td>${data[i].departmentId}</td>
+                      <td>${data[i].doctor.firstName} ${data[i].doctor.lastName}</td>
+                      <td>${data[i].department.departmentName}</td>
                  </tr>`;
             }
-            $("appointments").html(content);
+            $("#appointments").html(content);
         }
     })
 }
+
+//function GetAppointmentDoctor() {
+//    $.ajax({
+//        url: `/Admin/GetAppointmentDoctor`,
+//        method: "GET",
+
+//        success: function (data) {
+//            return data;
+//        }
+//    })
+//}

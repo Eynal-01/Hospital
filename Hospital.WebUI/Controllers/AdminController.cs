@@ -102,7 +102,7 @@ namespace Hospital.WebUI.Controllers
             return View();
         }
 
-        public IActionResult Appointment()
+        public IActionResult Appointments()
         {
             return View();
         }
@@ -117,16 +117,28 @@ namespace Hospital.WebUI.Controllers
         {
             var patients = await _context.Patients.ToListAsync();
             var appoinments = await _context.Appointments.ToListAsync();
-            var appointmentPatients = patients.Where(p=>p.Appointments!=null).ToList();
+            var appointmentPatients = patients.Where(p => p.Appointments != null).ToList();
             return Ok(appointmentPatients);
         }
 
         [HttpGet]
         public async Task<IActionResult> ShowAllAppointments()
         {
-            var allAppointments = await _context.Appointments.ToListAsync();
-            return Ok(allAppointments); 
+            var allAppointments = await _context.Appointments
+                .Include(nameof(Appointment.Doctor))
+                .Include(nameof(Appointment.Patient))
+                .Include(nameof(Appointment.Department))
+                .ToListAsync();
+            return Ok(allAppointments);
         }
+
+        //[HttpGet]
+        //public async Task<IActionResult> GetAppointmentDoctor(string id)
+        //{
+        //    var doctor = await _context.Doctors.FirstOrDefaultAsync(i => i.Id == id);
+        //    return Ok(doctor);
+        //}
+
 
         public IActionResult AddPayment()
         {

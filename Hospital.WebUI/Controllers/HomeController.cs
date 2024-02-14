@@ -81,8 +81,8 @@ namespace Hospital.WebUI.Controllers
                 DepartmentId = department.Id,
                 PatientId = patient.Id.ToString(),
                 Message = viewModel.Message,
-
             };
+            var doctor1 = _dbContext.Doctors.FirstOrDefault(d => d.Id == appoinment.DoctorId);
             await _dbContext.Appointments.AddAsync(appoinment);
             await _dbContext.SaveChangesAsync();
             return RedirectToAction("Appoinment", "Home");

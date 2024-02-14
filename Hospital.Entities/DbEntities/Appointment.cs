@@ -18,8 +18,8 @@ namespace HospitalProject.Entities.DbEntities
         public DateTime? AppointmentTime { get; set; }
         public string? Message { get; set; }
 
-        //public Patient? Patient { get; set; }
-        //public Doctor? Doctor { get; set; }
-        //public Department? Department { get; set; }
+        public virtual Patient? Patient { get; set; }
+        public virtual Doctor? Doctor { get; set; }
+        public virtual Department? Department { get; set; }
     }
 }
