@@ -30,6 +30,14 @@ namespace Hospital.WebUI.Models
         public DateTime DateOfBirth { get; set; }
 
         [Required]
+        [DataType(DataType.Date)]
+        public DateTime WorkStartTime { get; set; }
+
+        [Required]
+        [DataType(DataType.Date)]
+        public DateTime WorkEndTime { get; set; }
+
+        [Required]
         public string? Gender { get; set; }
 
         [Required]

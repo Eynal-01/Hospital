@@ -24,6 +24,8 @@ namespace HospitalProject.Entities.DbEntities
         public int ExperienceYear { get; set; }
         public string? Education { get; set; }
         public string? Status { get; set; }
+        public DateTime WorkStartTime { get; set; }
+        public DateTime WorkEndTime { get; set; }
         public ICollection<Patient>? Patients { get; set; }
         public ICollection<Recipe>? Recipes { get; set; }
     }

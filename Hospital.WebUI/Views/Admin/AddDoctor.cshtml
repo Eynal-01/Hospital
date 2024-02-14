@@ -9,352 +9,6 @@
 <!-- Custom Css -->
 <link rel="stylesheet" href="~/AdminFiles/assets/css/main.css">
 <link rel="stylesheet" href="~/AdminFiles/assets/css/color_skins.css">
-<div class="page-wrapper">
-    <div class="content">
-        <div class="row">
-            <div class="col-lg-8 offset-lg-2">
-                <h4 class="page-title">Add Doctor</h4>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-8 offset-lg-2">
-                <form asp-controller="Admin" asp-action="AddDoctor" method="post" enctype="multipart/form-data">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label asp-for="FirstName">First Name <span class="text-danger">*</span></label>
-                                <input asp-for="FirstName" class="form-control" type="text">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label asp-for="LastName">Last Name</label>
-                                <input asp-for="LastName" class="form-control" type="text">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label asp-for="Username">Username <span class="text-danger">*</span></label>
-                                <input asp-for="Username" class="form-control" type="text">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label asp-for="Email">Email <span class="text-danger">*</span></label>
-                                <input asp-for="Email" class="form-control" type="email">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label asp-for="Password">Password</label>
-                                <input asp-for="Password" class="form-control" type="password">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label asp-for="ConfirmPassword">Confirm Password</label>
-                                <input asp-for="ConfirmPassword" class="form-control" type="password">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label asp-for="DateOfBirth">Date of Birth</label>
-                                <div class="cal-icon">
-                                    <input asp-for="DateOfBirth" type="text" class="form-control datetimepicker">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-12">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="form-group">
-                                        <label asp-for="Address">Address</label>
-                                        <input asp-for="Address" type="text" class="form-control ">
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-md-6 col-lg-3">
-                                    <div class="form-group">
-                                        <label>Country</label>
-                                        <select asp-for="Country" class="form-control select">
-                                            <option>USA</option>
-                                            <option>United Kingdom</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-md-6 col-lg-3">
-                                    <div class="form-group">
-                                        <label>Gender</label>
-                                        <select asp-for="Gender" class="form-control select">
-                                            <option>Male</option>
-                                            <option>Female</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-md-6 col-lg-3">
-                                    <div class="form-group">
-                                        <label asp-for="City">City</label>
-                                        <input asp-for="City" type="text" class="form-control">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label asp-for="MobileNumber">Phone </label>
-                                <input asp-for="MobileNumber" class="form-control" type="text">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label>Avatar</label>
-                                <div class="profile-upload">
-                                    <div class="upload-img">
-                                        <img alt="" style="width:100px;height:100px;" src="~/AccessaryFiles/images/@Model.ImageUrl">
-                                    </div>
-                                    <div class="upload-input">
-                                        <input asp-for="File" type="file" class="form-control">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Short Biography</label>
-                        <textarea class="form-control" rows="3" cols="30"></textarea>
-                    </div>
-                    @* <div class="form-group">
-                    <label class="display-block">Status</label>
-                    <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="status" id="doctor_active" value="option1" checked>
-                    <label class="form-check-label" for="doctor_active">
-                    Active
-                    </label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="status" id="doctor_inactive" value="option2">
-                    <label class="form-check-label" for="doctor_inactive">
-                    Inactive
-                    </label>
-                    </div>
-                    </div> *@
-                    <div class="m-t-20 text-center">
-                        <button type="submit" class="btn btn-primary submit-btn">Create Doctor</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <div class="notification-box">
-        <div class="msg-sidebar notifications msg-noti">
-            <div class="topnav-dropdown-header">
-                <span>Messages</span>
-            </div>
-            <div class="drop-scroll msg-list-scroll" id="msg_list">
-                <ul class="list-box">
-                    <li>
-                        <a href="chat.html">
-                            <div class="list-item">
-                                <div class="list-left">
-                                    <span class="avatar">R</span>
-                                </div>
-                                <div class="list-body">
-                                    <span class="message-author">Richard Miles </span>
-                                    <span class="message-time">12:28 AM</span>
-                                    <div class="clearfix"></div>
-                                    <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="chat.html">
-                            <div class="list-item new-message">
-                                <div class="list-left">
-                                    <span class="avatar">J</span>
-                                </div>
-                                <div class="list-body">
-                                    <span class="message-author">John Doe</span>
-                                    <span class="message-time">1 Aug</span>
-                                    <div class="clearfix"></div>
-                                    <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="chat.html">
-                            <div class="list-item">
-                                <div class="list-left">
-                                    <span class="avatar">T</span>
-                                </div>
-                                <div class="list-body">
-                                    <span class="message-author"> Tarah Shropshire </span>
-                                    <span class="message-time">12:28 AM</span>
-                                    <div class="clearfix"></div>
-                                    <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="chat.html">
-                            <div class="list-item">
-                                <div class="list-left">
-                                    <span class="avatar">M</span>
-                                </div>
-                                <div class="list-body">
-                                    <span class="message-author">Mike Litorus</span>
-                                    <span class="message-time">12:28 AM</span>
-                                    <div class="clearfix"></div>
-                                    <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="chat.html">
-                            <div class="list-item">
-                                <div class="list-left">
-                                    <span class="avatar">C</span>
-                                </div>
-                                <div class="list-body">
-                                    <span class="message-author"> Catherine Manseau </span>
-                                    <span class="message-time">12:28 AM</span>
-                                    <div class="clearfix"></div>
-                                    <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="chat.html">
-                            <div class="list-item">
-                                <div class="list-left">
-                                    <span class="avatar">D</span>
-                                </div>
-                                <div class="list-body">
-                                    <span class="message-author"> Domenic Houston </span>
-                                    <span class="message-time">12:28 AM</span>
-                                    <div class="clearfix"></div>
-                                    <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="chat.html">
-                            <div class="list-item">
-                                <div class="list-left">
-                                    <span class="avatar">B</span>
-                                </div>
-                                <div class="list-body">
-                                    <span class="message-author"> Buster Wigton </span>
-                                    <span class="message-time">12:28 AM</span>
-                                    <div class="clearfix"></div>
-                                    <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="chat.html">
-                            <div class="list-item">
-                                <div class="list-left">
-                                    <span class="avatar">R</span>
-                                </div>
-                                <div class="list-body">
-                                    <span class="message-author"> Rolland Webber </span>
-                                    <span class="message-time">12:28 AM</span>
-                                    <div class="clearfix"></div>
-                                    <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="chat.html">
-                            <div class="list-item">
-                                <div class="list-left">
-                                    <span class="avatar">C</span>
-                                </div>
-                                <div class="list-body">
-                                    <span class="message-author"> Claire Mapes </span>
-                                    <span class="message-time">12:28 AM</span>
-                                    <div class="clearfix"></div>
-                                    <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="chat.html">
-                            <div class="list-item">
-                                <div class="list-left">
-                                    <span class="avatar">M</span>
-                                </div>
-                                <div class="list-body">
-                                    <span class="message-author">Melita Faucher</span>
-                                    <span class="message-time">12:28 AM</span>
-                                    <div class="clearfix"></div>
-                                    <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="chat.html">
-                            <div class="list-item">
-                                <div class="list-left">
-                                    <span class="avatar">J</span>
-                                </div>
-                                <div class="list-body">
-                                    <span class="message-author">Jeffery Lalor</span>
-                                    <span class="message-time">12:28 AM</span>
-                                    <div class="clearfix"></div>
-                                    <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="chat.html">
-                            <div class="list-item">
-                                <div class="list-left">
-                                    <span class="avatar">L</span>
-                                </div>
-                                <div class="list-body">
-                                    <span class="message-author">Loren Gatlin</span>
-                                    <span class="message-time">12:28 AM</span>
-                                    <div class="clearfix"></div>
-                                    <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="chat.html">
-                            <div class="list-item">
-                                <div class="list-left">
-                                    <span class="avatar">T</span>
-                                </div>
-                                <div class="list-body">
-                                    <span class="message-author">Tarah Shropshire</span>
-                                    <span class="message-time">12:28 AM</span>
-                                    <div class="clearfix"></div>
-                                    <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            <div class="topnav-dropdown-footer">
-                <a href="chat.html">See all messages</a>
-            </div>
-        </div>
-    </div>
-</div>
 
 <section class="content">
     <div class="block-header">
@@ -387,178 +41,196 @@
                         </ul>
                     </div>
                     <div class="body">
-                        <div class="row clearfix">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="First Name">
+                        <form asp-controller="Admin" asp-action="AddDoctor" method="post" enctype="multipart/form-data">
+                            <div class="row clearfix">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <input asp-for="FirstName" type="text" class="form-control" placeholder="First Name">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <input asp-for="LastName" type="text" class="form-control" placeholder="Last Name">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <input asp-for="Username" type="text" class="form-control" placeholder="User Name">
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Last Name">
+                            <div class="row clearfix">
+                                <div class="col-sm-3">
+                                    <select asp-for="Gender" class="form-control show-tick">
+                                        <option value="">- Gender -</option>
+                                        <option value="10">Male</option>
+                                        <option value="20">Female</option>
+                                    </select>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="row clearfix">
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Date of Birth">
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>Start time</label>
+                                        <input asp-for="WorkStartTime" type="time" class="form-control" placeholder="Doctor Start Work Time">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-3">
-                                <select class="form-control show-tick">
-                                    <option value="">- Gender -</option>
-                                    <option value="10">Male</option>
-                                    <option value="20">Female</option>
-                                </select>
-                            </div>
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Speciality">
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>End time</label>
+                                        <input asp-for="WorkEndTime" type="time" class="form-control" placeholder="Doctor End Work Time">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Phone">
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" placeholder="Speciality">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Enter Your Email">
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <input asp-for="MobileNumber" type="text" class="form-control" placeholder="Phone">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Website URL">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <input asp-for="Email" type="text" class="form-control" placeholder="Enter Your Email">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-lg-12 col-md-12 col-sm-12">
-                                <form action="https://thememakker.com/" id="frmFileUpload" class="dropzone" method="post" enctype="multipart/form-data">
+                                <div class="col-lg-12 col-md-12 col-sm-12">
                                     <div class="dz-message">
                                         <div class="drag-icon-cph"> <i class="material-icons">touch_app</i> </div>
                                         <h3>Drop files here or click to upload.</h3>
                                         <em>(This is just a demo dropzone. Selected files are <strong>not</strong> actually uploaded.)</em>
                                     </div>
                                     <div class="fallback">
-                                        <input name="file" type="file" multiple />
+                                        <input asp-for="File" name="file" type="file" multiple />
                                     </div>
-                                </form>
-                            </div>
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <textarea rows="4" class="form-control no-resize" placeholder="Please type what you want..."></textarea>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <input type="text" asp-for="Password" class="form-control" placeholder="Password">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <input type="text" asp-for="ConfirmPassword" class="form-control" placeholder="Confirm Password">
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <textarea asp-for="ShortBiography" rows="4" class="form-control no-resize" placeholder="Add Bio..."></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <button type="submit" class="btn btn-primary btn-round">Submit</button>
+                                    <button type="submit" class="btn btn-default btn-round btn-simple">Cancel</button>
                                 </div>
                             </div>
-                            <div class="col-sm-12">
-                                <button type="submit" class="btn btn-primary btn-round">Submit</button>
-                                <button type="submit" class="btn btn-default btn-round btn-simple">Cancel</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row clearfix">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="header">
+                    <h2><strong>Doctor's</strong> Account Information <small>Description text here...</small> </h2>
+                    <ul class="header-dropdown">
+                        <li class="remove">
+                            <a role="button" class="boxs-close"><i class="zmdi zmdi-close"></i></a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="body">
+                    <div class="row clearfix">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="User Name">
                             </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Password">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Confirm Password">
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <button type="submit" class="btn btn-primary btn-round">Submit</button>
+                            <button type="submit" class="btn btn-default btn-round btn-simple">Cancel</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row clearfix">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="header">
-                        <h2><strong>Doctor's</strong> Account Information <small>Description text here...</small> </h2>
-                        <ul class="header-dropdown">
-                            <li class="remove">
-                                <a role="button" class="boxs-close"><i class="zmdi zmdi-close"></i></a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="body">
-                        <div class="row clearfix">
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="User Name">
-                                </div>
+    </div>
+    <div class="row clearfix">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="header">
+                    <h2><strong>Doctor</strong> Social Media Info <small>Description text here...</small> </h2>
+                    <ul class="header-dropdown">
+                        <li class="remove">
+                            <a role="button" class="boxs-close"><i class="zmdi zmdi-close"></i></a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="body">
+                    <div class="row clearfix">
+                        <div class="col-sm-6">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="zmdi zmdi-facebook"></i></span>
+                                <input type="text" class="form-control" placeholder="Facebook">
                             </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Password">
-                                </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="zmdi zmdi-twitter"></i></span>
+                                <input type="text" class="form-control" placeholder="Twitter">
                             </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Confirm Password">
-                                </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="zmdi zmdi-google-plus"></i></span>
+                                <input type="text" class="form-control" placeholder="Google Plus">
                             </div>
-                            <div class="col-sm-12">
-                                <button type="submit" class="btn btn-primary btn-round">Submit</button>
-                                <button type="submit" class="btn btn-default btn-round btn-simple">Cancel</button>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="zmdi zmdi-linkedin"></i></span>
+                                <input type="text" class="form-control" placeholder="LinkedIN">
                             </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="zmdi zmdi-behance"></i></span>
+                                <input type="text" class="form-control" placeholder="Behance">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="zmdi zmdi-dribbble"></i></span>
+                                <input type="text" class="form-control" placeholder="dribbble">
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <p> <b>With Search Bar</b> </p>
+                            <select class="form-control z-index show-tick" data-live-search="true">
+                                <option>Hot Dog, Fries and a Soda</option>
+                                <option>Burger, Shake and a Smile</option>
+                                <option>Sugar, Spice and all things nice</option>
+                            </select>
+                            <button type="submit" class="btn btn-primary btn-round">Submit</button>
+                            <button type="submit" class="btn btn-default btn-round btn-simple">Cancel</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row clearfix">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="header">
-                        <h2><strong>Doctor</strong> Social Media Info <small>Description text here...</small> </h2>
-                        <ul class="header-dropdown">
-                            <li class="remove">
-                                <a role="button" class="boxs-close"><i class="zmdi zmdi-close"></i></a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="body">
-                        <div class="row clearfix">
-                            <div class="col-sm-6">
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="zmdi zmdi-facebook"></i></span>
-                                    <input type="text" class="form-control" placeholder="Facebook">
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="zmdi zmdi-twitter"></i></span>
-                                    <input type="text" class="form-control" placeholder="Twitter">
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="zmdi zmdi-google-plus"></i></span>
-                                    <input type="text" class="form-control" placeholder="Google Plus">
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="zmdi zmdi-linkedin"></i></span>
-                                    <input type="text" class="form-control" placeholder="LinkedIN">
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="zmdi zmdi-behance"></i></span>
-                                    <input type="text" class="form-control" placeholder="Behance">
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="zmdi zmdi-dribbble"></i></span>
-                                    <input type="text" class="form-control" placeholder="dribbble">
-                                </div>
-                            </div>
-                            <div class="col-sm-12">
-                                <p> <b>With Search Bar</b> </p>
-                                <select class="form-control z-index show-tick" data-live-search="true">
-                                    <option>Hot Dog, Fries and a Soda</option>
-                                    <option>Burger, Shake and a Smile</option>
-                                    <option>Sugar, Spice and all things nice</option>
-                                </select>
-                                <button type="submit" class="btn btn-primary btn-round">Submit</button>
-                                <button type="submit" class="btn btn-default btn-round btn-simple">Cancel</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    </div>
     </div>
 </section>
 <!-- Jquery Core Js -->
