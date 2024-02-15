@@ -1,4 +1,5 @@
 ﻿using Hospital.Core.Abstract;
+using Hospital.Entities.DbEntities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,13 +15,14 @@ namespace HospitalProject.Entities.DbEntities
         public string? DoctorId { get; set; }
         public int? DepartmentId { get; set; }
         public string? PatientId { get; set; }
+        public string? AvailableTimeId { get; set; }    
         public DateTime? AppointmentDate { get; set; }
         public DateTime? AppointmentTime { get; set; }
         public string? Message { get; set; }
-        public string? AvailableTimeId { get; set; }    
 
         public virtual Patient? Patient { get; set; }
         public virtual Doctor? Doctor { get; set; }
         public virtual Department? Department { get; set; }
+        public virtual AvailableTime? AvailableTime { get; set; }
     }
 }

@@ -74,13 +74,14 @@ namespace Hospital.WebUI.Controllers
             var department = await _dbContext.Departments.FirstOrDefaultAsync(d => d.DepartmentName == viewModel.DepartmentName);
             var doctor = await _dbContext.Doctors.FirstOrDefaultAsync(d => d.FirstName + " " + d.LastName == viewModel.DoctorName);
             var appointments = await _dbContext.Appointments.ToListAsync();
+            var availableTime = await _dbContext.AvailableTimes.FirstOrDefaultAsync(a => a.Id == viewModel.AvailableTimeId);
 
 
             var appoinment = new Appointment
             {
                 AppointmentDate = viewModel.Date,
                 AppointmentTime = viewModel.AvailableTime,
-                AvailableTimeId = viewModel.AvailableTimeId,
+                AvailableTimeId = availableTime.Id.ToString(),
                 Age = patient.Age,
                 DoctorId = doctor.Id,
                 DepartmentId = department.Id,
