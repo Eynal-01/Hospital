@@ -29,6 +29,6 @@ namespace HospitalProject.Entities.DbEntities
         public DateTime WorkEndTime { get; set; }
         public ICollection<Patient>? Patients { get; set; }
         public ICollection<Recipe>? Recipes { get; set; }
-        public ICollection<AvailableTime>? AvailableTimes { get; set; }
+        //public ICollection<AvailableTime>? AvailableTimes { get; set; }
     }
 }

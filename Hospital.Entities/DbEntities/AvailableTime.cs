@@ -10,7 +10,7 @@ namespace Hospital.Entities.DbEntities
     public class AvailableTime
     {
         public int Id { get; set; }
-        public string? DoctorId { get; set; }
+        //public string? DoctorId { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
     }

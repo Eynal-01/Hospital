@@ -74,34 +74,34 @@ namespace Hospital.WebUI.Controllers
             var department = await _dbContext.Departments.FirstOrDefaultAsync(d => d.DepartmentName == viewModel.DepartmentName);
             var doctor = await _dbContext.Doctors.FirstOrDefaultAsync(d => d.FirstName + " " + d.LastName == viewModel.DoctorName);
             var appointments = await _dbContext.Appointments.ToListAsync();
-            var availableTime = await _dbContext.AvailableTimes.FirstOrDefaultAsync(a => a.Id == viewModel.AvailableTimeId);
+            //var availableTime = await _dbContext.AvailableTimes.FirstOrDefaultAsync(a => a.Id == viewModel.AvailableTimeIds);
 
 
             var appoinment = new Appointment
             {
                 AppointmentDate = viewModel.Date,
                 AppointmentTime = viewModel.AvailableTime,
-                AvailableTimeId = availableTime.Id.ToString(),
+                //AvailableTimeId2 = availableTime.Id.ToString(),
                 Age = patient.Age,
                 DoctorId = doctor.Id,
                 DepartmentId = department.Id,
                 PatientId = patient.Id.ToString(),
                 Message = viewModel.Message,
             };
-            for (int i = 0; i < appointments.Count; i++)
-            {
-                if (appointments[i].AvailableTimeId == appoinment.AvailableTimeId && appointments[i].DoctorId == appoinment.DoctorId)
-                {
-                    Console.Beep();
-                    break;
-                }
-                else
-                {
-                    var doctor1 = _dbContext.Doctors.FirstOrDefault(d => d.Id == appoinment.DoctorId);
-                    await _dbContext.Appointments.AddAsync(appoinment);
-                    await _dbContext.SaveChangesAsync();
-                }
-            }
+            //for (int i = 0; i < appointments.Count; i++)
+            //{
+            //    if (appointments[i].AvailableTimeId2 == appoinment.AvailableTimeId2 && appointments[i].DoctorId == appoinment.DoctorId)
+            //    {
+            //        Console.Beep();
+            //        break;
+            //    }
+            //    else
+            //    {
+            //        var doctor1 = _dbContext.Doctors.FirstOrDefault(d => d.Id == appoinment.DoctorId);
+            //        await _dbContext.Appointments.AddAsync(appoinment);
+            //        await _dbContext.SaveChangesAsync();
+            //    }
+            //}
             return RedirectToAction("Appoinment", "Home");
         }
 

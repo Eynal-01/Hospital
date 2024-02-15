@@ -15,14 +15,14 @@ namespace HospitalProject.Entities.DbEntities
         public string? DoctorId { get; set; }
         public int? DepartmentId { get; set; }
         public string? PatientId { get; set; }
-        public string? AvailableTimeId { get; set; }    
+        //public string? AvailableTimeId2 { get; set; }    
         public DateTime? AppointmentDate { get; set; }
-        public DateTime? AppointmentTime { get; set; }
+        public string? AppointmentTime { get; set; }
         public string? Message { get; set; }
 
         public virtual Patient? Patient { get; set; }
         public virtual Doctor? Doctor { get; set; }
         public virtual Department? Department { get; set; }
-        public virtual AvailableTime? AvailableTime { get; set; }
+        //public virtual AvailableTime? AvailableTime { get; set; }
     }
 }
