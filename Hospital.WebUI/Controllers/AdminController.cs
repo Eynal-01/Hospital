@@ -148,6 +148,21 @@ namespace Hospital.WebUI.Controllers
             return RedirectToAction("AddDoctor", "Admin");
         }
 
+        public async Task<IActionResult> GetAvailableDays(int day)
+        {
+            var doctors = await _context.Doctors.ToListAsync();
+
+            for (int i = 0; i < doctors.Count; i++)
+            {
+                doctors[i].WorkDayCount = day;
+            }
+
+            _context.UpdateRange(doctors);
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+
         public static string HashPassword(string password)
         {
             int saltSize = 16;
@@ -203,8 +218,6 @@ namespace Hospital.WebUI.Controllers
                 .ToListAsync();
             return Ok(allAppointments);
         }
-
-
 
         //[HttpGet]
         //public async Task<IActionResult> GetAppointmentDoctor(string id)

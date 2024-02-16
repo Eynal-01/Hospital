@@ -68,6 +68,38 @@ function GetAllAppointments() {
     })
 }
 
+function GetDays() {
+    var availablecount = $("#availableDay").value;
+    $.ajax({
+        url: `/Admin/GetAvailableDays?availableCount=${availablecount}`,
+        method: "GET",
+
+        success: function (data) {
+            GetDa(availablecount);
+        }
+    })
+}
+
+function GetDa(availablecount) {
+    $.ajax({
+        url: `/Home/GetAvailableDays?availableCount=${availablecount}`,
+        method: "GET",
+
+        success: function (data) {
+            var content = "";
+
+            for (var i = 0; i < data.length; i++) {
+                content += `            
+                     <option value="${data[i]}">${data[i]}</option>
+                `;
+            }
+            $("#exampleFormControlSelect2").html(content);
+        }
+    })
+}
+
+
+
 //function GetAppointmentDoctor() {
 //    $.ajax({
 //        url: `/Admin/GetAppointmentDoctor`,

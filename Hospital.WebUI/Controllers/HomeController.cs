@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using System;
 using System.Media;
+using Microsoft.AspNetCore.Components.Forms;
+using Hospital.Entities.DbEntities;
 
 namespace Hospital.WebUI.Controllers
 {
@@ -38,10 +40,7 @@ namespace Hospital.WebUI.Controllers
         {
             return View();
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
+
         [HttpGet]
         public async Task<IActionResult> Appoinment()
         {
@@ -74,19 +73,37 @@ namespace Hospital.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> Appoinment(AppoinmentViewModel viewModel)
         {
+            DateTime today = DateTime.Today;
+            var adminselect = 10;
+            for (int i = 0; i < 10; i++)
+            {
+                today.AddDays(1);
+            }
+            //DateTime tomorrow = today.AddDays(1);
+            //DateTime dayAfterTomorrow = today.AddDays(2);
+
+            //List<AvailableDate> availableDates = new List<AvailableDate>()
+            //{
+            //    new AvailableDate { Date = today },
+            //    new AvailableDate { Date = tomorrow },
+            //    new AvailableDate { Date = dayAfterTomorrow }
+            //};
+            ////availableDates.Add(new AvailableDate { Date = today });
+            ////availableDates.Add(new AvailableDate { Date = tomorrow });
+            ////availableDates.Add(new AvailableDate { Date = dayAfterTomorrow });
+
+            //viewModel.AvailableDates = availableDates;
+
             var user = await _userManager.GetUserAsync(HttpContext.User);
             var patient = await _dbContext.Patients.FirstOrDefaultAsync(p => p.Email == user.Email && p.UserName == user.UserName);
-            var department = await _dbContext.Departments.FirstOrDefaultAsync(d => d.DepartmentName == viewModel.DepartmentName);
-            var doctor = await _dbContext.Doctors.FirstOrDefaultAsync(d => d.FirstName + " " + d.LastName == viewModel.DoctorName);
+            var department = await _dbContext.Departments.FirstOrDefaultAsync(d => d.Id.ToString() == viewModel.DepartmentId);
+            var doctor = await _dbContext.Doctors.FirstOrDefaultAsync(d => d.Id == viewModel.DoctorId);
             var appointments = await _dbContext.Appointments.ToListAsync();
-            //var availableTime = await _dbContext.AvailableTimes.FirstOrDefaultAsync(a => a.Id == viewModel.AvailableTimeIds);
-
 
             var appoinment = new Appointment
             {
-                AppointmentDate = viewModel.Date,
-                AppointmentTime = viewModel.AvailableTime,
-                //AvailableTimeId2 = availableTime.Id.ToString(),
+                AppointmentDateId = viewModel.AvailableDateId,
+                AppointmentTimeId = viewModel.AvailableTimeId,
                 Age = patient.Age,
                 DoctorId = doctor.Id,
                 DepartmentId = department.Id,
@@ -95,7 +112,7 @@ namespace Hospital.WebUI.Controllers
             };
             //for (int i = 0; i < appointments.Count; i++)
             //{
-            //    if (appointments[i].AvailableTimeId2 == appoinment.AvailableTimeId2 && appointments[i].DoctorId == appoinment.DoctorId)
+            //    if (appointments[i].AppointmentTimeId == appoinment.AppointmentTimeId && appointments[i].DoctorId == appoinment.DoctorId)
             //    {
             //        Console.Beep();
             //        break;
@@ -108,6 +125,19 @@ namespace Hospital.WebUI.Controllers
             //    }
             //}
             return RedirectToAction("Appoinment", "Home");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAvailableDays(string availableCount)
+        {
+            DateTime startDate = DateTime.Today;
+            List<DateTime> dateList = new List<DateTime>();
+            for (int i = 0; i < int.Parse(availableCount); i++)
+            {
+                DateTime currentDate = startDate.AddDays(i);
+                dateList.Add(currentDate);
+            }
+            return Ok(dateList);
         }
 
         public IActionResult BlogSindebar()

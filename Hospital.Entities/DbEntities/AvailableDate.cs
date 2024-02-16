@@ -1,5 +1,4 @@
-﻿using HospitalProject.Entities.DbEntities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace Hospital.Entities.DbEntities
 {
-    public class AvailableTime
+    public class AvailableDate
     {
         public int Id { get; set; }
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
+        public DateTime Date { get; set; }
     }
 }

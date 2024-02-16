@@ -69,7 +69,7 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>Department</label>
-                                        <select asp-for="DepartmentName" class="form-control" id="exampleFormControlSelect1">
+                                        <select asp-for="DepartmentId" class="form-control" id="exampleFormControlSelect1">
                                             @for (int i = 0; i < Model.Departments.Count(); i++)
                                             {
                                                 <option>@Model.Departments[i].DepartmentName</option>
@@ -80,10 +80,10 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>Doctor</label>
-                                        <select asp-for="DoctorName" class="form-control" id="exampleFormControlSelect2">
+                                        <select asp-for="DoctorId" class="form-control" id="exampleFormControlSelect2">
                                             @for (int i = 0; i < Model.Doctors.Count(); i++)
                                             {
-                                                <option>@Model.Doctors[i].FirstName @Model.Doctors[i].LastName</option>
+                                                <option value="@Model.Doctors[i].Id">@Model.Doctors[i].FirstName @Model.Doctors[i].LastName</option>
                                             }
                                         </select>
                                     </div>
@@ -91,15 +91,17 @@
 
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        <label asp-for="Date">Date</label>
-                                        <input asp-for="Date" id="date" type="date" class="form-control" placeholder="dd/mm/yyyy">
+                                        <label>Date</label>
+                                        <select asp-for="AvailableDateId" class="form-control" id="exampleFormControlSelect2">
+
+                                        </select>
                                     </div>
                                 </div>
 
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>Available Times</label>
-                                        <select asp-for="AvailableTime" class="form-control" id="exampleFormControlSelect2">
+                                        <select asp-for="AvailableTimeId" class="form-control" id="exampleFormControlSelect2">
                                             @*                                             @if (Model.AvailableTimes != null && Model.AvailableTimes.Any())
                                             { *@
                                             @foreach (var time in Model.AvailableTimes)

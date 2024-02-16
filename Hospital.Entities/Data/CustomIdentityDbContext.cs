@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -36,44 +37,20 @@ namespace Hospital.Entities.Data
         public DbSet<Recipe>? Recipes { get; set; }
         public DbSet<Salary>? Salaries { get; set; }
         public DbSet<AvailableTime>? AvailableTimes { get; set; }
+        public DbSet<AvailableDate>? AvailableDates { get; set; }
 
-        //public override int SaveChanges()
+        //protected override void OnModelCreating(ModelBuilder builder)
         //{
-        //    SeedAvailableTimes();
-        //    return base.SaveChanges();
-        //}
+        //    DateTime today = DateTime.Today;
+        //    DateTime tomorrow = today.AddDays(1);
+        //    DateTime dayAfterTomorrow = today.AddDays(2);
 
-        //private void SeedAvailableTimes()
-        //{
-        //    if (!Doctors.Any() && !AvailableTimes.Any())
-        //    {
-        //        var availableTimes = new List<AvailableTime>
-        //    {
-        //        new AvailableTime { StartTime = DateTime.Today.AddHours(9), EndTime = DateTime.Today.AddHours(9).AddMinutes(30)},
-        //        new AvailableTime { StartTime = DateTime.Today.AddHours(9).AddMinutes(30), EndTime = DateTime.Today.AddHours(10)},
-        //        new AvailableTime { StartTime = DateTime.Today.AddHours(10), EndTime = DateTime.Today.AddHours(10).AddMinutes(30)},
-        //        new AvailableTime { StartTime = DateTime.Today.AddHours(10).AddMinutes(30), EndTime = DateTime.Today.AddHours(11)},
-        //        new AvailableTime { StartTime = DateTime.Today.AddHours(11), EndTime = DateTime.Today.AddHours(11).AddMinutes(30)},
-        //        new AvailableTime { StartTime = DateTime.Today.AddHours(11).AddMinutes(30), EndTime = DateTime.Today.AddHours(12)},
+        //    builder.Entity<AvailableDate>().HasData(
+        //        new AvailableDate { Id=1, Date = today },
+        //        new AvailableDate { Id = 2, Date = tomorrow },
+        //        new AvailableDate { Id = 3, Date = dayAfterTomorrow });
 
-        //        new AvailableTime { StartTime = DateTime.Today.AddHours(13).AddMinutes(30), EndTime = DateTime.Today.AddHours(14)},
-        //        new AvailableTime { StartTime = DateTime.Today.AddHours(14), EndTime = DateTime.Today.AddHours(14).AddMinutes(30)},
-        //        new AvailableTime { StartTime = DateTime.Today.AddHours(14).AddMinutes(30), EndTime = DateTime.Today.AddHours(15)},
-        //        new AvailableTime { StartTime = DateTime.Today.AddHours(15), EndTime = DateTime.Today.AddHours(15).AddMinutes(30)},
-        //        new AvailableTime { StartTime = DateTime.Today.AddHours(15).AddMinutes(30), EndTime = DateTime.Today.AddHours(16)},
-        //    };
-
-        //        foreach (var doctor in Doctors)
-        //        {
-        //            doctor.AvailableTimes = availableTimes.Select(at => new AvailableTime
-        //            {
-        //                DoctorId = doctor.Id,
-        //                StartTime = at.StartTime,
-        //                EndTime = at.EndTime,
-        //            }).ToList();
-        //        }
-        //        SaveChanges();
-        //    }
+        //    base.OnModelCreating(builder);
         //}
     }
 }
