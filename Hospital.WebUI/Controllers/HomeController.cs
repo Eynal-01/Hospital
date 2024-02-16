@@ -47,6 +47,7 @@ namespace Hospital.WebUI.Controllers
         {
             var doctors = await _dbContext.Doctors.ToListAsync();
             var departments = await _dbContext.Departments.ToListAsync();
+            var availableTimes = await _dbContext.AvailableTimes.ToListAsync();
             var viewModel = new AppoinmentViewModel
             {
                 Departments = new List<Department>(),
@@ -58,6 +59,10 @@ namespace Hospital.WebUI.Controllers
             if (departments != null)
             {
                 viewModel.Departments = departments;
+            }
+            if (availableTimes != null)
+            {
+                viewModel.AvailableTimes = availableTimes;
             }
             return View(viewModel);
         }

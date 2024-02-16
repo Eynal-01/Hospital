@@ -100,17 +100,17 @@
                                     <div class="form-group">
                                         <label>Available Times</label>
                                         <select asp-for="AvailableTime" class="form-control" id="exampleFormControlSelect2">
-                                            @if (Model.AvailableTimes != null && Model.AvailableTimes.Any())
+                                            @*                                             @if (Model.AvailableTimes != null && Model.AvailableTimes.Any())
+                                            { *@
+                                            @foreach (var time in Model.AvailableTimes)
                                             {
-                                                foreach (var time in Model.AvailableTimes)
-                                                {
-                                                    <option>@time.StartTime - @time.EndTime</option>
-                                                }
+                                            <option>@time.StartTime - @time.EndTime</option>
                                             }
+                                            @*                                             }
                                             else
                                             {
-                                                <option>No available times</option>
-                                            }
+                                            <option>No available times</option>
+                                            } *@
                                         </select>
                                     </div>
                                 </div>
