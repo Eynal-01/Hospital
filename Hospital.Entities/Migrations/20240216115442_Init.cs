@@ -355,10 +355,12 @@ namespace Hospital.Entities.Migrations
                     City = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Bio = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DepartmentId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DepartmentId = table.Column<int>(type: "int", nullable: true),
                     ExperienceYear = table.Column<int>(type: "int", nullable: false),
                     Education = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    WorkStartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    WorkEndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CalendarId = table.Column<int>(type: "int", nullable: true),
                     DoctorScheduleId = table.Column<int>(type: "int", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -467,8 +469,6 @@ namespace Hospital.Entities.Migrations
                     DoctorId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     DepartmentId = table.Column<int>(type: "int", nullable: true),
                     PatientId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    AppointmentDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    AppointmentTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Message = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>

@@ -201,12 +201,6 @@ namespace Hospital.Entities.Migrations
                     b.Property<int>("Age")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("AppointmentDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("AppointmentTime")
-                        .HasColumnType("datetime2");
-
                     b.Property<int?>("DepartmentId")
                         .HasColumnType("int");
 
@@ -349,8 +343,8 @@ namespace Hospital.Entities.Migrations
                     b.Property<string>("Country")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("DepartmentId")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("DepartmentId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("DoctorScheduleId")
                         .HasColumnType("int");
@@ -408,6 +402,12 @@ namespace Hospital.Entities.Migrations
 
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("WorkEndTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("WorkStartTime")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 

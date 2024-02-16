@@ -1,6 +1,7 @@
-﻿
+﻿var departmentName = "";
+
 function GetAllPatients() {
-    console.log("dsdsdd");
+    /*    console.log("dsdsdd");*/
     $.ajax({
         url: `/Admin/AllPatients`,
         method: "GET",
@@ -43,7 +44,7 @@ function GetAllPatients() {
 }
 
 function GetAllAppointments() {
-    console.log("GetAllAppointments work");
+    //console.log("GetAllAppointments work");
     $.ajax({
         url: `/Admin/ShowAllAppointments`,
         method: "GET",
@@ -67,6 +68,57 @@ function GetAllAppointments() {
         }
     })
 }
+
+function GetAllDoctors() {
+    //console.log("doctor");
+    $.ajax({
+        url: `/Admin/GetAllDoctors`,
+        method: "GET",
+
+        success: function (data) {
+            let content = "";
+
+            for (var i = 0; i < data.length; i++) {
+                //var doctor = GetAppointmentDoctor(data[i].doctorId)
+                var department = "";
+                //GetDoctorIdDepartment(data[i].id);
+                content += `
+                            <div class="col-lg-3 col-md-4 col-sm-6">
+                                <div class="card xl-blue member-card doctor">
+                                    <div class="body">
+                                        <div class="member-thumb">
+                                            <img src="/AccessaryFiles/images/${data[i].avatar}" class="img-fluid" alt="profile-image">
+                                        </div>
+                                        <div class="detail">
+                                            <h4 class="m-b-0">Dr. ${data[i].userName}</h4>
+                                            <ul class="social-links list-inline m-t-20">
+                                                <li><a title="facebook" href="#"><i class="zmdi zmdi-facebook"></i></a></li>
+                                                <li><a title="twitter" href="#"><i class="zmdi zmdi-twitter"></i></a></li>
+                                                <li><a title="instagram" href="#"><i class="zmdi zmdi-instagram"></i></a></li>
+                                            </ul>
+                                            <a href='/Admin/DoctorProfile?doctorId=${data[i].id}'  class="btn btn-default btn-round btn-simple" >View Profile</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            `
+            }
+            $("#doctors").html(content);
+        }
+    })
+}
+
+                                            //<p class="text-muted">${departmentName}</p>
+//function GetDoctorIdDepartment(doctorId) {
+//    $.ajax({
+//        url: `/Admin/GetDoctorIdDepartment?doctorId=${doctorId}`,
+//        method: "GET",
+
+//        success: function (department) {
+//            departmentName = department;
+//        }
+//    })
+//}
 
 //function GetAppointmentDoctor() {
 //    $.ajax({

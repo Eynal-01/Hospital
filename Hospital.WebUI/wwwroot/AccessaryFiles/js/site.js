@@ -15,6 +15,7 @@ connection.on("Connect", function (role) {
     //}
     GetAllPatients();
     GetAllAppointments();
+    GetAllDoctors();
 
     //GetAllUsers();
     //element.style.display = "block";

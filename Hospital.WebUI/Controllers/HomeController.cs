@@ -74,8 +74,6 @@ namespace Hospital.WebUI.Controllers
 
             var appoinment = new Appointment
             {
-                AppointmentDate = viewModel.Date,
-                AppointmentTime = viewModel.DateInTime,
                 Age = patient.Age,
                 DoctorId = doctor.Id,
                 DepartmentId = department.Id,

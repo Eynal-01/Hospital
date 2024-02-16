@@ -63,25 +63,29 @@
                                 <div class="col-sm-3">
                                     <select asp-for="Gender" class="form-control show-tick">
                                         <option value="">- Gender -</option>
-                                        <option value="10">Male</option>
-                                        <option value="20">Female</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
                                     </select>
                                 </div>
                                 <div class="col-sm-3">
                                     <div class="form-group">
-                                        <label>Start time</label>
-                                        <input asp-for="WorkStartTime" type="time" class="form-control" placeholder="Doctor Start Work Time">
+                                        <label>Birthday</label>
+                                        <input asp-for="DateOfBirth" type="datetime" class="form-control">
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
                                     <div class="form-group">
-                                        <label>End time</label>
-                                        <input asp-for="WorkEndTime" type="time" class="form-control" placeholder="Doctor End Work Time">
+                                        <input asp-for="Address" type="text" class="form-control" placeholder="Address">
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
                                     <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="Speciality">
+                                        <input asp-for="Country" type="text" class="form-control" placeholder="Country">
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <input asp-for="City" type="text" class="form-control" placeholder="City">
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
@@ -94,6 +98,12 @@
                                         <input asp-for="Email" type="text" class="form-control" placeholder="Enter Your Email">
                                     </div>
                                 </div>
+                                <select asp-for="DepartmentId" class="form-control" id="exampleFormControlSelect1">
+                                    @for (int i = 0; i < Model.Departments.Count(); i++)
+                                    {
+                                        <option value="@Model.Departments[i].Id">@Model.Departments[i].DepartmentName</option>
+                                    }
+                                </select>
                                 <div class="col-lg-12 col-md-12 col-sm-12">
                                     <div class="dz-message">
                                         <div class="drag-icon-cph"> <i class="material-icons">touch_app</i> </div>
@@ -116,7 +126,12 @@
                                 </div>
                                 <div class="col-sm-12">
                                     <div class="form-group">
-                                        <textarea asp-for="ShortBiography" rows="4" class="form-control no-resize" placeholder="Add Bio..."></textarea>
+                                        <textarea asp-for="ShortBiography" rows="4" class="form-control no-resize" placeholder="Information . . ."></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <textarea asp-for="Education" rows="4" class="form-control no-resize" placeholder="Education . . ."></textarea>
                                     </div>
                                 </div>
                                 <div class="col-sm-12">
