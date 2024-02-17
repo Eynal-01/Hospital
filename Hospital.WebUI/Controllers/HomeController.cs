@@ -102,8 +102,11 @@ namespace Hospital.WebUI.Controllers
 
             var appoinment = new Appointment
             {
+<<<<<<< HEAD
                 AppointmentDateId = viewModel.AvailableDateId,
                 AppointmentTimeId = viewModel.AvailableTimeId,
+=======
+>>>>>>> c1fbed677263c2504a18112ba2cf435234fe9d57
                 Age = patient.Age,
                 DoctorId = doctor.Id,
                 DepartmentId = department.Id,

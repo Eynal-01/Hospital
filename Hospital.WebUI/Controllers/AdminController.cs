@@ -49,10 +49,11 @@ namespace Hospital.WebUI.Controllers
         public async Task<IActionResult> AddDoctor()
         {
             var user = await CurrentUser();
-
+            var departments = await _context.Departments.ToListAsync();
             var viewModel = new AddDoctorViewModel
             {
-                ImageUrl = user.Avatar
+                ImageUrl = user.Avatar,
+                Departments = departments,
             };
             return View(viewModel);
         }
@@ -90,7 +91,10 @@ namespace Hospital.WebUI.Controllers
                     Avatar = viewModel.ImageUrl,
                     PasswordHash = newPassword,
                     WorkStartTime = viewModel.WorkStartTime,
-                    WorkEndTime = viewModel.WorkEndTime
+                    WorkEndTime = viewModel.WorkEndTime,
+                    Bio = viewModel.ShortBiography,
+                    DepartmentId = viewModel.DepartmentId,
+                    Education = viewModel.Education,
                 };
 
                 //var customUser = new CustomIdentityUser()
@@ -136,7 +140,6 @@ namespace Hospital.WebUI.Controllers
                         //    return View(registerViewModel);
                         //}
                     }
-
                 }
 
                 await _userManager.AddToRoleAsync(customUser, "doctor");
@@ -209,6 +212,13 @@ namespace Hospital.WebUI.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> GetAllDoctors()
+        {
+            var doctors = await _context.Doctors.ToListAsync();
+            return Ok(doctors);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> ShowAllAppointments()
         {
             var allAppointments = await _context.Appointments
@@ -219,6 +229,20 @@ namespace Hospital.WebUI.Controllers
             return Ok(allAppointments);
         }
 
+<<<<<<< HEAD
+=======
+
+        public async Task<IActionResult> GetDoctorIdDepartment(string doctorId)
+        {
+            var doctor = await _context.Doctors.FirstOrDefaultAsync(d => d.Id == doctorId);
+
+            var departmen = await _context.Departments.FirstOrDefaultAsync(d => d.Id == doctor.DepartmentId);
+
+            var department = departmen.DepartmentName;
+            return Ok(department);
+        }
+
+>>>>>>> c1fbed677263c2504a18112ba2cf435234fe9d57
         //[HttpGet]
         //public async Task<IActionResult> GetAppointmentDoctor(string id)
         //{
@@ -247,9 +271,25 @@ namespace Hospital.WebUI.Controllers
             return View();
         }
 
-        public IActionResult DoctorProfile()
+        public async Task<IActionResult> DoctorProfile(string doctorId)
         {
-            return View();
+            var doctor = await _context.Doctors.FirstOrDefaultAsync(d => d.Id == doctorId);
+            var department = await _context.Departments.FirstOrDefaultAsync(d => d.Id == doctor.DepartmentId);
+            var viewModel = new DoctorProfileViewModel
+            {
+                Address = doctor.Address,
+                City = doctor.City,
+                Country = doctor.Country,
+                Department = department.DepartmentName,
+                Education = doctor.Education,
+                Gender = doctor.Gender,
+                ImageUrl = doctor.Avatar,
+                Info = doctor.Bio,
+                FirstName = doctor.FirstName,
+                LastName = doctor.LastName,
+                UserName = doctor.UserName,
+            };
+            return View(viewModel);
         }
 
         public IActionResult Doctors()

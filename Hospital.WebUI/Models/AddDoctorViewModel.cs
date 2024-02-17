@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using HospitalProject.Entities.DbEntities;
+using System.ComponentModel.DataAnnotations;
 
 namespace Hospital.WebUI.Models
 {
@@ -26,7 +27,7 @@ namespace Hospital.WebUI.Models
         public string? ConfirmPassword { get; set; }
 
         [Required]
-        [DataType(DataType.Date)]
+        [DataType(DataType.DateTime)]
         public DateTime DateOfBirth { get; set; }
 
         [Required]
@@ -52,9 +53,13 @@ namespace Hospital.WebUI.Models
         [Required]
         [DataType(DataType.PhoneNumber)]
         public int MobileNumber { get; set; }
-        public string? ImageUrl { get; set; }
+        public string? ImageUrl { get; set; } = "userWithoutPicture.jpg";
         public IFormFile? File { get; set; }
         public string? ShortBiography { get; set; }
+        public string? Education { get; set; }
+
+        public List<Department> Departments { get; set; }
+        public int? DepartmentId { get; set; }
 
     }
 }

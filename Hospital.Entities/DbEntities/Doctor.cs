@@ -21,7 +21,7 @@ namespace HospitalProject.Entities.DbEntities
         public string? City { get; set; }
         public string? Country { get; set; }
         public string? Bio { get; set; }
-        public string? DepartmentId { get; set; }
+        public int? DepartmentId { get; set; }
         public int ExperienceYear { get; set; }
         public string? Education { get; set; }
         public string? Status { get; set; }

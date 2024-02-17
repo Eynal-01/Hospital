@@ -1,4 +1,5 @@
-﻿<title>:: Oreo Admin :: Profile</title>
+﻿@model DoctorProfileViewModel
+<title>:: Oreo Admin :: Profile</title>
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <!-- Favicon-->
 <link rel="stylesheet" href="~/AdminFiles/assets/plugins/bootstrap/css/bootstrap.min.css">
@@ -29,11 +30,10 @@
             <div class="col-lg-4 col-md-12">
                 <div class="card profile-header">
                     <div class="body text-center">
-                        <div class="profile-image"> <img src="../assets/images/profile_av.jpg" alt=""> </div>
+                        <div class="profile-image"> <img src="~/AccessaryFiles/images/@Model.ImageUrl" alt=""> </div>
                         <div>
-                            <h4 class="m-b-0"><strong>Dr. Charlotte</strong> Deo</h4>
-                            <span class="job_post">Neurologist</span>
-                            <p>795 Folsom Ave, Suite 600<br> San Francisco, CADGE 94107</p>
+                            <h4 class="m-b-0"><strong>Dr. @Model.UserName</strong> Deo</h4>
+                            <span class="job_post">@Model.Department</span>
                         </div>
                         <div>
                             <button class="btn btn-primary btn-round">Follow</button>
@@ -236,42 +236,27 @@
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane body active" id="about">
-                            <p>Dr. Charlotte Deo Leon is a neurosurgeon in East Patchogue,Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. He received his medical degree from Harvard Medical School and has been in practice for 21 years. He is one of 5 doctors at Brookhaven Memorial Hospital Medical Center and one of 9 at Southside Hospital who specialize in Neurological Surgery.</p>
+                            <p>@Model.Info</p>
                             <h6>Qualifications</h6>
                             <hr>
                             <ul class="list-unstyled">
                                 <li>
-                                    <p><strong>Hospital Affiliations:</strong> UCSF MEDICAL CENTER</p>
+                                    <p><strong>City:</strong> @Model.City</p>
                                 </li>
                                 <li>
-                                    <p><strong>Medical School:</strong> Palmer College of Chiropractic 1978</p>
+                                    <p><strong>Country:</strong> @Model.Country</p>
                                 </li>
                                 <li>
-                                    <p><strong>Residency:</strong> New york</p>
+                                    <p><strong>Gender:</strong> @Model.Gender</p>
                                 </li>
                                 <li>
-                                    <p><strong>Certifications:</strong> Certified Chiropractic Sports Physician 1982</p>
-                                </li>
-                                <li>
-                                    <p><strong>Gender:</strong> Female</p>
-                                </li>
-                                <li>
-                                    <p><strong>Experience / Tranining:</strong> Past-President, Int. Fed. 1991</p>
-                                </li>
-                                <li>
-                                    <p><strong>Internship:</strong> Palmer Clinic</p>
+                                    <p><strong>Education: </strong> @Model.Education</p>
                                 </li>
                             </ul>
                             <h6>Specialties</h6>
                             <hr>
                             <ul class="list-unstyled specialties">
-                                <li>Breast Surgery</li>
-                                <li>Colorectal Surgery</li>
-                                <li>Endocrinology</li>
-                                <li>Cardiology</li>
-                                <li>Cosmetic Dermatology</li>
-                                <li>Mole checks and monitoring</li>
-                                <li>Clinical Neurophysiology</li>
+                                <li>@Model.Department</li>
                             </ul>
                         </div>
                         <div class="tab-pane body" id="Account">
