@@ -30,6 +30,7 @@ builder.Services.AddScoped<IPatientService, PatientService>();
 builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 builder.Services.AddScoped<IDoctorDal, EFDoctorDal>();
+builder.Services.AddScoped<IDataService, DataService>();
 builder.Services.AddScoped<IPatientDal, EFPatientDal>();
 builder.Services.AddScoped<IAppointmentDal, EFAppointmentDal>();
 builder.Services.AddScoped<IDepartmentDal, EFDepartmentDal>();

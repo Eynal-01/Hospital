@@ -12,11 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hospital.Entities.Migrations
 {
     [DbContext(typeof(CustomIdentityDbContext))]
-<<<<<<<< HEAD:Hospital.Entities/Migrations/20240216135023_Init.Designer.cs
-    [Migration("20240216135023_Init")]
-========
-    [Migration("20240216115442_Init")]
->>>>>>>> c1fbed677263c2504a18112ba2cf435234fe9d57:Hospital.Entities/Migrations/20240216115442_Init.Designer.cs
+    [Migration("20240217112156_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -242,7 +238,6 @@ namespace Hospital.Entities.Migrations
                     b.Property<int>("Age")
                         .HasColumnType("int");
 
-<<<<<<<< HEAD:Hospital.Entities/Migrations/20240216135023_Init.Designer.cs
                     b.Property<string>("AppointmentDateId")
                         .HasColumnType("nvarchar(max)");
 
@@ -255,8 +250,6 @@ namespace Hospital.Entities.Migrations
                     b.Property<int?>("AvailableTimeId")
                         .HasColumnType("int");
 
-========
->>>>>>>> c1fbed677263c2504a18112ba2cf435234fe9d57:Hospital.Entities/Migrations/20240216115442_Init.Designer.cs
                     b.Property<int?>("DepartmentId")
                         .HasColumnType("int");
 
@@ -463,12 +456,9 @@ namespace Hospital.Entities.Migrations
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
 
-<<<<<<<< HEAD:Hospital.Entities/Migrations/20240216135023_Init.Designer.cs
                     b.Property<int>("WorkDayCount")
                         .HasColumnType("int");
 
-========
->>>>>>>> c1fbed677263c2504a18112ba2cf435234fe9d57:Hospital.Entities/Migrations/20240216115442_Init.Designer.cs
                     b.Property<DateTime>("WorkEndTime")
                         .HasColumnType("datetime2");
 

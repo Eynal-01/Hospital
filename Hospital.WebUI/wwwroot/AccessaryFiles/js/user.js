@@ -69,34 +69,40 @@ function GetAllAppointments() {
     })
 }
 
-<<<<<<< HEAD
+
+
 function GetDays() {
-    var availablecount = $("#availableDay").value;
+    var availablecount = $("#availableDay").val();
     $.ajax({
         url: `/Admin/GetAvailableDays?availableCount=${availablecount}`,
         method: "GET",
 
         success: function (data) {
-            GetDa(availablecount);
+            console.log("GetDays success")
+            //GetDa(availablecount);
         }
     })
 }
 
-function GetDa(availablecount) {
+function GetDa() {
     $.ajax({
-        url: `/Home/GetAvailableDays?availableCount=${availablecount}`,
+        url: `/Home/GetAvailableDays`,
         method: "GET",
 
         success: function (data) {
+            console.log("GetDa success")
             var content = "";
 
             for (var i = 0; i < data.length; i++) {
-                content += `            
+                content += `
                      <option value="${data[i]}">${data[i]}</option>
                 `;
             }
-            $("#exampleFormControlSelect2").html(content);
-=======
+            $("#exampleFormControlSelect3").html(content);
+        }
+    });
+}
+
 function GetAllDoctors() {
     //console.log("doctor");
     $.ajax({
@@ -132,15 +138,11 @@ function GetAllDoctors() {
                             `
             }
             $("#doctors").html(content);
->>>>>>> c1fbed677263c2504a18112ba2cf435234fe9d57
         }
     })
 }
 
-<<<<<<< HEAD
-
-=======
-                                            //<p class="text-muted">${departmentName}</p>
+//<p class="text-muted">${departmentName}</p>
 //function GetDoctorIdDepartment(doctorId) {
 //    $.ajax({
 //        url: `/Admin/GetDoctorIdDepartment?doctorId=${doctorId}`,
@@ -151,7 +153,6 @@ function GetAllDoctors() {
 //        }
 //    })
 //}
->>>>>>> c1fbed677263c2504a18112ba2cf435234fe9d57
 
 //function GetAppointmentDoctor() {
 //    $.ajax({

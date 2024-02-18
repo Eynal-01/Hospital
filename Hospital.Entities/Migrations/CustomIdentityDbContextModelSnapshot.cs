@@ -236,7 +236,6 @@ namespace Hospital.Entities.Migrations
                     b.Property<int>("Age")
                         .HasColumnType("int");
 
-<<<<<<< HEAD
                     b.Property<string>("AppointmentDateId")
                         .HasColumnType("nvarchar(max)");
 
@@ -249,8 +248,6 @@ namespace Hospital.Entities.Migrations
                     b.Property<int?>("AvailableTimeId")
                         .HasColumnType("int");
 
-=======
->>>>>>> c1fbed677263c2504a18112ba2cf435234fe9d57
                     b.Property<int?>("DepartmentId")
                         .HasColumnType("int");
 
@@ -457,12 +454,9 @@ namespace Hospital.Entities.Migrations
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
 
-<<<<<<< HEAD
                     b.Property<int>("WorkDayCount")
                         .HasColumnType("int");
 
-=======
->>>>>>> c1fbed677263c2504a18112ba2cf435234fe9d57
                     b.Property<DateTime>("WorkEndTime")
                         .HasColumnType("datetime2");
 

@@ -388,10 +388,7 @@ namespace Hospital.Entities.Migrations
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     WorkStartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     WorkEndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-<<<<<<<< HEAD:Hospital.Entities/Migrations/20240216135023_Init.cs
                     WorkDayCount = table.Column<int>(type: "int", nullable: false),
-========
->>>>>>>> c1fbed677263c2504a18112ba2cf435234fe9d57:Hospital.Entities/Migrations/20240216115442_Init.cs
                     CalendarId = table.Column<int>(type: "int", nullable: true),
                     DoctorScheduleId = table.Column<int>(type: "int", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -500,15 +497,11 @@ namespace Hospital.Entities.Migrations
                     DoctorId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     DepartmentId = table.Column<int>(type: "int", nullable: true),
                     PatientId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-<<<<<<<< HEAD:Hospital.Entities/Migrations/20240216135023_Init.cs
                     AppointmentDateId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AppointmentTimeId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Message = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AvailableTimeId = table.Column<int>(type: "int", nullable: true),
                     AvailableDateId = table.Column<int>(type: "int", nullable: true)
-========
-                    Message = table.Column<string>(type: "nvarchar(max)", nullable: true)
->>>>>>>> c1fbed677263c2504a18112ba2cf435234fe9d57:Hospital.Entities/Migrations/20240216115442_Init.cs
                 },
                 constraints: table =>
                 {

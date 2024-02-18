@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="~/UserFiles/plugins/slick-carousel/slick/slick-theme.css">
 
     <!-- Main Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.10.0/main.min.css" rel="stylesheet">
     <link rel="stylesheet" href="~/UserFiles/css/style.css">
 
 </head>
@@ -92,8 +93,11 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>Date</label>
-                                        <select asp-for="AvailableDateId" class="form-control" id="exampleFormControlSelect2">
-
+                                        <select class="form-control" id="exampleFormControlSelect3">
+                                          @*   @foreach (var date in Model.AvailableDates) 
+                                            {
+                                                <option>@date</option>
+                                            } *@
                                         </select>
                                     </div>
                                 </div>
@@ -102,17 +106,10 @@
                                     <div class="form-group">
                                         <label>Available Times</label>
                                         <select asp-for="AvailableTimeId" class="form-control" id="exampleFormControlSelect2">
-                                            @*                                             @if (Model.AvailableTimes != null && Model.AvailableTimes.Any())
-                                            { *@
                                             @foreach (var time in Model.AvailableTimes)
                                             {
                                             <option>@time.StartTime - @time.EndTime</option>
                                             }
-                                            @*                                             }
-                                            else
-                                            {
-                                            <option>No available times</option>
-                                            } *@
                                         </select>
                                     </div>
                                 </div>
@@ -172,6 +169,7 @@
 
     <script src="~/AccessaryFiles/js/user.js"></script>
     <script src="~/AccessaryFiles/js/site.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.10.0/main.min.js"></script>
 
 </body>
 </html>

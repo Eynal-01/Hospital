@@ -10,6 +10,7 @@ using System;
 using System.Media;
 using Microsoft.AspNetCore.Components.Forms;
 using Hospital.Entities.DbEntities;
+using Hospital.Business.Abstract;
 
 namespace Hospital.WebUI.Controllers
 {
@@ -19,26 +20,13 @@ namespace Hospital.WebUI.Controllers
     {
         private readonly UserManager<CustomIdentityUser> _userManager;
         public CustomIdentityDbContext _dbContext { get; set; }
+        private readonly IDataService _dataService; 
 
-        public HomeController(CustomIdentityDbContext dbContext, UserManager<CustomIdentityUser> userManager)
+        public HomeController(CustomIdentityDbContext dbContext, UserManager<CustomIdentityUser> userManager, IDataService dataService)
         {
             _dbContext = dbContext;
             _userManager = userManager;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        public IActionResult About()
-        {
-            return View();
+            _dataService = dataService;
         }
 
         [HttpGet]
@@ -65,54 +53,49 @@ namespace Hospital.WebUI.Controllers
             }
             return View(viewModel);
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="viewModel"></param>
-        /// <returns></returns>
+
+        [HttpGet]
+        public async Task<IActionResult> GetAvailableDays()
+        {
+            var receivedData = _dataService.RetrieveData();
+
+            DateTime startDate = DateTime.Today;
+            List<DateTime> dateList = new List<DateTime>();
+            for (int i = 0; i < 4; i++)
+            {
+                DateTime currentDate = startDate.AddDays(i);
+                dateList.Add(currentDate);
+            }
+
+            var viewModel = new AppoinmentViewModel
+            {
+                AvailableDates = dateList
+            };
+            return View(receivedData);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Appoinment(AppoinmentViewModel viewModel)
         {
-            DateTime today = DateTime.Today;
-            var adminselect = 10;
-            for (int i = 0; i < 10; i++)
-            {
-                today.AddDays(1);
-            }
-            //DateTime tomorrow = today.AddDays(1);
-            //DateTime dayAfterTomorrow = today.AddDays(2);
-
-            //List<AvailableDate> availableDates = new List<AvailableDate>()
-            //{
-            //    new AvailableDate { Date = today },
-            //    new AvailableDate { Date = tomorrow },
-            //    new AvailableDate { Date = dayAfterTomorrow }
-            //};
-            ////availableDates.Add(new AvailableDate { Date = today });
-            ////availableDates.Add(new AvailableDate { Date = tomorrow });
-            ////availableDates.Add(new AvailableDate { Date = dayAfterTomorrow });
-
-            //viewModel.AvailableDates = availableDates;
-
             var user = await _userManager.GetUserAsync(HttpContext.User);
             var patient = await _dbContext.Patients.FirstOrDefaultAsync(p => p.Email == user.Email && p.UserName == user.UserName);
             var department = await _dbContext.Departments.FirstOrDefaultAsync(d => d.Id.ToString() == viewModel.DepartmentId);
             var doctor = await _dbContext.Doctors.FirstOrDefaultAsync(d => d.Id == viewModel.DoctorId);
             var appointments = await _dbContext.Appointments.ToListAsync();
+            var receivedData = _dataService.RetrieveData();
 
             var appoinment = new Appointment
             {
-<<<<<<< HEAD
                 AppointmentDateId = viewModel.AvailableDateId,
                 AppointmentTimeId = viewModel.AvailableTimeId,
-=======
->>>>>>> c1fbed677263c2504a18112ba2cf435234fe9d57
                 Age = patient.Age,
                 DoctorId = doctor.Id,
                 DepartmentId = department.Id,
                 PatientId = patient.Id.ToString(),
                 Message = viewModel.Message,
             };
+
+            //viewModel.AvailableDates = receivedData;
             //for (int i = 0; i < appointments.Count; i++)
             //{
             //    if (appointments[i].AppointmentTimeId == appoinment.AppointmentTimeId && appointments[i].DoctorId == appoinment.DoctorId)
@@ -130,17 +113,14 @@ namespace Hospital.WebUI.Controllers
             return RedirectToAction("Appoinment", "Home");
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAvailableDays(string availableCount)
+        public IActionResult Index()
         {
-            DateTime startDate = DateTime.Today;
-            List<DateTime> dateList = new List<DateTime>();
-            for (int i = 0; i < int.Parse(availableCount); i++)
-            {
-                DateTime currentDate = startDate.AddDays(i);
-                dateList.Add(currentDate);
-            }
-            return Ok(dateList);
+            return View();
+        }
+
+        public IActionResult About()
+        {
+            return View();
         }
 
         public IActionResult BlogSindebar()
