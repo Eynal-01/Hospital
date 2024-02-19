@@ -13,7 +13,7 @@ namespace HospitalProject.Entities.DbEntities
         public int Id { get; set; }
         public int Age { get; set; }
         public string? DoctorId { get; set; }
-        public int? DepartmentId { get; set; }
+        public string? DepartmentId { get; set; }
         public string? PatientId { get; set; }
         //public string? AvailableTimeId2 { get; set; }    
         public string? AppointmentDateId { get; set; }

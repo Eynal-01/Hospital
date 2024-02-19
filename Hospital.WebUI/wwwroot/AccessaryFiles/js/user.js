@@ -25,7 +25,7 @@ function GetAllPatients() {
                     `;
                 }
                 content += `
-                 <tr>
+                 <tr onclick="PatientProfile('${data[i].id}')">
                      <td><span class="list-icon"><img class="patients-img" src="/AccessaryFiles/images/${data[i].avatart}" alt=""></span></td>
                      <td><span class="list-name">${data[i].id}</span></td> 
                      ${name}
@@ -39,6 +39,18 @@ function GetAllPatients() {
                 `;
             }
             $("#patients").html(content);
+        }
+    })
+}
+
+
+function PatientProfile(id) {
+    $.ajax({
+        url: `/Admin/PatientProfile/${id}`,
+        method: "GET",
+
+        success: function (data) {
+            console.log("s");
         }
     })
 }
@@ -69,6 +81,7 @@ function GetAllAppointments() {
     })
 }
 
+<<<<<<< HEAD
 
 
 function GetDays() {
@@ -80,10 +93,32 @@ function GetDays() {
         success: function (data) {
             console.log("GetDays success")
             //GetDa(availablecount);
+=======
+function GetAllDepartment() {
+    $.ajax({
+        url: `/Admin/GetAllDepartment`,
+        method: "GET",
+
+        success: function (data) {
+            let content = "";
+            content += `
+                  <li><a href="/Admin/AddDepartment">Add</a></li>
+                  <li><a href="/Admin/AllDepartments">All Departments</a></li>
+            `;
+            for (var i = 0; i < data.length; i++) {
+                //var doctor = GetAppointmentDoctor(data[i].doctorId)
+                content += `
+                                <li><a href="javascript:void(0);">${data[i].departmentName}</a></li>
+
+`;
+            }
+            $("#departments").html(content);
+>>>>>>> a2058e80cb191391c1694eb2ae7ef39ee033e2b9
         }
     })
 }
 
+<<<<<<< HEAD
 function GetDa() {
     $.ajax({
         url: `/Home/GetAvailableDays`,
@@ -103,6 +138,8 @@ function GetDa() {
     });
 }
 
+=======
+>>>>>>> a2058e80cb191391c1694eb2ae7ef39ee033e2b9
 function GetAllDoctors() {
     //console.log("doctor");
     $.ajax({

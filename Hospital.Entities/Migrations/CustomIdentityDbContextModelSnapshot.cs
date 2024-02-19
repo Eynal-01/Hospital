@@ -236,6 +236,7 @@ namespace Hospital.Entities.Migrations
                     b.Property<int>("Age")
                         .HasColumnType("int");
 
+<<<<<<< HEAD
                     b.Property<string>("AppointmentDateId")
                         .HasColumnType("nvarchar(max)");
 
@@ -250,6 +251,10 @@ namespace Hospital.Entities.Migrations
 
                     b.Property<int?>("DepartmentId")
                         .HasColumnType("int");
+=======
+                    b.Property<string>("DepartmentId")
+                        .HasColumnType("nvarchar(450)");
+>>>>>>> a2058e80cb191391c1694eb2ae7ef39ee033e2b9
 
                     b.Property<string>("DoctorId")
                         .HasColumnType("nvarchar(450)");
@@ -340,24 +345,13 @@ namespace Hospital.Entities.Migrations
 
             modelBuilder.Entity("HospitalProject.Entities.DbEntities.Department", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("DepartmentName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("DoctorScheduleId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("DoctorScheduleId");
 
                     b.ToTable("Departments");
                 });
@@ -864,13 +858,6 @@ namespace Hospital.Entities.Migrations
                     b.Navigation("SenderUser");
                 });
 
-            modelBuilder.Entity("HospitalProject.Entities.DbEntities.Department", b =>
-                {
-                    b.HasOne("HospitalProject.Entities.DbEntities.DoctorSchedule", null)
-                        .WithMany("Departments")
-                        .HasForeignKey("DoctorScheduleId");
-                });
-
             modelBuilder.Entity("HospitalProject.Entities.DbEntities.Doctor", b =>
                 {
                     b.HasOne("HospitalProject.Entities.DbEntities.Calendar", null)
@@ -1019,8 +1006,6 @@ namespace Hospital.Entities.Migrations
 
             modelBuilder.Entity("HospitalProject.Entities.DbEntities.DoctorSchedule", b =>
                 {
-                    b.Navigation("Departments");
-
                     b.Navigation("Doctors");
                 });
 
