@@ -69,10 +69,10 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>Department</label>
-                                        <select asp-for="DepartmentName" class="form-control" id="exampleFormControlSelect1">
+                                        <select asp-for="DepartmentId" class="form-control" id="exampleFormControlSelect1">
                                             @for (int i = 0; i < Model.Departments.Count(); i++)
                                             {
-                                                <option>@Model.Departments[i].DepartmentName</option>
+                                                <option value="@Model.Departments[i].Id">@Model.Departments[i].DepartmentName</option>
                                             }
                                         </select>
                                     </div>
@@ -80,10 +80,10 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>Doctor</label>
-                                        <select asp-for="DoctorName" class="form-control" id="exampleFormControlSelect2">
+                                        <select asp-for="DoctorId" class="form-control" id="exampleFormControlSelect2">
                                             @for (int i = 0; i < Model.Doctors.Count(); i++)
                                             {
-                                                <option>@Model.Doctors[i].FirstName @Model.Doctors[i].LastName</option>
+                                                <option value="@Model.Doctors[i].Id">@Model.Doctors[i].FirstName @Model.Doctors[i].LastName</option>
                                             }
                                         </select>
                                     </div>

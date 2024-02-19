@@ -1,4 +1,6 @@
-﻿<title>:: Oreo Hospital :: Patient Profile</title>
+﻿@model PatientProfileViewModel
+
+<title>:: Oreo Hospital :: Patient Profile</title>
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <!-- Favicon-->
 <link rel="stylesheet" href="~/AdminFiles/assets/plugins/bootstrap/css/bootstrap.min.css">
@@ -29,11 +31,22 @@
             <div class="col-lg-4 col-md-12 col-sm-12">
                 <div class="card member-card">
                     <div class="header l-coral">
-                        <h4 class="m-t-10">Eliana Smith</h4>
+                        @if (Model.Fullname != null)
+                        {
+                            <h4 class="m-t-10">
+                                @Model.Fullname
+                            </h4>
+                        }
+                        else
+                        {
+                            <h4 class="m-t-10">
+                                @Model.Username
+                            </h4>
+                        }
                     </div>
                     <div class="member-img">
                         <a href="patient-invoice.html">
-                            <img src="../assets/images/sm/avatar2.jpg" class="rounded-circle" alt="profile-image">
+                            <img src="~/AccessaryFiles/images/@Model.ImageUrl" class="rounded-circle" alt="profile-image">
                         </a>
                     </div>
                     <div class="body">
@@ -45,15 +58,13 @@
                             </ul>
                         </div>
                         <hr>
-                        <strong>Occupation</strong>
-                        <p>UI UX Design</p>
                         <strong>Email ID</strong>
-                        <p>will.smith@info.com</p>
+                        <p>@Model.Email</p>
                         <strong>Phone</strong>
-                        <p>+123 456 789</p>
+                        <p>@Model.PhoneNumber</p>
                         <hr>
                         <strong>Address</strong>
-                        <address>85 Bay Drive, New Port Richey, FL 34653</address>
+                        <address>@Model.Address</address>
                     </div>
                 </div>
                 <div class="card">
@@ -157,8 +168,13 @@
         </div>
     </div>
 </section>
+<script src="~/AccessaryFiles/js/signalr/dist/browser/signalR.js"></script>
 <!-- Jquery Core Js -->
 <script src="~/AdminFiles/assets/bundles/libscripts.bundle.js"></script> <!-- Bootstrap JS and jQuery v3.2.1 -->
 <script src="~/AdminFiles/assets/bundles/vendorscripts.bundle.js"></script> <!-- slimscroll, waves Scripts Plugin Js -->
 
-<script src="~/AdminFiles/assets/bundles/mainscripts.bundle.js"></script><!-- Custom Js -->
+<script src="~/AdminFiles/assets/bundles/mainscripts.bundle.js"></script>
+
+<!-- Custom Js -->
+<script src="~/AccessaryFiles/js/user.js"></script>
+<script src="~/AccessaryFiles/js/site.js"></script>
