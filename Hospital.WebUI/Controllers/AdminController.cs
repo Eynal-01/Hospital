@@ -172,8 +172,24 @@ namespace Hospital.WebUI.Controllers
             return View();
         }
 
+        [HttpGet]
         public IActionResult AddDepartment()
         {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddDepartment(AddDepartmentViewModel viewModel)
+        {
+            var departmentCount = await _context.Departments.ToListAsync();
+            var d = (int.Parse(departmentCount[departmentCount.Count - 1].Id) + 1).ToString();
+            var department = new Department
+            {
+                Id = d,
+                DepartmentName = viewModel.Name
+            };
+            await _context.Departments.AddAsync(department);
+            await _context.SaveChangesAsync();
             return View();
         }
 
@@ -219,7 +235,7 @@ namespace Hospital.WebUI.Controllers
         {
             var doctor = await _context.Doctors.FirstOrDefaultAsync(d => d.Id == doctorId);
 
-            var departmen = await _context.Departments.FirstOrDefaultAsync(d => d.Id == doctor.DepartmentId);
+            var departmen = await _context.Departments.FirstOrDefaultAsync(d => d.Id == doctor.DepartmentId.ToString());
 
             var department = departmen.DepartmentName;
             return Ok(department);
@@ -256,7 +272,7 @@ namespace Hospital.WebUI.Controllers
         public async Task<IActionResult> DoctorProfile(string doctorId)
         {
             var doctor = await _context.Doctors.FirstOrDefaultAsync(d => d.Id == doctorId);
-            var department = await _context.Departments.FirstOrDefaultAsync(d => d.Id == doctor.DepartmentId);
+            var department = await _context.Departments.FirstOrDefaultAsync(d => d.Id == doctor.DepartmentId.ToString());
             var viewModel = new DoctorProfileViewModel
             {
                 Address = doctor.Address,
@@ -304,9 +320,25 @@ namespace Hospital.WebUI.Controllers
             return View();
         }
 
-        public IActionResult PatientProfile()
+        public async Task<IActionResult> PatientProfile(string id)
         {
-            return View();
+            var patient = await _context.Patients.FirstOrDefaultAsync(p => p.Id == id);
+            var viewModel = new PatientProfileViewModel
+            {
+                Address = patient.Address,
+                Email = patient.Email,
+                Fullname = patient.FullName,
+                Username = patient.UserName,
+                PhoneNumber = patient.PhoneNumber,
+                ImageUrl = patient.Avatar,
+            };
+            return View(viewModel);
+        }
+
+        public async Task<IActionResult> GetAllDepartment()
+        {
+            var departments = await _context.Departments.ToListAsync();
+            return Ok(departments);
         }
 
         public IActionResult Patients()

@@ -69,8 +69,8 @@ namespace Hospital.WebUI.Controllers
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
             var patient = await _dbContext.Patients.FirstOrDefaultAsync(p => p.Email == user.Email && p.UserName == user.UserName);
-            var department = await _dbContext.Departments.FirstOrDefaultAsync(d => d.DepartmentName == viewModel.DepartmentName);
-            var doctor = await _dbContext.Doctors.FirstOrDefaultAsync(d => d.FirstName + " " + d.LastName == viewModel.DoctorName);
+            var department = await _dbContext.Departments.FirstOrDefaultAsync(d => d.Id == viewModel.DepartmentId);
+            var doctor = await _dbContext.Doctors.FirstOrDefaultAsync(d => d.Id == viewModel.DoctorId);
 
             var appoinment = new Appointment
             {

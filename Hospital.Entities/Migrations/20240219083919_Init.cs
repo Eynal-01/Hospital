@@ -95,6 +95,18 @@ namespace Hospital.Entities.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Departments",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    DepartmentName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Departments", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "DoctorSchedules",
                 columns: table => new
                 {
@@ -322,26 +334,6 @@ namespace Hospital.Entities.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Departments",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    DepartmentName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DoctorScheduleId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Departments", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Departments_DoctorSchedules_DoctorScheduleId",
-                        column: x => x.DoctorScheduleId,
-                        principalTable: "DoctorSchedules",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Doctors",
                 columns: table => new
                 {
@@ -467,7 +459,7 @@ namespace Hospital.Entities.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Age = table.Column<int>(type: "int", nullable: false),
                     DoctorId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    DepartmentId = table.Column<int>(type: "int", nullable: true),
+                    DepartmentId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     PatientId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Message = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -585,11 +577,6 @@ namespace Hospital.Entities.Migrations
                 name: "IX_Chats_SenderUserId",
                 table: "Chats",
                 column: "SenderUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Departments_DoctorScheduleId",
-                table: "Departments",
-                column: "DoctorScheduleId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Doctors_CalendarId",
