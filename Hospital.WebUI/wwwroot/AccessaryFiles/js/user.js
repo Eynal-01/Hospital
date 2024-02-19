@@ -81,19 +81,9 @@ function GetAllAppointments() {
     })
 }
 
-<<<<<<< HEAD
 
 
-function GetDays() {
-    var availablecount = $("#availableDay").val();
-    $.ajax({
-        url: `/Admin/GetAvailableDays?availableCount=${availablecount}`,
-        method: "GET",
 
-        success: function (data) {
-            console.log("GetDays success")
-            //GetDa(availablecount);
-=======
 function GetAllDepartment() {
     $.ajax({
         url: `/Admin/GetAllDepartment`,
@@ -113,19 +103,30 @@ function GetAllDepartment() {
 `;
             }
             $("#departments").html(content);
->>>>>>> a2058e80cb191391c1694eb2ae7ef39ee033e2b9
         }
     })
 }
 
-<<<<<<< HEAD
-function GetDa() {
+function GetDays() {
+    var availablecount = $("#availableDay").val();
+    $.ajax({
+        url: `/Admin/GetAvailableDays?availableCount=${availablecount}`,
+        method: "GET",
+
+        success: function (data) {
+            console.log("GetDays success")
+        }
+    })
+}
+
+function GetDay() {
+    console.log("CALLED")
     $.ajax({
         url: `/Home/GetAvailableDays`,
         method: "GET",
 
         success: function (data) {
-            console.log("GetDa success")
+            console.log(data)
             var content = "";
 
             for (var i = 0; i < data.length; i++) {
@@ -138,8 +139,6 @@ function GetDa() {
     });
 }
 
-=======
->>>>>>> a2058e80cb191391c1694eb2ae7ef39ee033e2b9
 function GetAllDoctors() {
     //console.log("doctor");
     $.ajax({

@@ -1,5 +1,4 @@
-﻿@model AppoinmentViewModel
-
+﻿
 <!DOCTYPE html>
 <html lang="zxx">
 <head>
@@ -65,7 +64,7 @@
                     <div class="appoinment-wrap mt-5 mt-lg-0 pl-lg-5">
                         <h2 class="mb-2 title-color">Book an appoinment</h2>
                         <p class="mb-4">Mollitia dicta commodi est recusandae iste, natus eum asperiores corrupti qui velit . Iste dolorum atque similique praesentium soluta.</p>
-                        <form class="appoinment-form" method="post" asp-action="Appoinment" asp-controller="Home">
+                        @* <form class="appoinment-form" method="post" asp-action="Appoinment" asp-controller="Home">
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="form-group">
@@ -94,10 +93,7 @@
                                     <div class="form-group">
                                         <label>Date</label>
                                         <select class="form-control" id="exampleFormControlSelect3">
-                                          @*   @foreach (var date in Model.AvailableDates) 
-                                            {
-                                                <option>@date</option>
-                                            } *@
+                                        
                                         </select>
                                     </div>
                                 </div>
@@ -136,7 +132,7 @@
                             </div>
 
                             <button class="btn btn-main btn-round-full" type="submit">Make Appoinment<i class="icofont-simple-right ml-2"></i></button>
-                        </form>
+                        </form> *@
                     </div>
                 </div>
             </div>

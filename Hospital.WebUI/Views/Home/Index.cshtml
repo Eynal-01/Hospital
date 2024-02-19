@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@model AppoinmentViewModel
+
+<!DOCTYPE html>
 <html lang="zxx">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -8,7 +10,7 @@
     <title>Novena- Health & Care Medical template</title>
 
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
+    <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" /> 
 
     <link rel="stylesheet" href="~/UserFiles/plugins/bootstrap/css/bootstrap.min.css">
     <!-- Icon Font Css -->
@@ -23,8 +25,6 @@
 </head>
 
 <body id="top">
-
-
     <!-- Slider Start -->
     <section class="banner">
         <div class="container">
@@ -37,7 +37,7 @@
 
                         <p class="mb-4 pr-5">A repudiandae ipsam labore ipsa voluptatum quidem quae laudantium quisquam aperiam maiores sunt fugit, deserunt rem suscipit placeat.</p>
                         <div class="btn-container ">
-                            <a href="/Home/Appoinment" onclick="GetDa()" target="_blank" class="btn btn-main-2 btn-icon btn-round-full">Make appoinment <i class="icofont-simple-right ml-2  "></i></a>
+                            <button href="/Home/Appoinment" onclick="GetDay()" target="_blank" class="btn btn-main-2 btn-icon btn-round-full">Make appoinment <i class="icofont-simple-right ml-2  "></i></button>
                         </div>
                     </div>
                 </div>
@@ -246,7 +246,7 @@
                     <div class="appoinment-content">
                         <img src="images/about/img-3.jpg" alt="" class="img-fluid">
                         <div class="emergency">
-                            <h2 class="text-lg"><i class="icofont-phone-circle text-lg"></i>+23 345 67980</h2>
+                            <h2 style="width:500px" class="text-lg"><i class="icofont-phone-circle text-lg"></i>+994 12 224 24 42</h2>
                         </div>
                     </div>
                 </div>
@@ -254,7 +254,7 @@
                     <div class="appoinment-wrap mt-5 mt-lg-0">
                         <h2 class="mb-2 title-color">Book appoinment</h2>
                         <p class="mb-4">Mollitia dicta commodi est recusandae iste, natus eum asperiores corrupti qui velit . Iste dolorum atque similique praesentium soluta.</p>
-                        <form id="#" class="appoinment-form" method="post" action="#">
+                        @* <form id="#" class="appoinment-form" method="post" action="#">
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="form-group">
@@ -313,6 +313,84 @@
                             </div>
 
                             <a class="btn btn-main btn-round-full" href="appoinment.html">Make Appoinment <i class="icofont-simple-right ml-2  "></i></a>
+                        </form> *@
+
+
+
+
+
+
+                        <form class="appoinment-form" method="post" asp-action="Appoinment" asp-controller="Home">
+                            <div class="row">
+                               @*  <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Department</label>
+                                        <select asp-for="DepartmentId" class="form-control" id="exampleFormControlSelect1">
+                                            @for (int i = 0; i < Model.Departments.Count(); i++)
+                                            {
+                                                <option value="@Model.Departments[i].Id">@Model.Departments[i].DepartmentName</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div> *@
+                              @*   <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Doctor</label>
+                                        <select asp-for="DoctorId" class="form-control" id="exampleFormControlSelect2">
+                                            @for (int i = 0; i < Model.Doctors.Count(); i++)
+                                            {
+                                                <option value="@Model.Doctors[i].Id">@Model.Doctors[i].FirstName @Model.Doctors[i].LastName</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div> *@
+
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Date</label>
+                                        <select class="form-control" id="exampleFormControlSelect3">
+                                            @*  @foreach (var date in Model.AvailableDates)
+                                            {
+                                            <option>@date</option>
+                                            } *@
+                                        </select>
+                                    </div>
+                                </div>
+
+                                @* <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Available Times</label>
+                                        <select asp-for="AvailableTimeId" class="form-control" id="exampleFormControlSelect2">
+                                            @foreach (var time in Model.AvailableTimes)
+                                            {
+                                                <option>@time.StartTime - @time.EndTime</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div> *@
+
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label asp-for="Fullname">Fullname</label>
+                                        <input asp-for="Fullname" id="name" type="text" class="form-control" placeholder="Full Name">
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label asp-for="PhoneNumber">Phone Number</label>
+
+                                        <input asp-for="PhoneNumber" id="phone" type="Number" class="form-control" placeholder="Phone Number">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group-2 mb-4">
+                                <label asp-for="Message">Message</label>
+
+                                <textarea asp-for="Message" id="message" class="form-control" rows="6" placeholder="Your Message"></textarea>
+                            </div>
+
+                            <button class="btn btn-main btn-round-full" type="submit">Make Appoinment<i class="icofont-simple-right ml-2"></i></button>
                         </form>
                     </div>
                 </div>

@@ -57,21 +57,21 @@ namespace Hospital.WebUI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAvailableDays()
         {
-            var receivedData = _dataService.RetrieveData();
-
+            var counter = 0;
+            var admin = await _dbContext.Admins.FirstOrDefaultAsync(a=>a.Id==a.Id);
+            if (admin != null)
+            {
+                counter = admin.WorkDaysCount;
+            }
             DateTime startDate = DateTime.Today;
             List<DateTime> dateList = new List<DateTime>();
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < counter; i++)
             {
                 DateTime currentDate = startDate.AddDays(i);
+                currentDate.ToShortDateString();
                 dateList.Add(currentDate);
             }
-
-            var viewModel = new AppoinmentViewModel
-            {
-                AvailableDates = dateList
-            };
-            return View(receivedData);
+            return Ok(dateList); 
         }
 
         [HttpPost]
@@ -79,15 +79,10 @@ namespace Hospital.WebUI.Controllers
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
             var patient = await _dbContext.Patients.FirstOrDefaultAsync(p => p.Email == user.Email && p.UserName == user.UserName);
-<<<<<<< HEAD
-            var department = await _dbContext.Departments.FirstOrDefaultAsync(d => d.Id.ToString() == viewModel.DepartmentId);
-            var doctor = await _dbContext.Doctors.FirstOrDefaultAsync(d => d.Id == viewModel.DoctorId);
             var appointments = await _dbContext.Appointments.ToListAsync();
             var receivedData = _dataService.RetrieveData();
-=======
             var department = await _dbContext.Departments.FirstOrDefaultAsync(d => d.Id == viewModel.DepartmentId);
             var doctor = await _dbContext.Doctors.FirstOrDefaultAsync(d => d.Id == viewModel.DoctorId);
->>>>>>> a2058e80cb191391c1694eb2ae7ef39ee033e2b9
 
             var appoinment = new Appointment
             {
@@ -119,6 +114,11 @@ namespace Hospital.WebUI.Controllers
         }
 
         public IActionResult Index()
+        {
+            return View();
+        }
+
+        public IActionResult Áppoinment()
         {
             return View();
         }
