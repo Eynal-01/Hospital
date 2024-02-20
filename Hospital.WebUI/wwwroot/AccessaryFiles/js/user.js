@@ -124,7 +124,6 @@ function GetDay() {
     $.ajax({
         url: `/Home/GetAvailableDays`,
         method: "GET",
-
         success: function (data) {
             console.log(data)
             var content = "";

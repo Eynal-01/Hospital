@@ -34,6 +34,7 @@ namespace Hospital.WebUI.Controllers
         {
             var doctors = await _dbContext.Doctors.ToListAsync();
             var departments = await _dbContext.Departments.ToListAsync();
+            var availableDates = await _dbContext.AvailableDates.ToListAsync();
             var availableTimes = await _dbContext.AvailableTimes.ToListAsync();
             var viewModel = new AppoinmentViewModel
             {
@@ -51,27 +52,11 @@ namespace Hospital.WebUI.Controllers
             {
                 viewModel.AvailableTimes = availableTimes;
             }
+            if (availableDates != null)
+            {
+                viewModel.AvailableDates = availableDates;
+            }
             return View(viewModel);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetAvailableDays()
-        {
-            var counter = 0;
-            var admin = await _dbContext.Admins.FirstOrDefaultAsync(a=>a.Id==a.Id);
-            if (admin != null)
-            {
-                counter = admin.WorkDaysCount;
-            }
-            DateTime startDate = DateTime.Today;
-            List<DateTime> dateList = new List<DateTime>();
-            for (int i = 0; i < counter; i++)
-            {
-                DateTime currentDate = startDate.AddDays(i);
-                currentDate.ToShortDateString();
-                dateList.Add(currentDate);
-            }
-            return Ok(dateList); 
         }
 
         [HttpPost]
@@ -113,12 +98,32 @@ namespace Hospital.WebUI.Controllers
             return RedirectToAction("Appoinment", "Home");
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetAvailableDays()
+        {
+            var counter = 0;
+            var admin = await _dbContext.Admins.FirstOrDefaultAsync(a => a.Id == a.Id);
+            if (admin != null)
+            {
+                counter = admin.WorkDaysCount;
+            }
+            DateTime startDate = DateTime.Today;
+            List<DateTime> dateList = new List<DateTime>();
+            for (int i = 0; i < counter; i++)
+            {
+                DateTime currentDate = startDate.AddDays(i);
+                currentDate.ToShortDateString();
+                dateList.Add(currentDate);
+            }
+            return Ok(dateList);
+        }
+
         public IActionResult Index()
         {
             return View();
         }
 
-        public IActionResult Áppoinment()
+        public IActionResult Appointment()
         {
             return View();
         }

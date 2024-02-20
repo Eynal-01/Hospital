@@ -12,15 +12,12 @@ namespace Hospital.WebUI.Models
         public string? AvailableDateId { get; set; }
         public List<Doctor>? Doctors { get; set; }
         public List<Department>? Departments { get; set; }
-        //public string? DoctorName { get; set; }
-        //public string? DepartmentName { get; set; }
         public DateTime Date { get; set; }
         public DateTime DateInTime { get; set; }
         public string? Fullname { get; set; }
         public int PhoneNumber { get; set; }
         public string? Message { get; set; }
-        //public int? AvailableTimeIds { get; set; }
         public List<AvailableTime>? AvailableTimes { get; set; }
-        public List<DateTime>? AvailableDates { get; set; }
+        public List<AvailableDate>? AvailableDates { get; set; }
     }
 }
