@@ -1,4 +1,6 @@
-﻿<title>:: Oreo Hospital :: Blog Post</title>
+﻿@model NewPostViewModel
+
+<title>:: Oreo Hospital :: Blog Post</title>
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <!-- Favicon-->
 <link rel="stylesheet" href="~/AdminFiles/assets/plugins/bootstrap/css/bootstrap.min.css">
@@ -31,48 +33,36 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
-                    <div class="body">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Enter Blog title" />
-                        </div>
-                        <select class="form-control show-tick">
-                            <option>Select Category --</option>
-                            <option>Web Design</option>
-                            <option>Photography</option>
-                            <option>Technology</option>
-                            <option>Lifestyle</option>
-                            <option>Sports</option>
-                        </select>
-                        <form action="https://thememakker.com/" id="frmFileUpload" class="dropzone m-b-20 m-t-20" method="post" enctype="multipart/form-data">
+                    <form asp-controller="Admin" asp-action="NewPost" method="post" enctype="multipart/form-data">
+                        <div class="body">
+                            <div class="form-group">
+                                <input asp-for="BlogTitle" type="text" class="form-control" placeholder="Enter Blog title" />
+                            </div>
+                            <div class="form-group">
+                                <textarea asp-for="Content" rows="4" class="form-control no-resize" placeholder="Content . . ."></textarea>
+                            </div>
+                            <select asp-for="DepartmentId" class="form-control show-tick">
+                                @for (int i = 0; i < Model.Departments.Count(); i++)
+                                {
+                                    <option value="@Model.Departments[i].Id">@Model.Departments[i].DepartmentName</option>
+                                }
+                            </select>
+
                             <div class="dz-message">
                                 <div class="drag-icon-cph"> <i class="material-icons">touch_app</i> </div>
                                 <h3>Drop files here or click to upload.</h3>
                                 <em>(This is just a demo dropzone. Selected files are <strong>not</strong> actually uploaded.)</em>
                             </div>
                             <div class="fallback">
-                                <input name="file" type="file" multiple />
+                                <input asp-for="File" name="file" type="file" multiple />
                             </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="body">
-                        <textarea id="ckeditor">
-                        <h2>WYSIWYG Editor</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ullamcorper sapien non nisl facilisis bibendum in quis tellus. Duis in urna bibendum turpis pretium fringilla. Aenean neque velit, porta eget mattis ac, imperdiet quis nisi. Donec non dui et tortor vulputate luctus. Praesent consequat rhoncus velit, ut molestie arcu venenatis sodales.</p>
-                        <h3>Lacinia</h3>
-                        <ul>
-                        <li>Suspendisse tincidunt urna ut velit ullamcorper fermentum.</li>
-                        <li>Nullam mattis sodales lacus, in gravida sem auctor at.</li>
-                        <li>Praesent non lacinia mi.</li>
-                        <li>Mauris a ante neque.</li>
-                        <li>Aenean ut magna lobortis nunc feugiat sagittis.</li>
-                            </ul>
-                        <h3>Pellentesque adipiscing</h3>
-                        <p>Maecenas quis ante ante. Nunc adipiscing rhoncus rutrum. Pellentesque adipiscing urna mi, ut tempus lacus ultrices ac. Pellentesque sodales, libero et mollis interdum, dui odio vestibulum dolor, eu pellentesque nisl nibh quis nunc. Sed porttitor leo adipiscing venenatis vehicula. Aenean quis viverra enim. Praesent porttitor ut ipsum id ornare.</p>
-                        </textarea>
-                        <button type="button" class="btn btn-primary btn-round waves-effect m-t-20">Post</button>
-                    </div>
+                        </div>
+                        <div class="card">
+                            <div class="body">
+                                <button type="submit" class="btn btn-primary btn-round waves-effect m-t-20">Post</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

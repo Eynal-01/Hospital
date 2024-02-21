@@ -114,6 +114,103 @@ namespace Hospital.Entities.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("Hospital.Entities.DbEntities.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomIdentityUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("LikeCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("WriteTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomIdentityUserId");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("Comments");
+                });
+
+            modelBuilder.Entity("Hospital.Entities.DbEntities.Post", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("CommentCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomIdentityUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("IsImage")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("LikeCount")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("PublishTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomIdentityUserId");
+
+                    b.ToTable("Posts");
+                });
+
+            modelBuilder.Entity("Hospital.Entities.DbEntities.UserLikedPost", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserLikedPosts");
+                });
+
             modelBuilder.Entity("HospitalProject.Entities.DbEntities.Admin", b =>
                 {
                     b.Property<string>("Id")
@@ -742,6 +839,49 @@ namespace Hospital.Entities.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Hospital.Entities.DbEntities.Comment", b =>
+                {
+                    b.HasOne("Hospital.Entities.Data.CustomIdentityUser", "User")
+                        .WithMany()
+                        .HasForeignKey("CustomIdentityUserId");
+
+                    b.HasOne("Hospital.Entities.DbEntities.Post", "Post")
+                        .WithMany("Comments")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Post");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Hospital.Entities.DbEntities.Post", b =>
+                {
+                    b.HasOne("Hospital.Entities.Data.CustomIdentityUser", "User")
+                        .WithMany()
+                        .HasForeignKey("CustomIdentityUserId");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Hospital.Entities.DbEntities.UserLikedPost", b =>
+                {
+                    b.HasOne("Hospital.Entities.DbEntities.Post", "Post")
+                        .WithMany("UserLikedPosts")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Hospital.Entities.Data.CustomIdentityUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Post");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("HospitalProject.Entities.DbEntities.Appointment", b =>
                 {
                     b.HasOne("HospitalProject.Entities.DbEntities.Department", "Department")
@@ -914,6 +1054,13 @@ namespace Hospital.Entities.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Hospital.Entities.DbEntities.Post", b =>
+                {
+                    b.Navigation("Comments");
+
+                    b.Navigation("UserLikedPosts");
                 });
 
             modelBuilder.Entity("HospitalProject.Entities.DbEntities.Calendar", b =>

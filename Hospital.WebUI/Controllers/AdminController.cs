@@ -1,5 +1,6 @@
 ﻿using Hospital.Business.Abstract;
 using Hospital.Entities.Data;
+using Hospital.Entities.DbEntities;
 using Hospital.WebUI.Helpers;
 using Hospital.WebUI.Models;
 using HospitalProject.Entities.DbEntities;
@@ -149,6 +150,34 @@ namespace Hospital.WebUI.Controllers
                 await _context.SaveChangesAsync();
             }
             return RedirectToAction("AddDoctor", "Admin");
+        }
+
+        public async Task<IActionResult> GetAllPost()
+        {
+            var user = await CurrentUser();
+
+            var data = await _context.Doctors.ToListAsync();
+            var posts = new List<Post>();
+            foreach (var item in data)
+            {
+                var post = await _context.Posts.Where(p => p.CustomIdentityUserId == item.Id).ToListAsync();
+                for (int i = 0; i < post.Count(); i++)
+                {
+                    var comments = await _context.Comments.Include(nameof(Comment.Post)).Where(f => f.PostId == post[i].Id).ToListAsync();
+                    var userLiked = await _context.UserLikedPosts.FirstOrDefaultAsync(f => f.UserId == user.Id && f.PostId == post[i].Id);
+                    post[i].Comments = comments;
+                    if (post[i].ImageUrl != null)
+                    {
+                        post[i].IsImage = true;
+                    }
+                    else
+                    {
+                        post[i].IsImage = false;
+                    }
+                }
+                posts.AddRange(post);
+            }
+            return Ok(new { posts = posts });
         }
 
         public static string HashPassword(string password)
@@ -305,8 +334,44 @@ namespace Hospital.WebUI.Controllers
             return View();
         }
 
-        public IActionResult NewPost()
+        [HttpGet]
+        public async Task<IActionResult> NewPost()
         {
+            var departments = await _context.Departments.ToListAsync();
+            var viewModel = new NewPostViewModel
+            {
+                Departments = departments,
+            };
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> NewPost(NewPostViewModel viewModel)
+        {
+            var user = await CurrentUser();
+            if (viewModel != null)
+            {
+                var helper = new ImageHelper(_webHost);
+                if (viewModel.File != null)
+                {
+                    viewModel.ImageUrl = await helper.SaveFile(viewModel.File);
+                    user.Avatar = viewModel.ImageUrl;
+                }
+            }
+
+            var post = new Post
+            {
+                CommentCount = 0,
+                CustomIdentityUserId = user.Id,
+                LikeCount = 0,
+                ImageUrl = viewModel.ImageUrl,
+                DepartmentId = viewModel.DepartmentId,
+                Title = viewModel.BlogTitle
+            };
+
+            await _context.Posts.AddAsync(post);
+            await _context.SaveChangesAsync();
+
             return View();
         }
 

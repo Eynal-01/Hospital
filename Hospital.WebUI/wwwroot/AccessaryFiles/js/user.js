@@ -55,6 +55,21 @@ function PatientProfile(id) {
     })
 }
 
+function GetAllPost() {
+    $.ajax({
+        url: `/Admin/GetAllPost`,
+        method: "GET",
+
+        success: function (data) {
+            var content = "";
+            for (var i = 0; i < data; i++) {
+
+            }
+            console.log("s");
+        }
+    })
+}
+
 function GetAllAppointments() {
     //console.log("GetAllAppointments work");
     $.ajax({

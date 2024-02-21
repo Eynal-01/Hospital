@@ -58,7 +58,7 @@ namespace Hospital.WebUI.Models
         public string? ShortBiography { get; set; }
         public string? Education { get; set; }
 
-        public List<Department> Departments { get; set; }
+        public List<Department>? Departments { get; set; }
         public int? DepartmentId { get; set; }
 
     }

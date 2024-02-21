@@ -10,13 +10,14 @@ connection.start().then(function () {
 })
 
 connection.on("Connect", function (role) {
-    //if (role == "admin") {
-    //console.log(role);
-    //}
-    GetAllPatients();
-    GetAllAppointments();
-    GetAllDoctors();
-    GetAllDepartment(); 
+    if (role == "admin") {
+        //console.log(role);
+        GetAllPatients();
+        GetAllAppointments();
+        GetAllDoctors();
+        GetAllDepartment();
+        GetAllPost();
+    }
 
     //GetAllUsers();
     //element.style.display = "block";
