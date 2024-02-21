@@ -20,7 +20,7 @@ namespace Hospital.WebUI.Controllers
     {
         private readonly UserManager<CustomIdentityUser> _userManager;
         public CustomIdentityDbContext _dbContext { get; set; }
-        private readonly IDataService _dataService; 
+        private readonly IDataService _dataService;
 
         public HomeController(CustomIdentityDbContext dbContext, UserManager<CustomIdentityUser> userManager, IDataService dataService)
         {
@@ -116,6 +116,12 @@ namespace Hospital.WebUI.Controllers
                 dateList.Add(currentDate);
             }
             return Ok(dateList);
+        }
+
+        public async Task<IActionResult> getDoctors(int departmentId)
+        {
+            var doctors = _dbContext.Doctors.Where(d => d.DepartmentId == departmentId).ToListAsync();
+            return Ok(doctors);
         }
 
         public IActionResult Index()

@@ -199,3 +199,27 @@ function GetAllDoctors() {
 //        }
 //    })
 //}
+
+
+document.getElementById("departmentSelect").addEventListener("change", function () {
+    var departmentId = this.value; 
+
+    var doctorSelect = document.getElementById("doctorSelect");
+    doctorSelect.innerHTML = ""; 
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "Home/getDoctors?departmentId=" + departmentId, true);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            var doctors = JSON.parse(xhr.responseText);
+
+            doctors.forEach(function (doctor) {
+                var option = document.createElement("option");
+                option.text = doctor.name; 
+                option.value = doctor.id; 
+                doctorSelect.appendChild(option);
+            });
+        }
+    };
+    xhr.send();
+});
