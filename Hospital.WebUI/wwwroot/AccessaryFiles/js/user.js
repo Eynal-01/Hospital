@@ -120,7 +120,7 @@ function GetDays() {
 }
 
 function GetDay() {
-    console.log("CALLED")
+    console.log("CALLED");
     $.ajax({
         url: `/Home/GetAvailableDays`,
         method: "GET",
@@ -130,8 +130,7 @@ function GetDay() {
 
             for (var i = 0; i < data.length; i++) {
                 content += `
-                     <option value="${data[i]}">${data[i]}</option>
-                `;
+                     <option value="${data[i]}">${data[i]}</option>`;
             }
             $("#exampleFormControlSelect3").html(content);
         }

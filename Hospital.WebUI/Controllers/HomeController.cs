@@ -30,7 +30,7 @@ namespace Hospital.WebUI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Appoinment()
+        public async Task<IActionResult> Appointment()
         {
             var doctors = await _dbContext.Doctors.ToListAsync();
             var departments = await _dbContext.Departments.ToListAsync();
@@ -108,28 +108,23 @@ namespace Hospital.WebUI.Controllers
                 counter = admin.WorkDaysCount;
             }
             DateTime startDate = DateTime.Today;
-            List<DateTime> dateList = new List<DateTime>();
+            List<string> dateList = new List<string>();
             for (int i = 0; i < counter; i++)
             {
                 DateTime currentDate = startDate.AddDays(i);
-                currentDate.ToShortDateString();
-                dateList.Add(currentDate);
+                var d=currentDate.ToShortDateString();
+                dateList.Add(d);
             }
             return Ok(dateList);
         }
 
-        public async Task<IActionResult> getDoctors(int departmentId)
+        public async Task<IActionResult> GetDoctors(int departmentId)
         {
             var doctors = _dbContext.Doctors.Where(d => d.DepartmentId == departmentId).ToListAsync();
             return Ok(doctors);
         }
 
         public IActionResult Index()
-        {
-            return View();
-        }
-
-        public IActionResult Appointment()
         {
             return View();
         }
