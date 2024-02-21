@@ -137,6 +137,25 @@ function GetDay() {
     });
 }
 
+
+function GetTime() {
+    console.log("Time CALLED");
+    $.ajax({
+        url: `/Home/GetAvailableTimes`,
+        method: "GET",
+        success: function (data) {
+            console.log(data)
+            var content = "";
+
+            for (var i = 0; i < data.length; i++) {
+                content += `
+                     <option value="${data[i]}">${data[i]}</option>`;
+            }
+            $("#exampleFormControlSelect4").html(content);
+        }
+    });
+}
+
 function GetAllDoctors() {
     //console.log("doctor");
     $.ajax({
@@ -201,24 +220,24 @@ function GetAllDoctors() {
 
 
 document.getElementById("departmentSelect").addEventListener("change", function () {
-    var departmentId = this.value; 
+    var departmentId = this.value;
 
     var doctorSelect = document.getElementById("doctorSelect");
-    doctorSelect.innerHTML = ""; 
+    doctorSelect.innerHTML = "";
 
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", "Home/getDoctors?departmentId=" + departmentId, true);
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState == 4 && xhr.status == 200) {
-            var doctors = JSON.parse(xhr.responseText);
+    $.ajax({
 
-            doctors.forEach(function (doctor) {
+        url: `/Home/getDoctors?departmentId=${departmentId}`,
+        method: "GET",
+
+        success: function (data) {
+            console.log(data);
+            data.forEach(function (doctor) {
                 var option = document.createElement("option");
-                option.text = doctor.name; 
-                option.value = doctor.id; 
+                option.text = doctor.firstName + " " + doctor.lastName;
+                option.value = doctor.id;
                 doctorSelect.appendChild(option);
             });
         }
-    };
-    xhr.send();
+    })
 });

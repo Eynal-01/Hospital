@@ -118,9 +118,24 @@ namespace Hospital.WebUI.Controllers
             return Ok(dateList);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetAvailableTimes()
+        {
+            List<string> timeList= new List<string>();
+            var times = await _dbContext.AvailableTimes.ToListAsync();
+            for (int i = 0; i < times.Count(); i++)
+            {
+                var s = times[i].StartTime.ToShortTimeString();
+                var e = times[i].EndTime.ToShortTimeString();
+                var time = $"{s} - {e}";
+                timeList.Add(time); 
+            }
+            return Ok(timeList);       
+        }
+
         public async Task<IActionResult> GetDoctors(int departmentId)
         {
-            var doctors = _dbContext.Doctors.Where(d => d.DepartmentId == departmentId).ToListAsync();
+            var doctors = await _dbContext.Doctors.Where(d => d.DepartmentId == departmentId).ToListAsync();
             return Ok(doctors);
         }
 

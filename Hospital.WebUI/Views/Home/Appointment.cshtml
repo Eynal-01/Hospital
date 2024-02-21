@@ -101,12 +101,7 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>Available Times</label>
-                                        <select asp-for="AvailableTimeId" class="form-control" id="exampleFormControlSelect2">
-                                            @foreach (var time in Model.AvailableTimes)
-                                            {
-                                            <option>@time.StartTime - @time.EndTime</option>
-                                            }
-                                        </select>
+                                        <select asp-for="AvailableTimeId" class="form-control" id="exampleFormControlSelect4"></select>
                                     </div>
                                 </div>
 
