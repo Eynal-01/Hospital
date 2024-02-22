@@ -62,30 +62,35 @@ function GetAllPost() {
 
         success: function (data) {
             var content = "";
+            var adminName = "";
+
             for (var i = 0; i < data.posts.length; i++) {
+                if (data.posts[i].lastName != null && data.posts[i].firstName != null) {
+                    adminName = `
+                           <ul class="meta">
+                                <li><a href="#"><i class="zmdi zmdi-account col-blue"></i>Posted By: ${data.posts[i].admin.firstName} ${data.posts[i].admin.lastName}</a ></li >
+                           </ul>
+                    `;
+                }
                 content += `
 
                    <div class="card single_post">
                         <div class="body">
-                            <h3 class="m-t-0 m-b-5"><a href="blog-details.html">All photographs are accurate. None of them is the truth</a></h3>
-                            <ul class="meta">
-                                <li><a href="#"><i class="zmdi zmdi-account col-blue"></i>Posted By: John Smith</a></li>
-                                <li><a href="#"><i class="zmdi zmdi-label col-red"></i>Photography</a></li>
-                                <li><a href="#"><i class="zmdi zmdi-comment-text col-blue"></i>Comments: 3</a></li>
-                            </ul>
+                            <h3 class="m-t-0 m-b-5"><a href="blog-details.html">${data.posts[i].title}</a></h3>
+                            ${adminName}
                         </div>
                         <div class="body">
                             <div class="img-post m-b-15">
                                 <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
                                     <div class="carousel-inner" role="listbox">
                                         <div class="carousel-item active">
-                                            <img class="d-block img-fluid" src="../assets/images/blog/blog-page-1.jpg" alt="First slide">
+                                            <img class="d-block img-fluid" src="/AccessaryFiles/images/${data.posts[i].imageUrl}" alt="First slide">
                                         </div>
                                         <div class="carousel-item">
-                                            <img class="d-block img-fluid" src="../assets/images/blog/blog-page-2.jpg" alt="Second slide">
+                                            <img class="d-block img-fluid" src="/AccessaryFiles/images/${data.posts[i].imageUrl}" alt="Second slide">
                                         </div>
                                         <div class="carousel-item">
-                                            <img class="d-block img-fluid" src="../assets/images/blog/blog-page-3.jpg" alt="Third slide">
+                                            <img class="d-block img-fluid" src="/AccessaryFiles/images/${data.posts[i].imageUrl}" alt="Third slide">
                                         </div>
                                     </div>
                                     <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
@@ -103,7 +108,7 @@ function GetAllPost() {
                                     <button class="btn btn-primary btn-icon btn-icon-mini btn-round"><i class="zmdi zmdi-instagram"></i></button>
                                 </div>
                             </div>
-                            <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal</p>
+                            <p>${data.posts[i].content}</p>
                             <a href="blog-details.html" title="read more" class="btn btn-round btn-info">Read More</a>
                         </div>
                     </div>
