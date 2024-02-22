@@ -120,9 +120,10 @@ function GetDays() {
 }
 
 function GetDay() {
+    var availableDoctor = $("#doctorSelect").val();
     console.log("CALLED");
     $.ajax({
-        url: `/Home/GetAvailableDays`,
+        url: `/Home/GetAvailableDays?doctors=${availableDoctor}`,
         method: "GET",
         success: function (data) {
             console.log(data)
@@ -240,4 +241,8 @@ document.getElementById("departmentSelect").addEventListener("change", function 
             });
         }
     })
+});
+
+document.getElementById("doctorSelect").addEventListener("change", function () {
+    GetDay();
 });

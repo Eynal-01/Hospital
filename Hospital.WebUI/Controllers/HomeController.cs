@@ -78,6 +78,8 @@ namespace Hospital.WebUI.Controllers
                 DepartmentId = department.Id,
                 PatientId = patient.Id.ToString(),
                 Message = viewModel.Message,
+                AppointmentTime = viewModel.AppointmentTime,
+                AppointmentDate = viewModel.AppointmentDate
             };
 
             //viewModel.AvailableDates = receivedData;
@@ -99,8 +101,9 @@ namespace Hospital.WebUI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAvailableDays()
+        public async Task<IActionResult> GetAvailableDays(Doctor availableDoctor)
         {
+            var appointments = await _dbContext.Appointments.ToListAsync();
             var counter = 0;
             var admin = await _dbContext.Admins.FirstOrDefaultAsync(a => a.Id == a.Id);
             if (admin != null)
@@ -112,8 +115,14 @@ namespace Hospital.WebUI.Controllers
             for (int i = 0; i < counter; i++)
             {
                 DateTime currentDate = startDate.AddDays(i);
-                var d=currentDate.ToShortDateString();
-                dateList.Add(d);
+                var d = currentDate.ToShortDateString();
+                for (int k = 0; k < appointments.Count; k++)
+                {
+                    if (appointments[k].AppointmentDate != DateTime.Parse(d) && appointments[k].DoctorId != availableDoctor.Id)
+                    {
+                        dateList.Add(d);
+                    }
+                }
             }
             return Ok(dateList);
         }
@@ -121,16 +130,16 @@ namespace Hospital.WebUI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAvailableTimes()
         {
-            List<string> timeList= new List<string>();
+            List<string> timeList = new List<string>();
             var times = await _dbContext.AvailableTimes.ToListAsync();
             for (int i = 0; i < times.Count(); i++)
             {
                 var s = times[i].StartTime.ToShortTimeString();
                 var e = times[i].EndTime.ToShortTimeString();
                 var time = $"{s} - {e}";
-                timeList.Add(time); 
+                timeList.Add(time);
             }
-            return Ok(timeList);       
+            return Ok(timeList);
         }
 
         public async Task<IActionResult> GetDoctors(int departmentId)
