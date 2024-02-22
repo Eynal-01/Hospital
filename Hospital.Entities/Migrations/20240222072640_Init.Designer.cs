@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hospital.Entities.Migrations
 {
     [DbContext(typeof(CustomIdentityDbContext))]
-    [Migration("20240219162911_Init")]
+    [Migration("20240222072640_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -149,6 +149,25 @@ namespace Hospital.Entities.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("AvailableTimes");
+                });
+
+            modelBuilder.Entity("Hospital.Entities.DbEntities.NoWorkingTime", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("Day")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DoctorId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("NoWorkingTimes");
                 });
 
             modelBuilder.Entity("HospitalProject.Entities.DbEntities.Admin", b =>

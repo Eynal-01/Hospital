@@ -149,6 +149,20 @@ namespace Hospital.Entities.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "NoWorkingTimes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DoctorId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Day = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_NoWorkingTimes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Salaries",
                 columns: table => new
                 {
@@ -718,6 +732,9 @@ namespace Hospital.Entities.Migrations
 
             migrationBuilder.DropTable(
                 name: "Notifications");
+
+            migrationBuilder.DropTable(
+                name: "NoWorkingTimes");
 
             migrationBuilder.DropTable(
                 name: "Payments");

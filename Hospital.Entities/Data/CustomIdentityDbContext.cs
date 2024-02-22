@@ -38,6 +38,8 @@ namespace Hospital.Entities.Data
         public DbSet<Salary>? Salaries { get; set; }
         public DbSet<AvailableTime>? AvailableTimes { get; set; }
         public DbSet<AvailableDate>? AvailableDates { get; set; }
+        public DbSet<NoWorkingTime>? NoWorkingTimes { get; set; }
+        
 
         //protected override void OnModelCreating(ModelBuilder builder)
         //{
