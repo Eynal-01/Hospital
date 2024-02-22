@@ -157,12 +157,13 @@ namespace Hospital.WebUI.Controllers
             var user = await CurrentUser();
 
             var data = await _context.Admins.ToListAsync();
-            var posts = new List<Post>();
+            var posts = new List<PostsShowViewModel>();
             foreach (var item in data)
             {
                 var post = await _context.Posts.Where(p => p.AdminId == item.Id).ToListAsync();
                 for (int i = 0; i < post.Count(); i++)
                 {
+                    var images = post[i].ImageUrl.Split(':').ToList();
                     if (post[i].ImageUrl != null)
                     {
                         post[i].IsImage = true;
@@ -171,8 +172,21 @@ namespace Hospital.WebUI.Controllers
                     {
                         post[i].IsImage = false;
                     }
+
+                    for (int k = 0; k < images.Count(); k++)
+                    {
+                        images[k] = images[k].TrimStart();
+                    }
+
+                    var poo = new PostsShowViewModel();
+                    poo.Admin = item;
+                    poo.Content = post[i].Content;
+                    //poo.PublishTime = posts[i].PublishTime;
+                    poo.Title = post[i].Title;
+                    poo.ViewCount = post[i].ViewCount;
+                    poo.Images = images;
+                    posts.Add(poo);
                 }
-                posts.AddRange(post);
             }
             return Ok(new { posts = posts });
         }
@@ -351,24 +365,34 @@ namespace Hospital.WebUI.Controllers
         public async Task<IActionResult> NewPost(NewPostViewModel viewModel)
         {
             var user = await CurrentUser();
-            if (viewModel != null)
-            {
-                var helper = new ImageHelper(_webHost);
-                if (viewModel.File != null)
-                {
-                    viewModel.ImageUrl = await helper.SaveFile(viewModel.File);
-                    user.Avatar = viewModel.ImageUrl;
-                }
-            }
 
             var post = new Post
             {
                 AdminId = user.Id,
-                ImageUrl = viewModel.ImageUrl,
                 Title = viewModel.BlogTitle,
                 Content = viewModel.Content,
                 PublishTime = DateTime.Now.ToShortDateString(),
             };
+
+            //foreach (var item in viewModel.Files)
+            //{
+            for (int i = 0; i < viewModel.Files.Count(); i++)
+            {
+                if (viewModel.Files[i] != null)
+                {
+                    var helper = new ImageHelper(_webHost);
+                    var url = await helper.SaveFile(viewModel.Files[i]);
+                    if (viewModel.Files[i] != viewModel.Files[viewModel.Files.Count() - 1])
+                    {
+                        post.ImageUrl += $"{url} : ";
+                    }
+                    else
+                    {
+                        post.ImageUrl += $"{url}";
+                    }
+                }
+            }
+            //}
 
             await _context.Posts.AddAsync(post);
             await _context.SaveChangesAsync();

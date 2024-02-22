@@ -1,5 +1,4 @@
 ﻿var departmentName = "";
-
 function GetAllPatients() {
     /*    console.log("dsdsdd");*/
     $.ajax({
@@ -61,10 +60,32 @@ function GetAllPost() {
         method: "GET",
 
         success: function (data) {
+            console.log(data);
             var content = "";
             var adminName = "";
 
+
             for (var i = 0; i < data.posts.length; i++) {
+                var images = "";
+
+                for (var k = 0; k < data.posts[i].images.length; k++) {
+                    if (k == 0) {
+
+                        images += `
+                          <div class="carousel-item active">
+                              <img class="d-block img-fluid" src="/AccessaryFiles/images/${data.posts[i].images[k]}" alt="First slide">
+                          </div>
+                       `;
+                    }
+                    else {
+                        images += `
+                          <div class="carousel-item">
+                              <img class="d-block img-fluid" src="/AccessaryFiles/images/${data.posts[i].images[k]}" alt="First slide">
+                          </div>
+                       `;
+                    }
+                }
+
                 if (data.posts[i].lastName != null && data.posts[i].firstName != null) {
                     adminName = `
                            <ul class="meta">
@@ -83,15 +104,7 @@ function GetAllPost() {
                             <div class="img-post m-b-15">
                                 <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
                                     <div class="carousel-inner" role="listbox">
-                                        <div class="carousel-item active">
-                                            <img class="d-block img-fluid" src="/AccessaryFiles/images/${data.posts[i].imageUrl}" alt="First slide">
-                                        </div>
-                                        <div class="carousel-item">
-                                            <img class="d-block img-fluid" src="/AccessaryFiles/images/${data.posts[i].imageUrl}" alt="Second slide">
-                                        </div>
-                                        <div class="carousel-item">
-                                            <img class="d-block img-fluid" src="/AccessaryFiles/images/${data.posts[i].imageUrl}" alt="Third slide">
-                                        </div>
+                                        ${images}
                                     </div>
                                     <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
                                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -101,11 +114,6 @@ function GetAllPost() {
                                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                         <span class="sr-only">Next</span>
                                     </a>
-                                </div>
-                                <div class="social_share">
-                                    <button class="btn btn-primary btn-icon btn-icon-mini btn-round"><i class="zmdi zmdi-facebook"></i></button>
-                                    <button class="btn btn-primary btn-icon btn-icon-mini btn-round"><i class="zmdi zmdi-twitter"></i></button>
-                                    <button class="btn btn-primary btn-icon btn-icon-mini btn-round"><i class="zmdi zmdi-instagram"></i></button>
                                 </div>
                             </div>
                             <p>${data.posts[i].content}</p>

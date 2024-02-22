@@ -19,6 +19,6 @@ namespace Hospital.Entities.DbEntities
         public string? PublishTime { get; set; }
         public int ViewCount { get; set; }
 
-        public Admin? Admin { get; set; }
+        public virtual Admin? Admin { get; set; }
     }
 }
