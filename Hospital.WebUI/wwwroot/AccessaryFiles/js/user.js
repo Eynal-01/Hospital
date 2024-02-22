@@ -62,10 +62,55 @@ function GetAllPost() {
 
         success: function (data) {
             var content = "";
-            for (var i = 0; i < data; i++) {
+            for (var i = 0; i < data.posts.length; i++) {
+                content += `
 
+                   <div class="card single_post">
+                        <div class="body">
+                            <h3 class="m-t-0 m-b-5"><a href="blog-details.html">All photographs are accurate. None of them is the truth</a></h3>
+                            <ul class="meta">
+                                <li><a href="#"><i class="zmdi zmdi-account col-blue"></i>Posted By: John Smith</a></li>
+                                <li><a href="#"><i class="zmdi zmdi-label col-red"></i>Photography</a></li>
+                                <li><a href="#"><i class="zmdi zmdi-comment-text col-blue"></i>Comments: 3</a></li>
+                            </ul>
+                        </div>
+                        <div class="body">
+                            <div class="img-post m-b-15">
+                                <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                                    <div class="carousel-inner" role="listbox">
+                                        <div class="carousel-item active">
+                                            <img class="d-block img-fluid" src="../assets/images/blog/blog-page-1.jpg" alt="First slide">
+                                        </div>
+                                        <div class="carousel-item">
+                                            <img class="d-block img-fluid" src="../assets/images/blog/blog-page-2.jpg" alt="Second slide">
+                                        </div>
+                                        <div class="carousel-item">
+                                            <img class="d-block img-fluid" src="../assets/images/blog/blog-page-3.jpg" alt="Third slide">
+                                        </div>
+                                    </div>
+                                    <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                    <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="sr-only">Next</span>
+                                    </a>
+                                </div>
+                                <div class="social_share">
+                                    <button class="btn btn-primary btn-icon btn-icon-mini btn-round"><i class="zmdi zmdi-facebook"></i></button>
+                                    <button class="btn btn-primary btn-icon btn-icon-mini btn-round"><i class="zmdi zmdi-twitter"></i></button>
+                                    <button class="btn btn-primary btn-icon btn-icon-mini btn-round"><i class="zmdi zmdi-instagram"></i></button>
+                                </div>
+                            </div>
+                            <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal</p>
+                            <a href="blog-details.html" title="read more" class="btn btn-round btn-info">Read More</a>
+                        </div>
+                    </div>
+                
+                `;
             }
-            console.log("s");
+            $("#posts").html(content);
         }
     })
 }

@@ -1,5 +1,6 @@
 ﻿using Hospital.Core.Abstract;
 using Hospital.Entities.Data;
+using Hospital.Entities.DbEntities;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -19,5 +20,7 @@ namespace HospitalProject.Entities.DbEntities
         public string? City { get; set; }
         public string? Avatar { get; set; } = "userWithoutPicture.png";
         public string? Country { get; set; }
+
+        public virtual ICollection<Post>? Posts { get; set; }
     }
 }

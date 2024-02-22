@@ -156,16 +156,13 @@ namespace Hospital.WebUI.Controllers
         {
             var user = await CurrentUser();
 
-            var data = await _context.Doctors.ToListAsync();
+            var data = await _context.Admins.ToListAsync();
             var posts = new List<Post>();
             foreach (var item in data)
             {
-                var post = await _context.Posts.Where(p => p.CustomIdentityUserId == item.Id).ToListAsync();
+                var post = await _context.Posts.Where(p => p.AdminId == item.Id).ToListAsync();
                 for (int i = 0; i < post.Count(); i++)
                 {
-                    var comments = await _context.Comments.Include(nameof(Comment.Post)).Where(f => f.PostId == post[i].Id).ToListAsync();
-                    var userLiked = await _context.UserLikedPosts.FirstOrDefaultAsync(f => f.UserId == user.Id && f.PostId == post[i].Id);
-                    post[i].Comments = comments;
                     if (post[i].ImageUrl != null)
                     {
                         post[i].IsImage = true;
@@ -210,13 +207,23 @@ namespace Hospital.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> AddDepartment(AddDepartmentViewModel viewModel)
         {
-            var departmentCount = await _context.Departments.ToListAsync();
-            var d = (int.Parse(departmentCount[departmentCount.Count - 1].Id) + 1).ToString();
-            var department = new Department
+            var departments = await _context.Departments.ToListAsync();
+            var department = new Department();
+            var newDeparetmentId = "1";
+            if (departments.Count() > 0)
             {
-                Id = d,
-                DepartmentName = viewModel.Name
-            };
+                newDeparetmentId = (int.Parse(departments[departments.Count - 1].Id) + 1).ToString();
+                department = new Department
+                {
+                    Id = newDeparetmentId,
+                    DepartmentName = viewModel.Name
+                };
+            }
+            else
+            {
+                department.Id = newDeparetmentId;
+                department.DepartmentName = viewModel.Name;
+            }
             await _context.Departments.AddAsync(department);
             await _context.SaveChangesAsync();
             return View();
@@ -337,12 +344,7 @@ namespace Hospital.WebUI.Controllers
         [HttpGet]
         public async Task<IActionResult> NewPost()
         {
-            var departments = await _context.Departments.ToListAsync();
-            var viewModel = new NewPostViewModel
-            {
-                Departments = departments,
-            };
-            return View(viewModel);
+            return View();
         }
 
         [HttpPost]
@@ -361,12 +363,11 @@ namespace Hospital.WebUI.Controllers
 
             var post = new Post
             {
-                CommentCount = 0,
-                CustomIdentityUserId = user.Id,
-                LikeCount = 0,
+                AdminId = user.Id,
                 ImageUrl = viewModel.ImageUrl,
-                DepartmentId = viewModel.DepartmentId,
-                Title = viewModel.BlogTitle
+                Title = viewModel.BlogTitle,
+                Content = viewModel.Content,
+                PublishTime = DateTime.Now.ToShortDateString(),
             };
 
             await _context.Posts.AddAsync(post);

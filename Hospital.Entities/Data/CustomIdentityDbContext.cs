@@ -21,9 +21,7 @@ namespace Hospital.Entities.Data
         {
         }
 
-        public DbSet<Comment> Comments { get; set; }
         public DbSet<Post> Posts { get; set; }
-        public DbSet<UserLikedPost> UserLikedPosts { get; set; }
         public DbSet<Appointment>? Appointments { get; set; }
         public DbSet<Admin>? Admins { get; set; }
         public DbSet<Doctor>? Doctors { get; set; }
