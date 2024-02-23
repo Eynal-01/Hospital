@@ -15,9 +15,9 @@ namespace HospitalProject.Entities.DbEntities
         public string? DoctorId { get; set; }
         public string? DepartmentId { get; set; }
         public string? PatientId { get; set; }
-        public string? AppointmentDateId { get; set; }
-        public string? AppointmentTimeId { get; set; }
-        public DateTime? AppointmentTime { get; set; }
+        public int AppointmentDateId { get; set; }
+        public int AppointmentTimeId { get; set; }
+        public string? AppointmentTime { get; set; }
         public DateTime? AppointmentDate { get; set; }
         public string? Message { get; set; }
 

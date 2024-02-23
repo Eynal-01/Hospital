@@ -71,8 +71,6 @@ namespace Hospital.WebUI.Controllers
 
             var appoinment = new Appointment
             {
-                AppointmentDateId = viewModel.AvailableDateId,
-                AppointmentTimeId = viewModel.AvailableTimeId,
                 Age = patient.Age,
                 DoctorId = doctor.Id,
                 DepartmentId = department.Id,
@@ -81,27 +79,13 @@ namespace Hospital.WebUI.Controllers
                 AppointmentTime = viewModel.AppointmentTime,
                 AppointmentDate = viewModel.AppointmentDate
             };
-
-            //viewModel.AvailableDates = receivedData;
-            //for (int i = 0; i < appointments.Count; i++)
-            //{
-            //    if (appointments[i].AppointmentTimeId == appoinment.AppointmentTimeId && appointments[i].DoctorId == appoinment.DoctorId)
-            //    {
-            //        Console.Beep();
-            //        break;
-            //    }
-            //    else
-            //    {
-            //        var doctor1 = _dbContext.Doctors.FirstOrDefault(d => d.Id == appoinment.DoctorId);
-            //        await _dbContext.Appointments.AddAsync(appoinment);
-            //        await _dbContext.SaveChangesAsync();
-            //    }
-            //}
+            await _dbContext.Appointments.AddAsync(appoinment);
+            await _dbContext.SaveChangesAsync();
             return RedirectToAction("Appoinment", "Home");
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAvailableDays(string availableDoctor)
+        public async Task<IActionResult> GetAvailableDays(string doctorId)
         {
             var noWorkingTimes = await _dbContext.NoWorkingTimes.ToListAsync();
             var counter = 0;
@@ -114,30 +98,36 @@ namespace Hospital.WebUI.Controllers
                 }
             }
             DateTime startDate = DateTime.Today;
-            List<string> dateList = new List<string>();
             var appointments = await _dbContext.Appointments.ToListAsync();
+            List<string> dateList = new List<string>();
             for (int i = 0; i < counter; i++)
             {
                 DateTime currentDate = startDate.AddDays(i);
                 var d = currentDate.ToShortDateString();
-                //for (int k = 0; k < appointments.Count; k++)
-                //{
-                //    var dt = DateTime.Parse(d);
-                //    for (int y = 0; y < noWorkingTimes.Count(); y++)
-                //    {
-                //        if (appointments[k].AppointmentDate != dt && appointments[k].DoctorId != availableDoctor.Id && noWorkingTimes[y].Day != dt && noWorkingTimes[y].DoctorId != availableDoctor.Id)
-                //        {
-                            dateList.Add(d);
-                        //}
-                    //}
-                //}
+                var dt = DateTime.Parse(d);
+                for (int y = 0; y < noWorkingTimes.Count(); y++)
+                {
+                    if (noWorkingTimes[y].Day != dt && noWorkingTimes[y].DoctorId != doctorId)
+                    {
+                        dateList.Add(d);
+                    }
+                    else if (noWorkingTimes[y].Day == dt && noWorkingTimes[y].DoctorId != doctorId)
+                    {
+                        dateList.Add(d);
+                    }
+                    else if (noWorkingTimes[y].Day != dt && noWorkingTimes[y].DoctorId == doctorId)
+                    {
+                        dateList.Add(d);
+                    }
+                }
             }
             return Ok(dateList);
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAvailableTimes()
+        public async Task<IActionResult> GetAvailableTimes(string doctorId, string appointmentDate)
         {
+            var appointments = await _dbContext.Appointments.ToListAsync();
             List<string> timeList = new List<string>();
             var times = await _dbContext.AvailableTimes.ToListAsync();
             for (int i = 0; i < times.Count(); i++)
@@ -145,7 +135,15 @@ namespace Hospital.WebUI.Controllers
                 var s = times[i].StartTime.ToShortTimeString();
                 var e = times[i].EndTime.ToShortTimeString();
                 var time = $"{s} - {e}";
-                timeList.Add(time);
+                for (int k = 0; k < appointments.Count(); k++)
+                {
+                    if (appointments[k].AppointmentTime != time
+                        && appointments[k].DoctorId != doctorId
+                        && appointments[k].AppointmentDate.ToString() != appointmentDate)
+                    {
+                        timeList.Add(time);
+                    }
+                }
             }
             return Ok(timeList);
         }

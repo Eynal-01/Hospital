@@ -18,8 +18,8 @@ connection.on("Connect", function (role) {
     GetDays();
     GetAllDoctors();
     GetAllDepartment(); 
-    GetDay();
-    GetTime();
+    //GetDay();
+    //GetTime();
 
     //GetAllUsers();
     //element.style.display = "block";

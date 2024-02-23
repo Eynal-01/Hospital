@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hospital.Entities.Migrations
 {
     [DbContext(typeof(CustomIdentityDbContext))]
-    [Migration("20240222072640_Init")]
+    [Migration("20240223102711_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -260,11 +260,17 @@ namespace Hospital.Entities.Migrations
                     b.Property<int>("Age")
                         .HasColumnType("int");
 
-                    b.Property<string>("AppointmentDateId")
+                    b.Property<DateTime?>("AppointmentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("AppointmentDateId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("AppointmentTime")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("AppointmentTimeId")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("AppointmentTimeId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("AvailableDateId")
                         .HasColumnType("int");

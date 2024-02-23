@@ -123,7 +123,7 @@ function GetDay() {
     var availableDoctor = $("#doctorSelect").val();
     console.log("GetDay CALLED");
     $.ajax({
-        url: `/Home/GetAvailableDays?doctors=${availableDoctor}`,
+        url: `/Home/GetAvailableDays?doctorId=${availableDoctor}`,
         method: "GET",
         success: function (data) {
             console.log(data)
@@ -140,9 +140,11 @@ function GetDay() {
 
 
 function GetTime() {
+    var availableDoctor = $("#doctorSelect").val();
+    var appointmentDate = $("#exampleFormControlSelect3").val();
     console.log("Time CALLED");
     $.ajax({
-        url: `/Home/GetAvailableTimes`,
+        url: `/Home/GetAvailableTimes?doctorId=${availableDoctor}&appointmentDate=${appointmentDate}`,
         method: "GET",
         success: function (data) {
             console.log(data)
@@ -243,3 +245,13 @@ document.getElementById("departmentSelect").addEventListener("change", function 
         }
     })
 });
+
+document.getElementById("doctorSelect").addEventListener("change", function () {
+    GetDay();
+});
+
+document.getElementById("exampleFormControlSelect3").addEventListener("change", function () {
+    GetTime();
+});
+
+

@@ -504,8 +504,10 @@ namespace Hospital.Entities.Migrations
                     DoctorId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     DepartmentId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     PatientId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    AppointmentDateId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AppointmentTimeId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AppointmentDateId = table.Column<int>(type: "int", nullable: false),
+                    AppointmentTimeId = table.Column<int>(type: "int", nullable: false),
+                    AppointmentTime = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AppointmentDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Message = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AvailableTimeId = table.Column<int>(type: "int", nullable: true),
                     AvailableDateId = table.Column<int>(type: "int", nullable: true)

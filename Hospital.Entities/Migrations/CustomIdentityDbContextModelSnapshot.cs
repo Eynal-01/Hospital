@@ -258,11 +258,17 @@ namespace Hospital.Entities.Migrations
                     b.Property<int>("Age")
                         .HasColumnType("int");
 
-                    b.Property<string>("AppointmentDateId")
+                    b.Property<DateTime?>("AppointmentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("AppointmentDateId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("AppointmentTime")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("AppointmentTimeId")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("AppointmentTimeId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("AvailableDateId")
                         .HasColumnType("int");
