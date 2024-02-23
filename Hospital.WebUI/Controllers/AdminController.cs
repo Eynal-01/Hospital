@@ -152,6 +152,13 @@ namespace Hospital.WebUI.Controllers
             return RedirectToAction("AddDoctor", "Admin");
         }
 
+
+        public async Task<IActionResult> DoctorShowPost()
+        {
+            var doctors = await _context.Doctors.ToListAsync();
+            return Ok(doctors);
+        }
+
         public async Task<IActionResult> GetAllPost()
         {
             var user = await CurrentUser();
@@ -179,6 +186,7 @@ namespace Hospital.WebUI.Controllers
                     }
 
                     var poo = new PostsShowViewModel();
+                    poo.PostId = post[i].Id;
                     poo.Admin = item;
                     poo.Content = post[i].Content;
                     //poo.PublishTime = posts[i].PublishTime;

@@ -4,6 +4,7 @@ namespace Hospital.WebUI.Models
 {
     public class PostsShowViewModel
     {
+        public int PostId { get; set; }
         public string? Content { get; set; }
         public string? Title { get; set; }
         public string? PublishTime { get; set; }

@@ -36,5 +36,10 @@ namespace Hospital.WebUI.Hubs
         {
             await Clients.Users(new String[] { id }).SendAsync("AdminRefresh", id);
         }
+
+        public async Task DoctorCall(string id)
+        {
+            await Clients.Users(new String[] { id }).SendAsync("DoctorPostShow", id);
+        }
     }
 }

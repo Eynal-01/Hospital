@@ -54,37 +54,72 @@ function PatientProfile(id) {
     })
 }
 
-function GetAllPost() {
+//function UserRefresh() {
+//    $.ajax({
+//        url: `/Admin/GetAll/${id}`,
+//        method: "GET",
+
+//        success: function (data) {
+//            console.log("s");
+//        }
+//    })
+//}
+
+function GetAllPostDoctor() {
+    //var queryControllerName = "";
+    //if (role == "admin") {
+    //    queryControllerName = "Admin";
+    //}
+    //else {
+    //    queryControllerName = "Doctor";
+    //}
     $.ajax({
-        url: `/Admin/GetAllPost`,
+        url: `/Doctor/GetAllPost`,
         method: "GET",
 
         success: function (data) {
             console.log(data);
             var content = "";
             var adminName = "";
-
+            var arrow = "";
+            var images = "";
 
             for (var i = 0; i < data.posts.length; i++) {
-                var images = "";
+                images = "";
+                arrow = "";
 
                 for (var k = 0; k < data.posts[i].images.length; k++) {
                     if (k == 0) {
 
                         images += `
-                          <div class="carousel-item active">
-                              <img class="d-block img-fluid" src="/AccessaryFiles/images/${data.posts[i].images[k]}" alt="First slide">
-                          </div>
+                             <div class="carousel-item active" style="text-align:center;width:100%;">
+                               <img class="img-fluid"  src="/AccessaryFiles/images/${data.posts[i].images[k]}" alt="Responsive image" >
+                            </div>
                        `;
                     }
                     else {
                         images += `
-                          <div class="carousel-item">
-                              <img class="d-block img-fluid" src="/AccessaryFiles/images/${data.posts[i].images[k]}" alt="First slide">
+                          <div class="carousel-item" style="text-align:center;width:100%;">
+                               <img class="img-fluid" src="/AccessaryFiles/images/${data.posts[i].images[k]}" alt="Responsive image" >
                           </div>
                        `;
                     }
                 }
+
+                if (data.posts[i].images.length > 1) {
+                    arrow += `
+                         <a class="carousel-control-prev" href="#carouselExampleIndicators${data.posts[i].postId}" role="button" data-slide="prev">
+                           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                           <span class="sr-only">Previous</span>
+                         </a>
+                         <a class="carousel-control-next" href="#carouselExampleIndicators${data.posts[i].postId}" role="button" data-slide="next">
+                           <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                           <span class="sr-only">Next</span>
+                         </a>
+                    `;
+                }
+
+
 
                 if (data.posts[i].lastName != null && data.posts[i].firstName != null) {
                     adminName = `
@@ -93,6 +128,7 @@ function GetAllPost() {
                            </ul>
                     `;
                 }
+
                 content += `
 
                    <div class="card single_post">
@@ -102,19 +138,12 @@ function GetAllPost() {
                         </div>
                         <div class="body">
                             <div class="img-post m-b-15">
-                                <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-                                    <div class="carousel-inner" role="listbox">
-                                        ${images}
-                                    </div>
-                                    <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                        <span class="sr-only">Previous</span>
-                                    </a>
-                                    <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                        <span class="sr-only">Next</span>
-                                    </a>
-                                </div>
+                                 <div id="carouselExampleIndicators${data.posts[i].postId}" class="carousel slide" data-ride="carousel">
+                                   <div class="carousel-inner">
+                                     ${images}
+                                   </div>
+                                   ${arrow}
+                               </div>
                             </div>
                             <p>${data.posts[i].content}</p>
                             <a href="blog-details.html" title="read more" class="btn btn-round btn-info">Read More</a>
@@ -123,7 +152,191 @@ function GetAllPost() {
                 
                 `;
             }
+
+            $("#postsDoctor").html(content);
+        }
+    })
+}
+
+function GetAllPostAdmin() {
+    //var queryControllerName = "";
+    //if (role == "admin") {
+    //    queryControllerName = "Admin";
+    //}
+    //else {
+    //    queryControllerName = "Doctor";
+    //}
+    $.ajax({
+        url: `/Admin/GetAllPost`,
+        method: "GET",
+
+        success: function (data) {
+            console.log(data);
+            var content = "";
+            var adminName = "";
+            var arrow = "";
+            var images = "";
+
+            for (var i = 0; i < data.posts.length; i++) {
+                images = "";
+                arrow = "";
+
+                for (var k = 0; k < data.posts[i].images.length; k++) {
+                    if (k == 0) {
+
+                        images += `
+                             <div class="carousel-item active" style="text-align:center;width:100%;">
+                               <img class="img-fluid"  src="/AccessaryFiles/images/${data.posts[i].images[k]}" alt="Responsive image" >
+                            </div>
+                       `;
+                    }
+                    else {
+                        images += `
+                          <div class="carousel-item" style="text-align:center;width:100%;">
+                               <img class="img-fluid" src="/AccessaryFiles/images/${data.posts[i].images[k]}" alt="Responsive image" >
+                          </div>
+                       `;
+                    }
+                }
+
+                if (data.posts[i].images.length > 1) {
+                    arrow += `
+                         <a class="carousel-control-prev" href="#carouselExampleIndicators${data.posts[i].postId}" role="button" data-slide="prev">
+                           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                           <span class="sr-only">Previous</span>
+                         </a>
+                         <a class="carousel-control-next" href="#carouselExampleIndicators${data.posts[i].postId}" role="button" data-slide="next">
+                           <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                           <span class="sr-only">Next</span>
+                         </a>
+                    `;
+                }
+
+
+
+                if (data.posts[i].lastName != null && data.posts[i].firstName != null) {
+                    adminName = `
+                           <ul class="meta">
+                                <li><a href="#"><i class="zmdi zmdi-account col-blue"></i>Posted By: ${data.posts[i].admin.firstName} ${data.posts[i].admin.lastName}</a ></li >
+                           </ul>
+                    `;
+                }
+
+                content += `
+
+                   <div class="card single_post">
+                        <div class="body">
+                            <h3 class="m-t-0 m-b-5"><a href="blog-details.html">${data.posts[i].title}</a></h3>
+                            ${adminName}
+                        </div>
+                        <div class="body">
+                            <div class="img-post m-b-15">
+                                 <div id="carouselExampleIndicators${data.posts[i].postId}" class="carousel slide" data-ride="carousel">
+                                   <div class="carousel-inner">
+                                     ${images}
+                                   </div>
+                                   ${arrow}
+                               </div>
+                            </div>
+                            <p>${data.posts[i].content}</p>
+                            <a href="blog-details.html" title="read more" class="btn btn-round btn-info">Read More</a>
+                        </div>
+                    </div>
+                
+                `;
+            }
+            DoctorShowPost();
             $("#posts").html(content);
+        }
+    })
+}
+
+function DoctorShowPost() {
+    $.ajax({
+        url: `/Admin/DoctorShowPost`,
+        method: "GET",
+
+        success: function (data) {
+            for (var i = 0; i < data.length; i++) {
+                DoctorCall(data[i].id);
+            }
+        }
+    })
+}
+
+function GetAllPostPatient() {
+    $.ajax({
+        url: `/Home/GetAllPost`,
+        method: "GET",
+
+        success: function (data) {
+            let content = "";
+            var images = "";
+            var arrow = "";
+
+            for (var i = 0; i < data.posts.length; i++) {
+                //var doctor = GetAppointmentDoctor(data[i].doctorId)
+                images = "";
+                arrow = "";
+
+                for (var k = 0; k < data.posts[i].images.length; k++) {
+                    if (k == 0) {
+                        images += `
+                             <div class="carousel-item active" style="text-align:center;width:100%;">
+                               <img class="img-fluid" src="/AccessaryFiles/images/${data.posts[i].images[k]}" alt="Responsive image">
+                            </div>
+                       `;
+                    }
+                    else {
+                        images += `
+                          <div class="carousel-item" style="text-align:center;width:100%;">
+                               <img class="img-fluid" src="/AccessaryFiles/images/${data.posts[i].images[k]}" alt="Responsive image">
+                          </div>
+                       `;
+                    }
+                }
+
+                if (data.posts[i].images.length > 1) {
+                    arrow += `
+                         <a class="carousel-control-prev" href="#carouselExampleIndicators${data.posts[i].postId}" role="button" data-slide="prev">
+                           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                           <span class="sr-only">Previous</span>
+                         </a>
+                         <a class="carousel-control-next" href="#carouselExampleIndicators${data.posts[i].postId}" role="button" data-slide="next">
+                           <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                           <span class="sr-only">Next</span>
+                         </a>
+                    `;
+                }
+
+                content += `
+                      <div class="col-lg-12 col-md-12 mb-5">
+							<div class="blog-item">
+                              <div class="img-post m-b-15">
+                                 <div id="carouselExampleIndicators${data.posts[i].postId}" class="carousel slide" data-ride="carousel">
+                                   <div class="carousel-inner">
+                                     ${images}
+                                   </div>
+                                   ${arrow}
+                               </div>
+                            </div>
+
+								<div class="blog-item-content">
+									<div class="blog-item-meta mb-3 mt-4">
+										<span class="text-black text-capitalize mr-3"><i class="icofont-calendar mr-1"></i> 28th January</span>
+									</div>
+
+									<h2 class="mt-3 mb-3"><a href="blog-single.html">${data.posts[i].title}</a></h2>
+
+									<p class="mb-4">${data.posts[i].content}</p>
+
+									<a href="blog-single.html" target="_blank" class="btn btn-main btn-icon btn-round-full">Read More <i class="icofont-simple-right ml-2  "></i></a>
+								</div>
+							</div>
+						</div>
+                `;
+            }
+            $("#patientPosts").html(content);
         }
     })
 }

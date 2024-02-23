@@ -10,13 +10,23 @@ connection.start().then(function () {
 })
 
 connection.on("Connect", function (role) {
-    if (role == "admin") {
-        //console.log(role);
-        GetAllPatients();
-        GetAllAppointments();
-        GetAllDoctors();
-        GetAllDepartment();
-        GetAllPost();
+    //if (role == "admin") {
+    //    //console.log(role);
+    //    GetAllPatients();
+    //    GetAllAppointments();
+    //    GetAllDoctors();
+    //    GetAllDepartment();
+    //}
+    //else if (role == "patient") {
+    //    GetAllPostPatient();
+    //}
+    if (role == "doctor") {
+        console.log(role);
+        GetAllPostDoctor();
+    }
+    else if (role == "admin") {
+        console.log(role);
+        GetAllPostAdmin();
     }
 
     //GetAllUsers();
@@ -32,6 +42,10 @@ async function AdminCall(id) {
     await connection.invoke("AdminCall", id);
 }
 
+async function DoctorCall(id) {
+    await connection.invoke("DoctorCall", id);
+}
+
 connection.on("AdminRefresh", function (id) {
     GetAllPatients();
     GetAllAppointments();
@@ -39,3 +53,11 @@ connection.on("AdminRefresh", function (id) {
     //GetAllUsers();
     //GetMyAndFriendPosts();
 })
+
+connection.on("DoctorPostShow", function (id) {
+    GetAllPostDoctor();
+    //GetMyRequests();
+    //GetAllUsers();
+    //GetMyAndFriendPosts();
+})
+       
