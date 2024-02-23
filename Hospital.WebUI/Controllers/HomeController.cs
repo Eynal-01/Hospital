@@ -101,28 +101,36 @@ namespace Hospital.WebUI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAvailableDays(Doctor availableDoctor)
+        public async Task<IActionResult> GetAvailableDays(string availableDoctor)
         {
-            var appointments = await _dbContext.Appointments.ToListAsync();
+            var noWorkingTimes = await _dbContext.NoWorkingTimes.ToListAsync();
             var counter = 0;
-            var admin = await _dbContext.Admins.FirstOrDefaultAsync(a => a.Id == a.Id);
-            if (admin != null)
+            var admins = await _dbContext.Admins.ToListAsync();
+            for (int i = 0; i < admins.Count(); i++)
             {
-                counter = admin.WorkDaysCount;
+                if (admins[i].WorkDaysCount > 0)
+                {
+                    counter = admins[i].WorkDaysCount;
+                }
             }
             DateTime startDate = DateTime.Today;
             List<string> dateList = new List<string>();
+            var appointments = await _dbContext.Appointments.ToListAsync();
             for (int i = 0; i < counter; i++)
             {
                 DateTime currentDate = startDate.AddDays(i);
                 var d = currentDate.ToShortDateString();
-                for (int k = 0; k < appointments.Count; k++)
-                {
-                    if (appointments[k].AppointmentDate != DateTime.Parse(d) && appointments[k].DoctorId != availableDoctor.Id)
-                    {
-                        dateList.Add(d);
-                    }
-                }
+                //for (int k = 0; k < appointments.Count; k++)
+                //{
+                //    var dt = DateTime.Parse(d);
+                //    for (int y = 0; y < noWorkingTimes.Count(); y++)
+                //    {
+                //        if (appointments[k].AppointmentDate != dt && appointments[k].DoctorId != availableDoctor.Id && noWorkingTimes[y].Day != dt && noWorkingTimes[y].DoctorId != availableDoctor.Id)
+                //        {
+                            dateList.Add(d);
+                        //}
+                    //}
+                //}
             }
             return Ok(dateList);
         }
