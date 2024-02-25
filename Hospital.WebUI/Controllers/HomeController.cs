@@ -100,24 +100,35 @@ namespace Hospital.WebUI.Controllers
             DateTime startDate = DateTime.Today;
             var appointments = await _dbContext.Appointments.ToListAsync();
             List<string> dateList = new List<string>();
-            for (int i = 0; i < counter; i++)
+            for (int y = 0; y < noWorkingTimes.Count(); y++)
             {
-                DateTime currentDate = startDate.AddDays(i);
-                var d = currentDate.ToShortDateString();
-                var dt = DateTime.Parse(d);
-                for (int y = 0; y < noWorkingTimes.Count(); y++)
+                for (int i = 0; i < 1; i++)
                 {
-                    if (noWorkingTimes[y].Day != dt && noWorkingTimes[y].DoctorId != doctorId)
+
+                    for (int p = 0; p < counter; p++)
                     {
-                        dateList.Add(d);
-                    }
-                    else if (noWorkingTimes[y].Day == dt && noWorkingTimes[y].DoctorId != doctorId)
-                    {
-                        dateList.Add(d);
-                    }
-                    else if (noWorkingTimes[y].Day != dt && noWorkingTimes[y].DoctorId == doctorId)
-                    {
-                        dateList.Add(d);
+                        DateTime currentDate = startDate.AddDays(i);
+                        var d = currentDate.ToShortDateString();
+                        var dt = DateTime.Parse(d);
+                        if (noWorkingTimes[y].Day == dt && noWorkingTimes[y].DoctorId == doctorId)
+                        {
+                        }
+                        else
+                        {
+                            dateList.Add(d);
+                        }
+                        //if (noWorkingTimes[y].Day != dt && noWorkingTimes[y].DoctorId != doctorId)
+                        //{
+                        //    dateList.Add(d);
+                        //}
+                        //else if (noWorkingTimes[y].Day == dt && noWorkingTimes[y].DoctorId != doctorId)
+                        //{
+                        //    dateList.Add(d);
+                        //}
+                        //else if (noWorkingTimes[y].Day != dt && noWorkingTimes[y].DoctorId == doctorId)
+                        //{
+                        //    dateList.Add(d);
+                        //}
                     }
                 }
             }
