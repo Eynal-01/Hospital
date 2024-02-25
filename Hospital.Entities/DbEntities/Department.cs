@@ -1,4 +1,5 @@
 ﻿using Hospital.Core.Abstract;
+using Hospital.Entities.DbEntities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

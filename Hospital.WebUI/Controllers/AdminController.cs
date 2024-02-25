@@ -1,5 +1,6 @@
 ﻿using Hospital.Business.Abstract;
 using Hospital.Entities.Data;
+using Hospital.Entities.DbEntities;
 using Hospital.WebUI.Helpers;
 using Hospital.WebUI.Models;
 using HospitalProject.Entities.DbEntities;
@@ -144,6 +145,7 @@ namespace Hospital.WebUI.Controllers
             return RedirectToAction("AddDoctor", "Admin");
         }
 
+<<<<<<< HEAD
         public async Task<IActionResult> GetAvailableDays(int availableCount)
         {
             var admins = await _context.Admins.ToListAsync();
@@ -153,6 +155,31 @@ namespace Hospital.WebUI.Controllers
                 await _context.SaveChangesAsync();
             }
             return Ok(admins);
+=======
+        public async Task<IActionResult> GetAllPost()
+        {
+            var user = await CurrentUser();
+
+            var data = await _context.Admins.ToListAsync();
+            var posts = new List<Post>();
+            foreach (var item in data)
+            {
+                var post = await _context.Posts.Where(p => p.AdminId == item.Id).ToListAsync();
+                for (int i = 0; i < post.Count(); i++)
+                {
+                    if (post[i].ImageUrl != null)
+                    {
+                        post[i].IsImage = true;
+                    }
+                    else
+                    {
+                        post[i].IsImage = false;
+                    }
+                }
+                posts.AddRange(post);
+            }
+            return Ok(new { posts = posts });
+>>>>>>> bf12e164ee3a684225be48c6f4225e079ee9b71e
         }
 
         public static string HashPassword(string password)
@@ -174,13 +201,23 @@ namespace Hospital.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> AddDepartment(AddDepartmentViewModel viewModel)
         {
-            var departmentCount = await _context.Departments.ToListAsync();
-            var d = (int.Parse(departmentCount[departmentCount.Count - 1].Id) + 1).ToString();
-            var department = new Department
+            var departments = await _context.Departments.ToListAsync();
+            var department = new Department();
+            var newDeparetmentId = "1";
+            if (departments.Count() > 0)
             {
-                Id = d,
-                DepartmentName = viewModel.Name
-            };
+                newDeparetmentId = (int.Parse(departments[departments.Count - 1].Id) + 1).ToString();
+                department = new Department
+                {
+                    Id = newDeparetmentId,
+                    DepartmentName = viewModel.Name
+                };
+            }
+            else
+            {
+                department.Id = newDeparetmentId;
+                department.DepartmentName = viewModel.Name;
+            }
             await _context.Departments.AddAsync(department);
             await _context.SaveChangesAsync();
             return View();
@@ -313,8 +350,38 @@ namespace Hospital.WebUI.Controllers
             return View();
         }
 
-        public IActionResult NewPost()
+        [HttpGet]
+        public async Task<IActionResult> NewPost()
         {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> NewPost(NewPostViewModel viewModel)
+        {
+            var user = await CurrentUser();
+            if (viewModel != null)
+            {
+                var helper = new ImageHelper(_webHost);
+                if (viewModel.File != null)
+                {
+                    viewModel.ImageUrl = await helper.SaveFile(viewModel.File);
+                    user.Avatar = viewModel.ImageUrl;
+                }
+            }
+
+            var post = new Post
+            {
+                AdminId = user.Id,
+                ImageUrl = viewModel.ImageUrl,
+                Title = viewModel.BlogTitle,
+                Content = viewModel.Content,
+                PublishTime = DateTime.Now.ToShortDateString(),
+            };
+
+            await _context.Posts.AddAsync(post);
+            await _context.SaveChangesAsync();
+
             return View();
         }
 

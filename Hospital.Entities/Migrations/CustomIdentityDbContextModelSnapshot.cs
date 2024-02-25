@@ -114,7 +114,11 @@ namespace Hospital.Entities.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+<<<<<<< HEAD
             modelBuilder.Entity("Hospital.Entities.DbEntities.AvailableDate", b =>
+=======
+            modelBuilder.Entity("Hospital.Entities.DbEntities.Post", b =>
+>>>>>>> bf12e164ee3a684225be48c6f4225e079ee9b71e
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -122,6 +126,7 @@ namespace Hospital.Entities.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+<<<<<<< HEAD
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
@@ -166,6 +171,34 @@ namespace Hospital.Entities.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("NoWorkingTimes");
+=======
+                    b.Property<string>("AdminId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("IsImage")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PublishTime")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ViewCount")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AdminId");
+
+                    b.ToTable("Posts");
+>>>>>>> bf12e164ee3a684225be48c6f4225e079ee9b71e
                 });
 
             modelBuilder.Entity("HospitalProject.Entities.DbEntities.Admin", b =>
@@ -824,6 +857,15 @@ namespace Hospital.Entities.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Hospital.Entities.DbEntities.Post", b =>
+                {
+                    b.HasOne("HospitalProject.Entities.DbEntities.Admin", "Admin")
+                        .WithMany("Posts")
+                        .HasForeignKey("AdminId");
+
+                    b.Navigation("Admin");
+                });
+
             modelBuilder.Entity("HospitalProject.Entities.DbEntities.Appointment", b =>
                 {
                     b.HasOne("Hospital.Entities.DbEntities.AvailableDate", "AvailableDate")
@@ -1008,6 +1050,11 @@ namespace Hospital.Entities.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("HospitalProject.Entities.DbEntities.Admin", b =>
+                {
+                    b.Navigation("Posts");
                 });
 
             modelBuilder.Entity("HospitalProject.Entities.DbEntities.Calendar", b =>
