@@ -145,7 +145,6 @@ namespace Hospital.WebUI.Controllers
             return RedirectToAction("AddDoctor", "Admin");
         }
 
-<<<<<<< HEAD
         public async Task<IActionResult> GetAvailableDays(int availableCount)
         {
             var admins = await _context.Admins.ToListAsync();
@@ -155,7 +154,7 @@ namespace Hospital.WebUI.Controllers
                 await _context.SaveChangesAsync();
             }
             return Ok(admins);
-=======
+        }
         public async Task<IActionResult> GetAllPost()
         {
             var user = await CurrentUser();
@@ -179,7 +178,6 @@ namespace Hospital.WebUI.Controllers
                 posts.AddRange(post);
             }
             return Ok(new { posts = posts });
->>>>>>> bf12e164ee3a684225be48c6f4225e079ee9b71e
         }
 
         public static string HashPassword(string password)
