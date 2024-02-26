@@ -97,38 +97,22 @@ namespace Hospital.WebUI.Controllers
                     counter = admins[i].WorkDaysCount;
                 }
             }
+
             DateTime startDate = DateTime.Today;
             var appointments = await _dbContext.Appointments.ToListAsync();
             List<string> dateList = new List<string>();
-            for (int y = 0; y < noWorkingTimes.Count(); y++)
-            {
-                for (int i = 0; i < 1; i++)
-                {
 
-                    for (int p = 0; p < counter; p++)
+            for (int i = 0; i < counter; i++)
+            {
+                DateTime currentDate = startDate.AddDays(i);
+                var d = currentDate.ToShortDateString();
+                var dt = DateTime.Parse(d);
+                dateList.Add(d);
+                for (int k = 0; k < noWorkingTimes.Count(); k++)
+                {
+                    if (noWorkingTimes[k].Day == dt && noWorkingTimes[k].DoctorId == doctorId)
                     {
-                        DateTime currentDate = startDate.AddDays(i);
-                        var d = currentDate.ToShortDateString();
-                        var dt = DateTime.Parse(d);
-                        if (noWorkingTimes[y].Day == dt && noWorkingTimes[y].DoctorId == doctorId)
-                        {
-                        }
-                        else
-                        {
-                            dateList.Add(d);
-                        }
-                        //if (noWorkingTimes[y].Day != dt && noWorkingTimes[y].DoctorId != doctorId)
-                        //{
-                        //    dateList.Add(d);
-                        //}
-                        //else if (noWorkingTimes[y].Day == dt && noWorkingTimes[y].DoctorId != doctorId)
-                        //{
-                        //    dateList.Add(d);
-                        //}
-                        //else if (noWorkingTimes[y].Day != dt && noWorkingTimes[y].DoctorId == doctorId)
-                        //{
-                        //    dateList.Add(d);
-                        //}
+                        dateList.Remove(d);
                     }
                 }
             }
@@ -146,13 +130,15 @@ namespace Hospital.WebUI.Controllers
                 var s = times[i].StartTime.ToShortTimeString();
                 var e = times[i].EndTime.ToShortTimeString();
                 var time = $"{s} - {e}";
+                timeList.Add(time);
+
                 for (int k = 0; k < appointments.Count(); k++)
                 {
-                    if (appointments[k].AppointmentTime != time
-                        && appointments[k].DoctorId != doctorId
-                        && appointments[k].AppointmentDate.ToString() != appointmentDate)
+                    if (appointments[k].AppointmentTime == time
+                        && appointments[k].DoctorId == doctorId
+                        && appointments[k].AppointmentDate.ToString().Split(" ")[0] == appointmentDate)
                     {
-                        timeList.Add(time);
+                        timeList.Remove(time);  
                     }
                 }
             }

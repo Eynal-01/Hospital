@@ -308,10 +308,5 @@ document.getElementById("departmentSelect").addEventListener("change", function 
 
 document.getElementById("doctorSelect").addEventListener("change", function () {
     GetDay();
-});
-
-document.getElementById("exampleFormControlSelect3").addEventListener("change", function () {
     GetTime();
 });
-
-

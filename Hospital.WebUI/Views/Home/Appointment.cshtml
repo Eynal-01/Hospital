@@ -126,13 +126,42 @@
                                 <textarea asp-for="Message" id="message" class="form-control" rows="6" placeholder="Your Message"></textarea>
                             </div>
 
-                            <button class="btn btn-main btn-round-full" type="submit">Make Appoinment<i class="icofont-simple-right ml-2"></i></button>
+                            <button class="btn btn-main btn-round-full" data-toggle="modal" data-target="#addevent" type="button">Make Appoinment<i class="icofont-simple-right ml-2"></i></button>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+    <div style="border-radius:20px;" class="modal fade" id="addevent" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="title" id="defaultModalLabel">Add Card</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div class="form-line">
+                            <input type="number" class="form-control" placeholder="Card number">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-line">
+                            <input type="text" class="form-control" placeholder="Exp date">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-line">
+                            <input class="form-control no-resize" placeholder="Security code"></input>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary btn-round waves-effect">Pay</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="~/AccessaryFiles/js/signalr/dist/browser/signalR.js"></script>
     <!--
