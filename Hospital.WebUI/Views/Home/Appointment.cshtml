@@ -137,7 +137,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="title" id="defaultModalLabel">Add Card</h4>
+                    <h4 class="title" id="defaultModalLabel">Book appointment</h4>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
@@ -157,10 +157,17 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary btn-round waves-effect">Pay</button>
+                    <button style="background-color:#223a66; margin:auto; border-radius:30px;" type="button" class="btn btn-primary btn-round waves-effect" data-dismiss="modal" data-toggle="modal" data-target="#successpay">Pay</button>
                 </div>
             </div>
         </div>
+    </div>
+
+    <div style="border-radius:20px;" class="modal fade" id="successpay" tabindex="-1" role="dialog">
+       <img src="~/UserFiles/images/success.gif"/>
+                <div class="modal-footer">
+                    <button style="background-color:#223a66; margin:auto; border-radius:30px;" type="button" class="btn btn-primary btn-round waves-effect" data-dismiss="modal" data-toggle="modal" data-target="#successpay">Pay</button>
+                </div>
     </div>
 
     <script src="~/AccessaryFiles/js/signalr/dist/browser/signalR.js"></script>
