@@ -281,6 +281,17 @@ function GetAllDoctors() {
 //    })
 //}
 
+function SendSMS() {
+    $.ajax({
+        url: `/SendSMS/SendText`,
+        method: "POST"
+
+        success: function () {
+            console.log("Message sent");
+        }
+    })
+}
+
 
 document.getElementById("departmentSelect").addEventListener("change", function () {
     var departmentId = this.value;
@@ -309,4 +320,8 @@ document.getElementById("departmentSelect").addEventListener("change", function 
 document.getElementById("doctorSelect").addEventListener("change", function () {
     GetDay();
     GetTime();
+    SendSMS();
+});
+
+document.getElementById("OKbutton").addEventListener("click", function () {
 });
