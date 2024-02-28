@@ -503,15 +503,30 @@ function GetAllDoctors() {
 //    })
 //}
 
+//function SendSMS() {
+//    $.ajax({
+//        url: `/SendSMS/SendText`,
+//        method: "POST",
+//        success: function (data) {
+//            console.log(data);
+//        }
+//    })
+//}
+
 function SendSMS() {
+    var phoneNumber = $("#phone").val();
     $.ajax({
-        url: `/SendSMS/SendText`,
-        method: "POST",
+        url: `/SendSMS/SendText?phoneNumber=${phoneNumber}`,
+        method: 'POST',
         success: function (data) {
-            console.log(data);
+            console.log('Message sent:', data.messageSid);
+        },
+        error: function (xhr, status, error) {
+            console.error('Error:', error);
         }
-    })
+    });
 }
+
 
 
 document.getElementById("departmentSelect").addEventListener("change", function () {
@@ -541,5 +556,4 @@ document.getElementById("departmentSelect").addEventListener("change", function 
 document.getElementById("doctorSelect").addEventListener("change", function () {
     GetDay();
     GetTime();
-    SendSMS();
 });
