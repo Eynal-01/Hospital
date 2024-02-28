@@ -20,14 +20,14 @@ connection.on("Connect", function (role) {
     //else if (role == "patient") {
     //    GetAllPostPatient();
     //}
-    if (role == "doctor") {
-        console.log(role);
-        GetAllPostDoctor();
-    }
-    else if (role == "admin") {
-        console.log(role);
-        GetAllPostAdmin();
-    }
+    //if (role == "doctor") {
+    //    console.log(role);
+    GetAllPostAllUsers();
+    //}
+    //else if (role == "admin") {
+    //    console.log(role);
+    //    GetAllPostAdmin();
+    //}
 
     //GetAllUsers();
     //element.style.display = "block";
@@ -60,4 +60,3 @@ connection.on("DoctorPostShow", function (id) {
     //GetAllUsers();
     //GetMyAndFriendPosts();
 })
-       
