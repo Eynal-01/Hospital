@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Hospital.DataAccess.Abstract
 {
-    internal interface IPostDal : IEntityRepository<Post>
+    public interface IPostDal : IEntityRepository<Post>
     {
     }
 }
