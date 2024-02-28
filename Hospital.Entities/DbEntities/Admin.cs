@@ -20,6 +20,7 @@ namespace HospitalProject.Entities.DbEntities
         public string? City { get; set; }
         public string? Avatar { get; set; } = "userWithoutPicture.png";
         public string? Country { get; set; }
+        public int WorkDaysCount { get; set; }
 
         public virtual ICollection<Post>? Posts { get; set; }
     }

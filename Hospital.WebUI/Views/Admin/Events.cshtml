@@ -31,7 +31,8 @@
                 <div class="card">
                     <div class="body">
                         <button type="button" class="btn btn-sm btn-round btn-success waves-effect" data-toggle="modal" data-target="#addevent">Add Events</button>
-                        <button class="btn btn-simple btn-sm btn-primary btn-round d-xl-none m-t-0 float-right" data-toggle="collapse" data-target="#open-events" aria-expanded="false" aria-controls="collapseExample"><i class="zmdi zmdi-chevron-down"></i></button>
+                        <button type="button" class="btn btn-sm btn-round btn-success waves-effect" data-toggle="modal" data-target="#addevent1">Add available days</button>
+                        @* <button class="btn btn-simple btn-sm btn-primary btn-round d-xl-none m-t-0 float-right" data-toggle="collapse" data-target="#open-events" aria-expanded="false" aria-controls="collapseExample"><i class="zmdi zmdi-chevron-down"></i></button> *@
                     </div>
                 </div>
                 <div class="collapse-xs collapse-sm collapse" id="open-events">
@@ -135,7 +136,7 @@
         </div>
     </div>
 </section>
-<!-- Default Size -->
+<!-- Default Size -->   
 <div class="modal fade" id="addevent" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -160,12 +161,35 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary btn-round waves-effect">Add</button>
+                <button type="button" class="btn btn-primary btn-round waves-effect" data-dismiss="modal">Add</button>
                 <button type="button" class="btn btn-simple btn-round waves-effect" data-dismiss="modal">CLOSE</button>
             </div>
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="addevent1" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="title" id="defaultModalLabel">Add Appoinment Options</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="form-line">
+                        <input id="availableDay" type="number" class="form-control" placeholder="Available day count">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button onclick="GetDays()" id="availableDayBtn" class="btn btn-primary btn-round waves-effect" data-dismiss="modal">Add</button>
+                <button type="button" class="btn btn-simple btn-round waves-effect" data-dismiss="modal">CLOSE</button>
+            </div> 
+        </div>
+    </div>
+</div>
+
+<script src="~/AccessaryFiles/js/signalr/dist/browser/signalR.js"></script>
 <!-- Jquery Core Js -->
 <script src="~/AdminFiles/assets/bundles/libscripts.bundle.js"></script> <!-- Lib Scripts Plugin Js -->
 <script src="~/AdminFiles/assets/bundles/vendorscripts.bundle.js"></script> <!-- Lib Scripts Plugin Js -->
@@ -174,3 +198,7 @@
 
 <script src="~/AdminFiles/assets/bundles/mainscripts.bundle.js"></script><!-- Custom Js -->
 <script src="~/AdminFiles/assets/js/pages/calendar/calendar.js"></script>
+
+
+<script src="~/AccessaryFiles/js/user.js"></script>
+<script src="~/AccessaryFiles/js/site.js"></script>

@@ -114,6 +114,60 @@ namespace Hospital.Entities.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("Hospital.Entities.DbEntities.AvailableDate", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AvailableDates");
+                });
+
+            modelBuilder.Entity("Hospital.Entities.DbEntities.AvailableTime", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("EndTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AvailableTimes");
+                });
+
+            modelBuilder.Entity("Hospital.Entities.DbEntities.NoWorkingTime", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("Day")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DoctorId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("NoWorkingTimes");
+                });
+
             modelBuilder.Entity("Hospital.Entities.DbEntities.Post", b =>
                 {
                     b.Property<int>("Id")
@@ -224,6 +278,9 @@ namespace Hospital.Entities.Migrations
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("WorkDaysCount")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("Admins");
@@ -240,6 +297,24 @@ namespace Hospital.Entities.Migrations
                     b.Property<int>("Age")
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("AppointmentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("AppointmentDateId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("AppointmentTime")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("AppointmentTimeId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("AvailableDateId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("AvailableTimeId")
+                        .HasColumnType("int");
+
                     b.Property<string>("DepartmentId")
                         .HasColumnType("nvarchar(450)");
 
@@ -253,6 +328,10 @@ namespace Hospital.Entities.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AvailableDateId");
+
+                    b.HasIndex("AvailableTimeId");
 
                     b.HasIndex("DepartmentId");
 
@@ -430,6 +509,9 @@ namespace Hospital.Entities.Migrations
 
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("WorkDayCount")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("WorkEndTime")
                         .HasColumnType("datetime2");
@@ -792,6 +874,14 @@ namespace Hospital.Entities.Migrations
 
             modelBuilder.Entity("HospitalProject.Entities.DbEntities.Appointment", b =>
                 {
+                    b.HasOne("Hospital.Entities.DbEntities.AvailableDate", "AvailableDate")
+                        .WithMany()
+                        .HasForeignKey("AvailableDateId");
+
+                    b.HasOne("Hospital.Entities.DbEntities.AvailableTime", "AvailableTime")
+                        .WithMany()
+                        .HasForeignKey("AvailableTimeId");
+
                     b.HasOne("HospitalProject.Entities.DbEntities.Department", "Department")
                         .WithMany()
                         .HasForeignKey("DepartmentId");
@@ -803,6 +893,10 @@ namespace Hospital.Entities.Migrations
                     b.HasOne("HospitalProject.Entities.DbEntities.Patient", "Patient")
                         .WithMany("Appointments")
                         .HasForeignKey("PatientId");
+
+                    b.Navigation("AvailableDate");
+
+                    b.Navigation("AvailableTime");
 
                     b.Navigation("Department");
 

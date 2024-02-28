@@ -20,23 +20,16 @@ namespace Hospital.WebUI.Controllers
         private IWebHostEnvironment _webHost;
         private readonly CustomIdentityDbContext _context;
         private readonly IPatientService _patientService;
+        private readonly IDataService _dataService;
 
-        public AdminController(UserManager<CustomIdentityUser> userManager, CustomIdentityDbContext context, IWebHostEnvironment webHost, IPatientService patientService, RoleManager<CustomIdentityRole> roleManager)
+        public AdminController(UserManager<CustomIdentityUser> userManager, CustomIdentityDbContext context, IWebHostEnvironment webHost, IPatientService patientService, RoleManager<CustomIdentityRole> roleManager, IDataService dataService)
         {
             _userManager = userManager;
             _context = context;
             _webHost = webHost;
             _patientService = patientService;
             _roleManager = roleManager;
-        }
-
-        /// <summary>
-        /// Activities function for show activities. 
-        /// </summary>
-        /// <returns></returns>
-        public IActionResult Activities()
-        {
-            return View();
+            _dataService = dataService;
         }
 
         public async Task<Admin> CurrentUser()
@@ -54,6 +47,17 @@ namespace Hospital.WebUI.Controllers
             var viewModel = new AddDoctorViewModel
             {
                 ImageUrl = user.Avatar,
+                Departments = departments,
+            };
+            return View(viewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> NewPost()
+        {
+            var departments = await _context.Departments.ToListAsync();
+            var viewModel = new NewPostViewModel
+            {
                 Departments = departments,
             };
             return View(viewModel);
@@ -153,6 +157,17 @@ namespace Hospital.WebUI.Controllers
         }
 
 
+        public async Task<IActionResult> GetAvailableDays(int availableCount)
+        {
+            var admins = await _context.Admins.ToListAsync();
+            for (int i = 0; i < admins.Count(); i++)
+            {
+                admins[i].WorkDaysCount = availableCount;
+                await _context.SaveChangesAsync();
+            }
+            return Ok(admins);
+        }
+
         public async Task<IActionResult> DoctorShowPost()
         {
             var doctors = await _context.Doctors.ToListAsync();
@@ -177,17 +192,6 @@ namespace Hospital.WebUI.Controllers
             return Convert.ToBase64String(array);
         }
 
-        public IActionResult AddBlog()
-        {
-            return View();
-        }
-
-        [HttpGet]
-        public IActionResult AddDepartment()
-        {
-            return View();
-        }
-
         [HttpPost]
         public async Task<IActionResult> AddDepartment(AddDepartmentViewModel viewModel)
         {
@@ -210,16 +214,6 @@ namespace Hospital.WebUI.Controllers
             }
             await _context.Departments.AddAsync(department);
             await _context.SaveChangesAsync();
-            return View();
-        }
-
-        public IActionResult Appointments()
-        {
-            return View();
-        }
-
-        public IActionResult AddPatient()
-        {
             return View();
         }
 
@@ -250,7 +244,6 @@ namespace Hospital.WebUI.Controllers
             return Ok(allAppointments);
         }
 
-
         public async Task<IActionResult> GetDoctorIdDepartment(string doctorId)
         {
             var doctor = await _context.Doctors.FirstOrDefaultAsync(d => d.Id == doctorId);
@@ -267,27 +260,6 @@ namespace Hospital.WebUI.Controllers
         //    var doctor = await _context.Doctors.FirstOrDefaultAsync(i => i.Id == id);
         //    return Ok(doctor);
         //}
-
-
-        public IActionResult AddPayment()
-        {
-            return View();
-        }
-
-        public IActionResult AllDepartments()
-        {
-            return View();
-        }
-
-        public IActionResult BlogList()
-        {
-            return View();
-        }
-
-        public IActionResult BlogSingle()
-        {
-            return View();
-        }
 
         public async Task<IActionResult> DoctorProfile(string doctorId)
         {
@@ -308,92 +280,6 @@ namespace Hospital.WebUI.Controllers
                 UserName = doctor.UserName,
             };
             return View(viewModel);
-        }
-
-        public IActionResult Doctors()
-        {
-            return View();
-        }
-
-        public IActionResult Events()
-        {
-            return View();
-        }
-
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> NewPost()
-        {
-            var departments = await _context.Departments.ToListAsync();
-            var viewModel = new NewPostViewModel
-            {
-                Departments = departments,
-            };
-            return View(viewModel);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> NewPost(NewPostViewModel viewModel)
-        {
-            var user = await CurrentUser();
-            var department = new Department();
-
-            if (viewModel.DepartmentId != "All Category")
-            {
-                department = await _context.Departments.FirstOrDefaultAsync(d => d.Id == viewModel.DepartmentId);
-            }
-            else
-            {
-                department.DepartmentName = viewModel.DepartmentId;
-            }
-
-            var post = new Post
-            {
-                AdminId = user.Id,
-                Title = viewModel.BlogTitle,
-                Content = viewModel.Content,
-                PublishTime = DateTime.Now.ToShortDateString(),
-                DepartmentName = department.DepartmentName
-            };
-
-            //foreach (var item in viewModel.Files)
-            //{
-            for (int i = 0; i < viewModel.Files.Count(); i++)
-            {
-                if (viewModel.Files[i] != null)
-                {
-                    var helper = new ImageHelper(_webHost);
-                    var url = await helper.SaveFile(viewModel.Files[i]);
-                    if (viewModel.Files[i] != viewModel.Files[viewModel.Files.Count() - 1])
-                    {
-                        post.ImageUrl += $"{url} : ";
-                    }
-                    else
-                    {
-                        post.ImageUrl += $"{url}";
-                    }
-                }
-            }
-            //}
-
-            await _context.Posts.AddAsync(post);
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction("NewPost","Admin");
-        }
-
-        public IActionResult PageOffline()
-        {
-            return View();
-        }
-
-        public IActionResult PatientInvoice()
-        {
-            return View();
         }
 
         public async Task<IActionResult> PatientProfile(string id)
@@ -417,6 +303,58 @@ namespace Hospital.WebUI.Controllers
             return Ok(departments);
         }
 
+
+        public IActionResult AddBlog()
+        {
+            return View();
+        }
+
+        public IActionResult AddDepartment()
+        {
+            return View();
+        }
+
+        public IActionResult Appointments()
+        {
+            return View();
+        }
+
+        public IActionResult AddPatient()
+        {
+            return View();
+        }
+
+        public IActionResult Activities()
+        {
+            return View();
+        }
+
+        public IActionResult Doctors()
+        {
+            return View();
+        }
+
+        public IActionResult Events()
+        {
+            return View();
+        }
+
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+
+        public IActionResult PageOffline()
+        {
+            return View();
+        }
+
+        public IActionResult PatientInvoice()
+        {
+            return View();
+        }
+     
         public IActionResult Patients()
         {
             return View();
@@ -443,6 +381,26 @@ namespace Hospital.WebUI.Controllers
         }
 
         public IActionResult Login()
+        {
+            return View();
+        }
+
+        public IActionResult AddPayment()
+        {
+            return View();
+        }
+
+        public IActionResult AllDepartments()
+        {
+            return View();
+        }
+
+        public IActionResult BlogList()
+        {
+            return View();
+        }
+
+        public IActionResult BlogSingle()
         {
             return View();
         }

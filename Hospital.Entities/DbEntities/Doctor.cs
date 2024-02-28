@@ -1,5 +1,6 @@
 ﻿using Hospital.Core.Abstract;
 using Hospital.Entities.Data;
+using Hospital.Entities.DbEntities;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -28,5 +29,7 @@ namespace HospitalProject.Entities.DbEntities
         public DateTime WorkEndTime { get; set; }
         public ICollection<Patient>? Patients { get; set; }
         public ICollection<Recipe>? Recipes { get; set; }
+        public int WorkDayCount { get; set; }
+        //public ICollection<AvailableTime>? AvailableTimes { get; set; }
     }
 }

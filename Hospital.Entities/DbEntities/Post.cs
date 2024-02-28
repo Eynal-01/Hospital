@@ -1,4 +1,5 @@
-﻿using Hospital.Entities.Data;
+﻿using Hospital.Core.Abstract;
+using Hospital.Entities.Data;
 using HospitalProject.Entities.DbEntities;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Hospital.Entities.DbEntities
 {
-    public class Post
+    public class Post : IEntity
     {
         public int Id { get; set; }
         public string? AdminId { get; set; }

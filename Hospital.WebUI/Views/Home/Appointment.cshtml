@@ -1,5 +1,4 @@
 ﻿@model AppoinmentViewModel
-
 <!DOCTYPE html>
 <html lang="zxx">
 <head>
@@ -21,6 +20,7 @@
     <link rel="stylesheet" href="~/UserFiles/plugins/slick-carousel/slick/slick-theme.css">
 
     <!-- Main Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.10.0/main.min.css" rel="stylesheet">
     <link rel="stylesheet" href="~/UserFiles/css/style.css">
 
 </head>
@@ -69,7 +69,7 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>Department</label>
-                                        <select asp-for="DepartmentId" class="form-control" id="exampleFormControlSelect1">
+                                        <select asp-for="DepartmentId" class="form-control" id="departmentSelect">
                                             @for (int i = 0; i < Model.Departments.Count(); i++)
                                             {
                                                 <option value="@Model.Departments[i].Id">@Model.Departments[i].DepartmentName</option>
@@ -80,7 +80,7 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>Doctor</label>
-                                        <select asp-for="DoctorId" class="form-control" id="exampleFormControlSelect2">
+                                        <select asp-for="DoctorId" class="form-control" id="doctorSelect">
                                             @for (int i = 0; i < Model.Doctors.Count(); i++)
                                             {
                                                 <option value="@Model.Doctors[i].Id">@Model.Doctors[i].FirstName @Model.Doctors[i].LastName</option>
@@ -91,17 +91,20 @@
 
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        <label asp-for="Date">Date</label>
-                                        <input asp-for="Date" id="date" type="date" class="form-control" placeholder="dd/mm/yyyy">
+                                        <label>Date</label>
+                                        <select asp-for="AppointmentDate" class="form-control" id="exampleFormControlSelect3">
+                                        
+                                        </select>
                                     </div>
                                 </div>
 
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        <label asp-for="DateInTime">Time</label>
-                                        <input asp-for="DateInTime" id="time" type="time" class="form-control" placeholder="Time">
+                                        <label>Available Times</label>
+                                        <select asp-for="AppointmentTime" class="form-control" id="exampleFormControlSelect4"></select>
                                     </div>
                                 </div>
+
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label asp-for="Fullname">Fullname</label>
@@ -123,13 +126,49 @@
                                 <textarea asp-for="Message" id="message" class="form-control" rows="6" placeholder="Your Message"></textarea>
                             </div>
 
-                            <button class="btn btn-main btn-round-full" type="submit">Make Appoinment<i class="icofont-simple-right ml-2"></i></button>
+                            <button onclick="SendSMS()" class="btn btn-main btn-round-full" data-toggle="modal" data-target="#addevent" type="button">Make Appoinment<i class="icofont-simple-right ml-2"></i></button>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+    <div style="border-radius:20px;" class="modal fade" id="addevent" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="title" id="defaultModalLabel">Book appointment</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div class="form-line">
+                            <input type="number" class="form-control" placeholder="Card number">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-line">
+                            <input type="text" class="form-control" placeholder="Exp date">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-line">
+                            <input class="form-control no-resize" placeholder="Security code"></input>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button  style="background-color:#223a66; margin:auto; border-radius:30px;" type="button" class="btn btn-primary btn-round waves-effect" data-dismiss="modal" data-toggle="modal" data-target="#successpay">Pay</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="border-radius:20px;" class="modal fade" id="successpay" tabindex="-1" role="dialog">
+       <img src="~/UserFiles/images/success.gif"/>
+                <div class="modal-footer">
+                    <button  style="background-color:#223a66; margin:auto; border-radius:30px;" type="button" class="btn btn-primary btn-round waves-effect" data-dismiss="modal" data-toggle="modal" data-target="#successpay">OK</button>
+                </div>
+    </div>
 
     <script src="~/AccessaryFiles/js/signalr/dist/browser/signalR.js"></script>
     <!--
@@ -157,6 +196,7 @@
 
     <script src="~/AccessaryFiles/js/user.js"></script>
     <script src="~/AccessaryFiles/js/site.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.10.0/main.min.js"></script>
 
 </body>
 </html>

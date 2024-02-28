@@ -363,6 +363,9 @@ function GetAllAppointments() {
     })
 }
 
+
+
+
 function GetAllDepartment() {
     $.ajax({
         url: `/Admin/GetAllDepartment`,
@@ -384,6 +387,58 @@ function GetAllDepartment() {
             $("#departments").html(content);
         }
     })
+}
+
+function GetDays() {
+    var availablecount = $("#availableDay").val();
+    $.ajax({
+        url: `/Admin/GetAvailableDays?availableCount=${availablecount}`,
+        method: "GET",
+
+        success: function (data) {
+            console.log("GetDays success")
+        }
+    })
+}
+
+function GetDay() {
+    var availableDoctor = $("#doctorSelect").val();
+    console.log("GetDay CALLED");
+    $.ajax({
+        url: `/Home/GetAvailableDays?doctorId=${availableDoctor}`,
+        method: "GET",
+        success: function (data) {
+            console.log(data)
+            var content = "";
+
+            for (var i = 0; i < data.length; i++) {
+                content += `
+                     <option value="${data[i]}">${data[i]}</option>`;
+            }
+            $("#exampleFormControlSelect3").html(content);
+        }
+    });
+}
+
+
+function GetTime() {
+    var availableDoctor = $("#doctorSelect").val();
+    var appointmentDate = $("#exampleFormControlSelect3").val();
+    console.log("Time CALLED");
+    $.ajax({
+        url: `/Home/GetAvailableTimes?doctorId=${availableDoctor}&appointmentDate=${appointmentDate}`,
+        method: "GET",
+        success: function (data) {
+            console.log(data)
+            var content = "";
+
+            for (var i = 0; i < data.length; i++) {
+                content += `
+                     <option value="${data[i]}">${data[i]}</option>`;
+            }
+            $("#exampleFormControlSelect4").html(content);
+        }
+    });
 }
 
 function GetAllDoctors() {
@@ -425,7 +480,7 @@ function GetAllDoctors() {
     })
 }
 
-                                            //<p class="text-muted">${departmentName}</p>
+//<p class="text-muted">${departmentName}</p>
 //function GetDoctorIdDepartment(doctorId) {
 //    $.ajax({
 //        url: `/Admin/GetDoctorIdDepartment?doctorId=${doctorId}`,
@@ -447,3 +502,44 @@ function GetAllDoctors() {
 //        }
 //    })
 //}
+
+function SendSMS() {
+    $.ajax({
+        url: `/SendSMS/SendText`,
+        method: "POST",
+        success: function (data) {
+            console.log(data);
+        }
+    })
+}
+
+
+document.getElementById("departmentSelect").addEventListener("change", function () {
+    var departmentId = this.value;
+
+    var doctorSelect = document.getElementById("doctorSelect");
+    doctorSelect.innerHTML = "";
+
+    $.ajax({
+
+        url: `/Home/getDoctors?departmentId=${departmentId}`,
+        method: "GET",
+
+        success: function (data) {
+            console.log(data);
+            data.forEach(function (doctor) {
+                var option = document.createElement("option");
+                option.text = doctor.firstName + " " + doctor.lastName;
+                option.value = doctor.id;
+                doctorSelect.appendChild(option);
+            });
+            GetDay();
+        }
+    })
+});
+
+document.getElementById("doctorSelect").addEventListener("change", function () {
+    GetDay();
+    GetTime();
+    SendSMS();
+});

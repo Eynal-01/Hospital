@@ -1,9 +1,15 @@
-﻿using Hospital.Business.Abstract;
+﻿using CloudinaryDotNet.Actions;
+using Hospital.Business.Abstract;
 using Hospital.Entities.Data;
+using Hospital.Entities.DbEntities;
+using Hospital.WebUI.Abstract;
+using Hospital.WebUI.Helpers;
 using Hospital.WebUI.Models;
+using HospitalProject.Entities.DbEntities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 
 namespace Hospital.WebUI.Controllers
 {
@@ -14,12 +20,26 @@ namespace Hospital.WebUI.Controllers
         private IWebHostEnvironment _webHost;
         private readonly CustomIdentityDbContext _context;
 
-        public PostController(UserManager<CustomIdentityUser> userManager, RoleManager<CustomIdentityRole> roleManager, IWebHostEnvironment webHost, CustomIdentityDbContext context)
+
+        private readonly IMediaService _mediaService;
+
+
+        private readonly IPostService _postService;
+
+
+        private readonly IAdminService _userService;
+
+
+        public PostController(UserManager<CustomIdentityUser> userManager, RoleManager<CustomIdentityRole> roleManager, IWebHostEnvironment webHost, CustomIdentityDbContext context, IMediaService mediaService, IPostService postService, IAdminService userService)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _webHost = webHost;
             _context = context;
+            _mediaService = mediaService;
+            _postService = postService;
+            _userService = userService;
+            //_notificationService = notificationService;
         }
 
 
@@ -30,6 +50,86 @@ namespace Hospital.WebUI.Controllers
         }
 
 
+        public async Task<Admin> CurrentUser()
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var admin = await _context.Admins.FirstOrDefaultAsync(a => a.UserName == user.UserName && a.Email == user.Email);
+            return admin;
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> NewPost()
+        {
+            var departments = await _context.Departments.ToListAsync();
+            var viewModel = new NewPostViewModel
+            {
+                Departments = departments,
+            };
+            return RedirectToAction("NewPost", "Admin");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> NewPost(NewPostViewModel viewModel)
+        {
+            var user = await CurrentUser();
+            var department = new Department();
+
+            if (viewModel.DepartmentId != "All Category")
+            {
+                department = await _context.Departments.FirstOrDefaultAsync(d => d.Id == viewModel.DepartmentId);
+            }
+            else
+            {
+                department.DepartmentName = viewModel.DepartmentId;
+            }
+
+            var post = new Post
+            {
+                AdminId = user.Id,
+                Title = viewModel.BlogTitle,
+                Content = viewModel.Content,
+                PublishTime = DateTime.Now.ToShortDateString(),
+                DepartmentName = department.DepartmentName
+            };
+
+            //foreach (var item in viewModel.Files)
+            //{
+            for (int i = 0; i < viewModel.Files.Count(); i++)
+            {
+                if (viewModel.Files[i] != null)
+                {
+                    var helper = new ImageHelper(_webHost);
+                    var url = await helper.SaveFile(viewModel.Files[i]);
+
+                    var mediaUrl = await _mediaService.UploadMediaAsync(viewModel.Files[i]);
+
+                    if (mediaUrl != string.Empty)
+                    {
+                        var isVideoFile = _mediaService.IsVideoFile(viewModel.Files[i]);
+                    }
+                    else
+                    {
+                        return BadRequest("error");
+                    }
+
+                    if (viewModel.Files[i] != viewModel.Files[viewModel.Files.Count() - 1])
+                    {
+                        post.ImageUrl += $"{url} : ";
+                    }
+                    else
+                    {
+                        post.ImageUrl += $"{url}";
+                    }
+                }
+            }
+            //}
+
+            await _context.Posts.AddAsync(post);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("NewPost", "Post");
+        }
 
 
         public async Task<IActionResult> GetAllPost()
