@@ -22,10 +22,14 @@ namespace Hospital.WebUI.Controllers
             _context = context;
         }
 
+
+
         public IActionResult Index()
         {
             return View();
         }
+
+
 
 
         public async Task<IActionResult> GetAllPost()
@@ -58,14 +62,18 @@ namespace Hospital.WebUI.Controllers
                     poo.PostId = post[i].Id;
                     poo.Admin = item;
                     poo.Content = post[i].Content;
-                    //poo.PublishTime = posts[i].PublishTime;
                     poo.Title = post[i].Title;
+                    poo.PublishTime = post[i].PublishTime;
                     poo.ViewCount = post[i].ViewCount;
                     poo.Images = images;
+                    poo.DepartmentName = post[i].DepartmentName;
+
                     posts.Add(poo);
                 }
             }
             return Ok(new { posts = posts });
         }
+
+
     }
 }

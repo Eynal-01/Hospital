@@ -159,7 +159,7 @@ namespace Hospital.WebUI.Controllers
             return Ok(doctors);
         }
 
-        
+
 
         public static string HashPassword(string password)
         {
@@ -328,13 +328,28 @@ namespace Hospital.WebUI.Controllers
         [HttpGet]
         public async Task<IActionResult> NewPost()
         {
-            return View();
+            var departments = await _context.Departments.ToListAsync();
+            var viewModel = new NewPostViewModel
+            {
+                Departments = departments,
+            };
+            return View(viewModel);
         }
 
         [HttpPost]
         public async Task<IActionResult> NewPost(NewPostViewModel viewModel)
         {
             var user = await CurrentUser();
+            var department = new Department();
+
+            if (viewModel.DepartmentId != "All Category")
+            {
+                department = await _context.Departments.FirstOrDefaultAsync(d => d.Id == viewModel.DepartmentId);
+            }
+            else
+            {
+                department.DepartmentName = viewModel.DepartmentId;
+            }
 
             var post = new Post
             {
@@ -342,6 +357,7 @@ namespace Hospital.WebUI.Controllers
                 Title = viewModel.BlogTitle,
                 Content = viewModel.Content,
                 PublishTime = DateTime.Now.ToShortDateString(),
+                DepartmentName = department.DepartmentName
             };
 
             //foreach (var item in viewModel.Files)
@@ -367,7 +383,7 @@ namespace Hospital.WebUI.Controllers
             await _context.Posts.AddAsync(post);
             await _context.SaveChangesAsync();
 
-            return View();
+            return RedirectToAction("NewPost","Admin");
         }
 
         public IActionResult PageOffline()

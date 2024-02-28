@@ -84,6 +84,13 @@ function GetAllPostAllUsers() {
             var arrow = "";
             var images = "";
 
+            let contentPatient = "";
+            var imagesPatient = "";
+            var arrowPatient = "";
+
+            imagesPatient = "";
+            arrowPatient = "";
+
             for (var i = 0; i < data.posts.length; i++) {
                 images = "";
                 arrow = "";
@@ -96,11 +103,23 @@ function GetAllPostAllUsers() {
                                <img class="img-fluid"  src="/AccessaryFiles/images/${data.posts[i].images[k]}" alt="Responsive image" >
                             </div>
                        `;
+
+                        imagesPatient += `
+                             <div class="carousel-item active" style="text-align:center;width:100%;">
+                               <img class="img-fluid" src="/AccessaryFiles/images/${data.posts[i].images[k]}" alt="Responsive image">
+                            </div>
+                       `;
                     }
                     else {
                         images += `
                           <div class="carousel-item" style="text-align:center;width:100%;">
                                <img class="img-fluid" src="/AccessaryFiles/images/${data.posts[i].images[k]}" alt="Responsive image" >
+                          </div>
+                       `;
+
+                        imagesPatient += `
+                          <div class="carousel-item" style="text-align:center;width:100%;">
+                               <img class="img-fluid" src="/AccessaryFiles/images/${data.posts[i].images[k]}" alt="Responsive image">
                           </div>
                        `;
                     }
@@ -125,6 +144,15 @@ function GetAllPostAllUsers() {
                     adminName = `
                            <ul class="meta">
                                 <li><a href="#"><i class="zmdi zmdi-account col-blue"></i>Posted By: ${data.posts[i].admin.firstName} ${data.posts[i].admin.lastName}</a ></li >
+                                <li><a href="#"><i class="zmdi zmdi-label col-red"></i>${data.posts[i].departmentName}</a></li>
+                           </ul>
+                    `;
+                }
+                else {
+                    adminName = `
+                           <ul class="meta">
+                                <li><a href="#"><i class="zmdi zmdi-account col-blue"></i>Posted By: ${data.posts[i].admin.userName}</a ></li >
+                                <li><a href="#"><i class="zmdi zmdi-label col-red"></i>${data.posts[i].departmentName}</a></li>
                            </ul>
                     `;
                 }
@@ -151,7 +179,52 @@ function GetAllPostAllUsers() {
                     </div>
                 
                 `;
+
+
+
+                if (data.posts[i].images.length > 1) {
+                    arrowPatient += `
+                         <a class="carousel-control-prev" href="#carouselExampleIndicators${data.posts[i].postId}" role="button" data-slide="prev">
+                           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                           <span class="sr-only">Previous</span>
+                         </a>
+                         <a class="carousel-control-next" href="#carouselExampleIndicators${data.posts[i].postId}" role="button" data-slide="next">
+                           <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                           <span class="sr-only">Next</span>
+                         </a>
+                    `;
+                }
+
+                contentPatient += `
+                      <div class="col-lg-12 col-md-12 mb-5">
+							<div class="blog-item">
+                              <div class="img-post m-b-15" style="background-color:rgba(200, 200, 200,0.4);">
+                                 <div id="carouselExampleIndicators${data.posts[i].postId}" class="carousel slide" data-ride="carousel">
+                                   <div class="carousel-inner">
+                                     ${imagesPatient}
+                                   </div>
+                                   ${arrowPatient}
+                               </div>
+                            </div>
+
+								<div class="blog-item-content">
+									<div class="blog-item-meta mb-3 mt-4">
+                                        <span class="text-muted text-capitalize mr-3"><i class="icofont-category mr-2"></i> ${data.posts[i].departmentName}</span>
+										<span class="text-black text-capitalize mr-3"><i class="icofont-calendar mr-1"></i> ${data.posts[i].publishTime}</span>
+									</div>
+
+									<h2 class="mt-3 mb-3"><a href="blog-single.html">${data.posts[i].title}</a></h2>
+
+									<p class="mb-4">${data.posts[i].content}</p>
+
+									<a href="blog-single.html" target="_blank" class="btn btn-main btn-icon btn-round-full">Read More <i class="icofont-simple-right ml-2  "></i></a>
+								</div>
+							</div>
+						</div>
+                `;
             }
+
+            $("#patientPosts").html(contentPatient);
 
             $("#postsDoctor").html(content);
             $("#posts").html(content);
@@ -243,7 +316,7 @@ function GetAllPostAllUsers() {
 //                            <a href="blog-details.html" title="read more" class="btn btn-round btn-info">Read More</a>
 //                        </div>
 //                    </div>
-                
+
 //                `;
 //            }
 //            DoctorShowPost();
@@ -260,83 +333,6 @@ function DoctorShowPost() {
             for (var i = 0; i < data.length; i++) {
                 DoctorCall(data[i].id);
             }
-        }
-    })
-}
-
-function GetAllPostPatient() {
-    $.ajax({
-        url: `/Home/GetAllPost`,
-        method: "GET",
-
-        success: function (data) {
-            let content = "";
-            var images = "";
-            var arrow = "";
-
-            for (var i = 0; i < data.posts.length; i++) {
-                //var doctor = GetAppointmentDoctor(data[i].doctorId)
-                images = "";
-                arrow = "";
-
-                for (var k = 0; k < data.posts[i].images.length; k++) {
-                    if (k == 0) {
-                        images += `
-                             <div class="carousel-item active" style="text-align:center;width:100%;">
-                               <img class="img-fluid" src="/AccessaryFiles/images/${data.posts[i].images[k]}" alt="Responsive image">
-                            </div>
-                       `;
-                    }
-                    else {
-                        images += `
-                          <div class="carousel-item" style="text-align:center;width:100%;">
-                               <img class="img-fluid" src="/AccessaryFiles/images/${data.posts[i].images[k]}" alt="Responsive image">
-                          </div>
-                       `;
-                    }
-                }
-
-                if (data.posts[i].images.length > 1) {
-                    arrow += `
-                         <a class="carousel-control-prev" href="#carouselExampleIndicators${data.posts[i].postId}" role="button" data-slide="prev">
-                           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                           <span class="sr-only">Previous</span>
-                         </a>
-                         <a class="carousel-control-next" href="#carouselExampleIndicators${data.posts[i].postId}" role="button" data-slide="next">
-                           <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                           <span class="sr-only">Next</span>
-                         </a>
-                    `;
-                }
-
-                content += `
-                      <div class="col-lg-12 col-md-12 mb-5">
-							<div class="blog-item">
-                              <div class="img-post m-b-15">
-                                 <div id="carouselExampleIndicators${data.posts[i].postId}" class="carousel slide" data-ride="carousel">
-                                   <div class="carousel-inner">
-                                     ${images}
-                                   </div>
-                                   ${arrow}
-                               </div>
-                            </div>
-
-								<div class="blog-item-content">
-									<div class="blog-item-meta mb-3 mt-4">
-										<span class="text-black text-capitalize mr-3"><i class="icofont-calendar mr-1"></i> 28th January</span>
-									</div>
-
-									<h2 class="mt-3 mb-3"><a href="blog-single.html">${data.posts[i].title}</a></h2>
-
-									<p class="mb-4">${data.posts[i].content}</p>
-
-									<a href="blog-single.html" target="_blank" class="btn btn-main btn-icon btn-round-full">Read More <i class="icofont-simple-right ml-2  "></i></a>
-								</div>
-							</div>
-						</div>
-                `;
-            }
-            $("#patientPosts").html(content);
         }
     })
 }

@@ -147,7 +147,8 @@ namespace Hospital.Entities.Migrations
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PublishTime = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ViewCount = table.Column<int>(type: "int", nullable: false)
+                    ViewCount = table.Column<int>(type: "int", nullable: false),
+                    DepartmentName = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
