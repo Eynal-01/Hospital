@@ -12,6 +12,26 @@ connection.start().then(function () {
 connection.on("Connect", function (role) {
 <<<<<<< HEAD
     //if (role == "admin") {
+    //    //console.log(role);
+    //    GetAllPatients();
+    //    GetAllAppointments();
+    //    GetAllDoctors();
+    //    GetAllDepartment();
+    //}
+    //else if (role == "patient") {
+    //    GetAllPostPatient();
+    //}
+    //if (role == "doctor") {
+    //    console.log(role);
+    GetAllPostAllUsers();
+    //}
+    //else if (role == "admin") {
+    //    console.log(role);
+    //    GetAllPostAdmin();
+    //}
+=======
+<<<<<<< HEAD
+    //if (role == "admin") {
     //console.log(role);
     //}
     GetAllPatients();
@@ -31,6 +51,7 @@ connection.on("Connect", function (role) {
         GetAllPost();
     }
 >>>>>>> bf12e164ee3a684225be48c6f4225e079ee9b71e
+>>>>>>> 30e803eb2c3e72c3cbc06442e626c088d9729411
 
     //GetAllUsers();
     //element.style.display = "block";
@@ -45,9 +66,20 @@ async function AdminCall(id) {
     await connection.invoke("AdminCall", id);
 }
 
+async function DoctorCall(id) {
+    await connection.invoke("DoctorCall", id);
+}
+
 connection.on("AdminRefresh", function (id) {
     GetAllPatients();
     GetAllAppointments();
+    //GetMyRequests();
+    //GetAllUsers();
+    //GetMyAndFriendPosts();
+})
+
+connection.on("DoctorPostShow", function (id) {
+    GetAllPostDoctor();
     //GetMyRequests();
     //GetAllUsers();
     //GetMyAndFriendPosts();

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Hospital.Entities.DbEntities
 {
-    public class Post:IEntity
+    public class Post : IEntity
     {
         public int Id { get; set; }
         public string? AdminId { get; set; }
@@ -19,7 +19,8 @@ namespace Hospital.Entities.DbEntities
         public string? Title { get; set; }
         public string? PublishTime { get; set; }
         public int ViewCount { get; set; }
+        public string? DepartmentName { get; set; }
 
-        public Admin? Admin { get; set; }
+        public virtual Admin? Admin { get; set; }
     }
 }

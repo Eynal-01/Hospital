@@ -1,7 +1,10 @@
 ﻿using Hospital.Entities.Data;
+using Hospital.WebUI.Models;
+using HospitalProject.Entities.DbEntities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hospital.WebUI.Controllers
 {
@@ -9,10 +12,12 @@ namespace Hospital.WebUI.Controllers
     public class DoctorController : Controller
     {
         private readonly UserManager<CustomIdentityUser> _userManager;
+        public CustomIdentityDbContext _dbContext { get; set; }
 
-        public DoctorController(UserManager<CustomIdentityUser> userManager)
+        public DoctorController(UserManager<CustomIdentityUser> userManager, CustomIdentityDbContext dbContext)
         {
             _userManager = userManager;
+            _dbContext = dbContext;
         }
 
         public async Task<IActionResult> Index()
@@ -28,6 +33,18 @@ namespace Hospital.WebUI.Controllers
         public IActionResult Error404()
         {
             return View();
+        }
+
+        public IActionResult BlogList()
+        {
+            return View();
+        }
+
+        public async Task<Doctor> CurrentUser()
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var admin = await _dbContext.Doctors.FirstOrDefaultAsync(a => a.UserName == user.UserName && a.Email == user.Email);
+            return admin;
         }
 
         public IActionResult Error500()

@@ -14,8 +14,11 @@ namespace Hospital.WebUI.Concrete
 
         private readonly Cloudinary _cloudinary;
 
+
         public MediaService(IConfiguration configuration)
         {
+            //_cloudinary = cloudinary;
+
             _configuration = configuration;
             _cloudinarySettings = _configuration.GetSection("CloudinarySettings")
                                                 .Get<CloudinarySettings>();

@@ -52,6 +52,17 @@ namespace Hospital.WebUI.Controllers
             return View(viewModel);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> NewPost()
+        {
+            var departments = await _context.Departments.ToListAsync();
+            var viewModel = new NewPostViewModel
+            {
+                Departments = departments,
+            };
+            return View(viewModel);
+        }
+
         [HttpPost]
         public async Task<IActionResult> AddDoctor(AddDoctorViewModel viewModel)
         {
@@ -145,6 +156,7 @@ namespace Hospital.WebUI.Controllers
             return RedirectToAction("AddDoctor", "Admin");
         }
 
+
         public async Task<IActionResult> GetAvailableDays(int availableCount)
         {
             var admins = await _context.Admins.ToListAsync();
@@ -155,30 +167,14 @@ namespace Hospital.WebUI.Controllers
             }
             return Ok(admins);
         }
-        public async Task<IActionResult> GetAllPost()
-        {
-            var user = await CurrentUser();
 
-            var data = await _context.Admins.ToListAsync();
-            var posts = new List<Post>();
-            foreach (var item in data)
-            {
-                var post = await _context.Posts.Where(p => p.AdminId == item.Id).ToListAsync();
-                for (int i = 0; i < post.Count(); i++)
-                {
-                    if (post[i].ImageUrl != null)
-                    {
-                        post[i].IsImage = true;
-                    }
-                    else
-                    {
-                        post[i].IsImage = false;
-                    }
-                }
-                posts.AddRange(post);
-            }
-            return Ok(new { posts = posts });
+        public async Task<IActionResult> DoctorShowPost()
+        {
+            var doctors = await _context.Doctors.ToListAsync();
+            return Ok(doctors);
         }
+
+
 
         public static string HashPassword(string password)
         {
@@ -348,40 +344,6 @@ namespace Hospital.WebUI.Controllers
             return View();
         }
 
-        [HttpGet]
-        public async Task<IActionResult> NewPost()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> NewPost(NewPostViewModel viewModel)
-        {
-            var user = await CurrentUser();
-            if (viewModel != null)
-            {
-                var helper = new ImageHelper(_webHost);
-                if (viewModel.File != null)
-                {
-                    viewModel.ImageUrl = await helper.SaveFile(viewModel.File);
-                    user.Avatar = viewModel.ImageUrl;
-                }
-            }
-
-            var post = new Post
-            {
-                AdminId = user.Id,
-                ImageUrl = viewModel.ImageUrl,
-                Title = viewModel.BlogTitle,
-                Content = viewModel.Content,
-                PublishTime = DateTime.Now.ToShortDateString(),
-            };
-
-            await _context.Posts.AddAsync(post);
-            await _context.SaveChangesAsync();
-
-            return View();
-        }
 
         public IActionResult PageOffline()
         {
