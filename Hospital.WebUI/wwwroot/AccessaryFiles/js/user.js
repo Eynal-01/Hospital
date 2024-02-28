@@ -284,8 +284,7 @@ function GetAllDoctors() {
 function SendSMS() {
     $.ajax({
         url: `/SendSMS/SendText`,
-        method: "POST"
-
+        method: "POST",
         success: function (data) {
             console.log(data);
         }
@@ -320,8 +319,5 @@ document.getElementById("departmentSelect").addEventListener("change", function 
 document.getElementById("doctorSelect").addEventListener("change", function () {
     GetDay();
     GetTime();
-});
-
-document.getElementById("make").addEventListener("click", function () {
     SendSMS();
 });

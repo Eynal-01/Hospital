@@ -4,8 +4,8 @@ using Twilio.Rest.Api.V2010.Account;
 
 namespace Hospital.WebUI.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
+    //[ApiController]
+    //[Route("api/[controller]")]
     public class SendSMSController : ControllerBase
     {
         string accountSid = "ACa25acf39d02f079fc43f5feab218351c";

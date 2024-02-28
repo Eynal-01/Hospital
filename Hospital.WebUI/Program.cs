@@ -4,9 +4,11 @@ using Hospital.DataAccess.Abstract;
 using Hospital.DataAccess.Concrete.EntityFramework;
 using Hospital.Entities.Data;
 using Hospital.WebUI.Hubs;
+using Hospital.WebUI.Models;
 using HospitalProject.Entities.DbEntities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
