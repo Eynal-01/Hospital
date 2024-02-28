@@ -286,8 +286,8 @@ function SendSMS() {
         url: `/SendSMS/SendText`,
         method: "POST"
 
-        success: function () {
-            console.log("Message sent");
+        success: function (data) {
+            console.log(data);
         }
     })
 }
@@ -320,8 +320,8 @@ document.getElementById("departmentSelect").addEventListener("change", function 
 document.getElementById("doctorSelect").addEventListener("change", function () {
     GetDay();
     GetTime();
-    SendSMS();
 });
 
-document.getElementById("OKbutton").addEventListener("click", function () {
+document.getElementById("make").addEventListener("click", function () {
+    SendSMS();
 });

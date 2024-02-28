@@ -126,7 +126,7 @@
                                 <textarea asp-for="Message" id="message" class="form-control" rows="6" placeholder="Your Message"></textarea>
                             </div>
 
-                            <button class="btn btn-main btn-round-full" data-toggle="modal" data-target="#addevent" type="button">Make Appoinment<i class="icofont-simple-right ml-2"></i></button>
+                            <button id="make" class="btn btn-main btn-round-full" data-toggle="modal" data-target="#addevent" type="button">Make Appoinment<i class="icofont-simple-right ml-2"></i></button>
                         </form>
                     </div>
                 </div>
@@ -157,7 +157,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button style="background-color:#223a66; margin:auto; border-radius:30px;" type="button" class="btn btn-primary btn-round waves-effect" data-dismiss="modal" data-toggle="modal" data-target="#successpay">Pay</button>
+                    <button  style="background-color:#223a66; margin:auto; border-radius:30px;" type="button" class="btn btn-primary btn-round waves-effect" data-dismiss="modal" data-toggle="modal" data-target="#successpay">Pay</button>
                 </div>
             </div>
         </div>
@@ -166,7 +166,7 @@
     <div style="border-radius:20px;" class="modal fade" id="successpay" tabindex="-1" role="dialog">
        <img src="~/UserFiles/images/success.gif"/>
                 <div class="modal-footer">
-                    <button id="OKbutton" style="background-color:#223a66; margin:auto; border-radius:30px;" type="button" class="btn btn-primary btn-round waves-effect" data-dismiss="modal" data-toggle="modal" data-target="#successpay">OK</button>
+                    <button  style="background-color:#223a66; margin:auto; border-radius:30px;" type="button" class="btn btn-primary btn-round waves-effect" data-dismiss="modal" data-toggle="modal" data-target="#successpay">OK</button>
                 </div>
     </div>
 
