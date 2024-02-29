@@ -180,8 +180,6 @@ function GetAllPostAllUsers() {
                 
                 `;
 
-
-
                 if (data.posts[i].images.length > 1) {
                     arrowPatient += `
                          <a class="carousel-control-prev" href="#carouselExampleIndicators${data.posts[i].postId}" role="button" data-slide="prev">
@@ -516,7 +514,7 @@ function GetAllDoctors() {
 function SendSMS() {
     var phoneNumber = $("#phone").val();
     $.ajax({
-        url: `/SendSMS/SendText?phoneNumber=${phoneNumber}`,
+        url: `/SendSMS/SendText`,
         method: 'POST',
         success: function (data) {
             console.log('Message sent:', data.messageSid);
@@ -526,8 +524,6 @@ function SendSMS() {
         }
     });
 }
-
-
 
 document.getElementById("departmentSelect").addEventListener("change", function () {
     var departmentId = this.value;
