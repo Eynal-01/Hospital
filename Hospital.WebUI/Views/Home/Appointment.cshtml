@@ -1,0 +1,202 @@
+﻿@model AppoinmentViewModel
+<!DOCTYPE html>
+<html lang="zxx">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="description" content="Orbitor,business,company,agency,modern,bootstrap4,tech,software">
+    <meta name="author" content="themefisher.com">
+
+    <title>Novena- Health & Care Medical template</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
+
+    <!-- bootstrap.min css -->
+    <link rel="stylesheet" href="~/UserFiles/plugins/bootstrap/css/bootstrap.min.css">
+    <!-- Icon Font Css -->
+    <link rel="stylesheet" href="~/UserFiles/plugins/icofont/icofont.min.css">
+    <!-- Slick Slider  CSS -->
+    <link rel="stylesheet" href="~/UserFiles/plugins/slick-carousel/slick/slick.css">
+    <link rel="stylesheet" href="~/UserFiles/plugins/slick-carousel/slick/slick-theme.css">
+
+    <!-- Main Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.10.0/main.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/UserFiles/css/style.css">
+
+</head>
+
+<body id="top">
+
+    <section class="page-title bg-1">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="block text-center">
+                        <span class="text-white">Book your Seat</span>
+                        <h1 class="text-capitalize mb-5 text-lg">Appoinment</h1>
+
+                        <!-- <ul class="list-inline breadcumb-nav">
+                          <li class="list-inline-item"><a href="index.html" class="text-white">Home</a></li>
+                          <li class="list-inline-item"><span class="text-white">/</span></li>
+                          <li class="list-inline-item"><a href="#" class="text-white-50">Book your Seat</a></li>
+                        </ul> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="appoinment section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="mt-3">
+                        <div class="feature-icon mb-3">
+                            <i class="icofont-support text-lg"></i>
+                        </div>
+                        <span class="h3">Call for an Emergency Service!</span>
+                        <h2 class="text-color mt-3">+84 789 1256 </h2>
+                    </div>
+                </div>
+
+                <div class="col-lg-8">
+                    <div class="appoinment-wrap mt-5 mt-lg-0 pl-lg-5">
+                        <h2 class="mb-2 title-color">Book an appoinment</h2>
+                        <p class="mb-4">Mollitia dicta commodi est recusandae iste, natus eum asperiores corrupti qui velit . Iste dolorum atque similique praesentium soluta.</p>
+                        <form class="appoinment-form" method="post" asp-action="Appoinment" asp-controller="Home">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Department</label>
+                                        <select asp-for="DepartmentId" class="form-control" id="departmentSelect">
+                                            @for (int i = 0; i < Model.Departments.Count(); i++)
+                                            {
+                                                <option value="@Model.Departments[i].Id">@Model.Departments[i].DepartmentName</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Doctor</label>
+                                        <select asp-for="DoctorId" class="form-control" id="doctorSelect">
+                                            @for (int i = 0; i < Model.Doctors.Count(); i++)
+                                            {
+                                                <option value="@Model.Doctors[i].Id">@Model.Doctors[i].FirstName @Model.Doctors[i].LastName</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Date</label>
+                                        <select asp-for="AppointmentDate" class="form-control" id="exampleFormControlSelect3">
+                                        
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Available Times</label>
+                                        <select asp-for="AppointmentTime" class="form-control" id="exampleFormControlSelect4"></select>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label asp-for="Fullname">Fullname</label>
+                                        <input asp-for="Fullname" id="name" type="text" class="form-control" placeholder="Full Name">
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label asp-for="PhoneNumber">Phone Number</label>
+
+                                        <input asp-for="PhoneNumber" id="phone" type="Number" class="form-control" placeholder="Phone Number">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group-2 mb-4">
+                                <label asp-for="Message">Message</label>
+
+                                <textarea asp-for="Message" id="message" class="form-control" rows="6" placeholder="Your Message"></textarea>
+                            </div>
+
+                            <button onclick="SendSMS()" class="btn btn-main btn-round-full" data-toggle="modal" data-target="#addevent" type="button">Make Appoinment<i class="icofont-simple-right ml-2"></i></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div style="border-radius:20px;" class="modal fade" id="addevent" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="title" id="defaultModalLabel">Book appointment</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div class="form-line">
+                            <input type="number" class="form-control" placeholder="Card number">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-line">
+                            <input type="text" class="form-control" placeholder="Exp date">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-line">
+                            <input class="form-control no-resize" placeholder="Security code"></input>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button  style="background-color:#223a66; margin:auto; border-radius:30px;" type="button" class="btn btn-primary btn-round waves-effect" data-dismiss="modal" data-toggle="modal" data-target="#successpay">Pay</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="border-radius:20px;" class="modal fade" id="successpay" tabindex="-1" role="dialog">
+       <img src="~/UserFiles/images/success.gif"/>
+                <div class="modal-footer">
+                    <button  style="background-color:#223a66; margin:auto; border-radius:30px;" type="button" class="btn btn-primary btn-round waves-effect" data-dismiss="modal" data-toggle="modal" data-target="#successpay">OK</button>
+                </div>
+    </div>
+
+    <script src="~/AccessaryFiles/js/signalr/dist/browser/signalR.js"></script>
+    <!--
+    Essential Scripts
+    =====================================-->
+    <!-- Main jQuery -->
+    <script src="~/UserFiles/plugins/jquery/jquery.js"></script>
+    <!-- Bootstrap 4.3.2 -->
+    <script src="~/UserFiles/plugins/bootstrap/js/popper.js"></script>
+    <script src="~/UserFiles/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/UserFiles/plugins/counterup/jquery.easing.js"></script>
+    <!-- Slick Slider -->
+    <script src="~/UserFiles/plugins/slick-carousel/slick/slick.min.js"></script>
+    <!-- Counterup -->
+    <script src="~/UserFiles/plugins/counterup/jquery.waypoints.min.js"></script>
+
+    <script src="~/UserFiles/plugins/shuffle/shuffle.min.js"></script>
+    <script src="~/UserFiles/plugins/counterup/jquery.counterup.min.js"></script>
+    <!-- Google Map -->
+    <script src="~/UserFiles/plugins/google-map/map.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkeLMlsiwzp6b3Gnaxd86lvakimwGA6UA&callback=initMap"></script>
+
+    <script src="~/UserFiles/js/script.js"></script>
+    <script src="~/UserFiles/js/contact.js"></script>
+
+    <script src="~/AccessaryFiles/js/user.js"></script>
+    <script src="~/AccessaryFiles/js/site.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.10.0/main.min.js"></script>
+
+</body>
+</html>

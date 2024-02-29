@@ -1,0 +1,85 @@
+﻿@model NewPostViewModel
+
+<title>:: Oreo Hospital :: Blog Post</title>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<!-- Favicon-->
+<link rel="stylesheet" href="~/AdminFiles/assets/plugins/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="~/AdminFiles/assets/plugins/dropzone/dropzone.css">
+<link rel="stylesheet" href="~/AdminFiles/assets/plugins/bootstrap-select/css/bootstrap-select.css" />
+<!-- Custom Css -->
+<link rel="stylesheet" href="~/AdminFiles/assets/css/main.css">
+<link rel="stylesheet" href="~/AdminFiles/assets/css/blog.css">
+<link rel="stylesheet" href="~/AdminFiles/assets/css/color_skins.css">
+
+<section class="content blog-page">
+    <div class="block-header">
+        <div class="row">
+            <div class="col-lg-7 col-md-5 col-sm-12">
+                <h2>
+                    New Post
+                    <small>Welcome to Oreo</small>
+                </h2>
+            </div>
+            <div class="col-lg-5 col-md-7 col-sm-12">
+                <ul class="breadcrumb float-md-right">
+                    <li class="breadcrumb-item"><a href="/Admin/Index"><i class="zmdi zmdi-home"></i> Oreo</a></li>
+                    <li class="breadcrumb-item"><a href="blog-dashboard.html">Blog</a></li>
+                    <li class="breadcrumb-item active">New Post</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    @using (Html.BeginForm("NewPost", "Post", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        <div class="body">
+                            <div class="form-group">
+                                <input asp-for="BlogTitle" type="text" class="form-control" placeholder="Enter Blog title" />
+                            </div>
+                            <select asp-for="DepartmentId" class="form-control show-tick">
+                                <option value="All Category">Select Category --</option>
+                                @for (int i = 0; i < Model.Departments.Count(); i++)
+                                {
+                                    <option value="@Model.Departments[i].Id">@Model.Departments[i].DepartmentName</option>
+                                }
+                            </select>
+                            <div class="form-group">
+                                <textarea asp-for="Content" class="form-control no-resize" placeholder="Content . . ."></textarea>
+                            </div>
+
+                            <div class="dz-message">
+                                <div class="drag-icon-cph"> <i class="material-icons">touch_app</i> </div>
+                                <h3>Drop files here or click to upload.</h3>
+                                <em>(This is just a demo dropzone. Selected files are <strong>not</strong> actually uploaded.)</em>
+                            </div>
+                            <div class="fallback">
+                                <input asp-for="Files" name="files" type="file" onchange="LoadFile(event)" multiple />
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="body">
+                                <button type="submit" class="btn btn-primary btn-round waves-effect m-t-20">Post</button>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script src="~/AccessaryFiles/js/signalr/dist/browser/signalR.js"></script>
+<!-- Jquery Core Js -->
+<script src="~/AdminFiles/assets/bundles/libscripts.bundle.js"></script> <!-- Lib Scripts Plugin Js -->
+<script src="~/AdminFiles/assets/bundles/vendorscripts.bundle.js"></script> <!-- Lib Scripts Plugin Js -->
+
+<script src="~/AdminFiles/assets/plugins/dropzone/dropzone.js"></script> <!-- Dropzone Plugin Js -->
+<script src="~/AdminFiles/assets/plugins/ckeditor/ckeditor.js"></script> <!-- Ckeditor -->
+
+<script src="~/AdminFiles/assets/bundles/mainscripts.bundle.js"></script><!-- Custom Js -->
+<script src="~/AdminFiles/assets/js/pages/forms/editors.js"></script>
+
+<script src="~/AccessaryFiles/js/site.js"></script>
+<script src="~/AccessaryFiles/js/user.js"></script>

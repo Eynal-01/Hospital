@@ -1,0 +1,69 @@
+﻿@model RegisterViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+
+<!-- register24:03-->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico">
+    <title>Preclinic - Medical & Hospital - Bootstrap 4 Admin Template</title>
+    <link rel="stylesheet" type="text/css" href="~/AdminFiles/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="~/AdminFiles/assets/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="~/AdminFiles/assets/css/style.css">
+
+    <link rel="stylesheet" type="text/css" href="~/AdminFiles/assets/css/myCss.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-GD2VbGV5vWpmSB2v8gF2lMUrCJpMp0UnO0n8W+k/kYu6QpBf7Bq8q3gMzE9rz+eB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-w1Zl+5j4L6X17/3fiZRECKhDzLFLDcc6lY/mF7j6Ud/ZCNhxYLO5LaXvh+flJoRLJwVd2hlYJF+P5wJiNjN9kA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!--[if lt IE 9]>
+        <script src="assets/js/html5shiv.min.js"></script>
+        <script src="assets/js/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        .box {
+            width: 100px;
+            height: 100px;
+            transition: transform 0.5s ease; /* Adding transition for smooth effect */
+        }
+
+            .box:hover {
+                transform: scale(1.2); /* Scale the size to 1.2 times when hovered */
+            }
+    </style>
+</head>
+
+<body class="body">
+    <div style="height:100vh">
+        <div style="display:flex;flex-direction:row;justify-content:space-around;margin:auto;height:100%;" class="background">
+@*             <h1 style="height:80vh;background-color:red;margin-top:20px">dfdsf</h1>
+            <h1 style="height:80vh;background-color:red">dfdsf</h1>
+            <h1 style="height:80vh;background-color:red">dfdsf</h1> *@
+            <div class="box" style="height:80vh;width:20%;background-color:rgba(0,0,255,0.2);border-radius:30px;margin-top:4%">
+                <button onclick="location.href='/Authentication/Selected?selected=Patient'" style="width:100%; height:100%; background-color:transparent; border:none;">
+                    <i class="fa-solid fa-user-patient"></i>
+                </button>
+             </div>
+            <div class="box" style="height:80vh;width:20%;background-color:rgba(0,0,255,0.2);border-radius:30px;margin-top:4%">
+                <button onclick="location.href='/Authentication/Selected?selected=Doctor'" style="width:100%; height:100%; background-color:transparent; border:none;">
+                    <i class="fa-solid fa-user-doctor"></i>
+                </button>
+            </div>
+            <div class="box" style="height:80vh;width:20%;background-color:rgba(0,0,255,0.2);border-radius:30px;margin-top:4%">
+                <button onclick="location.href='/Authentication/Selected?selected=Admin'" style="width:100%; height:100%; background-color:transparent; border:none;">
+                    <i class="fa-solid fa-user-admin"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+
+
+<!-- register24:03-->
+</html>

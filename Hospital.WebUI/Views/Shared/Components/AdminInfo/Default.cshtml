@@ -1,0 +1,10 @@
+﻿@model AdminInfoViewModel
+<li>
+    <div class="user-info">
+        <div class="image"><a asp-action="Profile" asp-controller="Doctor"><img src=`~/AccessaryFiles/images/@Model.ImageUrl` alt="User"></a></div>
+        <div class="detail">
+            <h4>@Model.Name</h4>
+            <small>@Model.DepartmentName</small>
+        </div>
+    </div>
+</li>

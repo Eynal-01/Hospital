@@ -1,31 +1,308 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Hospital.Business.Abstract;
+using Hospital.Entities.Data;
+using Hospital.Entities.DbEntities;
+using Hospital.WebUI.Helpers;
+using Hospital.WebUI.Models;
+using HospitalProject.Entities.DbEntities;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
 
 namespace Hospital.WebUI.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class AdminController : Controller
     {
-        public IActionResult Start()
+        private UserManager<CustomIdentityUser> _userManager;
+        private RoleManager<CustomIdentityRole> _roleManager;
+        private IWebHostEnvironment _webHost;
+        private readonly CustomIdentityDbContext _context;
+        private readonly IPatientService _patientService;
+        private readonly IDataService _dataService;
+
+        public AdminController(UserManager<CustomIdentityUser> userManager, CustomIdentityDbContext context, IWebHostEnvironment webHost, IPatientService patientService, RoleManager<CustomIdentityRole> roleManager, IDataService dataService)
         {
+            _userManager = userManager;
+            _context = context;
+            _webHost = webHost;
+            _patientService = patientService;
+            _roleManager = roleManager;
+            _dataService = dataService;
+        }
+
+        public async Task<Admin> CurrentUser()
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var admin = await _context.Admins.FirstOrDefaultAsync(a => a.UserName == user.UserName && a.Email == user.Email);
+            return admin;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AddDoctor()
+        {
+            var user = await CurrentUser();
+            var departments = await _context.Departments.ToListAsync();
+            var viewModel = new AddDoctorViewModel
+            {
+                ImageUrl = user.Avatar,
+                Departments = departments,
+            };
+            return View(viewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> NewPost()
+        {
+            var departments = await _context.Departments.ToListAsync();
+            var viewModel = new NewPostViewModel
+            {
+                Departments = departments,
+            };
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddDoctor(AddDoctorViewModel viewModel)
+        {
+            var user = await CurrentUser();
+            if (viewModel.Password == viewModel.ConfirmPassword)
+            {
+                if (viewModel != null)
+                {
+                    var helper = new ImageHelper(_webHost);
+                    if (viewModel.File != null)
+                    {
+                        viewModel.ImageUrl = await helper.SaveFile(viewModel.File);
+                        user.Avatar = viewModel.ImageUrl;
+                    }
+                }
+                var newPassword = HashPassword(viewModel.Password);
+                var doctor = new Doctor
+                {
+                    Address = viewModel.Address,
+                    BirthDate = viewModel.DateOfBirth,
+                    City = viewModel.City,
+                    Country = viewModel.Country,
+                    Email = viewModel.Email,
+                    NormalizedEmail = viewModel.Email.ToUpper(),
+                    FirstName = viewModel.FirstName,
+                    Gender = viewModel.Gender,
+                    LastName = viewModel.LastName,
+                    UserName = viewModel.Username,
+                    NormalizedUserName = viewModel.Username.ToUpper(),
+                    PhoneNumber = viewModel.MobileNumber.ToString(),
+                    Avatar = viewModel.ImageUrl,
+                    PasswordHash = newPassword,
+                    WorkStartTime = viewModel.WorkStartTime,
+                    WorkEndTime = viewModel.WorkEndTime,
+                    Bio = viewModel.ShortBiography,
+                    DepartmentId = viewModel.DepartmentId,
+                    Education = viewModel.Education,
+                };
+
+                //var customUser = new CustomIdentityUser()
+                //{
+                //    //Address = viewModel.Address,
+                //    //BirthDate = viewModel.DateOfBirth,
+                //    //City = viewModel.City,
+                //    //Country = viewModel.Country,
+                //    Email = viewModel.Email,
+                //    NormalizedEmail = viewModel.Email.ToUpper(),
+                //    //FirstName = viewModel.FirstName,
+                //    //Gender = viewModel.Gender,
+                //    //LastName = viewModel.LastName,
+                //    UserName = viewModel.Username,
+                //    NormalizedUserName = viewModel.Username.ToUpper(),
+                //    PhoneNumber = viewModel.MobileNumber.ToString(),
+                //    PasswordHash = newPassword,
+                //    //Avatar = viewModel.ImageUrl
+                //};
+
+
+                var customUser = new CustomIdentityUser
+                {
+                    Email = viewModel.Email,
+                    UserName = viewModel.Username,
+                    PhoneNumber = viewModel.MobileNumber.ToString(),
+                };
+
+                var result = await _userManager.CreateAsync(customUser, viewModel.Password);
+
+                if (result.Succeeded)
+                {
+                    if (!await _roleManager.RoleExistsAsync("doctor"))
+                    {
+                        var role = new CustomIdentityRole
+                        {
+                            Name = "doctor"
+                        };
+                        var resul = await _roleManager.CreateAsync(role);
+                        //if (!resul.Succeeded)
+                        //{
+                        //    ModelState.AddModelError("", "Error");
+                        //    return View(registerViewModel);
+                        //}
+                    }
+                }
+
+                await _userManager.AddToRoleAsync(customUser, "doctor");
+
+                //await _context.Users.AddAsync(customUser);
+                await _context.Doctors.AddAsync(doctor);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction("AddDoctor", "Admin");
+        }
+
+
+        public async Task<IActionResult> GetAvailableDays(int availableCount)
+        {
+            var admins = await _context.Admins.ToListAsync();
+            for (int i = 0; i < admins.Count(); i++)
+            {
+                admins[i].WorkDaysCount = availableCount;
+                await _context.SaveChangesAsync();
+            }
+            return Ok(admins);
+        }
+
+        public async Task<IActionResult> DoctorShowPost()
+        {
+            var doctors = await _context.Doctors.ToListAsync();
+            return Ok(doctors);
+        }
+
+
+
+        public static string HashPassword(string password)
+        {
+            int saltSize = 16;
+            int bytesRequired = 32;
+            byte[] array = new byte[1 + saltSize + bytesRequired];
+            int iterations = 1000; // 1000, afaik, which is the min recommended for Rfc2898DeriveBytes
+            using (var pbkdf2 = new Rfc2898DeriveBytes(password, saltSize, iterations))
+            {
+                byte[] salt = pbkdf2.Salt;
+                Buffer.BlockCopy(salt, 0, array, 1, saltSize);
+                byte[] bytes = pbkdf2.GetBytes(bytesRequired);
+                Buffer.BlockCopy(bytes, 0, array, saltSize + 1, bytesRequired);
+            }
+            return Convert.ToBase64String(array);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddDepartment(AddDepartmentViewModel viewModel)
+        {
+            var departments = await _context.Departments.ToListAsync();
+            var department = new Department();
+            var newDeparetmentId = "1";
+            if (departments.Count() > 0)
+            {
+                newDeparetmentId = (int.Parse(departments[departments.Count - 1].Id) + 1).ToString();
+                department = new Department
+                {
+                    Id = newDeparetmentId,
+                    DepartmentName = viewModel.Name
+                };
+            }
+            else
+            {
+                department.Id = newDeparetmentId;
+                department.DepartmentName = viewModel.Name;
+            }
+            await _context.Departments.AddAsync(department);
+            await _context.SaveChangesAsync();
             return View();
         }
 
-        public IActionResult Selected(string selected)
+        [HttpGet]
+        public async Task<IActionResult> AllPatients()
         {
-            selected = selected.Trim();
-            selected = selected.ToLower();
-
-            return RedirectToAction("Login", "Authentication", new { selected });
+            var patients = await _context.Patients.ToListAsync();
+            var appoinments = await _context.Appointments.ToListAsync();
+            var appointmentPatients = patients.Where(p => p.Appointments != null).ToList();
+            return Ok(appointmentPatients);
         }
 
-        public IActionResult Activities()
+        [HttpGet]
+        public async Task<IActionResult> GetAllDoctors()
         {
-            return View();
+            var doctors = await _context.Doctors.ToListAsync();
+            return Ok(doctors);
         }
 
-        public IActionResult AddApointment()
+        [HttpGet]
+        public async Task<IActionResult> ShowAllAppointments()
         {
-            return View();
+            var allAppointments = await _context.Appointments
+                .Include(nameof(Appointment.Doctor))
+                .Include(nameof(Appointment.Patient))
+                .Include(nameof(Appointment.Department))
+                .ToListAsync();
+            return Ok(allAppointments);
         }
+
+        public async Task<IActionResult> GetDoctorIdDepartment(string doctorId)
+        {
+            var doctor = await _context.Doctors.FirstOrDefaultAsync(d => d.Id == doctorId);
+
+            var departmen = await _context.Departments.FirstOrDefaultAsync(d => d.Id == doctor.DepartmentId.ToString());
+
+            var department = departmen.DepartmentName;
+            return Ok(department);
+        }
+
+        //[HttpGet]
+        //public async Task<IActionResult> GetAppointmentDoctor(string id)
+        //{
+        //    var doctor = await _context.Doctors.FirstOrDefaultAsync(i => i.Id == id);
+        //    return Ok(doctor);
+        //}
+
+        public async Task<IActionResult> DoctorProfile(string doctorId)
+        {
+            var doctor = await _context.Doctors.FirstOrDefaultAsync(d => d.Id == doctorId);
+            var department = await _context.Departments.FirstOrDefaultAsync(d => d.Id == doctor.DepartmentId.ToString());
+            var viewModel = new DoctorProfileViewModel
+            {
+                Address = doctor.Address,
+                City = doctor.City,
+                Country = doctor.Country,
+                Department = department.DepartmentName,
+                Education = doctor.Education,
+                Gender = doctor.Gender,
+                ImageUrl = doctor.Avatar,
+                Info = doctor.Bio,
+                FirstName = doctor.FirstName,
+                LastName = doctor.LastName,
+                UserName = doctor.UserName,
+            };
+            return View(viewModel);
+        }
+
+        public async Task<IActionResult> PatientProfile(string id)
+        {
+            var patient = await _context.Patients.FirstOrDefaultAsync(p => p.Id == id);
+            var viewModel = new PatientProfileViewModel
+            {
+                Address = patient.Address,
+                Email = patient.Email,
+                Fullname = patient.FullName,
+                Username = patient.UserName,
+                PhoneNumber = patient.PhoneNumber,
+                ImageUrl = patient.Avatar,
+            };
+            return View(viewModel);
+        }
+
+        public async Task<IActionResult> GetAllDepartment()
+        {
+            var departments = await _context.Departments.ToListAsync();
+            return Ok(departments);
+        }
+
 
         public IActionResult AddBlog()
         {
@@ -37,7 +314,7 @@ namespace Hospital.WebUI.Controllers
             return View();
         }
 
-        public IActionResult AddDoctor()
+        public IActionResult Appointments()
         {
             return View();
         }
@@ -47,42 +324,7 @@ namespace Hospital.WebUI.Controllers
             return View();
         }
 
-        public IActionResult AddSalary()
-        {
-            return View();
-        }
-
-        public IActionResult AddSchedule()
-        {
-            return View();
-        }
-
-        public IActionResult Appointments()
-        {
-            return View();
-        }
-
-        public IActionResult Attendance()
-        {
-            return View();
-        }
-
-        public IActionResult Calendar()
-        {
-            return View();
-        }
-
-        public IActionResult ChangePassword()
-        {
-            return View();
-        }
-
-        public IActionResult Chat()
-        {
-            return View();
-        }
-
-        public IActionResult Departments()
+        public IActionResult Activities()
         {
             return View();
         }
@@ -92,37 +334,7 @@ namespace Hospital.WebUI.Controllers
             return View();
         }
 
-        public IActionResult EditDepartment()
-        {
-            return View();
-        }
-
-        public IActionResult EditDoctor()
-        {
-            return View();
-        }
-
-        public IActionResult EditPatient()
-        {
-            return View();
-        }
-
-        public IActionResult AddProfile()
-        {
-            return View();
-        }
-
-        public IActionResult EditSchedule()
-        {
-            return View();
-        }
-
-        public IActionResult Error404()
-        {
-            return View();
-        }
-
-        public IActionResult Error500()
+        public IActionResult Events()
         {
             return View();
         }
@@ -132,11 +344,17 @@ namespace Hospital.WebUI.Controllers
             return View();
         }
 
-        public IActionResult Login()
+
+        public IActionResult PageOffline()
         {
             return View();
         }
 
+        public IActionResult PatientInvoice()
+        {
+            return View();
+        }
+     
         public IActionResult Patients()
         {
             return View();
@@ -147,22 +365,42 @@ namespace Hospital.WebUI.Controllers
             return View();
         }
 
-        public IActionResult Profile()
+        public IActionResult EditSchedule()
         {
             return View();
         }
 
-        public IActionResult Register()
+        public IActionResult Error400()
         {
             return View();
         }
 
-        public IActionResult Schedule()
+        public IActionResult Error500()
         {
             return View();
         }
 
-        public IActionResult Settings()
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        public IActionResult AddPayment()
+        {
+            return View();
+        }
+
+        public IActionResult AllDepartments()
+        {
+            return View();
+        }
+
+        public IActionResult BlogList()
+        {
+            return View();
+        }
+
+        public IActionResult BlogSingle()
         {
             return View();
         }
