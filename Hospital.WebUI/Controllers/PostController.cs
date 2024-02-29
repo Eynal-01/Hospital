@@ -100,7 +100,6 @@ namespace Hospital.WebUI.Controllers
                 if (viewModel.Files[i] != null)
                 {
                     var helper = new ImageHelper(_webHost);
-                    var url = await helper.SaveFile(viewModel.Files[i]);
 
                     var mediaUrl = await _mediaService.UploadMediaAsync(viewModel.Files[i]);
 
@@ -115,11 +114,11 @@ namespace Hospital.WebUI.Controllers
 
                     if (viewModel.Files[i] != viewModel.Files[viewModel.Files.Count() - 1])
                     {
-                        post.ImageUrl += $"{url} : ";
+                        post.ImageUrl += $"{mediaUrl} - ";
                     }
                     else
                     {
-                        post.ImageUrl += $"{url}";
+                        post.ImageUrl += $"{mediaUrl}";
                     }
                 }
             }
@@ -143,7 +142,7 @@ namespace Hospital.WebUI.Controllers
                 var post = await _context.Posts.Where(p => p.AdminId == item.Id).ToListAsync();
                 for (int i = 0; i < post.Count(); i++)
                 {
-                    var images = post[i].ImageUrl.Split(':').ToList();
+                    var images = post[i].ImageUrl.Split('-').ToList();
                     if (post[i].ImageUrl != null)
                     {
                         post[i].IsImage = true;

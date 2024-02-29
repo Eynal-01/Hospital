@@ -10,14 +10,12 @@ connection.start().then(function () {
 })
 
 connection.on("Connect", function (role) {
-<<<<<<< HEAD
-    //if (role == "admin") {
-    //    //console.log(role);
-    //    GetAllPatients();
-    //    GetAllAppointments();
-    //    GetAllDoctors();
-    //    GetAllDepartment();
-    //}
+    if (role === "admin") {
+        GetAllPatients();
+        GetAllAppointments();
+        GetAllDoctors();
+        GetAllDepartment();
+    }
     //else if (role == "patient") {
     //    GetAllPostPatient();
     //}
@@ -29,29 +27,6 @@ connection.on("Connect", function (role) {
     //    console.log(role);
     //    GetAllPostAdmin();
     //}
-=======
-<<<<<<< HEAD
-    //if (role == "admin") {
-    //console.log(role);
-    //}
-    GetAllPatients();
-    GetAllAppointments();
-    GetDays();
-    GetAllDoctors();
-    GetAllDepartment(); 
-    //GetDay();
-    //GetTime();
-=======
-    if (role == "admin") {
-        //console.log(role);
-        GetAllPatients();
-        GetAllAppointments();
-        GetAllDoctors();
-        GetAllDepartment();
-        GetAllPost();
-    }
->>>>>>> bf12e164ee3a684225be48c6f4225e079ee9b71e
->>>>>>> 30e803eb2c3e72c3cbc06442e626c088d9729411
 
     //GetAllUsers();
     //element.style.display = "block";

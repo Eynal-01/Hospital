@@ -88,6 +88,9 @@ function GetAllPostAllUsers() {
             var imagesPatient = "";
             var arrowPatient = "";
 
+            var postCategories = "";
+            var postCategoriessInCount = "";
+
             imagesPatient = "";
             arrowPatient = "";
 
@@ -100,26 +103,26 @@ function GetAllPostAllUsers() {
 
                         images += `
                              <div class="carousel-item active" style="text-align:center;width:100%;">
-                               <img class="img-fluid"  src="/AccessaryFiles/images/${data.posts[i].images[k]}" alt="Responsive image" >
+                               <img class="img-fluid"  src="${data.posts[i].images[k]}" alt="Responsive image" >
                             </div>
                        `;
 
                         imagesPatient += `
                              <div class="carousel-item active" style="text-align:center;width:100%;">
-                               <img class="img-fluid" src="/AccessaryFiles/images/${data.posts[i].images[k]}" alt="Responsive image">
+                               <img class="img-fluid" src="${data.posts[i].images[k]}" alt="Responsive image">
                             </div>
                        `;
                     }
                     else {
                         images += `
                           <div class="carousel-item" style="text-align:center;width:100%;">
-                               <img class="img-fluid" src="/AccessaryFiles/images/${data.posts[i].images[k]}" alt="Responsive image" >
+                               <img class="img-fluid" src="${data.posts[i].images[k]}" alt="Responsive image" >
                           </div>
                        `;
 
                         imagesPatient += `
                           <div class="carousel-item" style="text-align:center;width:100%;">
-                               <img class="img-fluid" src="/AccessaryFiles/images/${data.posts[i].images[k]}" alt="Responsive image">
+                               <img class="img-fluid" src="${data.posts[i].images[k]}" alt="Responsive image">
                           </div>
                        `;
                     }
@@ -156,6 +159,7 @@ function GetAllPostAllUsers() {
                            </ul>
                     `;
                 }
+
 
                 content += `
 
@@ -514,32 +518,32 @@ function SendSMS() {
 }
 
 
-document.getElementById("departmentSelect").addEventListener("change", function () {
-    var departmentId = this.value;
+//document.getElementById("departmentSelect").addEventListener("change", function () {
+//    var departmentId = this.value;
 
-    var doctorSelect = document.getElementById("doctorSelect");
-    doctorSelect.innerHTML = "";
+//    var doctorSelect = document.getElementById("doctorSelect");
+//    doctorSelect.innerHTML = "";
 
-    $.ajax({
+//    $.ajax({
 
-        url: `/Home/getDoctors?departmentId=${departmentId}`,
-        method: "GET",
+//        url: `/Home/getDoctors?departmentId=${departmentId}`,
+//        method: "GET",
 
-        success: function (data) {
-            console.log(data);
-            data.forEach(function (doctor) {
-                var option = document.createElement("option");
-                option.text = doctor.firstName + " " + doctor.lastName;
-                option.value = doctor.id;
-                doctorSelect.appendChild(option);
-            });
-            GetDay();
-        }
-    })
-});
+//        success: function (data) {
+//            console.log(data);
+//            data.forEach(function (doctor) {
+//                var option = document.createElement("option");
+//                option.text = doctor.firstName + " " + doctor.lastName;
+//                option.value = doctor.id;
+//                doctorSelect.appendChild(option);
+//            });
+//            GetDay();
+//        }
+//    })
+//});
 
-document.getElementById("doctorSelect").addEventListener("change", function () {
-    GetDay();
-    GetTime();
-    SendSMS();
-});
+//document.getElementById("doctorSelect").addEventListener("change", function () {
+//    GetDay();
+//    GetTime();
+//    SendSMS();
+//});
