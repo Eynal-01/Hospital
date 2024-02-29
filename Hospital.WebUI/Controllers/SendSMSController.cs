@@ -8,10 +8,15 @@ namespace Hospital.WebUI.Controllers
 {
     [Route("[controller]")]
     [ApiController]
+    
     public class SendSMSController : ControllerBase
     {
         private readonly string accountSid = "ACa25acf39d02f079fc43f5feab218351c";
         private readonly string authToken = "ea8d2ab1731a4d0a0ee4e87f54243a13";
+        /// <summary>
+        /// This method send message to client when he/she books appointment.
+        /// </summary>
+        /// <returns></returns>
         [HttpPost("SendText")]
         public async Task<IActionResult> SendText()
         {

@@ -553,3 +553,27 @@ document.getElementById("doctorSelect").addEventListener("change", function () {
     GetDay();
     GetTime();
 });
+
+function checkInputs() {
+    var fullName = $("#name").val();
+    var phone = $("#phone").val();
+
+    $.ajax({
+        url: `/Home/CheckInputs?phoneNumber=${phone}&fullName=${fullName}`,
+        method: "GET",
+        success: function (data) {
+            if (data == "fullname is null") {
+                console.log("fullname is null")
+            }
+            else if (data == "phone is null") {
+                console.log("phone is null")
+            }
+            else if (data == "2 null") {
+                console.log("2 null")
+            }
+            else {
+                return;
+            }
+        }
+    })
+}
