@@ -65,6 +65,119 @@ function PatientProfile(id) {
 //    })
 //}
 
+function PostFilter(departmentId) {
+    $.ajax({
+        url: `/Post/PostFilter?departmentId=${departmentId}`,
+        method: "GET",
+
+        success: function (data) {
+            var contentPatient = "";
+            var adminName = "";
+            var arrowPatient = "";
+            var imagesPatient = "";
+            //console.log(data.value);
+            for (var i = 0; i < data.value.posts.length; i++) {
+                imagesPatient = "";
+                arrowPatient = "";
+                adminName = "";
+
+                for (var k = 0; k < data.value.posts[i].images.length; k++) {
+                    if (k == 0) {
+                        imagesPatient += `
+                             <div class="carousel-item active" style="text-align:center;width:100%;">
+                               <img class="img-fluid" src="${data.value.posts[i].images[k]}" alt="Responsive image">
+                            </div>
+                       `;
+                    }
+                    else {
+                        imagesPatient += `
+                          <div class="carousel-item" style="text-align:center;width:100%;">
+                               <img class="img-fluid" src="${data.value.posts[i].images[k]}" alt="Responsive image">
+                          </div>
+                       `;
+                    }
+                }
+
+                if (data.value.posts[i].images.length > 1) {
+                    arrowPatient += `
+                         <a class="carousel-control-prev" href="#carouselExampleIndicators${data.value.posts[i].postId}" role="button" data-slide="prev">
+                           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                           <span class="sr-only">Previous</span>
+                         </a>
+                         <a class="carousel-control-next" href="#carouselExampleIndicators${data.value.posts[i].postId}" role="button" data-slide="next">
+                           <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                           <span class="sr-only">Next</span>
+                         </a>
+                    `;
+                }
+
+
+
+                if (data.value.posts[i].lastName != null && data.value.posts[i].firstName != null) {
+                    adminName = `
+                           <ul class="meta">
+                                <li><a href="#"><i class="zmdi zmdi-account col-blue"></i>Posted By: ${data.value.posts[i].admin.firstName} ${data.value.posts[i].admin.lastName}</a ></li >
+                                <li><a href="#"><i class="zmdi zmdi-label col-red"></i>${data.value.posts[i].department.departmentName}</a></li>
+                           </ul>
+                    `;
+                }
+                else {
+                    adminName = `
+                           <ul class="meta">
+                                <li><a href="#"><i class="zmdi zmdi-account col-blue"></i>Posted By: ${data.value.posts[i].admin.userName}</a ></li >
+                                <li><a href="#"><i class="zmdi zmdi-label col-red"></i>${data.value.posts[i].department.departmentName}</a></li>
+                           </ul>
+                    `;
+                }
+
+
+                if (data.value.posts[i].images.length > 1) {
+                    arrowPatient += `
+                         <a class="carousel-control-prev" href="#carouselExampleIndicators${data.value.posts[i].postId}" role="button" data-slide="prev">
+                           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                           <span class="sr-only">Previous</span>
+                         </a>
+                         <a class="carousel-control-next" href="#carouselExampleIndicators${data.value.posts[i].postId}" role="button" data-slide="next">
+                           <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                           <span class="sr-only">Next</span>
+                         </a>
+                    `;
+                }
+
+                contentPatient += `
+                      <div class="col-lg-12 col-md-12 mb-5">
+							<div class="blog-item">
+                              <div class="img-post m-b-15" style="background-color:rgba(200, 200, 200,0.4);">
+                                 <div id="carouselExampleIndicators${data.value.posts[i].postId}" class="carousel slide" data-ride="carousel">
+                                   <div class="carousel-inner">
+                                     ${imagesPatient}
+                                   </div>
+                                   ${arrowPatient}
+                               </div>
+                            </div>
+
+								<div class="blog-item-content">
+									<div class="blog-item-meta mb-3 mt-4">
+                                        <span class="text-muted text-capitalize mr-3"><i class="icofont-category mr-2"></i> ${data.value.posts[i].department.departmentName}</span>
+										<span class="text-black text-capitalize mr-3"><i class="icofont-calendar mr-1"></i> ${data.value.posts[i].publishTime}</span>
+									</div>
+
+									<h2 class="mt-3 mb-3"><a href="blog-single.html">${data.value.posts[i].title}</a></h2>
+
+									<p class="mb-4">${data.value.posts[i].content}</p>
+
+									<a href="blog-single.html" target="_blank" class="btn btn-main btn-icon btn-round-full">Read More <i class="icofont-simple-right ml-2  "></i></a>
+								</div>
+							</div>
+						</div>
+                `;
+            }
+
+            $("#patientPosts").html(contentPatient);
+        }
+    })
+}
+
 function GetAllPostAllUsers() {
     //var queryControllerName = "";
     //if (role == "admin") {
@@ -78,7 +191,7 @@ function GetAllPostAllUsers() {
         method: "GET",
 
         success: function (data) {
-            console.log(data);
+            //console.log(data);
             var content = "";
             var adminName = "";
             var arrow = "";
@@ -86,17 +199,48 @@ function GetAllPostAllUsers() {
 
             let contentPatient = "";
             var imagesPatient = "";
+            var categoryList = [];
             var arrowPatient = "";
 
             var postCategories = "";
-            var postCategoriessInCount = "";
+
+            var postCategoriessInCount = 0;
 
             imagesPatient = "";
             arrowPatient = "";
 
+            postCategories += ` 
+                      <li class="align-items-center">
+					     <a onclick="PostFilter('All')">All</a>
+					     <span>(${data.posts.length})</span>
+					  </li>
+               `;
+
+            for (var i = 0; i < data.posts.length; i++) {
+                postCategoriessInCount = 0;
+
+                for (var k = 0; k < data.posts.length; k++) {
+                    if (data.posts[k].department.id === data.posts[i].department.id) {
+                        postCategoriessInCount += 1;
+                    }
+                }
+
+                if (!categoryList.includes(data.posts[i].department.departmentName)) {
+                    categoryList.push(data.posts[i].department.departmentName);
+
+                    postCategories += ` 
+                              <li class="align-items-center">
+				          	     <a onclick="PostFilter('${data.posts[i].department.id}')">${data.posts[i].department.departmentName}</a>
+				          	     <span>(${postCategoriessInCount})</span>
+				          	  </li>
+                          `;
+                }
+            }
+
             for (var i = 0; i < data.posts.length; i++) {
                 images = "";
                 arrow = "";
+                imagesPatient = "";
 
                 for (var k = 0; k < data.posts[i].images.length; k++) {
                     if (k == 0) {
@@ -147,7 +291,7 @@ function GetAllPostAllUsers() {
                     adminName = `
                            <ul class="meta">
                                 <li><a href="#"><i class="zmdi zmdi-account col-blue"></i>Posted By: ${data.posts[i].admin.firstName} ${data.posts[i].admin.lastName}</a ></li >
-                                <li><a href="#"><i class="zmdi zmdi-label col-red"></i>${data.posts[i].departmentName}</a></li>
+                                <li><a href="#"><i class="zmdi zmdi-label col-red"></i>${data.posts[i].department.departmentName}</a></li>
                            </ul>
                     `;
                 }
@@ -155,7 +299,7 @@ function GetAllPostAllUsers() {
                     adminName = `
                            <ul class="meta">
                                 <li><a href="#"><i class="zmdi zmdi-account col-blue"></i>Posted By: ${data.posts[i].admin.userName}</a ></li >
-                                <li><a href="#"><i class="zmdi zmdi-label col-red"></i>${data.posts[i].departmentName}</a></li>
+                                <li><a href="#"><i class="zmdi zmdi-label col-red"></i>${data.posts[i].department.departmentName}</a></li>
                            </ul>
                     `;
                 }
@@ -213,7 +357,7 @@ function GetAllPostAllUsers() {
 
 								<div class="blog-item-content">
 									<div class="blog-item-meta mb-3 mt-4">
-                                        <span class="text-muted text-capitalize mr-3"><i class="icofont-category mr-2"></i> ${data.posts[i].departmentName}</span>
+                                        <span class="text-muted text-capitalize mr-3"><i class="icofont-category mr-2"></i> ${data.posts[i].department.departmentName}</span>
 										<span class="text-black text-capitalize mr-3"><i class="icofont-calendar mr-1"></i> ${data.posts[i].publishTime}</span>
 									</div>
 
@@ -229,6 +373,8 @@ function GetAllPostAllUsers() {
             }
 
             $("#patientPosts").html(contentPatient);
+            $("#postFilterCategories").html(postCategories);
+
 
             $("#postsDoctor").html(content);
             $("#posts").html(content);
@@ -518,32 +664,32 @@ function SendSMS() {
 }
 
 
-//document.getElementById("departmentSelect").addEventListener("change", function () {
-//    var departmentId = this.value;
+document.getElementById("departmentSelect").addEventListener("change", function () {
+    var departmentId = this.value;
 
-//    var doctorSelect = document.getElementById("doctorSelect");
-//    doctorSelect.innerHTML = "";
+    var doctorSelect = document.getElementById("doctorSelect");
+    doctorSelect.innerHTML = "";
 
-//    $.ajax({
+    $.ajax({
 
-//        url: `/Home/getDoctors?departmentId=${departmentId}`,
-//        method: "GET",
+        url: `/Home/getDoctors?departmentId=${departmentId}`,
+        method: "GET",
 
-//        success: function (data) {
-//            console.log(data);
-//            data.forEach(function (doctor) {
-//                var option = document.createElement("option");
-//                option.text = doctor.firstName + " " + doctor.lastName;
-//                option.value = doctor.id;
-//                doctorSelect.appendChild(option);
-//            });
-//            GetDay();
-//        }
-//    })
-//});
+        success: function (data) {
+            console.log(data);
+            data.forEach(function (doctor) {
+                var option = document.createElement("option");
+                option.text = doctor.firstName + " " + doctor.lastName;
+                option.value = doctor.id;
+                doctorSelect.appendChild(option);
+            });
+            GetDay();
+        }
+    })
+});
 
-//document.getElementById("doctorSelect").addEventListener("change", function () {
-//    GetDay();
-//    GetTime();
-//    SendSMS();
-//});
+document.getElementById("doctorSelect").addEventListener("change", function () {
+    GetDay();
+    GetTime();
+    SendSMS();
+});

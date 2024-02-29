@@ -182,8 +182,8 @@ namespace Hospital.Entities.Migrations
                     b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("DepartmentName")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("DepartmentId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
@@ -203,6 +203,8 @@ namespace Hospital.Entities.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AdminId");
+
+                    b.HasIndex("DepartmentId");
 
                     b.ToTable("Posts");
                 });
@@ -869,7 +871,13 @@ namespace Hospital.Entities.Migrations
                         .WithMany("Posts")
                         .HasForeignKey("AdminId");
 
+                    b.HasOne("HospitalProject.Entities.DbEntities.Department", "Department")
+                        .WithMany("Posts")
+                        .HasForeignKey("DepartmentId");
+
                     b.Navigation("Admin");
+
+                    b.Navigation("Department");
                 });
 
             modelBuilder.Entity("HospitalProject.Entities.DbEntities.Appointment", b =>
@@ -1071,6 +1079,11 @@ namespace Hospital.Entities.Migrations
             modelBuilder.Entity("HospitalProject.Entities.DbEntities.Chat", b =>
                 {
                     b.Navigation("Messages");
+                });
+
+            modelBuilder.Entity("HospitalProject.Entities.DbEntities.Department", b =>
+                {
+                    b.Navigation("Posts");
                 });
 
             modelBuilder.Entity("HospitalProject.Entities.DbEntities.Doctor", b =>

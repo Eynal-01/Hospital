@@ -8,6 +8,7 @@ using Hospital.WebUI.Models;
 using HospitalProject.Entities.DbEntities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
 
@@ -72,17 +73,11 @@ namespace Hospital.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> NewPost(NewPostViewModel viewModel)
         {
+            //for (int i = 0; i < departments.Count(); i++)
+            //{
+            //    if(view)
+            //}
             var user = await CurrentUser();
-            var department = new Department();
-
-            if (viewModel.DepartmentId != "All Category")
-            {
-                department = await _context.Departments.FirstOrDefaultAsync(d => d.Id == viewModel.DepartmentId);
-            }
-            else
-            {
-                department.DepartmentName = viewModel.DepartmentId;
-            }
 
             var post = new Post
             {
@@ -90,7 +85,7 @@ namespace Hospital.WebUI.Controllers
                 Title = viewModel.BlogTitle,
                 Content = viewModel.Content,
                 PublishTime = DateTime.Now.ToShortDateString(),
-                DepartmentName = department.DepartmentName
+                DepartmentId = viewModel.DepartmentId
             };
 
             //foreach (var item in viewModel.Files)
@@ -130,16 +125,53 @@ namespace Hospital.WebUI.Controllers
             return RedirectToAction("NewPost", "Post");
         }
 
+        public async Task<IActionResult> PostFilter(string departmentId)
+        {
+            string postDepartment = departmentId;
+            if (departmentId == "All")
+            {
+                postDepartment = "";
+            }
 
-        public async Task<IActionResult> GetAllPost()
+            var posts = await GetAllPost(postDepartment);
+            return Ok(posts);
+        }
+
+        public async Task<IActionResult> GetAllPost(string departmentId = "")
         {
             //var user = await CurrentUser();
 
+
             var data = await _context.Admins.ToListAsync();
             var posts = new List<PostsShowViewModel>();
+
+            var departments = await _context.Departments.ToListAsync();
+            if (departments.Count() == 0)
+            {
+                var newDeparetmentId = "1";
+
+                var department = new Department
+                {
+                    Id = newDeparetmentId,
+                    DepartmentName = "All Departmets",
+                };
+
+                await _context.Departments.AddAsync(department);
+                await _context.SaveChangesAsync();
+            }
+
+
             foreach (var item in data)
             {
-                var post = await _context.Posts.Where(p => p.AdminId == item.Id).ToListAsync();
+                List<Post> post;
+                if (departmentId != string.Empty)
+                {
+                    post = await _context.Posts.Where(p => p.AdminId == item.Id && p.DepartmentId == departmentId).ToListAsync();
+                }
+                else
+                {
+                    post = await _context.Posts.Where(p => p.AdminId == item.Id).ToListAsync();
+                }
                 for (int i = 0; i < post.Count(); i++)
                 {
                     var images = post[i].ImageUrl.Split('-').ToList();
@@ -165,14 +197,12 @@ namespace Hospital.WebUI.Controllers
                     poo.PublishTime = post[i].PublishTime;
                     poo.ViewCount = post[i].ViewCount;
                     poo.Images = images;
-                    poo.DepartmentName = post[i].DepartmentName;
+                    poo.Department = post[i].Department;
 
                     posts.Add(poo);
                 }
             }
             return Ok(new { posts = posts });
         }
-
-
     }
 }
