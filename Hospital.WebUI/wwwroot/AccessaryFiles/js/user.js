@@ -557,7 +557,7 @@ document.getElementById("doctorSelect").addEventListener("change", function () {
 function checkInputs() {
     var fullName = $("#name").val();
     var phone = $("#phone").val();
-
+    var btn = $("#make");
     $.ajax({
         url: `/Home/CheckInputs?phoneNumber=${phone}&fullName=${fullName}`,
         method: "GET",
@@ -570,10 +570,57 @@ function checkInputs() {
             }
             else if (data == "2 null") {
                 console.log("2 null")
+                showToast("fullname and phone number is null")
             }
             else {
-                return;
+                btn.setAttribute('data-target', '#addevent');
+                btn.setAttribute('data-toggle', 'modal');
             }
         }
     })
+}
+
+
+var toastId = "myToast";
+
+function createToast(text) {
+    let toast = `
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+      <div id="${toastId}" class="toast" role="alert" aria-live="assertive" aria-atomic="true" background-color: white;">
+        <div class="toast-header">
+          <strong class="me-auto">Zust</strong>
+          <small>Now</small>
+          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+          ${text}
+        </div>
+      </div>
+    </div>
+  `;
+    return toast;
+}
+
+// Function to show the toast
+function showToast(message) {
+    // Remove existing toast if it exists
+    var existingToast = document.getElementById(toastId);
+    if (existingToast) {
+        existingToast.remove();
+    }
+
+    var toastHTML = createToast(message);
+    document.body.insertAdjacentHTML("beforeend", toastHTML);
+    var toast = document.getElementById(toastId);
+    var bsToast = new bootstrap.Toast(toast);
+    bsToast.show();
+    setTimeout(function () {
+        toast.style.display = "none";
+    }, 6000);
+
+    // Handle close button click event
+    var closeButton = toast.querySelector(".btn-close");
+    closeButton.addEventListener("click", function () {
+        toast.style.display = "none";
+    });
 }
