@@ -786,3 +786,15 @@ function showToast(message) {
         toast.style.display = "none";
     });
 }
+
+document.getElementById("okSuccess").addEventListener("click", function () {
+    $.ajax({
+        url: `/Home/Index`,
+        method: "GET",
+
+        success: function () {
+            consol.log("OK Working")
+        }
+    })
+});
+

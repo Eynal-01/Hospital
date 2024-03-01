@@ -268,5 +268,10 @@ namespace Hospital.WebUI.Controllers
         {
             return View();
         }
+
+        public IActionResult SuccessPay()
+        {
+            return View();
+        }
     }
 }
