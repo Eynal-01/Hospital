@@ -213,9 +213,12 @@ namespace Hospital.WebUI.Controllers
             return View();
         }
 
-        public IActionResult BlogSingle()
+        [HttpGet]
+        public async Task<IActionResult> BlogSingle(PostsShowViewModel post)
         {
-            return View();
+            post.Admin = await _dbContext.Admins.FirstOrDefaultAsync(a => a.Id == post.AdminId);
+            post.Department = await _dbContext.Departments.FirstOrDefaultAsync(p => p.Id == post.DepartmentId);
+            return View(post);
         }
 
         public IActionResult Comfirmation()
