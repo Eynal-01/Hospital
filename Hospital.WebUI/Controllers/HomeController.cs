@@ -82,7 +82,7 @@ namespace Hospital.WebUI.Controllers
             };
             await _dbContext.Appointments.AddAsync(appoinment);
             await _dbContext.SaveChangesAsync();
-            return RedirectToAction("Appoinment", "Home");
+            return RedirectToAction("SuccessPay","Home");
         }
 
         public async Task<Patient> CurrentUser()
@@ -135,22 +135,16 @@ namespace Hospital.WebUI.Controllers
         [HttpGet]
         public async Task<string> CheckInputs(string phoneNumber, string fullName)
         {
-            if (phoneNumber == "0" && fullName == null)
+            var v = "";
+            if (phoneNumber == "0")
             {
-                return "2 null";
+                v += "phone is null";
             }
-            else if (phoneNumber == "0")
+            if (fullName == null)
             {
-                return "phone is null";
+                v += " fullname is null";
             }
-            else if(fullName == null)
-            {
-                return "fullname is null";
-            }
-            else
-            {
-                return "okay";
-            }
+            return v;
         }
 
         [HttpGet]

@@ -46,11 +46,10 @@
             </div>
         </div>
     </section>
-
     <section class="appoinment section">
         <div class="container">
             <div class="row">
-                <div class="col-lg-4"> 
+                <div class="col-lg-4">
                     <div class="mt-3">
                         <div class="feature-icon mb-3">
                             <i class="icofont-support text-lg"></i>
@@ -64,7 +63,7 @@
                     <div class="appoinment-wrap mt-5 mt-lg-0 pl-lg-5">
                         <h2 class="mb-2 title-color">Book an appoinment</h2>
                         <p class="mb-4">Mollitia dicta commodi est recusandae iste, natus eum asperiores corrupti qui velit . Iste dolorum atque similique praesentium soluta.</p>
-                        <form class="appoinment-form" method="post" asp-action="Appoinment" asp-controller="Home">
+                        <form class="appoinment-form" method="post" asp-action="Appoinment" asp-controller="Home"> 
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="form-group">
@@ -93,7 +92,6 @@
                                     <div class="form-group">
                                         <label>Date</label>
                                         <select asp-for="AppointmentDate" class="form-control" id="exampleFormControlSelect3">
-                                        
                                         </select>
                                     </div>
                                 </div>
@@ -108,15 +106,16 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label asp-for="Fullname">Fullname</label>
-                                        <input asp-for="Fullname" id="name" type="text" class="form-control" placeholder="Full Name">
+                                        <input asp-for="Fullname" id="name" type="text" class="form-control" placeholder="Full Name" oninput="handleNameInput()">
+                                        <label id="emptyName" style="color:red; display:none;">Enter fullname</label>
                                     </div>
                                 </div>
 
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label asp-for="PhoneNumber">Phone Number</label>
-
-                                        <input asp-for="PhoneNumber" id="phone" type="Number" class="form-control" placeholder="Phone Number">
+                                        <input asp-for="PhoneNumber" id="phone" type="Number" class="form-control" placeholder="Phone Number" oninput="handlePhoneInput()">
+                                        <label id="emptyPhone" style="color:red; display:none;">Enter phone number</label>
                                     </div>
                                 </div>
                             </div>
@@ -126,48 +125,49 @@
                                 <textarea asp-for="Message" id="message" class="form-control" rows="6" placeholder="Your Message"></textarea>
                             </div>
 
-                            <button id="make" onclick="checkInputs()" class="btn btn-main btn-round-full" type="button">Make Appointment<i class="icofont-simple-right ml-2"></i></button>
+                            <button id="make" class="btn btn-main btn-round-full" type="button">Make Appointment<i class="icofont-simple-right ml-2"></i></button>
+                            <div style="border-radius:20px;" class="modal fade" id="addevent" tabindex="-1" role="dialog">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="title" id="defaultModalLabel">Book appointment</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <div class="form-line">
+                                                    <input type="number" class="form-control" placeholder="Card number">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="form-line">
+                                                    <input type="text" class="form-control" placeholder="Exp date">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="form-line">
+                                                    <input class="form-control no-resize" placeholder="Security code"></input>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button style="background-color:#223a66; margin:auto; border-radius:30px;" type="submit" class="btn btn-primary btn-round waves-effect">Pay</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </form>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    <div style="border-radius:20px;" class="modal fade" id="addevent" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="title" id="defaultModalLabel">Book appointment</h4> 
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <div class="form-line">
-                            <input type="number" class="form-control" placeholder="Card number">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="form-line">
-                            <input type="text" class="form-control" placeholder="Exp date">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="form-line">
-                            <input class="form-control no-resize" placeholder="Security code"></input>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button  style="background-color:#223a66; margin:auto; border-radius:30px;" type="button" class="btn btn-primary btn-round waves-effect" data-dismiss="modal" data-toggle="modal" data-target="#successpay">Pay</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <div style="border-radius:20px;" class="modal fade" id="successpay" tabindex="-1" role="dialog">
-       <img src="~/UserFiles/images/success.gif"/>
-                <div class="modal-footer">
-                    <button onclick="SendSMS()" style="background-color:#223a66; margin:auto; border-radius:30px;" type="button" class="btn btn-primary btn-round waves-effect" data-dismiss="modal" data-toggle="modal" data-target="#successpay">OK</button>
-                </div>
+        <img src="~/UserFiles/images/success.gif" />
+        <div class="modal-footer">
+            <button onclick="SendSMS()" style="background-color:#223a66; margin:auto; border-radius:30px;" type="button" class="btn btn-primary btn-round waves-effect" data-dismiss="modal" data-toggle="modal" data-target="#successpay">OK</button>
+        </div>
     </div>
 
     <script src="~/AccessaryFiles/js/signalr/dist/browser/signalR.js"></script>

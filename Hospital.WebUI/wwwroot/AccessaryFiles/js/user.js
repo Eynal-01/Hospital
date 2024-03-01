@@ -554,39 +554,54 @@ document.getElementById("doctorSelect").addEventListener("change", function () {
     GetTime();
 });
 
-function checkInputs() {
-    var fullName = $("#name").val();
-    var phone = $("#phone").val();
-    var btn = $("#make");
+var fullName = $("#name").val();
+var phone = $("#phone").val();
+var btn = $("#make");
+var emptyPhone = document.getElementById("emptyPhone");
+var emptyName = document.getElementById("emptyName");
+var n = document.getElementById("name");
+var p = document.getElementById("phone");
+/*function checkInputs() {*/
+document.getElementById("make").addEventListener("click", function () {
     $.ajax({
-        url: `/Home/CheckInputs?phoneNumber=${phone}&fullName=${fullName}`,
+        url: `/Home/CheckInputs?phoneNumber=${p.value}&fullName=${n.value}`,
         method: "GET",
         success: function (data) {
-            if (data == "fullname is null") {
-                console.log("fullname is null")
+
+            if (data.includes("fullname is null")) {
+                n.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
+                emptyName.style.display = "inline-block";
             }
-            else if (data == "phone is null") {
-                console.log("phone is null")
+            if (data.includes("phone is null")) {
+                p.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
+                emptyPhone.style.display = "inline-block";
+                console.log("phone is null");
             }
-            else if (data == "2 null") {
-                console.log("2 null")
-                showToast("fullname and phone number is null")
-            }
-            else {
-                btn.setAttribute('data-target', '#addevent');
-                btn.setAttribute('data-toggle', 'modal');
+
+            if (data === "") {
+                document.getElementById("make").setAttribute('data-target', '#addevent');
+                document.getElementById("make").setAttribute('data-toggle', 'modal');
             }
         }
     })
+});
+
+function handleNameInput() {
+    emptyName.style.display = "none";
+    n.style.backgroundColor = "transparent";
 }
 
+function handlePhoneInput() {
+    emptyPhone.style.display = "none";
+    p.style.backgroundColor = "transparent";
+}
 
 var toastId = "myToast";
 
 function createToast(text) {
     let toast = `
     <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
-      <div id="${toastId}" class="toast" role="alert" aria-live="assertive" aria-atomic="true" background-color: white;">
+      <div id="${toastId}" class="toast" role="alert" aria-live="assertive" aria-atomic="true" background-color: white; width:50px; height:20px;">
         <div class="toast-header">
           <strong class="me-auto">Zust</strong>
           <small>Now</small>
@@ -601,9 +616,7 @@ function createToast(text) {
     return toast;
 }
 
-// Function to show the toast
 function showToast(message) {
-    // Remove existing toast if it exists
     var existingToast = document.getElementById(toastId);
     if (existingToast) {
         existingToast.remove();
@@ -618,7 +631,6 @@ function showToast(message) {
         toast.style.display = "none";
     }, 6000);
 
-    // Handle close button click event
     var closeButton = toast.querySelector(".btn-close");
     closeButton.addEventListener("click", function () {
         toast.style.display = "none";
