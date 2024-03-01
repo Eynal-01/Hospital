@@ -19,8 +19,10 @@ namespace Hospital.Entities.DbEntities
         public string? Title { get; set; }
         public string? PublishTime { get; set; }
         public int ViewCount { get; set; }
-        public string? DepartmentName { get; set; }
+        //public string? DepartmentName { get; set; }
+        public string? DepartmentId { get; set; }
 
         public virtual Admin? Admin { get; set; }
+        public virtual Department? Department { get; set; }
     }
 }

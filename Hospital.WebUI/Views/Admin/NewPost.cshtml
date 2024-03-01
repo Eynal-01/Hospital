@@ -40,7 +40,6 @@
                                 <input asp-for="BlogTitle" type="text" class="form-control" placeholder="Enter Blog title" />
                             </div>
                             <select asp-for="DepartmentId" class="form-control show-tick">
-                                <option value="All Category">Select Category --</option>
                                 @for (int i = 0; i < Model.Departments.Count(); i++)
                                 {
                                     <option value="@Model.Departments[i].Id">@Model.Departments[i].DepartmentName</option>
