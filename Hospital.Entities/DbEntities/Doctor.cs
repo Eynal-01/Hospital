@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace HospitalProject.Entities.DbEntities
 {
-    public class Doctor : IdentityUser, IEntity
+    public class Doctor : IdentityUser, IEntity, CommonUsers
     {
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
@@ -25,11 +25,15 @@ namespace HospitalProject.Entities.DbEntities
         public int ExperienceYear { get; set; }
         public string? Education { get; set; }
         public string? Status { get; set; }
+        public bool? IsPostView { get; set; }
+
         public DateTime WorkStartTime { get; set; }
         public DateTime WorkEndTime { get; set; }
         public ICollection<Patient>? Patients { get; set; }
         public ICollection<Recipe>? Recipes { get; set; }
         public int WorkDayCount { get; set; }
+        public virtual ICollection<PostView>? PostViews { get; set; }
+
         //public ICollection<AvailableTime>? AvailableTimes { get; set; }
     }
 }

@@ -216,8 +216,32 @@ namespace Hospital.WebUI.Controllers
         [HttpGet]
         public async Task<IActionResult> BlogSingle(PostsShowViewModel post)
         {
+            var user = await CurrentUser();
+
+            var postT = await _dbContext.Posts.FirstOrDefaultAsync(p => p.Id == post.PostId);
             post.Admin = await _dbContext.Admins.FirstOrDefaultAsync(a => a.Id == post.AdminId);
             post.Department = await _dbContext.Departments.FirstOrDefaultAsync(p => p.Id == post.DepartmentId);
+
+            var postView = await _dbContext.PostViews.FirstOrDefaultAsync(f => f.PatientId == user.Id && f.PostId == postT.Id);
+
+            if (postView == null)
+            {
+                postView = new PostView
+                {
+                    Post = postT,
+                    PostId = postT.Id,
+                    Patient = user,
+                    PatientId = user.Id
+                };
+
+                postT.ViewCount += 1;
+
+                await _dbContext.PostViews.AddAsync(postView);
+
+                _dbContext.Update(postT);
+                await _dbContext.SaveChangesAsync();
+            }
+
             return View(post);
         }
 

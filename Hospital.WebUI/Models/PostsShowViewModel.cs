@@ -13,6 +13,7 @@ namespace Hospital.WebUI.Models
         public string? DepartmentId { get; set; }
         public string? AdminId { get; set; }
         public Department? Department { get; set; }
+        public bool? IsPostView { get; set; }
 
         public virtual Admin? Admin { get; set; }
     }
