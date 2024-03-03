@@ -798,3 +798,13 @@ document.getElementById("okSuccess").addEventListener("click", function () {
     })
 });
 
+function DoctorAppointments() {
+    $.ajax({
+        url: `/Doctor/ShowAllAppointments`,
+        method: "GET",
+
+        success: function (data) {
+            console.log(data);
+        }
+    })
+}

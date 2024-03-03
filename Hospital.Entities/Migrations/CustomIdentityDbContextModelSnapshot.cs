@@ -895,7 +895,7 @@ namespace Hospital.Entities.Migrations
                         .HasForeignKey("DepartmentId");
 
                     b.HasOne("HospitalProject.Entities.DbEntities.Doctor", "Doctor")
-                        .WithMany()
+                        .WithMany("Appointments")
                         .HasForeignKey("DoctorId");
 
                     b.HasOne("HospitalProject.Entities.DbEntities.Patient", "Patient")
@@ -1088,6 +1088,8 @@ namespace Hospital.Entities.Migrations
 
             modelBuilder.Entity("HospitalProject.Entities.DbEntities.Doctor", b =>
                 {
+                    b.Navigation("Appointments");
+
                     b.Navigation("Patients");
 
                     b.Navigation("Recipes");

@@ -23,11 +23,14 @@ namespace Hospital.WebUI.Controllers
         public CustomIdentityDbContext _dbContext { get; set; }
         private readonly IDataService _dataService;
 
-        public HomeController(CustomIdentityDbContext dbContext, UserManager<CustomIdentityUser> userManager, IDataService dataService)
+        //public DoctorController _doctorController { get; set; }                                     
+
+        public HomeController(CustomIdentityDbContext dbContext, UserManager<CustomIdentityUser> userManager, IDataService dataService/*, DoctorController doctorController*/)
         {
             _dbContext = dbContext;
             _userManager = userManager;
             _dataService = dataService;
+            //_doctorController = doctorController;
         }
 
         [HttpGet]
@@ -69,6 +72,7 @@ namespace Hospital.WebUI.Controllers
             var receivedData = _dataService.RetrieveData();
             var department = await _dbContext.Departments.FirstOrDefaultAsync(d => d.Id == viewModel.DepartmentId);
             var doctor = await _dbContext.Doctors.FirstOrDefaultAsync(d => d.Id == viewModel.DoctorId);
+            var doctors = _dbContext.Doctors.ToList();
 
             var appoinment = new Appointment
             {
@@ -80,8 +84,15 @@ namespace Hospital.WebUI.Controllers
                 AppointmentTime = viewModel.AppointmentTime,
                 AppointmentDate = viewModel.AppointmentDate
             };
+            for (int i = 0; i < doctors.Count(); i++)
+            {
+                if (doctors[i].Id == doctor.Id)
+                {
+                }
+            }
             await _dbContext.Appointments.AddAsync(appoinment);
             await _dbContext.SaveChangesAsync();
+            //await _doctorController.ShowAllAppointments();
             return RedirectToAction("SuccessPay","Home");
         }
 
