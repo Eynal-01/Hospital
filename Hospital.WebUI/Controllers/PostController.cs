@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using Microsoft.VisualBasic;
 
 namespace Hospital.WebUI.Controllers
@@ -125,6 +126,52 @@ namespace Hospital.WebUI.Controllers
             return RedirectToAction("NewPost", "Post");
         }
 
+        public async Task<PostsShowViewModel> Blog(int postId)
+        {
+            var post = await _context.Posts.FirstOrDefaultAsync(p => p.Id == postId);
+            var admin = await _context.Admins.FirstOrDefaultAsync(a => a.Id == post.AdminId);
+            var images = post.ImageUrl.Split('-').ToList();
+            if (post.ImageUrl != null)
+            {
+                post.IsImage = true;
+            }
+            else
+            {
+                post.IsImage = false;
+            }
+
+            for (int k = 0; k < images.Count(); k++)
+            {
+                images[k] = images[k].TrimStart();
+            }
+
+            //var d = await _context.Departments.FirstOrDefaultAsync(d => d.Id == post.DepartmentId);
+            //var depart = new Department
+            //{
+            //    Id = d.Id,
+            //    DepartmentName = d.DepartmentName
+            //};
+            var poo = new PostsShowViewModel();
+            poo.PostId = post.Id;
+            //poo.Admin = admin;
+            poo.AdminId = admin.Id;
+            poo.Content = post.Content;
+            poo.Title = post.Title;
+            poo.PublishTime = post.PublishTime;
+            poo.ViewCount = post.ViewCount;
+            poo.Images = images;
+            poo.DepartmentId = post.DepartmentId;
+            //poo.Department = post.DepartmentId;
+            return poo;
+        }
+
+        public async Task<IActionResult> BlogSingle(int postId)
+        {
+            var post = await Blog(postId);
+
+            return RedirectToAction("BlogSingle", "Home", post);
+        }
+
         public async Task<IActionResult> PostFilter(string departmentId)
         {
             string postDepartment = departmentId;
@@ -198,6 +245,8 @@ namespace Hospital.WebUI.Controllers
                     poo.ViewCount = post[i].ViewCount;
                     poo.Images = images;
                     poo.Department = post[i].Department;
+                    //var poo = await Blog(post[i].Id);
+
 
                     posts.Add(poo);
                 }

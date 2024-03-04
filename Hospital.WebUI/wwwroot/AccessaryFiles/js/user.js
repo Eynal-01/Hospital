@@ -166,7 +166,7 @@ function PostFilter(departmentId) {
 
 									<p class="mb-4">${data.value.posts[i].content}</p>
 
-									<a href="blog-single.html" target="_blank" class="btn btn-main btn-icon btn-round-full">Read More <i class="icofont-simple-right ml-2  "></i></a>
+									<a href="PostSingle('${data.value.posts[i].id}')" target="_self" class="btn btn-main btn-icon btn-round-full">Read More <i class="icofont-simple-right ml-2  "></i></a>
 								</div>
 							</div>
 						</div>
@@ -174,6 +174,29 @@ function PostFilter(departmentId) {
             }
 
             $("#patientPosts").html(contentPatient);
+        }
+    })
+}
+
+function PostSingle(postId) {
+    $.ajax({
+        url: `/Post/BlogSingle?postId=${postId}`,
+        method: "GET",
+
+        success: function (data) {
+            BlogSingle(data);
+        }
+    })
+}
+
+function BlogSingle(post) {
+    console.log(post);
+    $.ajax({
+        url: `/Home/BlogSingle`,
+        method: "GET",
+        data: post,
+        success: function (data) {
+            console.log("Df");
         }
     })
 }
@@ -322,7 +345,7 @@ function GetAllPostAllUsers() {
                                </div>
                             </div>
                             <p>${data.posts[i].content}</p>
-                            <a href="blog-details.html" title="read more" class="btn btn-round btn-info">Read More</a>
+                            <a target="_self"  title="read more" class="btn btn-round btn-info">Read More</a>
                         </div>
                     </div>
                 
@@ -363,7 +386,7 @@ function GetAllPostAllUsers() {
 
 									<p class="mb-4">${data.posts[i].content}</p>
 
-									<a href="blog-single.html" target="_blank" class="btn btn-main btn-icon btn-round-full">Read More <i class="icofont-simple-right ml-2  "></i></a>
+									<a href="/Post/BlogSingle?postId=${data.posts[i].postId}" target="_self" class="btn btn-main btn-icon btn-round-full">Read More <i class="icofont-simple-right ml-2  "></i></a>
 								</div>
 							</div>
 						</div>
@@ -371,7 +394,7 @@ function GetAllPostAllUsers() {
             }
 
             $("#patientPosts").html(contentPatient);
-            $("#postFilterCategories").html(postCategories);
+            $(".postFilterCategories").html(postCategories);
 
 
             $("#postsDoctor").html(content);
