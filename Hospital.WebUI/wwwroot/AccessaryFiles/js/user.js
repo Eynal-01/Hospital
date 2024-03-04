@@ -691,12 +691,21 @@ function SendSMS() {
         method: 'POST',
         success: function (data) {
             console.log('Message sent:', data.messageSid);
+            DoctorAppointments();
         },
         error: function (xhr, status, error) {
             console.error('Error:', error);
         }
     });
 }
+
+function funccc() {
+    $.ajax({
+        url: `/Home/Aderfhr`
+        method:"GET"
+    })
+}
+
 
 document.getElementById("departmentSelect").addEventListener("change", function () {
     var departmentId = this.value;
