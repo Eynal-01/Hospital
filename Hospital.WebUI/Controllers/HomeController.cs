@@ -235,6 +235,7 @@ namespace Hospital.WebUI.Controllers
                 };
 
                 postT.ViewCount += 1;
+                post.ViewCount += 1;
 
                 await _dbContext.PostViews.AddAsync(postView);
 

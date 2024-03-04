@@ -217,6 +217,158 @@ function PostFilterAdmin(departmentId) {
     })
 }
 
+function PostFilterDoctor(departmentId) {
+    $.ajax({
+        url: `/Post/PostFilter?departmentId=${departmentId}`,
+        method: "GET",
+
+        success: function (data) {
+            var content = "";
+            var adminName = "";
+            var arrow = "";
+            var images = "";
+
+            let contentPatient = "";
+            var imagesPatient = "";
+            //var categoryList = [];
+            var arrowPatient = "";
+
+            var postCategories = "";
+
+            var postCategoriessInCount = 0;
+
+            imagesPatient = "";
+            arrowPatient = "";
+            //     postCategories += ` 
+            //               <li class="align-items-center">
+            //   <a onclick="PostFilterAdmin('All')">All</a>
+            //   <span>(${data.posts.length})</span>
+            //</li>
+            //        `;
+
+            //     for (var i = 0; i < data.posts.length; i++) {
+            //         postCategoriessInCount = 0;
+
+            //         for (var k = 0; k < data.posts.length; k++) {
+            //             if (data.posts[k].department.id === data.posts[i].department.id) {
+            //                 postCategoriessInCount += 1;
+            //             }
+            //         }
+
+            //         if (!categoryList.includes(data.posts[i].department.departmentName)) {
+            //             categoryList.push(data.posts[i].department.departmentName);
+
+            //             postCategories += ` 
+            //                       <li class="align-items-center">
+            //       	     <a onclick="PostFilterAdmin('${data.posts[i].department.id}')">${data.posts[i].department.departmentName}</a>
+            //       	     <span>(${postCategoriessInCount})</span>
+            //       	  </li>
+            //                   `;
+            //         }
+            //     }
+
+
+            for (var i = 0; i < data.value.posts.length; i++) {
+                images = "";
+                arrow = "";
+                imagesPatient = "";
+
+                for (var k = 0; k < data.value.posts[i].images.length; k++) {
+                    if (k == 0) {
+
+                        images += `
+                             <div class="carousel-item active" style="text-align:center;width:100%;">
+                               <img class="img-fluid"  src="${data.value.posts[i].images[k]}" alt="Responsive image" >
+                            </div>
+                       `;
+                    }
+                    else {
+                        images += `
+                          <div class="carousel-item" style="text-align:center;width:100%;">
+                               <img class="img-fluid" src="${data.value.posts[i].images[k]}" alt="Responsive image" >
+                          </div>
+                       `;
+                    }
+                }
+
+                if (data.value.posts[i].images.length > 1) {
+                    arrow += `
+                         <a class="carousel-control-prev" href="#carouselExampleIndicators${data.value.posts[i].postId}" role="button" data-slide="prev">
+                           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                           <span class="sr-only">Previous</span>
+                         </a>
+                         <a class="carousel-control-next" href="#carouselExampleIndicators${data.value.posts[i].postId}" role="button" data-slide="next">
+                           <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                           <span class="sr-only">Next</span>
+                         </a>
+                    `;
+                }
+
+
+
+                if (data.value.posts[i].lastName != null && data.value.posts[i].firstName != null) {
+                    adminName = `
+                           <ul class="meta">
+                                <li><a href="#"><i class="zmdi zmdi-account col-blue"></i>Posted By: ${data.value.posts[i].admin.firstName} ${data.value.posts[i].admin.lastName}</a ></li >
+                                <li><a href="#"><i class="zmdi zmdi-label col-red"></i>${data.value.posts[i].department.departmentName}</a></li>
+                           </ul>
+                    `;
+                }
+                else {
+                    adminName = `
+                           <ul class="meta">
+                                <li><a href="#"><i class="zmdi zmdi-account col-blue"></i>Posted By: ${data.value.posts[i].admin.userName}</a ></li >
+                                <li><a href="#"><i class="zmdi zmdi-label col-red"></i>${data.value.posts[i].department.departmentName}</a></li>
+                           </ul>
+                    `;
+                }
+
+
+                content += `
+
+                   <div class="card single_post">
+                        <div class="body">
+                            <h3 class="m-t-0 m-b-5"><a href="blog-details.html">${data.value.posts[i].title}</a></h3>
+                            ${adminName}
+                        </div>
+                        <div class="body">
+                            <div class="img-post m-b-15" style="background-color:rgba(200, 200, 200,0.4);">
+                                 <div id="carouselExampleIndicators${data.value.posts[i].postId}" class="carousel slide" data-ride="carousel">
+                                   <div class="carousel-inner">
+                                     ${images}
+                                   </div>
+                                   ${arrow}
+                               </div>
+                            </div>
+                            <a href="/Post/BlogSingleDoctor?postId=${data.value.posts[i].postId}" target="_self"  title="read more" class="btn btn-round btn-info">Read More</a>
+                        </div>
+                    </div>
+                
+                `;
+
+
+
+                if (data.value.posts[i].images.length > 1) {
+                    arrowPatient += `
+                         <a class="carousel-control-prev" href="#carouselExampleIndicators${data.value.posts[i].postId}" role="button" data-slide="prev">
+                           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                           <span class="sr-only">Previous</span>
+                         </a>
+                         <a class="carousel-control-next" href="#carouselExampleIndicators${data.value.posts[i].postId}" role="button" data-slide="next">
+                           <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                           <span class="sr-only">Next</span>
+                         </a>
+                    `;
+                }
+            }
+
+            //$(".postFilterCategoriesAdmin").html(postCategories);
+
+            $("#postsDoctor").html(content);
+        }
+    })
+}
+
 function PostFilterPatient(departmentId) {
     $.ajax({
         url: `/Post/PostFilter?departmentId=${departmentId}`,
@@ -404,21 +556,26 @@ function GetAllPostAllUsers() {
         success: function (data) {
             //console.log(data);
             var content = "";
+            var contentDoctor = "";
             var adminName = "";
             var arrow = "";
             var images = "";
 
             let contentPatient = "";
             var imagesPatient = "";
+            var arrowPatient = "";
+
             var categoryList = [];
             var categoryListAdmin = [];
-            var arrowPatient = "";
+            var categoryListDoctor = [];
 
             var postCategories = "";
             var postCategoriesAdmin = "";
+            var postCategoriesDoctor = "";
 
             var postCategoriessInCount = 0;
             var postCategoriessInCountAdmin = 0;
+            var postCategoriessInCountDoctor = 0;
 
             imagesPatient = "";
             arrowPatient = "";
@@ -451,6 +608,7 @@ function GetAllPostAllUsers() {
                 }
             }
 
+
             postCategoriesAdmin += ` 
                       <li class="align-items-center">
 					     <a onclick="PostFilterAdmin('All')">All</a>
@@ -479,6 +637,36 @@ function GetAllPostAllUsers() {
                 }
             }
 
+
+
+            postCategoriesDoctor += ` 
+                      <li class="align-items-center">
+					     <a onclick="PostFilterDoctor('All')">All</a>
+					     <span>(${data.posts.length})</span>
+					  </li>
+               `;
+
+            for (var i = 0; i < data.posts.length; i++) {
+                postCategoriessInCountDoctor = 0;
+
+                for (var k = 0; k < data.posts.length; k++) {
+                    if (data.posts[k].department.id === data.posts[i].department.id) {
+                        postCategoriessInCountDoctor += 1;
+                    }
+                }
+
+                if (!categoryListDoctor.includes(data.posts[i].department.departmentName)) {
+                    categoryListDoctor.push(data.posts[i].department.departmentName);
+
+                    postCategoriesDoctor += ` 
+                              <li class="align-items-center">
+				          	     <a onclick="PostFilterDoctor('${data.posts[i].department.id}')">${data.posts[i].department.departmentName}</a>
+				          	     <span>(${postCategoriessInCountDoctor})</span>
+				          	  </li>
+                          `;
+                }
+            }
+
             PopularPosts();
 
             for (var i = 0; i < data.posts.length; i++) {
@@ -500,6 +688,8 @@ function GetAllPostAllUsers() {
                                <img class="img-fluid" src="${data.posts[i].images[k]}" alt="Responsive image">
                             </div>
                        `;
+
+
                     }
                     else {
                         images += `
@@ -571,6 +761,28 @@ function GetAllPostAllUsers() {
                 
                 `;
 
+                contentDoctor += `
+
+                   <div class="card single_post">
+                        <div class="body">
+                            <h3 class="m-t-0 m-b-5"><a href="blog-details.html">${data.posts[i].title}</a></h3>
+                            ${adminName}
+                        </div>
+                        <div class="body">
+                            <div class="img-post m-b-15" style="background-color:rgba(200, 200, 200,0.4);">
+                                 <div id="carouselExampleIndicators${data.posts[i].postId}" class="carousel slide" data-ride="carousel">
+                                   <div class="carousel-inner">
+                                     ${images}
+                                   </div>
+                                   ${arrow}
+                               </div>
+                            </div>
+                            <a href="/Post/BlogSingleDoctor?postId=${data.posts[i].postId}" target="_self"  title="read more" class="btn btn-round btn-info">Read More</a>
+                        </div>
+                    </div>
+                
+                `;
+
 
 
                 if (data.posts[i].images.length > 1) {
@@ -616,8 +828,9 @@ function GetAllPostAllUsers() {
             $("#patientPosts").html(contentPatient);
             $(".postFilterCategories").html(postCategories);
             $(".postFilterCategoriesAdmin").html(postCategoriesAdmin);
+            $(".postFilterCategoriesDoctor").html(postCategoriesDoctor);
 
-            $("#postsDoctor").html(content);
+            $("#postsDoctor").html(contentDoctor);
             $("#posts").html(content);
         }
     })
@@ -631,24 +844,45 @@ function PopularPosts() {
         success: function (data) {
             var posts = [];
             var content = "";
+            var contentDoctor = "";
+            var contentAdmin = "";
 
-            for (var i = 0; i < data.posts.popularPostsId; i++) {
+            for (var i = 0; i < data.popularPostsId.length; i++) {
                 for (var k = 0; k < data.posts.length; k++) {
-                    if (data.posts[k].id == data.popularPostsId[i]) {
+                    if (data.posts[k].postId == data.popularPostsId[i]) {
                         posts.push(data.posts[i]);
                     }
+                    //console.log(data.posts[k]);
                 }
             }
 
+
             for (var i = 0; i < posts.length; i++) {
                 content += `
-                     <div class="py-2">
-			    		<span class="text-sm text-muted">${posts[i].publishTime}</span>
-			    		<h6 class="my-2"><a href="#">${posts[i].title}</a></h6>
-			      	 </div>
-                `;
+                        <div class="py-2">
+            <span class="text-sm text-muted">${posts[i].publishTime}</span>
+            <h6 class="my-2"><a href="/Post/BlogSingle?postId=${posts[i].postId}">${posts[i].title}</a></h6>
+            	 </div>
+                   `;
+
+                contentDoctor += `
+                     <div class="border single_post">
+				 		<p class="m-b-0">${posts[i].title}</p>
+				 		<small>${posts[i].publishTime}</small>
+				 	</div>
+                   `;
+
+                contentAdmin += `
+                   			<div class="border single_post">
+            <p class="m-b-0">${posts[i].title}</p>
+            <small>${posts[i].publishTime}</small>
+             </div>
+                   `;
             }
-            $("#popularPosts").html(content); 
+
+            $("#popularPosts").html(content);
+            $("#popularPostsDoctor").html(contentDoctor);
+            $("#popularPostsAdmin").html(contentAdmin);
         }
     })
 }
