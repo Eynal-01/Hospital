@@ -827,7 +827,18 @@ function DoctorAppointments() {
         method: "GET",
 
         success: function (data) {
-            console.log(data);
+            let content = "";
+
+            for (var i = 0; i < data.length; i++) {
+                //var doctor = GetAppointmentDoctor(data[i].doctorId)
+                content += `
+                  <tr>
+                      <td>${data[i].id}</td>
+                      <td>${data[i].appointmentDate} ${data[i].appointmentTime}</td>
+                      <td>${data[i].patient.firstName} ${data[i].patient.lastName}</td>
+                 </tr>`;
+            }
+            $("#doctorAppointments").html(content);
         }
     })
 }

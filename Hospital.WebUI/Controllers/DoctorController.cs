@@ -23,11 +23,12 @@ namespace Hospital.WebUI.Controllers
         [HttpGet]
         public async Task<IActionResult> ShowAllAppointments()
         {
+            var doctor = await CurrentUser();
             List<Appointment> appointments =new List<Appointment>();
             var allAppointments = await _dbContext.Appointments.ToListAsync();
             for (int i = 0; i < allAppointments.Count(); i++)
             {
-                if (allAppointments[i].DoctorId== CurrentUser().Id.ToString())
+                if (allAppointments[i].DoctorId== doctor.Id.ToString())
                 {
                     appointments.Add(allAppointments[i]);   
                 }
