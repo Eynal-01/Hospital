@@ -866,23 +866,35 @@ function PopularPosts() {
                    `;
 
                 contentDoctor += `
-                     <div class="border single_post">
-				 		<p class="m-b-0">${posts[i].title}</p>
-				 		<small>${posts[i].publishTime}</small>
-				 	</div>
+                           <li class="row">
+								<div class="icon-box col-4">
+									<img class="img-fluid img-thumbnail" src="${posts[i].images[0]}" alt="Awesome Image">
+								</div>
+								<div class="text-box col-8 p-l-0">
+									<h5 class="m-b-0"><a href="/Post/BlogSingleDoctor?postId=${posts[i].postId}">${posts[i].title}</a></h5>
+									<small class="author-name">By: <a href="/Post/BlogSingleDoctor?postId=${posts[i].postId}">${posts[i].admin.userName}</a></small>
+									<small class="date">${posts[i].publishTime}</small>
+								</div>
+							</li>
                    `;
 
                 contentAdmin += `
-                   			<div class="border single_post">
-            <p class="m-b-0">${posts[i].title}</p>
-            <small>${posts[i].publishTime}</small>
-             </div>
+                          <li class="row">
+								<div class="icon-box col-4">
+									<img class="img-fluid img-thumbnail" src="${posts[i].images[0]}" alt="Awesome Image">
+								</div>
+								<div class="text-box col-8 p-l-0">
+									<h5 class="m-b-0"><a href="/Post/BlogSingleAdmin?postId=${posts[i].postId}">${posts[i].title}</a></h5>
+									<small class="author-name">By: <a href="/Post/BlogSingleAdmin?postId=${posts[i].postId}">${posts[i].admin.userName}</a></small>
+									<small class="date">${posts[i].publishTime}</small>
+								</div>
+							</li>
                    `;
             }
 
             $("#popularPosts").html(content);
-            $("#popularPostsDoctor").html(contentDoctor);
-            $("#popularPostsAdmin").html(contentAdmin);
+            $(".popularPostsDoctor").html(contentDoctor);
+            $(".popularPostsAdmin").html(contentAdmin);
         }
     })
 }
@@ -931,26 +943,39 @@ function GetAllAppointments() {
 
 function GetAllDepartment() {
     $.ajax({
-        url: `/Admin/GetAllDepartment`,
+        url: `/Dep/GetAllDepartment`,
         method: "GET",
 
         success: function (data) {
-            let content = "";
-            content += `
-                  <li><a href="/Admin/AddDepartment">Add</a></li>
-                  <li><a href="/Admin/AllDepartments">All Departments</a></li>
-            `;
-            for (var i = 0; i < data.length; i++) {
-                //var doctor = GetAppointmentDoctor(data[i].doctorId)
-                content += `
-                                <li><a href="javascript:void(0);">${data[i].departmentName}</a></li>
+//            let content = "";
+//            content += `
+//                  <li><a href="/Admin/AddDepartment">Add</a></li>
+//                  <li><a href="/Admin/AllDepartments">All Departments</a></li>
+//            `;
+//            for (var i = 0; i < data.length; i++) {
+//                //var doctor = GetAppointmentDoctor(data[i].doctorId)
+//                content += `
+//                                <li><a href="javascript:void(0);">${data[i].departmentName}</a></li>
 
-`;
-            }
-            $("#departments").html(content);
+//`;
+//            }
+//            $("#departments").html(content);
         }
     })
 }
+
+//function GetAllDepartment() {
+//    $.ajax({
+//        url: `/Department/GetAllDe`,
+//        method: "GET",
+
+//        success: function (data) {
+//            for (var i = 0; i < data.length; i++) {
+//                DoctorCall(data[i].id);
+//            }
+//        }
+//    })
+//}
 
 function GetDays() {
     var availablecount = $("#availableDay").val();
