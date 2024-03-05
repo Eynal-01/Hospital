@@ -1,7 +1,9 @@
 ﻿using Hospital.Entities.Data;
+using HospitalProject.Entities.DbEntities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hospital.WebUI.Controllers
 {
@@ -13,6 +15,22 @@ namespace Hospital.WebUI.Controllers
         public DoctorController(UserManager<CustomIdentityUser> userManager)
         {
             _userManager = userManager;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ShowAllAppointments()
+        {
+            var doctor = await CurrentUser();
+            List<Appointment> appointments = new List<Appointment>();
+            var allAppointments = await _dbContext.Appointments.ToListAsync();
+            for (int i = 0; i < allAppointments.Count(); i++)
+            {
+                if (allAppointments[i].DoctorId == doctor.Id.ToString())
+                {
+                    appointments.Add(allAppointments[i]);
+                }
+            }
+            return Ok(appointments);
         }
 
         public async Task<IActionResult> Index()
