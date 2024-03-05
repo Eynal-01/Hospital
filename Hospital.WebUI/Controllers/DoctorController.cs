@@ -87,7 +87,7 @@ namespace Hospital.WebUI.Controllers
             return View();
         }
 
-        public IActionResult AllDepartments()
+        public IActionResult AllDepartments(DepartmentsViewModel departments)
         {
             return View();
         }

@@ -943,23 +943,51 @@ function GetAllAppointments() {
 
 function GetAllDepartment() {
     $.ajax({
-        url: `/Dep/GetAllDepartment`,
+        url: `/Departmen/GetAllDepartment`,
         method: "GET",
 
         success: function (data) {
-//            let content = "";
-//            content += `
-//                  <li><a href="/Admin/AddDepartment">Add</a></li>
-//                  <li><a href="/Admin/AllDepartments">All Departments</a></li>
-//            `;
-//            for (var i = 0; i < data.length; i++) {
-//                //var doctor = GetAppointmentDoctor(data[i].doctorId)
-//                content += `
-//                                <li><a href="javascript:void(0);">${data[i].departmentName}</a></li>
+            let doctorAndAdminDepartments = "";
+            let patientDe = "";
 
-//`;
-//            }
-//            $("#departments").html(content);
+
+            for (var i = 0; i < data.departments.length; i++) {
+                if (data.departments[i].id != "1") {
+
+                    doctorAndAdminDepartments += `
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+                          <div class="card project_widget">
+                              <div class="pw_img">
+                                  <img class="img-fluid" src="${data.departments[i].imageUrl}" alt="About the image">
+                              </div>
+                              <div class="pw_content">
+                                  <div class="pw_header">
+                                      <h6>${data.departments[i].departmentName}</h6>
+                                  </div>
+                                  <div class="pw_meta">
+                                      <p>${data.departments[i].content}</p>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                    `;
+
+                    patientDe += `
+			        	<div class="col-lg-4 col-md-6 ">
+			        		<div class="department-block mb-5">			<img src="${data.departments[i].imageUrl}" alt="" class="img-fluid w-100">
+			        			<div class="content">
+			        				<h4 class="mt-4 mb-2 title-color">${data.departments[i].departmentName}</h4>
+			        				<p class="mb-4">${data.departments[i].content}</p>
+			        				<a href="department-single.html" class="read-more">Learn More  <i class="icofont-simple-right ml-2"></i></a>
+			        			</div>
+			        		</div>
+			        	</div>
+                    `;
+                }
+            }
+            $("#departmentsAdmin").html(doctorAndAdminDepartments);
+            $("#doctorDepartments").html(doctorAndAdminDepartments);
+            $("#patientDepartments").html(patientDe);
         }
     })
 }
