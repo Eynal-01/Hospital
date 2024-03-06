@@ -73,17 +73,26 @@ namespace Hospital.WebUI.Controllers
 			var user = await CurrentUser();
 			if (viewModel.Password == viewModel.ConfirmPassword)
 			{
-				if (viewModel != null)
-				{
-					var helper = new ImageHelper(_webHost);
-					if (viewModel.File != null)
-					{
-						viewModel.ImageUrl = await helper.SaveFile(viewModel.File);
-						user.Avatar = viewModel.ImageUrl;
-					}
-				}
 				var newPassword = HashPassword(viewModel.Password);
-				var doctor = new Doctor
+
+                if (viewModel.File != null)
+                {
+                    var helper = new ImageHelper(_webHost);
+
+                    var mediaUrl = await _mediaService.UploadMediaAsync(viewModel.File);
+
+                    if (mediaUrl != string.Empty)
+                    {
+                        var isVideoFile = _mediaService.IsVideoFile(viewModel.File);
+                        viewModel.ImageUrl = mediaUrl;
+                    }
+                    else
+                    {
+                        return BadRequest("error");
+                    }
+                }
+
+                var doctor = new Doctor
 				{
 					Address = viewModel.Address,
 					BirthDate = viewModel.DateOfBirth,
@@ -177,7 +186,6 @@ namespace Hospital.WebUI.Controllers
 			var doctors = await _context.Doctors.ToListAsync();
 			return Ok(doctors);
 		}
-
 
 
 		public static string HashPassword(string password)

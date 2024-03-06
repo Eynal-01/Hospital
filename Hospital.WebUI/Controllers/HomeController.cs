@@ -21,12 +21,15 @@ namespace Hospital.WebUI.Controllers
         private readonly UserManager<CustomIdentityUser> _userManager;
         public CustomIdentityDbContext _dbContext { get; set; }
         private readonly IDataService _dataService;
+        private readonly CustomIdentityDbContext _context;
 
-        public HomeController(CustomIdentityDbContext dbContext, UserManager<CustomIdentityUser> userManager, IDataService dataService)
+
+        public HomeController(CustomIdentityDbContext dbContext, UserManager<CustomIdentityUser> userManager, IDataService dataService, CustomIdentityDbContext context)
         {
             _dbContext = dbContext;
             _userManager = userManager;
             _dataService = dataService;
+            _context = context;
         }
 
         [HttpGet]
@@ -261,8 +264,12 @@ namespace Hospital.WebUI.Controllers
             return View();
         }
 
-        public IActionResult DepartmentSingle()
+        public async Task<IActionResult> DepartmentSingle(DepartmentSingleViewModel viewModel)
         {
+            var department = await _context.Departments.FirstOrDefaultAsync(d => d.Id == viewModel.DepartmentId);
+
+            ViewBag.Department = department;
+
             return View();
         }
 
