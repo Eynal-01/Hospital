@@ -52,8 +52,6 @@ builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<IMediaService, MediaService>();
 
 
-
-
 builder.Services.AddIdentity<CustomIdentityUser,CustomIdentityRole>()
     .AddEntityFrameworkStores<CustomIdentityDbContext>()
     .AddDefaultTokenProviders();
