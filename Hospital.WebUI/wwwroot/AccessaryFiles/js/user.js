@@ -49,7 +49,7 @@ function PatientProfile(id) {
         method: "GET",
 
         success: function (data) {
-            console.log("s");
+            //console.log("s");
         }
     })
 }
@@ -190,7 +190,7 @@ function PostSingle(postId) {
 }
 
 function BlogSingle(post) {
-    console.log(post);
+    //console.log(post);
     $.ajax({
         url: `/Home/BlogSingle`,
         method: "GET",
@@ -577,6 +577,7 @@ function GetDays() {
 function GetDay() {
     var availableDoctor = $("#doctorSelect").val();
     console.log("GetDay CALLED");
+    //if (availableDoctor != null) {
     $.ajax({
         url: `/Home/GetAvailableDays?doctorId=${availableDoctor}`,
         method: "GET",
@@ -591,13 +592,15 @@ function GetDay() {
             $("#exampleFormControlSelect3").html(content);
         }
     });
+    //}
 }
 
 
 function GetTime() {
     var availableDoctor = $("#doctorSelect").val();
     var appointmentDate = $("#exampleFormControlSelect3").val();
-    console.log("Time CALLED");
+
+    //if (availableDoctor != null) {
     $.ajax({
         url: `/Home/GetAvailableTimes?doctorId=${availableDoctor}&appointmentDate=${appointmentDate}`,
         method: "GET",
@@ -612,6 +615,7 @@ function GetTime() {
             $("#exampleFormControlSelect4").html(content);
         }
     });
+    //}
 }
 
 function GetAllDoctors() {
@@ -694,19 +698,30 @@ document.getElementById("departmentSelect").addEventListener("change", function 
     doctorSelect.innerHTML = "";
 
     $.ajax({
-
         url: `/Home/getDoctors?departmentId=${departmentId}`,
         method: "GET",
 
         success: function (data) {
-            console.log(data);
+            //console.log(data);
             data.forEach(function (doctor) {
                 var option = document.createElement("option");
                 option.text = doctor.firstName + " " + doctor.lastName;
                 option.value = doctor.id;
                 doctorSelect.appendChild(option);
+                //content += `
+                //  <option value="${doctor.id}">@Model.Departments[i].DepartmentName</option>
+                //`;
             });
-            GetDay();
+            if (data.length > 0) {
+                console.log(data.length);
+                GetDay();
+                GetTime();
+            }
+            else {
+                //$("#exampleFormControlSelect3"
+                document.getElementById("exampleFormControlSelect3").innerHTML = "";
+                document.getElementById("exampleFormControlSelect4").innerHTML = "";
+            }
         }
     })
 });

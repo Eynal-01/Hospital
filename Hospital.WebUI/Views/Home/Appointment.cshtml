@@ -82,10 +82,10 @@
                                     <div class="form-group">
                                         <label>Doctor</label>
                                         <select asp-for="DoctorId" class="form-control" id="doctorSelect">
-                                            @for (int i = 0; i < Model.Doctors.Count(); i++)
+@*                                             @for (int i = 0; i < Model.Doctors.Count(); i++)
                                             {
                                                 <option value="@Model.Doctors[i].Id">@Model.Doctors[i].FirstName @Model.Doctors[i].LastName</option>
-                                            }
+                                            } *@
                                         </select>
                                     </div>
                                 </div>
@@ -158,11 +158,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-<<<<<<< HEAD
                     <button  style="background-color:#223a66; margin:auto; border-radius:30px;" type="button" class="btn btn-primary btn-round waves-effect" data-dismiss="modal" data-toggle="modal" data-target="#successpay">Pay</button>
-=======
                     <button style="background-color:#223a66; margin:auto; border-radius:30px;" type="button" class="btn btn-primary btn-round waves-effect" data-toggle="modal" data-target="#success" type="button" data-dismiss="modal">Pay</button>
-
                 </div>
             </div>
         </div>
@@ -175,7 +172,6 @@
                <h1 style="color:springgreen">Your payment was successfully</h1>
                 <div class="modal-footer">
                     <button asp-action="Index" asp-controller="Home" class="btn btn-primary btn-round waves-effect" style="background-color:springgreen; margin:auto; border-radius:30px; color:white">OK</button>
->>>>>>> Eynal_AppointmentConfigurations
                 </div>
             </div>
         </div>
