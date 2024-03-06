@@ -968,9 +968,13 @@ function GetAllDoctors() {
                              </div>
                          </div>
                      </div>
-                
                 `;
             }
+
+            $("#adminDoctors").html(adminDoctors);
+            $("#doctorDoctors").html(doctorDoctors);
+            $("#patientDoctors").html(patientDoctors);
+
         }
     })
 }
@@ -1061,6 +1065,7 @@ function GetAllDepartment() {
                     `;
                 }
             }
+
             $("#departmentsAdmin").html(doctorAndAdminDepartments);
             $("#doctorDepartments").html(doctorAndAdminDepartments);
             $("#patientDepartments").html(patientDe);

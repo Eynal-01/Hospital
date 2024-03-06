@@ -152,8 +152,9 @@ namespace Hospital.WebUI.Controllers
             return View();
         }
 
-        public IActionResult Profile()
+        public async Task<IActionResult> Profile(Doctor doctor)
         {
+            ViewBag.Doctor = doctor;
             return View();
         }
 
