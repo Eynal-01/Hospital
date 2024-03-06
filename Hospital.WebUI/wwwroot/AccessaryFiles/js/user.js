@@ -711,7 +711,7 @@ document.getElementById("departmentSelect").addEventListener("change", function 
     })
 });
 
-document.getElementById("doctorSelect").addEventListener("change", function () {
+document.getElementById("departmentSelect").addEventListener("change", function () {
     GetDay();
     GetTime();
     SendSMS();

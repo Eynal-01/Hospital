@@ -127,71 +127,23 @@
                                 <textarea asp-for="Message" id="message" class="form-control" rows="6" placeholder="Your Message"></textarea>
                             </div>
 
-                            <button onclick="SendSMS()" class="btn btn-main btn-round-full" data-toggle="modal" data-target="#addevent" type="button">Make Appoinment<i class="icofont-simple-right ml-2"></i></button>
+                            <button onclick="SendSMS()" class="btn btn-main btn-round-full" data-toggle="modal" data-target="#success" type="button">Make Appoinment<i class="icofont-simple-right ml-2"></i></button>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    <div style="border-radius:20px;" class="modal fade" id="addevent" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="title" id="defaultModalLabel">Book appointment</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <div class="form-line">
-                            <input type="number" class="form-control" placeholder="Card number">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="form-line">
-                            <input type="text" class="form-control" placeholder="Exp date">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="form-line">
-                            <input class="form-control no-resize" placeholder="Security code"></input>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-<<<<<<< HEAD
-                    <button  style="background-color:#223a66; margin:auto; border-radius:30px;" type="button" class="btn btn-primary btn-round waves-effect" data-dismiss="modal" data-toggle="modal" data-target="#successpay">Pay</button>
-=======
-                    <button style="background-color:#223a66; margin:auto; border-radius:30px;" type="button" class="btn btn-primary btn-round waves-effect" data-toggle="modal" data-target="#success" type="button" data-dismiss="modal">Pay</button>
-
-                </div>
-            </div>
-        </div>
-    </div>
-
-
+   
     <div style="border-radius:20px;" class="modal fade" id="success" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
+                <img src="~/AccessaryFiles/images/12-white-flying-pigeon-png-image.png"/>
                <h1 style="color:springgreen">Your payment was successfully</h1>
                 <div class="modal-footer">
                     <button asp-action="Index" asp-controller="Home" class="btn btn-primary btn-round waves-effect" style="background-color:springgreen; margin:auto; border-radius:30px; color:white">OK</button>
->>>>>>> Eynal_AppointmentConfigurations
                 </div>
             </div>
-        </div>
-    </div>
-
-    <div style="border-radius:20px;" class="modal fade" id="successpay" tabindex="-1" role="dialog">
-       <img src="~/UserFiles/images/success.gif"/>
-                <div class="modal-footer">
-                    <button  style="background-color:#223a66; margin:auto; border-radius:30px;" type="button" class="btn btn-primary btn-round waves-effect" data-dismiss="modal" data-toggle="modal" data-target="#successpay">OK</button>
-                </div>
-    </div>
-
-    <div style="border-radius:20px;" class="modal fade" id="successpay" tabindex="-1" role="dialog">
-        <img src="~/UserFiles/images/success.gif" />
-        <div class="modal-footer">
-            <button onclick="SendSMS()" style="background-color:#223a66; margin:auto; border-radius:30px;" type="button" class="btn btn-primary btn-round waves-effect" data-dismiss="modal" data-toggle="modal" data-target="#successpay">OK</button>
         </div>
     </div>
 
