@@ -11,6 +11,7 @@ using System.Media;
 using Microsoft.AspNetCore.Components.Forms;
 using Hospital.Entities.DbEntities;
 using Hospital.Business.Abstract;
+using Twilio.Rest.Trunking.V1;
 
 namespace Hospital.WebUI.Controllers
 {
@@ -22,7 +23,7 @@ namespace Hospital.WebUI.Controllers
         public CustomIdentityDbContext _dbContext { get; set; }
         private readonly IDataService _dataService;
 
-        public HomeController(CustomIdentityDbContext dbContext, UserManager<CustomIdentityUser> userManager, IDataService dataService)
+        public HomeController(CustomIdentityDbContext dbContext, UserManager<CustomIdentityUser> userManager, IDataService dataService/*, DoctorController doctorController*/)
         {
             _dbContext = dbContext;
             _userManager = userManager;
@@ -68,6 +69,7 @@ namespace Hospital.WebUI.Controllers
             var receivedData = _dataService.RetrieveData();
             var department = await _dbContext.Departments.FirstOrDefaultAsync(d => d.Id == viewModel.DepartmentId);
             var doctor = await _dbContext.Doctors.FirstOrDefaultAsync(d => d.Id == viewModel.DoctorId);
+            var doctors = _dbContext.Doctors.ToList();
 
             var appoinment = new Appointment
             {
@@ -79,9 +81,15 @@ namespace Hospital.WebUI.Controllers
                 AppointmentTime = viewModel.AppointmentTime,
                 AppointmentDate = viewModel.AppointmentDate
             };
+            for (int i = 0; i < doctors.Count(); i++)
+            {
+                if (doctors[i].Id == doctor.Id)
+                {
+                }
+            }
             await _dbContext.Appointments.AddAsync(appoinment);
             await _dbContext.SaveChangesAsync();
-            return RedirectToAction("Appoinment", "Home");
+            return RedirectToAction("SuccessPay","Home");
         }
 
         public async Task<Patient> CurrentUser()
@@ -129,6 +137,21 @@ namespace Hospital.WebUI.Controllers
                 }
             }
             return Ok(new { posts = posts });
+        }
+
+        [HttpGet]
+        public async Task<string> CheckInputs(string phoneNumber, string fullName)
+        {
+            var v = "";
+            if (phoneNumber == "0")
+            {
+                v += "phone is null";
+            }
+            if (fullName == null)
+            {
+                v += " fullname is null";
+            }
+            return v;
         }
 
         [HttpGet]
@@ -252,6 +275,11 @@ namespace Hospital.WebUI.Controllers
         }
 
         public IActionResult Service()
+        {
+            return View();
+        }
+
+        public IActionResult SuccessPay()
         {
             return View();
         }
