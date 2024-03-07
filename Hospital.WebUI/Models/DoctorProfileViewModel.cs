@@ -4,6 +4,7 @@ namespace Hospital.WebUI.Models
 {
     public class DoctorProfileViewModel
     {
+        public string? DoctorId { get; set; }
         public string? Info { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }

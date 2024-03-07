@@ -900,6 +900,46 @@ function PopularPosts() {
     })
 }
 
+function PatientDoctorFilterPatient(departmentId) {
+    $.ajax({
+        url: `/DoctorsShow/PatientDoctorFilterPatient?departmentId=${departmentId}`,
+        method: "GET",
+        success: function (data) {
+            //console.log(data);
+            var context = "";
+
+            for (var i = 0; i < data.length; i++) {
+                context += `
+
+                 <div class="col-lg-3 col-sm-6 col-md-6 mb-4 shuffle-item" data-groups="[&quot;cat1&quot;,&quot;cat2&quot;]">
+				    	<div class="position-relative doctor-inner-box">
+				    		<div class="doctor-profile">
+				    			<div class="doctor-img">
+				    				<img src="${data[i].avatar}" alt="doctor-image" class="img-fluid w-100">
+				    			</div>
+				    		</div>
+				    		<div class="content mt-3">
+				    			<h4 class="mb-0"><a href="/DoctorsShow/PatientInDoctorProfile?doctorId=${data[i].id}">${data[i].userName}</a></h4>
+				    			<p>Cardiology</p>
+				    		</div>
+				    	</div>
+				    </div>
+                
+                `;
+            }
+
+            $("#patientDoctors").html(context);
+        }
+    })
+}
+
+function checkRadioButton(radioButton) {
+        console.log("fsdf");
+    if (radioButton.checked) {
+        //PatientDoctorFilterPatient(radioButton.value);
+    }
+}
+
 function GetAllDoctors() {
     $.ajax({
         url: `/DoctorsShow/GetAllDoctors`,
@@ -910,22 +950,44 @@ function GetAllDoctors() {
             var adminDoctors = "";
             var doctorDoctors = "";
 
+            var patientFilter = "";
+
+            for (var i = 0; i < data.departments.length; i++) {
+                if (data.departments[i].id == "1") {
+
+                    patientFilter += `
+                	<label class="btn active">
+                         <input type="radio" name="shuffle-filter" value="${data.departments[i].id}" onclick="checkRadioButton()"/>${data.departments[i].departmentName}
+                    </label>
+                `;
+                    PatientDoctorFilterPatient(data.departments[i].id);
+                }
+                else {
+                    patientFilter += `
+                   <label class="btn">
+                       <input type="radio" id="shuffle-filter" name="shuffle-filter" value="${data.departments[i].id}" onclick="checkRadioButton()"/>${data.departments[i].departmentName}
+                   </label>
+                `;
+                }
+            }
+
             for (var i = 0; i < data.doctors.length; i++) {
                 patientDoctors += `
                     <div class="col-lg-3 col-sm-6 col-md-6 mb-4 shuffle-item" data-groups="[&quot;cat1&quot;,&quot;cat2&quot;]">
 				    	<div class="position-relative doctor-inner-box">
 				    		<div class="doctor-profile">
 				    			<div class="doctor-img">
-				    				<img src="${data.doctors[i].imageUrl}" alt="doctor-image" class="img-fluid w-100">
+				    				<img src="${data.doctors[i].avatar}" alt="doctor-image" class="img-fluid w-100">
 				    			</div>
 				    		</div>
 				    		<div class="content mt-3">
-				    			<h4 class="mb-0"><a href="doctor-single.html">${data.doctors[i].userName}</a></h4>
+				    			<h4 class="mb-0"><a href="/DoctorsShow/PatientInDoctorProfile('${data.doctors[i].id}')">${data.doctors[i].userName}</a></h4>
 				    			<p>Cardiology</p>
 				    		</div>
 				    	</div>
 				    </div>
                 `;
+
 
                 adminDoctors += `
                      <div class="col-lg-3 col-md-4 col-sm-6">
@@ -948,32 +1010,34 @@ function GetAllDoctors() {
                      </div>
                 `
 
-                doctorDoctors += `
 
-                   <div class="col-lg-3 col-md-4 col-sm-6">
-                         <div class="card xl-blue member-card doctor">
-                             <div class="body">
-                                 <div class="member-thumb">
-                                     <img src="${data.doctors[i].avatar}" class="img-fluid" alt="profile-image">
-                                 </div>
-                                 <div class="detail">
-                                     <h4 class="m-b-0">Dr. ${data.doctors[i].userName}</h4>
-                                     <ul class="social-links list-inline m-t-20">
-                                         <li><a title="facebook" href="#"><i class="zmdi zmdi-facebook"></i></a></li>
-                                         <li><a title="twitter" href="#"><i class="zmdi zmdi-twitter"></i></a></li>
-                                         <li><a title="instagram" href="#"><i class="zmdi zmdi-instagram"></i></a></li>
-                                     </ul>
-                                     <a href='/DoctorsShow/DoctorInDoctorProfile?doctorId=${data.doctors[i].id}'  class="btn btn-default btn-round btn-simple" >View Profile</a>
+                doctorDoctors += `
+                       <div class="col-lg-3 col-md-4 col-sm-6">
+                             <div class="card xl-blue member-card doctor">
+                                 <div class="body">
+                                     <div class="member-thumb">
+                                         <img src="${data.doctors[i].avatar}" class="img-fluid" alt="profile-image">
+                                     </div>
+                                     <div class="detail">
+                                         <h4 class="m-b-0">Dr. ${data.doctors[i].userName}</h4>
+                                         <ul class="social-links list-inline m-t-20">
+                                             <li><a title="facebook" href="#"><i class="zmdi zmdi-facebook"></i></a></li>
+                                             <li><a title="twitter" href="#"><i class="zmdi zmdi-twitter"></i></a></li>
+                                             <li><a title="instagram" href="#"><i class="zmdi zmdi-instagram"></i></a></li>
+                                         </ul>
+                                         <a href='/DoctorsShow/DoctorInDoctorProfile?doctorId=${data.doctors[i].id}'  class="btn btn-default btn-round btn-simple" >View Profile</a>
+                                     </div>
                                  </div>
                              </div>
                          </div>
-                     </div>
-                `;
+                    `;
+
             }
 
             $("#adminDoctors").html(adminDoctors);
             $("#doctorDoctors").html(doctorDoctors);
             $("#patientDoctors").html(patientDoctors);
+            $("#patientDoctorFilter").html(patientFilter);
 
         }
     })

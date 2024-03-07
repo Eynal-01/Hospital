@@ -152,8 +152,10 @@ namespace Hospital.WebUI.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Profile(Doctor doctor)
+        public async Task<IActionResult> Profile(DoctorProfileViewModel doctor)
         {
+            var department = await _dbContext.Departments.FirstOrDefaultAsync(d => d.Id == doctor.DepartmentId.ToString());
+            doctor.Department = department;
             ViewBag.Doctor = doctor;
             return View();
         }
