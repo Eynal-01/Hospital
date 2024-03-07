@@ -27,11 +27,6 @@ namespace Hospital.WebUI.Hubs
             await Clients.All.SendAsync("Connect", d);
         }
 
-        public override Task OnDisconnectedAsync(Exception? exception)
-        {
-            return base.OnDisconnectedAsync(exception);
-        }
-
         public async Task AdminCall(string id)
         {
             await Clients.Users(new String[] { id }).SendAsync("AdminRefresh", id);

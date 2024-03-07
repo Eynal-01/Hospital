@@ -351,8 +351,6 @@ function GetAllPostAllUsers() {
                 
                 `;
 
-
-
                 if (data.posts[i].images.length > 1) {
                     arrowPatient += `
                          <a class="carousel-control-prev" href="#carouselExampleIndicators${data.posts[i].postId}" role="button" data-slide="prev">
@@ -536,9 +534,6 @@ function GetAllAppointments() {
     })
 }
 
-
-
-
 function GetAllDepartment() {
     $.ajax({
         url: `/Admin/GetAllDepartment`,
@@ -594,7 +589,6 @@ function GetDay() {
     });
     //}
 }
-
 
 function GetTime() {
     var availableDoctor = $("#doctorSelect").val();
@@ -681,15 +675,19 @@ function GetAllDoctors() {
 //}
 
 function SendSMS() {
+    var phoneNumber = $("#phone").val();
     $.ajax({
         url: `/SendSMS/SendText`,
-        method: "POST",
+        method: 'POST',
         success: function (data) {
-            console.log(data);
+            console.log('Message sent:', data.messageSid);
+            DoctorAppointments();
+        },
+        error: function (xhr, status, error) {
+            console.error('Error:', error);
         }
-    })
+    });
 }
-
 
 document.getElementById("departmentSelect").addEventListener("change", function () {
     var departmentId = this.value;
@@ -712,12 +710,13 @@ document.getElementById("departmentSelect").addEventListener("change", function 
                 //  <option value="${doctor.id}">@Model.Departments[i].DepartmentName</option>
                 //`;
             });
+
             if (data.length > 0) {
-                console.log(data.length);
                 GetDay();
                 GetTime();
             }
             else {
+                console.log(data.length);
                 //$("#exampleFormControlSelect3"
                 document.getElementById("exampleFormControlSelect3").innerHTML = "";
                 document.getElementById("exampleFormControlSelect4").innerHTML = "";
@@ -726,8 +725,126 @@ document.getElementById("departmentSelect").addEventListener("change", function 
     })
 });
 
-document.getElementById("doctorSelect").addEventListener("change", function () {
-    GetDay();
-    GetTime();
-    SendSMS();
+var fullName = $("#name").val();
+var phone = $("#phone").val();
+var btn = $("#make");
+var emptyPhone = document.getElementById("emptyPhone");
+var emptyName = document.getElementById("emptyName");
+var n = document.getElementById("name");
+var p = document.getElementById("phone");
+var message = docuemnt.getElementById("message");
+var date = document.getElementById("exampleFormControlSelect3");
+var time = document.getElementById("exampleFormControlSelect4");
+
+document.getElementById("make").addEventListener("click", function () {
+    $.ajax({
+        url: `/Home/CheckInputs?phoneNumber=${p.value}&fullName=${n.value}&date=${date.value}&time=${time.value}&message=${message.value}`,
+        method: "GET",
+        success: function (data) {
+
+            if (data.includes("fullname is null")) {
+                n.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
+                emptyName.style.display = "inline-block";
+            }
+            if (data.includes("phone is null")) {
+                p.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
+                emptyPhone.style.display = "inline-block";  
+                console.log("phone is null");
+            }
+            if (data.includes("okay")) {
+
+            }
+
+            if (data === "") {
+                document.getElementById("make").setAttribute('data-target', '#addevent');
+                document.getElementById("make").setAttribute('data-toggle', 'modal');
+            }
+        }
+    })
 });
+
+function handleNameInput() {
+    emptyName.style.display = "none";
+    n.style.backgroundColor = "transparent";
+}
+
+function handlePhoneInput() {
+    emptyPhone.style.display = "none";
+    p.style.backgroundColor = "transparent";
+}
+
+
+
+//var toastId = "myToast";
+
+//function createToast(text) {
+//    let toast = `
+//    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+//      <div id="${toastId}" class="toast" role="alert" aria-live="assertive" aria-atomic="true" background-color: white; width:50px; height:20px;">
+//        <div class="toast-header">
+//          <strong class="me-auto">Zust</strong>
+//          <small>Now</small>
+//          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+//        </div>
+//        <div class="toast-body">
+//          ${text}
+//        </div>
+//      </div>
+//    </div>
+//  `;
+//    return toast;
+//}
+
+//function showToast(message) {
+//    var existingToast = document.getElementById(toastId);
+//    if (existingToast) {
+//        existingToast.remove();
+//    }
+
+//    var toastHTML = createToast(message);
+//    document.body.insertAdjacentHTML("beforeend", toastHTML);
+//    var toast = document.getElementById(toastId);
+//    var bsToast = new bootstrap.Toast(toast);
+//    bsToast.show();
+//    setTimeout(function () {
+//        toast.style.display = "none";
+//    }, 6000);
+
+//    var closeButton = toast.querySelector(".btn-close");
+//    closeButton.addEventListener("click", function () {
+//        toast.style.display = "none";
+//    });
+//}
+
+document.getElementById("okSuccess").addEventListener("click", function () {
+    $.ajax({
+        url: `/Home/Index`,
+        method: "GET",
+
+        success: function () {
+            consol.log("OK Working")
+        }
+    })
+});
+
+function DoctorAppointments() {
+    $.ajax({
+        url: `/Doctor/ShowAllAppointments`,
+        method: "GET",
+
+        success: function (data) {
+            let content = "";
+
+            for (var i = 0; i < data.length; i++) {
+                //var doctor = GetAppointmentDoctor(da ta[i].doctorId)
+                content += `
+                  <tr>
+                      <td>${data[i].id}</td>
+                      <td>${data[i].appointmentDate} ${data[i].appointmentTime}</td>
+                      <td>${data[i].patient.firstName} ${data[i].patient.lastName}</td>
+                 </tr>`;
+            }
+            $("#doctorAppointments").html(content);
+        }
+    })
+}

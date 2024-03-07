@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hospital.Entities.Migrations
 {
     [DbContext(typeof(CustomIdentityDbContext))]
-    [Migration("20240229073652_Init")]
+    [Migration("20240303172127_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -897,7 +897,7 @@ namespace Hospital.Entities.Migrations
                         .HasForeignKey("DepartmentId");
 
                     b.HasOne("HospitalProject.Entities.DbEntities.Doctor", "Doctor")
-                        .WithMany()
+                        .WithMany("Appointments")
                         .HasForeignKey("DoctorId");
 
                     b.HasOne("HospitalProject.Entities.DbEntities.Patient", "Patient")
@@ -1090,6 +1090,8 @@ namespace Hospital.Entities.Migrations
 
             modelBuilder.Entity("HospitalProject.Entities.DbEntities.Doctor", b =>
                 {
+                    b.Navigation("Appointments");
+
                     b.Navigation("Patients");
 
                     b.Navigation("Recipes");
