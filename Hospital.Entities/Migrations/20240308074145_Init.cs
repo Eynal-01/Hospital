@@ -403,6 +403,36 @@ namespace Hospital.Entities.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Posts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AdminId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsImage = table.Column<bool>(type: "bit", nullable: true),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PublishTime = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ViewCount = table.Column<int>(type: "int", nullable: false),
+                    DepartmentId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Posts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Posts_Admins_AdminId",
+                        column: x => x.AdminId,
+                        principalTable: "Admins",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Posts_Departments_DepartmentId",
+                        column: x => x.DepartmentId,
+                        principalTable: "Departments",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Doctors",
                 columns: table => new
                 {
@@ -417,6 +447,8 @@ namespace Hospital.Entities.Migrations
                     Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Bio = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DepartmentId = table.Column<int>(type: "int", nullable: true),
+                    ScheduleId = table.Column<int>(type: "int", nullable: true),
+                    RoomId = table.Column<int>(type: "int", nullable: true),
                     ExperienceYear = table.Column<int>(type: "int", nullable: false),
                     Education = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -447,35 +479,10 @@ namespace Hospital.Entities.Migrations
                         column: x => x.CalendarId,
                         principalTable: "Calendar",
                         principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Posts",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    AdminId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsImage = table.Column<bool>(type: "bit", nullable: true),
-                    Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PublishTime = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ViewCount = table.Column<int>(type: "int", nullable: false),
-                    DepartmentId = table.Column<string>(type: "nvarchar(450)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Posts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Posts_Admins_AdminId",
-                        column: x => x.AdminId,
-                        principalTable: "Admins",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Posts_Departments_DepartmentId",
-                        column: x => x.DepartmentId,
-                        principalTable: "Departments",
+                        name: "FK_Doctors_Rooms_RoomId",
+                        column: x => x.RoomId,
+                        principalTable: "Rooms",
                         principalColumn: "Id");
                 });
 
@@ -704,6 +711,11 @@ namespace Hospital.Entities.Migrations
                 column: "CalendarId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Doctors_RoomId",
+                table: "Doctors",
+                column: "RoomId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Messages_ChatId",
                 table: "Messages",
                 column: "ChatId");
@@ -804,9 +816,6 @@ namespace Hospital.Entities.Migrations
                 name: "Recipes");
 
             migrationBuilder.DropTable(
-                name: "Rooms");
-
-            migrationBuilder.DropTable(
                 name: "Salaries");
 
             migrationBuilder.DropTable(
@@ -841,6 +850,9 @@ namespace Hospital.Entities.Migrations
 
             migrationBuilder.DropTable(
                 name: "Calendar");
+
+            migrationBuilder.DropTable(
+                name: "Rooms");
         }
     }
 }

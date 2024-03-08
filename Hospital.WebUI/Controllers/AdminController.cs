@@ -44,10 +44,33 @@ namespace Hospital.WebUI.Controllers
         {
             var user = await CurrentUser();
             var departments = await _context.Departments.ToListAsync();
+            var schedules = await _context.Schedules.ToListAsync();
+            var doctors = await _context.Doctors.Include(d => d.Schedule).ToListAsync();
+            var rooms = await _context.Rooms.OrderBy(r=>r.Doctors.Count).ToListAsync();
+
+            var resultRoom = from d in doctors
+                             join r in rooms on d.RoomId equals r.Id
+                             select new
+                             {
+                                 RoomNo=r.RoomNo,
+                                 Doctors=doctors,
+                                 Id=r.Id
+                             };
+            var result = resultRoom.Select(rr =>
+            {
+                return new Room
+                {
+                    RoomNo = rr.RoomNo,
+                    Doctors = doctors,
+                    Id = rr.Id
+                };
+            });
             var viewModel = new AddDoctorViewModel
             {
                 ImageUrl = user.Avatar,
                 Departments = departments,
+                Schedules=schedules,
+                Rooms= result.ToList(),
             };
             return View(viewModel);
         }
@@ -99,6 +122,8 @@ namespace Hospital.WebUI.Controllers
                     WorkEndTime = viewModel.WorkEndTime,
                     Bio = viewModel.ShortBiography,
                     DepartmentId = viewModel.DepartmentId,
+                    ScheduleId =viewModel.ScheduleId,
+                    RoomId = viewModel.RoomId,
                     Education = viewModel.Education,
                 };
 

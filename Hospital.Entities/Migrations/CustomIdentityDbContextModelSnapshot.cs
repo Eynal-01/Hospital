@@ -529,6 +529,12 @@ namespace Hospital.Entities.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("RoomId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ScheduleId")
+                        .HasColumnType("int");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -553,6 +559,8 @@ namespace Hospital.Entities.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CalendarId");
+
+                    b.HasIndex("RoomId");
 
                     b.ToTable("Doctors");
                 });
@@ -972,6 +980,12 @@ namespace Hospital.Entities.Migrations
                     b.HasOne("HospitalProject.Entities.DbEntities.Calendar", null)
                         .WithMany("Doctors")
                         .HasForeignKey("CalendarId");
+
+                    b.HasOne("Hospital.Entities.DbEntities.Room", "Room")
+                        .WithMany("Doctors")
+                        .HasForeignKey("RoomId");
+
+                    b.Navigation("Room");
                 });
 
             modelBuilder.Entity("HospitalProject.Entities.DbEntities.Message", b =>
@@ -1090,6 +1104,11 @@ namespace Hospital.Entities.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Hospital.Entities.DbEntities.Room", b =>
+                {
+                    b.Navigation("Doctors");
                 });
 
             modelBuilder.Entity("HospitalProject.Entities.DbEntities.Admin", b =>
