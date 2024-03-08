@@ -33,10 +33,7 @@ namespace Hospital.WebUI.Controllers
         [HttpGet]
         public async Task<IActionResult> Appointment()
         {
-            var doctors = await _dbContext.Doctors.ToListAsync();
             var departments = await _dbContext.Departments.ToListAsync();
-            var availableDates = await _dbContext.AvailableDates.ToListAsync();
-            var availableTimes = await _dbContext.AvailableTimes.ToListAsync();
             var viewModel = new AppoinmentViewModel
             {
                 Departments = new List<Department>(),
@@ -61,6 +58,8 @@ namespace Hospital.WebUI.Controllers
                 var doctor = await _dbContext.Doctors.FirstOrDefaultAsync(d => d.Id == viewModel.DoctorId);
                 var doctors = _dbContext.Doctors.ToList();
 
+                //var names = viewModel.Fullname.Split(' ');
+
                 var appoinment = new Appointment
                 {
                     Age = patient.Age,
@@ -81,7 +80,7 @@ namespace Hospital.WebUI.Controllers
                 await _dbContext.SaveChangesAsync();
                 return RedirectToAction("SuccessPay", "Home");
             }
-            return RedirectToAction("Appointment", viewModel);
+            return RedirectToAction("Appointment", "Home");
         }
 
         public async Task<Patient> CurrentUser()

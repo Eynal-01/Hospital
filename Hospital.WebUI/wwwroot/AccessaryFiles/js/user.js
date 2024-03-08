@@ -1,4 +1,15 @@
 ﻿var departmentName = "";
+
+
+var d = document.getElementById("departmentSelect");
+var doct = document.getElementById("doctorSelect");
+var n = document.getElementById("name");
+var p = document.getElementById("phone");
+var message = document.getElementById("message");
+var date = document.getElementById("dateSelect");
+var time = document.getElementById("exampleFormControlSelect4");
+
+
 function GetAllPatients() {
     /*    console.log("dsdsdd");*/
     $.ajax({
@@ -584,7 +595,15 @@ function GetDay() {
                 content += `
                      <option value="${data[i]}">${data[i]}</option>`;
             }
-            $("#exampleFormControlSelect3").html(content);
+
+            if (data.length > 0) {
+                date.style.backgroundColor = "transparent";
+            }
+            else {
+                date.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
+            }
+
+            $("#dateSelect").html(content);
         }
     });
     //}
@@ -592,7 +611,7 @@ function GetDay() {
 
 function GetTime() {
     var availableDoctor = $("#doctorSelect").val();
-    var appointmentDate = $("#exampleFormControlSelect3").val();
+    var appointmentDate = $("#dateSelect").val();
 
     //if (availableDoctor != null) {
     $.ajax({
@@ -606,6 +625,15 @@ function GetTime() {
                 content += `
                      <option value="${data[i]}">${data[i]}</option>`;
             }
+
+
+            if (data.length > 0) {
+                time.style.backgroundColor = "transparent";
+            }
+            else {
+                time.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
+            }
+
             $("#exampleFormControlSelect4").html(content);
         }
     });
@@ -695,11 +723,15 @@ document.getElementById("departmentSelect").addEventListener("change", function 
     var doctorSelect = document.getElementById("doctorSelect");
     doctorSelect.innerHTML = "";
 
+    d.style.backgroundColor = "transparent";
+
+
     $.ajax({
         url: `/Home/getDoctors?departmentId=${departmentId}`,
         method: "GET",
 
         success: function (data) {
+            var content = "";
             //console.log(data);
             data.forEach(function (doctor) {
                 var option = document.createElement("option");
@@ -707,61 +739,238 @@ document.getElementById("departmentSelect").addEventListener("change", function 
                 option.value = doctor.id;
                 doctorSelect.appendChild(option);
                 //content += `
-                //  <option value="${doctor.id}">@Model.Departments[i].DepartmentName</option>
+                //  <option value="${doctor.id}">${doctor[i].departmentName}</option>
                 //`;
             });
+            //console.log(data[0]);
+            //for (var i = 0; i < data.length; i++) {
+            //    if (i == 0) {
+            //        //console.log("hgkj")
+            //        content += `
+            //          <option value="${data[i].id}" selected>${data[i].departmentName}</option>
+            //        `;
+            //    }
+            //    else {
+            //        content += `
+            //          <option value="${data[i].id}">${data[i].firstName} ${data[i].lastName}</option>
+            //        `;
+            //    }
+            //}
+
+            //$("#doctorSelect").html(content);
+
+
+            //if (data != null && data.length > 0) {
+            //}
+            //else {
+            //}
 
             if (data.length > 0) {
+                doct.style.backgroundColor = "transparent";
+                date.style.backgroundColor = "transparent";
+                time.style.backgroundColor = "transparent";
+
                 GetDay();
                 GetTime();
             }
             else {
-                console.log(data.length);
+                //console.log(data.length);
                 //$("#exampleFormControlSelect3"
-                document.getElementById("exampleFormControlSelect3").innerHTML = "";
+                document.getElementById("dateSelect").innerHTML = "";
                 document.getElementById("exampleFormControlSelect4").innerHTML = "";
+                doct.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
+                date.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
+                time.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
             }
         }
     })
 });
 
-var fullName = $("#name").val();
-var phone = $("#phone").val();
-var btn = $("#make");
-var emptyPhone = document.getElementById("emptyPhone");
-var emptyName = document.getElementById("emptyName");
-var n = document.getElementById("name");
-var p = document.getElementById("phone");
-var message = docuemnt.getElementById("message");
-var date = document.getElementById("exampleFormControlSelect3");
-var time = document.getElementById("exampleFormControlSelect4");
 
-document.getElementById("make").addEventListener("click", function () {
-    $.ajax({
-        url: `/Home/CheckInputs?phoneNumber=${p.value}&fullName=${n.value}&date=${date.value}&time=${time.value}&message=${message.value}`,
-        method: "GET",
-        success: function (data) {
 
-            if (data.includes("fullname is null")) {
-                n.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
-                emptyName.style.display = "inline-block";
-            }
-            if (data.includes("phone is null")) {
-                p.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
-                emptyPhone.style.display = "inline-block";  
-                console.log("phone is null");
-            }
-            if (data.includes("okay")) {
+//var btn = $("#make");
+//var emptyPhone = document.getElementById("emptyPhone");
+//var emptyName = document.getElementById("emptyName");
 
-            }
 
-            if (data === "") {
-                document.getElementById("make").setAttribute('data-target', '#addevent');
-                document.getElementById("make").setAttribute('data-toggle', 'modal');
+function CallAppointment() {
+    //var department = $("departmentSelect").val();
+    //var doctor = $("doctorSelect").val();
+    //var fullName = $("#name").val();
+    //var phone = $("#phone").val();
+    //var date1 = $("exampleFormControlSelect3").val();
+    //var time1 = $("exampleFormControlSelect4").val();
+    //var message1 = $("message").val();
+
+
+    if (d.value != null && doct.value != null && p.value != "0"
+        && message.value != null && date.value != null && time.value != null) {
+        $.ajax({
+            url: `/Home/Appointment`,
+            method: "POST",
+            data: { DoctorId: doct.value, DepartmentId: d.value, PhoneNumber: p.value, Message: message.value, Date: date.value, Time: time.value },
+            dataType: "json",
+
+            success: function (data) {
+                console.log("aynthing is null");
             }
-        }
-    })
-});
+        })
+    }
+
+    if (d.value.trim() == "") {
+        d.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
+        //emptyName.style.display = "inline-block";
+    }
+    else {
+        d.style.backgroundColor = "transparent";
+    }
+
+    if (doct.value.trim() == "") {
+        console.log("doctor is null");
+        doct.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
+        //emptyName.style.display = "inline-block";
+    }
+    else {
+        doct.style.backgroundColor = "transparent";
+    }
+
+    if (n.value.trim() == "") {
+        console.log("name is null");
+        n.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
+        //emptyName.style.display = "inline-block";
+    }
+    else {
+        n.style.backgroundColor = "transparent";
+    }
+
+    if (p.value == "0" || phone.length < 9) {
+        console.log("phone is null");
+        p.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
+        //emptyName.style.display = "inline-block";
+    }
+    else {
+        p.style.backgroundColor = "transparent";
+    }
+
+    //console.log(date.value);
+    if (date == null || date.value == "") {
+        console.log("date is null");
+        date.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
+        //emptyName.style.display = "inline-block";
+    }
+    else {
+        date.style.backgroundColor = "transparent";
+    }
+
+    if (time == null || time.value == "") {
+        console.log("time is null");
+        time.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
+        //emptyName.style.display = "inline-block";
+    }
+    else {
+        time.style.backgroundColor = "transparent";
+    }
+
+    //console.log(message);
+    if (message.value.trim() == "") {
+        console.log("message is null");
+        message.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
+        //emptyName.style.display = "inline-block";
+    }
+    else {
+        message.style.backgroundColor = "transparent";
+    }
+}
+
+//function ChangeDepartment() {
+//d.style.backgroundColor = "transparent";
+//console.log(doct.value);
+//if (doct.innerHTML.trim != "") {
+//    doct.style.backgroundColor = "transparent";
+//}
+//else {
+//    doct.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
+//}
+
+//if (time.innerHTML.trim != "") {
+//    time.style.backgroundColor = "transparent";
+//}
+//else {
+//    time.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
+//}
+
+//if (date.innerHTML.trim != "") {
+//    date.style.backgroundColor = "transparent";
+//}
+//else {
+//    date.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
+//}
+//}
+
+function ChangeName() {
+
+
+    if (n.innerHTML != "") {
+        n.style.backgroundColor = "transparent";
+    }
+    else {
+        n.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
+    }
+}
+
+function ChangePhone() {
+    if (p.innerHTML != "") {
+        p.style.backgroundColor = "transparent";
+    }
+    else {
+        p.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
+    }
+
+}
+
+function ChangeDate() {
+    date.style.backgroundColor = "transparent";
+}
+
+function ChangeTime() {
+    time.style.backgroundColor = "transparent";
+}
+
+function ChangeMessage() {
+    if (message.value.trim != "") {
+        message.style.backgroundColor = "transparent";
+    }
+    else {
+        message.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
+    }
+}
+
+//document.getElementById("make").addEventListener("click", function () {
+//    $.ajax({
+//        url: `/Home/CheckInputs?phoneNumber=${p.value}&fullName=${n.value}&date=${date.value}&time=${time.value}&message=${message.value}`,
+//        method: "GET",
+//        success: function (data) {
+
+//            if (data.includes("fullname is null")) {
+//                n.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
+//                emptyName.style.display = "inline-block";
+//            }
+//            if (data.includes("phone is null")) {
+//                p.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
+//                emptyPhone.style.display = "inline-block";
+//                console.log("phone is null");
+//            }
+//            if (data.includes("okay")) {
+
+//            }
+
+//            if (data === "") {
+//                document.getElementById("make").setAttribute('data-target', '#addevent');
+//                document.getElementById("make").setAttribute('data-toggle', 'modal');
+//            }
+//        }
+//    })
+//});
 
 function handleNameInput() {
     emptyName.style.display = "none";
