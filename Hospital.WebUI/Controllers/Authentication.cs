@@ -21,6 +21,11 @@ namespace HospitalProject.WebUI.Controllers
             _customIdentityDbContext = customIdentityDbContext;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+
         public IActionResult Start()
         {
             return View();

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace HospitalProject.Entities.DbEntities
 {
-    public class Admin : IdentityUser, IEntity
+    public class Admin : IdentityUser, IEntity, CommonUsers
     {
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
@@ -21,7 +21,9 @@ namespace HospitalProject.Entities.DbEntities
         public string? Avatar { get; set; } = "userWithoutPicture.png";
         public string? Country { get; set; }
         public int WorkDaysCount { get; set; }
+        public bool? IsPostView { get; set; }
 
         public virtual ICollection<Post>? Posts { get; set; }
+        public virtual ICollection<PostView>? PostViews { get; set; }
     }
 }

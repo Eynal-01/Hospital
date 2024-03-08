@@ -41,8 +41,12 @@ namespace Hospital.Entities.Data
         public DbSet<AvailableTime>? AvailableTimes { get; set; }
         public DbSet<AvailableDate>? AvailableDates { get; set; }
         public DbSet<NoWorkingTime>? NoWorkingTimes { get; set; }
+<<<<<<< HEAD
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Schedule> Schedules { get; set; }
+=======
+        public DbSet<PostView>? PostViews { get; set; }
+>>>>>>> Murad_PatientDevelopmentShow
 
 
         //protected override void OnModelCreating(ModelBuilder builder)

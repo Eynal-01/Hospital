@@ -13,6 +13,8 @@ namespace HospitalProject.Entities.DbEntities
     {
         public string? Id { get; set; }
         public string? DepartmentName { get; set; }
+        public string? ImageUrl { get; set; }
+        public string? Content { get; set; }
 
         public ICollection<Post>? Posts { get; set; }
     }

@@ -3,135 +3,143 @@
 <!DOCTYPE html>
 <html lang="zxx">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="description" content="Orbitor,business,company,agency,modern,bootstrap4,tech,software">
-    <meta name="author" content="themefisher.com">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="description" content="Orbitor,business,company,agency,modern,bootstrap4,tech,software">
+	<meta name="author" content="themefisher.com">
 
-    <title>Novena- Health & Care Medical template</title>
+	<title>Novena- Health & Care Medical template</title>
 
-    <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
+	<!-- Favicon -->
+	<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
 
-    <!-- bootstrap.min css -->
-    <link rel="stylesheet" href="~/UserFiles/plugins/bootstrap/css/bootstrap.min.css">
-    <!-- Icon Font Css -->
-    <link rel="stylesheet" href="~/UserFiles/plugins/icofont/icofont.min.css">
+	<!-- bootstrap.min css -->
+	<link rel="stylesheet" href="~/UserFiles/plugins/bootstrap/css/bootstrap.min.css">
+	<!-- Icon Font Css -->
+	<link rel="stylesheet" href="~/UserFiles/plugins/icofont/icofont.min.css">
 
-    <link rel="stylesheet" href="~/plugins/icofont/icofont.min.css">
-    <link rel="stylesheet" href="~/UserFiles/css/style.css" />
+	<link rel="stylesheet" href="~/plugins/icofont/icofont.min.css">
+	<link rel="stylesheet" href="~/UserFiles/css/style.css" />
 
-    <!-- Slick Slider  CSS -->
-    <link rel="stylesheet" href="~/UserFiles/plugins/slick-carousel/slick/slick.css">
-    <link rel="stylesheet" href="~/UserFiles/plugins/slick-carousel/slick/slick-theme.css">
+	<!-- Slick Slider  CSS -->
+	<link rel="stylesheet" href="~/UserFiles/plugins/slick-carousel/slick/slick.css">
+	<link rel="stylesheet" href="~/UserFiles/plugins/slick-carousel/slick/slick-theme.css">
 
-    <!-- Main Stylesheet -->
-    <link rel="stylesheet" href="~/UserFiles/css/style.css">
+	<!-- Main Stylesheet -->
+	<link rel="stylesheet" href="~/UserFiles/css/style.css">
 
 
 </head>
 
 <body id="top">
 
-    <section class="page-title bg-1">
-        <div class="overlay"></div>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="block text-center">
-                        <span class="text-white">Our blog</span>
-                        <h1 class="text-capitalize mb-5 text-lg">Blog articles</h1>
+	<section class="page-title bg-1">
+		<div class="overlay"></div>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="block text-center">
+						<span class="text-white">Our blog</span>
+						<h1 class="text-capitalize mb-5 text-lg">Blog articles</h1>
 
-                        <!-- <ul class="list-inline breadcumb-nav">
-                          <li class="list-inline-item"><a href="index.html" class="text-white">Home</a></li>
-                          <li class="list-inline-item"><span class="text-white">/</span></li>
-                          <li class="list-inline-item"><a href="#" class="text-white-50">Our blog</a></li>
-                        </ul> -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+						<!-- <ul class="list-inline breadcumb-nav">
+						  <li class="list-inline-item"><a href="index.html" class="text-white">Home</a></li>
+						  <li class="list-inline-item"><span class="text-white">/</span></li>
+						  <li class="list-inline-item"><a href="#" class="text-white-50">Our blog</a></li>
+						</ul> -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
 
-    <section class="section blog-wrap">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8">
-                    <div class="row">
-                        <div class="col-lg-12 col-md-12 mb-5">
-                            <div class="blog-item">
-                                <div class="img-post m-b-15" style="background-color:rgba(200, 200, 200,0.4);">
-                                    <div id="carouselExampleIndicators-@Model.PostId" class="carousel slide" data-ride="carousel">
-                                        <div class="carousel-inner">
-                                            @for (var k = 0; k < Model.Images.Count(); k++)
-                                            {
-                                                <div class="carousel-item active" style="text-align:center;width:100%;">
-                                                    <img class="img-fluid" src="@Model.Images[k]" alt="Responsive image">
-                                                </div>
-                                            }
-                                        </div>
-                                        @if (Model.Images.Count() > 1)
-                                        {
+	<section class="section blog-wrap">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8">
+					<div class="row">
+						<div class="col-lg-12 col-md-12 mb-5">
+							<div class="blog-item">
+								<div class="img-post m-b-15" style="background-color:rgba(200, 200, 200,0.4);">
+									<div id="carouselExampleIndicators-@Model.PostId" class="carousel slide" data-ride="carousel">
+										<div class="carousel-inner">
+											@for (var k = 0; k < Model.Images.Count(); k++)
+											{
+												if (k == 0)
+												{
+													<div class="carousel-item active" style="text-align:center;width:100%;">
+														<img class="img-fluid" src="@Model.Images[k]" alt="Responsive image">
+													</div>
+												}
+												else
+												{
+													<div class="carousel-item" style="text-align:center;width:100%;">
+														<img class="img-fluid" src="@Model.Images[k]" alt="Responsive image">
+													</div>
+												}
+											}
+										</div>
+										@if (Model.Images.Count() > 1)
+										{
+											<a class="carousel-control-prev" href="#carouselExampleIndicators-@Model.PostId" role="button" data-slide="prev">
+												<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+												<span class="sr-only">Previous</span>
+											</a>
+											<a class="carousel-control-next" href="#carouselExampleIndicators-@Model.PostId" role="button" data-slide="next">
+												<span class="carousel-control-next-icon" aria-hidden="true"></span>
+												<span class="sr-only">Next</span>
+											</a>
+										}
+									</div>
+								</div>
 
-                                            <a class="carousel-control-prev" href="#carouselExampleIndicators-@Model.PostId" role="button" data-slide="prev">
-                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                                <span class="sr-only">Previous</span>
-                                            </a>
-                                            <a class="carousel-control-next" href="#carouselExampleIndicators-@Model.PostId" role="button" data-slide="next">
-                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                                <span class="sr-only">Next</span>
-                                            </a>
+								<div class="blog-item-content">
+									<div class="blog-item-meta mb-3 mt-4">
+										<span class="text-muted text-capitalize mr-3"><i class="icofont-group mr-2"></i> @Model.Department.DepartmentName</span>
+										<span class="text-black text-capitalize mr-3"><i class="icofont-calendar mr-1"></i> @Model.PublishTime</span>
+										<span class="text-black text-capitalize mr-3"><i class="icofont-eye-alt mr-1"></i> @Model.ViewCount</span>
+									</div>
 
-                                        }
-                                    </div>
-                                </div>
+									<h2 class="mt-3 mb-3"><a href="blog-single.html">@Model.Title</a></h2>
 
-                                <div class="blog-item-content">
-                                    <div class="blog-item-meta mb-3 mt-4">
-                                        <span class="text-muted text-capitalize mr-3"><i class="icofont-category mr-2"></i> @Model.Department.DepartmentName</span>
-                                        <span class="text-black text-capitalize mr-3"><i class="icofont-calendar mr-1"></i> @Model.PublishTime</span>
-                                    </div>
+									<p class="mb-4">@Model.Content</p>
 
-                                    <h2 class="mt-3 mb-3"><a href="blog-single.html">@Model.Title</a></h2>
+									<a href="/Home/BlogSindebar" class="btn btn-main btn-icon btn-round-full"><i class="icofont-simple-left"></i>Exit</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
 
-                                    <p class="mb-4">@Model.Content</p>
+	<script src="~/AccessaryFiles/js/signalr/dist/browser/signalR.js"></script>
 
-                                    <a href="/Home/BlogSindebar" class="btn btn-main btn-icon btn-round-full"><i class="icofont-simple-left"></i>Exit</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+	<!--
+	Essential Scripts
+	=====================================-->
+	<!-- Main jQuery -->
+	<script src="~/UserFiles/plugins/jquery/jquery.js"></script>
+	<!-- Bootstrap 4.3.2 -->
+	<script src="~/UserFiles/plugins/bootstrap/js/popper.js"></script>
+	<script src="~/UserFiles/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="~/UserFiles/plugins/counterup/jquery.easing.js"></script>
+	<!-- Slick Slider -->
+	<script src="~/UserFiles/plugins/slick-carousel/slick/slick.min.js"></script>
+	<!-- Counterup -->
+	<script src="~/UserFiles/plugins/counterup/jquery.waypoints.min.js"></script>
 
-    <script src="~/AccessaryFiles/js/signalr/dist/browser/signalR.js"></script>
+	<script src="~/UserFiles/plugins/shuffle/shuffle.min.js"></script>
+	<script src="~/UserFiles/plugins/counterup/jquery.counterup.min.js"></script>
+	<!-- Google Map -->
+	<script src="~/UserFiles/plugins/google-map/map.js"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkeLMlsiwzp6b3Gnaxd86lvakimwGA6UA&callback=initMap"></script>
 
-    <!--
-    Essential Scripts
-    =====================================-->
-    <!-- Main jQuery -->
-    <script src="~/UserFiles/plugins/jquery/jquery.js"></script>
-    <!-- Bootstrap 4.3.2 -->
-    <script src="~/UserFiles/plugins/bootstrap/js/popper.js"></script>
-    <script src="~/UserFiles/plugins/bootstrap/js/bootstrap.min.js"></script>
-    <script src="~/UserFiles/plugins/counterup/jquery.easing.js"></script>
-    <!-- Slick Slider -->
-    <script src="~/UserFiles/plugins/slick-carousel/slick/slick.min.js"></script>
-    <!-- Counterup -->
-    <script src="~/UserFiles/plugins/counterup/jquery.waypoints.min.js"></script>
+	<script src="~/js/script.js"></script>
+	<script src="~/js/contact.js"></script>
 
-    <script src="~/UserFiles/plugins/shuffle/shuffle.min.js"></script>
-    <script src="~/UserFiles/plugins/counterup/jquery.counterup.min.js"></script>
-    <!-- Google Map -->
-    <script src="~/UserFiles/plugins/google-map/map.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkeLMlsiwzp6b3Gnaxd86lvakimwGA6UA&callback=initMap"></script>
-
-    <script src="~/js/script.js"></script>
-    <script src="~/js/contact.js"></script>
-
-    <script src="~/AccessaryFiles/js/site.js"></script>
-    <script src="~/AccessaryFiles/js/user.js"></script>
+	<script src="~/AccessaryFiles/js/site.js"></script>
+	<script src="~/AccessaryFiles/js/user.js"></script>
 
 </body>
 </html>

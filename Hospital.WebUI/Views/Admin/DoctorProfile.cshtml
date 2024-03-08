@@ -1,5 +1,4 @@
-﻿@model DoctorProfileViewModel
-<title>:: Oreo Admin :: Profile</title>
+﻿<title>:: Oreo Admin :: Profile</title>
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <!-- Favicon-->
 <link rel="stylesheet" href="~/AdminFiles/assets/plugins/bootstrap/css/bootstrap.min.css">
@@ -30,13 +29,12 @@
             <div class="col-lg-4 col-md-12">
                 <div class="card profile-header">
                     <div class="body text-center">
-                        <div class="profile-image"> <img src="~/AccessaryFiles/images/@Model.ImageUrl" alt=""> </div>
+                        <div class="profile-image"> <img src="@ViewBag.Doctor.ImageUrl" alt=""> </div>
                         <div>
-                            <h4 class="m-b-0"><strong>Dr. @Model.UserName</strong> Deo</h4>
-                            <span class="job_post">@Model.Department</span>
+                            <h4 class="m-b-0"><strong>Dr. @ViewBag.Doctor.UserName</strong> Deo</h4>
+                            <span class="job_post">@ViewBag.Doctor.Department.DepartmentName</span>
                         </div>
                         <div>
-                            <button class="btn btn-primary btn-round">Follow</button>
                             <button class="btn btn-primary btn-round btn-simple">Message</button>
                         </div>
                         <p class="social-icon m-t-5 m-b-0">
@@ -236,27 +234,27 @@
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane body active" id="about">
-                            <p>@Model.Info</p>
+                            <p>@ViewBag.Doctor.Info</p>
                             <h6>Qualifications</h6>
                             <hr>
                             <ul class="list-unstyled">
                                 <li>
-                                    <p><strong>City:</strong> @Model.City</p>
+                                    <p><strong>City:</strong> @ViewBag.Doctor.City</p>
                                 </li>
                                 <li>
-                                    <p><strong>Country:</strong> @Model.Country</p>
+                                    <p><strong>Country:</strong> @ViewBag.Doctor.Country</p>
                                 </li>
                                 <li>
-                                    <p><strong>Gender:</strong> @Model.Gender</p>
+                                    <p><strong>Gender:</strong> @ViewBag.Doctor.Gender</p>
                                 </li>
                                 <li>
-                                    <p><strong>Education: </strong> @Model.Education</p>
+                                    <p><strong>Education: </strong> @ViewBag.Doctor.Education</p>
                                 </li>
                             </ul>
                             <h6>Specialties</h6>
                             <hr>
                             <ul class="list-unstyled specialties">
-                                <li>@Model.Department</li>
+                                <li>@ViewBag.Doctor.Department.DepartmentName</li>
                             </ul>
                         </div>
                         <div class="tab-pane body" id="Account">
@@ -319,7 +317,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="card">
+@*                 <div class="card">
                     <div class="header">
                         <h2><strong>Recent</strong> Activity</h2>
                         <ul class="header-dropdown">
@@ -365,7 +363,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> *@
             </div>
         </div>
     </div>

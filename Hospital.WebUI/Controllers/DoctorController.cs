@@ -1,4 +1,5 @@
 ﻿using Hospital.Entities.Data;
+using Hospital.Entities.DbEntities;
 using Hospital.WebUI.Models;
 using HospitalProject.Entities.DbEntities;
 using Microsoft.AspNetCore.Authorization;
@@ -57,7 +58,41 @@ namespace Hospital.WebUI.Controllers
             return View();
         }
 
-        public async Task<Doctor> CurrentUser()
+		public async Task<IActionResult> BlogSingle(PostsShowViewModel post)
+		{
+			var user = await CurrentUser();
+
+			var postT = await _dbContext.Posts.FirstOrDefaultAsync(p => p.Id == post.PostId);
+			post.Admin = await _dbContext.Admins.FirstOrDefaultAsync(a => a.Id == post.AdminId);
+			post.Department = await _dbContext.Departments.FirstOrDefaultAsync(p => p.Id == post.DepartmentId);
+
+			var postView = await _dbContext.PostViews.FirstOrDefaultAsync(f => f.DoctorId == user.Id && f.PostId == postT.Id);
+
+			if (postView == null)
+			{
+				postView = new PostView
+				{
+					Post = postT,
+					PostId = postT.Id,
+					Doctor = user,
+					DoctorId = user.Id
+				};
+
+				postT.ViewCount += 1;
+				post.ViewCount += 1;
+
+				await _dbContext.PostViews.AddAsync(postView);
+
+				_dbContext.Update(postT);
+				await _dbContext.SaveChangesAsync();
+			}
+
+			ViewBag.Post = post;
+
+			return View();
+		}
+
+		public async Task<Doctor> CurrentUser()
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
             var admin = await _dbContext.Doctors.FirstOrDefaultAsync(a => a.UserName == user.UserName && a.Email == user.Email);
@@ -69,7 +104,7 @@ namespace Hospital.WebUI.Controllers
             return View();
         }
 
-        public IActionResult AllDepartments()
+        public IActionResult AllDepartments(DepartmentsViewModel departments)
         {
             return View();
         }
@@ -134,8 +169,11 @@ namespace Hospital.WebUI.Controllers
             return View();
         }
 
-        public IActionResult Profile()
+        public async Task<IActionResult> Profile(DoctorProfileViewModel doctor)
         {
+            var department = await _dbContext.Departments.FirstOrDefaultAsync(d => d.Id == doctor.DepartmentId.ToString());
+            doctor.Department = department;
+            ViewBag.Doctor = doctor;
             return View();
         }
 

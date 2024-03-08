@@ -185,11 +185,20 @@ namespace Hospital.Entities.Migrations
                     b.Property<string>("DepartmentId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("DoctorId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool?>("IsImage")
                         .HasColumnType("bit");
+
+                    b.Property<bool?>("IsPostView")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PatientId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("PublishTime")
                         .HasColumnType("nvarchar(max)");
@@ -206,10 +215,18 @@ namespace Hospital.Entities.Migrations
 
                     b.HasIndex("DepartmentId");
 
+                    b.HasIndex("DoctorId");
+
+                    b.HasIndex("PatientId");
+
                     b.ToTable("Posts");
                 });
 
+<<<<<<< HEAD
             modelBuilder.Entity("Hospital.Entities.DbEntities.Room", b =>
+=======
+            modelBuilder.Entity("Hospital.Entities.DbEntities.PostView", b =>
+>>>>>>> Murad_PatientDevelopmentShow
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -217,6 +234,7 @@ namespace Hospital.Entities.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+<<<<<<< HEAD
                     b.Property<string>("RoomNo")
                         .HasColumnType("nvarchar(max)");
 
@@ -239,6 +257,31 @@ namespace Hospital.Entities.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Schedules");
+=======
+                    b.Property<string>("AdminId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("DoctorId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("PatientId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AdminId");
+
+                    b.HasIndex("DoctorId");
+
+                    b.HasIndex("PatientId");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("PostViews");
+>>>>>>> Murad_PatientDevelopmentShow
                 });
 
             modelBuilder.Entity("HospitalProject.Entities.DbEntities.Admin", b =>
@@ -278,6 +321,9 @@ namespace Hospital.Entities.Migrations
 
                     b.Property<string>("Gender")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("IsPostView")
+                        .HasColumnType("bit");
 
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
@@ -444,7 +490,13 @@ namespace Hospital.Entities.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("DepartmentName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -484,8 +536,8 @@ namespace Hospital.Entities.Migrations
                     b.Property<string>("Country")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("DepartmentId")
-                        .HasColumnType("int");
+                    b.Property<string>("DepartmentId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Education")
                         .HasColumnType("nvarchar(max)");
@@ -504,6 +556,9 @@ namespace Hospital.Entities.Migrations
 
                     b.Property<string>("Gender")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("IsPostView")
+                        .HasColumnType("bit");
 
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
@@ -554,6 +609,13 @@ namespace Hospital.Entities.Migrations
 
                     b.HasIndex("CalendarId");
 
+<<<<<<< HEAD
+=======
+                    b.HasIndex("DepartmentId");
+
+                    b.HasIndex("DoctorScheduleId");
+
+>>>>>>> Murad_PatientDevelopmentShow
                     b.ToTable("Doctors");
                 });
 
@@ -670,6 +732,9 @@ namespace Hospital.Entities.Migrations
 
                     b.Property<string>("FullName")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("IsPostView")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -905,9 +970,50 @@ namespace Hospital.Entities.Migrations
                         .WithMany("Posts")
                         .HasForeignKey("DepartmentId");
 
+                    b.HasOne("HospitalProject.Entities.DbEntities.Doctor", "Doctor")
+                        .WithMany()
+                        .HasForeignKey("DoctorId");
+
+                    b.HasOne("HospitalProject.Entities.DbEntities.Patient", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientId");
+
                     b.Navigation("Admin");
 
                     b.Navigation("Department");
+
+                    b.Navigation("Doctor");
+
+                    b.Navigation("Patient");
+                });
+
+            modelBuilder.Entity("Hospital.Entities.DbEntities.PostView", b =>
+                {
+                    b.HasOne("HospitalProject.Entities.DbEntities.Admin", "Admin")
+                        .WithMany("PostViews")
+                        .HasForeignKey("AdminId");
+
+                    b.HasOne("HospitalProject.Entities.DbEntities.Doctor", "Doctor")
+                        .WithMany("PostViews")
+                        .HasForeignKey("DoctorId");
+
+                    b.HasOne("HospitalProject.Entities.DbEntities.Patient", "Patient")
+                        .WithMany("PostViews")
+                        .HasForeignKey("PatientId");
+
+                    b.HasOne("Hospital.Entities.DbEntities.Post", "Post")
+                        .WithMany("PostViews")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Admin");
+
+                    b.Navigation("Doctor");
+
+                    b.Navigation("Patient");
+
+                    b.Navigation("Post");
                 });
 
             modelBuilder.Entity("HospitalProject.Entities.DbEntities.Appointment", b =>
@@ -972,6 +1078,19 @@ namespace Hospital.Entities.Migrations
                     b.HasOne("HospitalProject.Entities.DbEntities.Calendar", null)
                         .WithMany("Doctors")
                         .HasForeignKey("CalendarId");
+<<<<<<< HEAD
+=======
+
+                    b.HasOne("HospitalProject.Entities.DbEntities.Department", "Department")
+                        .WithMany()
+                        .HasForeignKey("DepartmentId");
+
+                    b.HasOne("HospitalProject.Entities.DbEntities.DoctorSchedule", null)
+                        .WithMany("Doctors")
+                        .HasForeignKey("DoctorScheduleId");
+
+                    b.Navigation("Department");
+>>>>>>> Murad_PatientDevelopmentShow
                 });
 
             modelBuilder.Entity("HospitalProject.Entities.DbEntities.Message", b =>
@@ -1092,8 +1211,15 @@ namespace Hospital.Entities.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Hospital.Entities.DbEntities.Post", b =>
+                {
+                    b.Navigation("PostViews");
+                });
+
             modelBuilder.Entity("HospitalProject.Entities.DbEntities.Admin", b =>
                 {
+                    b.Navigation("PostViews");
+
                     b.Navigation("Posts");
                 });
 
@@ -1118,12 +1244,16 @@ namespace Hospital.Entities.Migrations
 
                     b.Navigation("Patients");
 
+                    b.Navigation("PostViews");
+
                     b.Navigation("Recipes");
                 });
 
             modelBuilder.Entity("HospitalProject.Entities.DbEntities.Patient", b =>
                 {
                     b.Navigation("Appointments");
+
+                    b.Navigation("PostViews");
 
                     b.Navigation("Recipes");
                 });
