@@ -21,7 +21,7 @@ namespace HospitalProject.Entities.DbEntities
         public string? City { get; set; }
         public string? Country { get; set; }
         public string? Bio { get; set; }
-        public int? DepartmentId { get; set; }
+        public string? DepartmentId { get; set; }
         public int ExperienceYear { get; set; }
         public string? Education { get; set; }
         public string? Status { get; set; }
@@ -32,6 +32,7 @@ namespace HospitalProject.Entities.DbEntities
         public ICollection<Patient>? Patients { get; set; }
         public ICollection<Recipe>? Recipes { get; set; }
         public int WorkDayCount { get; set; }
+        public virtual Department? Department { get; set; }
         public virtual ICollection<PostView>? PostViews { get; set; }
 
         //public ICollection<AvailableTime>? AvailableTimes { get; set; }

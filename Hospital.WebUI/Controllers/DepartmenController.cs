@@ -44,7 +44,7 @@ namespace Hospital.WebUI.Controllers
         [HttpGet]
         public async Task<DepartmentsViewModel> GetAllDepartment()
         {
-            var departments = await _context.Departments.ToListAsync();
+            var departments = await _context.Departments.Where(d => d.Id != "1").ToListAsync();
             var departmentViewModel = new DepartmentsViewModel
             {
                 Departments = departments

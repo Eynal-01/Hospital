@@ -920,7 +920,7 @@ function PatientDoctorFilterPatient(departmentId) {
 				    		</div>
 				    		<div class="content mt-3">
 				    			<h4 class="mb-0"><a href="/DoctorsShow/PatientInDoctorProfile?doctorId=${data[i].id}">${data[i].userName}</a></h4>
-				    			<p>Cardiology</p>
+				    			<p>${data[i].department.departmentName}</p>
 				    		</div>
 				    	</div>
 				    </div>
@@ -934,9 +934,9 @@ function PatientDoctorFilterPatient(departmentId) {
 }
 
 function checkRadioButton(radioButton) {
-        console.log("fsdf");
+    console.log("fsdf");
     if (radioButton.checked) {
-        //PatientDoctorFilterPatient(radioButton.value);
+        PatientDoctorFilterPatient(radioButton.value);
     }
 }
 
@@ -957,7 +957,7 @@ function GetAllDoctors() {
 
                     patientFilter += `
                 	<label class="btn active">
-                         <input type="radio" name="shuffle-filter" value="${data.departments[i].id}" onclick="checkRadioButton()"/>${data.departments[i].departmentName}
+                         <input type="radio" name="shuffle-filter" value="${data.departments[i].id}" onchange="checkRadioButton(this)">${data.departments[i].departmentName}</button>
                     </label>
                 `;
                     PatientDoctorFilterPatient(data.departments[i].id);
@@ -965,7 +965,7 @@ function GetAllDoctors() {
                 else {
                     patientFilter += `
                    <label class="btn">
-                       <input type="radio" id="shuffle-filter" name="shuffle-filter" value="${data.departments[i].id}" onclick="checkRadioButton()"/>${data.departments[i].departmentName}
+                        <input type="radio" name="shuffle-filter" value="${data.departments[i].id}" onchange="checkRadioButton(this)">${data.departments[i].departmentName}</button>
                    </label>
                 `;
                 }
@@ -981,8 +981,8 @@ function GetAllDoctors() {
 				    			</div>
 				    		</div>
 				    		<div class="content mt-3">
-				    			<h4 class="mb-0"><a href="/DoctorsShow/PatientInDoctorProfile('${data.doctors[i].id}')">${data.doctors[i].userName}</a></h4>
-				    			<p>Cardiology</p>
+				    			<h4 class="mb-0"><a href="/DoctorsShow/PatientInDoctorProfile('${data.doctors[i].id}')">${data.doctors[i].firstName} ${data.doctors[i].lastName}</a ></h4 >
+				    			<p>${data.doctors[i].department.departmentName}</p>
 				    		</div>
 				    	</div>
 				    </div>
@@ -997,7 +997,8 @@ function GetAllDoctors() {
                                      <img src="${data.doctors[i].avatar}" class="img-fluid" alt="profile-image">
                                  </div>
                                  <div class="detail">
-                                     <h4 class="m-b-0">Dr. ${data.doctors[i].userName}</h4>
+                                     <h4 class="m-b-0">Dr. ${data.doctors[i].firstName} ${data.doctors[i].lastName}</h4>
+                                     <p class="text-muted">${data.doctors[i].department.departmentName}</p>
                                      <ul class="social-links list-inline m-t-20">
                                          <li><a title="facebook" href="#"><i class="zmdi zmdi-facebook"></i></a></li>
                                          <li><a title="twitter" href="#"><i class="zmdi zmdi-twitter"></i></a></li>
@@ -1008,7 +1009,7 @@ function GetAllDoctors() {
                              </div>
                          </div>
                      </div>
-                `
+                `;
 
 
                 doctorDoctors += `
@@ -1019,7 +1020,8 @@ function GetAllDoctors() {
                                          <img src="${data.doctors[i].avatar}" class="img-fluid" alt="profile-image">
                                      </div>
                                      <div class="detail">
-                                         <h4 class="m-b-0">Dr. ${data.doctors[i].userName}</h4>
+                                         <h4 class="m-b-0">Dr. ${data.doctors[i].firstName} ${data.doctors[i].lastName}</h4>
+                                     <p class="text-muted">${data.doctors[i].department.departmentName}</p>
                                          <ul class="social-links list-inline m-t-20">
                                              <li><a title="facebook" href="#"><i class="zmdi zmdi-facebook"></i></a></li>
                                              <li><a title="twitter" href="#"><i class="zmdi zmdi-twitter"></i></a></li>
@@ -1096,9 +1098,8 @@ function GetAllDepartment() {
 
 
             for (var i = 0; i < data.departments.length; i++) {
-                if (data.departments[i].id != "1") {
 
-                    doctorAndAdminDepartments += `
+                doctorAndAdminDepartments += `
                     <div class="col-lg-4 col-md-6 col-sm-12">
                           <div class="card project_widget">
                               <div class="pw_img">
@@ -1116,7 +1117,7 @@ function GetAllDepartment() {
                       </div>
                     `;
 
-                    patientDe += `
+                patientDe += `
 			        	<div class="col-lg-4 col-md-6 ">
 			        		<div class="department-block mb-5">			<img src="${data.departments[i].imageUrl}" alt="" class="img-fluid w-100">
 			        			<div class="content">
@@ -1127,7 +1128,7 @@ function GetAllDepartment() {
 			        		</div>
 			        	</div>
                     `;
-                }
+
             }
 
             $("#departmentsAdmin").html(doctorAndAdminDepartments);
@@ -1201,68 +1202,6 @@ function GetTime() {
         }
     });
 }
-
-//function GetAllDoctors() {
-//    //console.log("doctor");
-//    $.ajax({
-//        url: `/Admin/GetAllDoctors`,
-//        method: "GET",
-
-//        success: function (data) {
-//            let content = "";
-
-//            for (var i = 0; i < data.length; i++) {
-//                //var doctor = GetAppointmentDoctor(data[i].doctorId)
-//                var department = "";
-//                //GetDoctorIdDepartment(data[i].id);
-//                content += `
-//                            <div class="col-lg-3 col-md-4 col-sm-6">
-//                                <div class="card xl-blue member-card doctor">
-//                                    <div class="body">
-//                                        <div class="member-thumb">
-//                                            <img src="/AccessaryFiles/images/${data[i].avatar}" class="img-fluid" alt="profile-image">
-//                                        </div>
-//                                        <div class="detail">
-//                                            <h4 class="m-b-0">Dr. ${data[i].userName}</h4>
-//                                            <ul class="social-links list-inline m-t-20">
-//                                                <li><a title="facebook" href="#"><i class="zmdi zmdi-facebook"></i></a></li>
-//                                                <li><a title="twitter" href="#"><i class="zmdi zmdi-twitter"></i></a></li>
-//                                                <li><a title="instagram" href="#"><i class="zmdi zmdi-instagram"></i></a></li>
-//                                            </ul>
-//                                            <a href='/Admin/DoctorProfile?doctorId=${data[i].id}'  class="btn btn-default btn-round btn-simple" >View Profile</a>
-//                                        </div>
-//                                    </div>
-//                                </div>
-//                            </div>
-//                            `
-//            }
-//            $("#doctors").html(content);
-//        }
-//    })
-//}
-
-//<p class="text-muted">${departmentName}</p>
-//function GetDoctorIdDepartment(doctorId) {
-//    $.ajax({
-//        url: `/Admin/GetDoctorIdDepartment?doctorId=${doctorId}`,
-//        method: "GET",
-
-//        success: function (department) {
-//            departmentName = department;
-//        }
-//    })
-//}
-
-//function GetAppointmentDoctor() {
-//    $.ajax({
-//        url: `/Admin/GetAppointmentDoctor`,
-//        method: "GET",
-
-//        success: function (data) {
-//            return data;
-//        }
-//    })
-//}
 
 function SendSMS() {
     $.ajax({

@@ -32,11 +32,11 @@ namespace Hospital.WebUI.Controllers
             var departmentsNew = new List<Department>();
             if (current != null)
             {
-                doctors = await _context.Doctors.Where(d => d.Id != current.Id).ToListAsync();
+                doctors = await _context.Doctors.Where(d => d.Id != current.Id).Include(nameof(Doctor.Department)).ToListAsync();
             }
             else
             {
-                doctors = await _context.Doctors.ToListAsync();
+                doctors = await _context.Doctors.Include(nameof(Doctor.Department)).ToListAsync();
             }
 
             for (int i = 0; i < doctors.Count(); i++)
@@ -62,7 +62,15 @@ namespace Hospital.WebUI.Controllers
 
         public async Task<IActionResult> PatientDoctorFilterPatient(int departmentId)
         {
-            var doctors =  await _context.Doctors.Where(d => d.DepartmentId == departmentId).ToListAsync();
+            var doctors = new List<Doctor>();
+            if (departmentId == 1)
+            {
+                doctors = await _context.Doctors.Include(nameof(Doctor.Department)).ToListAsync();
+            }
+            else
+            {
+                doctors = await _context.Doctors.Where(d => d.DepartmentId == departmentId.ToString()).Include(nameof(Doctor.Department)).ToListAsync();
+            }
             return Ok(doctors);
         }
 

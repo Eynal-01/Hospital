@@ -507,8 +507,8 @@ namespace Hospital.Entities.Migrations
                     b.Property<string>("Country")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("DepartmentId")
-                        .HasColumnType("int");
+                    b.Property<string>("DepartmentId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int?>("DoctorScheduleId")
                         .HasColumnType("int");
@@ -582,6 +582,8 @@ namespace Hospital.Entities.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CalendarId");
+
+                    b.HasIndex("DepartmentId");
 
                     b.HasIndex("DoctorScheduleId");
 
@@ -1045,9 +1047,15 @@ namespace Hospital.Entities.Migrations
                         .WithMany("Doctors")
                         .HasForeignKey("CalendarId");
 
+                    b.HasOne("HospitalProject.Entities.DbEntities.Department", "Department")
+                        .WithMany()
+                        .HasForeignKey("DepartmentId");
+
                     b.HasOne("HospitalProject.Entities.DbEntities.DoctorSchedule", null)
                         .WithMany("Doctors")
                         .HasForeignKey("DoctorScheduleId");
+
+                    b.Navigation("Department");
                 });
 
             modelBuilder.Entity("HospitalProject.Entities.DbEntities.Message", b =>

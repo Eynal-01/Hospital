@@ -392,7 +392,7 @@ namespace Hospital.Entities.Migrations
                     City = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Bio = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DepartmentId = table.Column<int>(type: "int", nullable: true),
+                    DepartmentId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     ExperienceYear = table.Column<int>(type: "int", nullable: false),
                     Education = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -424,6 +424,11 @@ namespace Hospital.Entities.Migrations
                         name: "FK_Doctors_Calendar_CalendarId",
                         column: x => x.CalendarId,
                         principalTable: "Calendar",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Doctors_Departments_DepartmentId",
+                        column: x => x.DepartmentId,
+                        principalTable: "Departments",
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Doctors_DoctorSchedules_DoctorScheduleId",
@@ -738,6 +743,11 @@ namespace Hospital.Entities.Migrations
                 column: "CalendarId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Doctors_DepartmentId",
+                table: "Doctors",
+                column: "DepartmentId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Doctors_DoctorScheduleId",
                 table: "Doctors",
                 column: "DoctorScheduleId");
@@ -894,9 +904,6 @@ namespace Hospital.Entities.Migrations
                 name: "Admins");
 
             migrationBuilder.DropTable(
-                name: "Departments");
-
-            migrationBuilder.DropTable(
                 name: "Patients");
 
             migrationBuilder.DropTable(
@@ -904,6 +911,9 @@ namespace Hospital.Entities.Migrations
 
             migrationBuilder.DropTable(
                 name: "Calendar");
+
+            migrationBuilder.DropTable(
+                name: "Departments");
 
             migrationBuilder.DropTable(
                 name: "DoctorSchedules");

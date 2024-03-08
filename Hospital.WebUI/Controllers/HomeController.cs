@@ -197,7 +197,7 @@ namespace Hospital.WebUI.Controllers
 
 		public async Task<IActionResult> GetDoctors(int departmentId)
 		{
-			var doctors = await _dbContext.Doctors.Where(d => d.DepartmentId == departmentId).ToListAsync();
+			var doctors = await _dbContext.Doctors.Where(d => d.DepartmentId == departmentId.ToString()).ToListAsync();
 			return Ok(doctors);
 		}
 
