@@ -1594,19 +1594,25 @@ document.getElementById("doctorSelect").addEventListener("change", function () {
 
 function handleRoomId() {
     var time = document.getElementById("scheduleSelect").value;
+    console.log("Df");
+    var roomSelect = document.getElementById("roomSelect");
     $.ajax({
         url: `/Admin/FilterRooms?time=${time}`,
         method: "GET",
 
         success: function (data) {
             let content = "";
+            content += '<option value="" selected disabled hidden></option>';
             for (var i = 0; i < data.length; i++) {
-                content += `
-                     <option value="${data[i].id}">${data[i].roomNo}</option>`;
+                content += `<option value="${data[i].id}">${data[i].roomNo}</option>`
             }
             $("#roomSelect").html(content);
+            //data.forEach(function (room) {
+            //    var option = document.createElement("option");
+            //    option.text = room.roomNo;
+            //    option.value = room.id;
+            //    roomSelect.appendChild(option);
+            //});
         }
     })
 }
-
-

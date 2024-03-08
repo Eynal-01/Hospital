@@ -23,13 +23,6 @@ namespace Hospital.WebUI.Controllers
 		private readonly IDataService _dataService;
 		private readonly CustomIdentityDbContext _context;
 
-		public HomeController(CustomIdentityDbContext dbContext, UserManager<CustomIdentityUser> userManager, IDataService dataService/*, DoctorController doctorController*/)
-		{
-			_dbContext = dbContext;
-			_userManager = userManager;
-			_dataService = dataService;
-		}
-
 		[HttpGet]
 		public async Task<IActionResult> Appointment()
 		{

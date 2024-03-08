@@ -1,184 +1,219 @@
-@model AddDoctorViewModel
+﻿@model AddDoctorViewModel
+<!DOCTYPE html>
+<html lang="zxx">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="description" content="Orbitor,business,company,agency,modern,bootstrap4,tech,software">
+    <meta name="author" content="themefisher.com">
 
-<title>:: Oreo Hospital :: Add Doctors</title>
-<link rel="icon" href="favicon.ico" type="image/x-icon">
-<!-- Favicon-->
-<link rel="stylesheet" href="~/AdminFiles/assets/plugins/bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet" href="~/AdminFiles/assets/plugins/dropzone/dropzone.css">
-<link rel="stylesheet" href="~/AdminFiles/assets/plugins/bootstrap-select/css/bootstrap-select.css" />
-<!-- Custom Css -->
-<link rel="stylesheet" href="~/AdminFiles/assets/css/main.css">
-<link rel="stylesheet" href="~/AdminFiles/assets/css/color_skins.css">
+    <title>Novena- Health & Care Medical template</title>
 
-<section class="content">
-    <div class="block-header">
-        <div class="row">
-            <div class="col-lg-7 col-md-5 col-sm-12">
-                <h2>
-                    Add Doctors
-                    <small class="text-muted">Welcome to Oreo</small>
-                </h2>
-            </div>
-            <div class="col-lg-5 col-md-7 col-sm-12">
-                <ul class="breadcrumb float-md-right">
-                    <li class="breadcrumb-item"><a href="/Admin/Index"><i class="zmdi zmdi-home"></i> Oreo</a></li>
-                    <li class="breadcrumb-item"><a href="javascript:void(0);">Doctors</a></li>
-                    <li class="breadcrumb-item active">Add Doctors</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class="container-fluid">
-        <div class="row clearfix">
-            <div class="col-lg-12 col-md-12 col-sm-12">
-                <div class="card">
-                    <div class="header">
-                        <h2><strong>Basic</strong> Information <small>Description text here...</small> </h2>
-                        <ul class="header-dropdown">
-                            <li class="remove">
-                                <a role="button" class="boxs-close"><i class="zmdi zmdi-close"></i></a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="body">
-                        <form asp-controller="Admin" asp-action="AddDoctor" method="post" enctype="multipart/form-data">
-                            <div class="row clearfix">
-                                <div class="col-sm-3">
-                                    <div class="form-group">
-                                        <input asp-for="FirstName" type="text" class="form-control" placeholder="First Name">
-                                    </div>
-                                </div>
-                                <div class="col-sm-3">
-                                    <div class="form-group">
-                                        <input asp-for="LastName" type="text" class="form-control" placeholder="Last Name">
-                                    </div>
-                                </div>
-                                <div class="col-sm-3">
-                                    <div class="form-group">
-                                        <input asp-for="Username" type="text" class="form-control" placeholder="User Name">
-                                    </div>
-                                </div>
-                                <div class="col-sm-3">
-                                    <select asp-for="Gender" class="form-control show-tick">
-                                        <option value="">- Gender -</option> 
-                                        <option value="Male">Male</option>
-                                        <option value="Female">Female</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="row clearfix">
-                                <div class="col-sm-3">
-                                    <div class="form-group">
-                                        <input asp-for="Address" type="text" class="form-control" placeholder="Address">
-                                    </div>
-                                </div>
-                                <div class="col-sm-3">
-                                    <div class="form-group">
-                                        <input asp-for="Country" type="text" class="form-control" placeholder="Country">
-                                    </div>
-                                </div>
-                                <div class="col-sm-3">
-                                    <div class="form-group">
-                                        <input asp-for="City" type="text" class="form-control" placeholder="City">
-                                    </div>
-                                </div>
-                                <div class="col-sm-3">
-                                    <div class="form-group">
-                                        <input asp-for="MobileNumber" type="number" class="form-control" placeholder="Phone">
-                                    </div>
-                                </div>
-                                <div class="col-sm-3">
-                                    <div class="form-group">
-                                        <input asp-for="Email" type="text" class="form-control" placeholder="Enter Your Email">
-                                    </div>
-                                </div>
-                                <select class="col-sm-3" asp-for="DepartmentId" class="form-control" id="exampleFormControlSelect1">
-                                    @for (int i = 0; i < Model.Departments.Count(); i++)
-                                    {
-                                        <option value="@Model.Departments[i].Id">@Model.Departments[i].DepartmentName</option>
-                                    }
-                                </select>
-                                <select class="col-sm-3" asp-for="ScheduleId" class="form-control" id="scheduleSelect" onchange="handleRoomId()">
-                                    @for (int i = 0; i < Model.Schedules.Count(); i++)
-                                    {
-                                        <option value="@Model.Schedules[i].Id">@Model.Schedules[i].WorkTime</option>
-                                    }
-                                </select>
+    <!-- Favicon -->
+    <link rel="stylesheet" href="~/AdminFiles/assets/plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/AdminFiles/assets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" />
+    <link rel="stylesheet" href="~/AdminFiles/assets/plugins/dropzone/dropzone.css">
+    @*<link rel="stylesheet" href="~/AdminFiles/assets/plugins/bootstrap-select/css/bootstrap-select.css" />*@
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="~/AdminFiles/assets/css/main.css">
+    <link rel="stylesheet" href="~/AdminFiles/assets/css/color_skins.css">
 
-                               <select class="col-sm-3" id="roomSelect" asp-for="RoomId" class="form-control"></select> 
+</head>
 
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <input type="text" asp-for="Password" class="form-control" placeholder="Password">
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <input type="text" asp-for="ConfirmPassword" class="form-control" placeholder="Confirm Password">
-                                    </div>
-                                </div>
-
-                                @*  <div id="rooms">
-                                @foreach (var room in Model.Rooms)
-                                {
-                                <div class="room">
-                                <h2>@room.RoomNo</h2>
-                                @if (room.Doctors.Count == 0)
-                                {
-                                <h3>Empty room for both of times</h3>
-                                }
-                                else{
-                                @foreach (var d in room.Doctors)
-                                {
-                                <h3>@d.FirstName - @d.LastName</h3>
-                                <h2>Time : @d.Schedule.WorkTime</h2>
-                                }
-                                }
-                                </div>
-                                }
-                                </div> *@
-
-                                <div class="col-lg-12 col-md-12 col-sm-12">
-                                    <div class="dz-message">
-                                        <h3 style="margin-top:3%">Drop files here or click to upload.</h3>
-                                        <em>(This is just a demo dropzone. Selected files are <strong>not</strong> actually uploaded.)</em>
-                                    </div>
-                                    <div class="fallback">
-                                        <input asp-for="File" name="file" type="file" multiple />
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-6" style="margin-top:5%">
-                                    <div class="form-group">
-                                        <textarea asp-for="ShortBiography" rows="4" class="form-control no-resize" placeholder="Information . . ."></textarea>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6" style="margin-top:5%">
-                                    <div class="form-group">
-                                        <textarea asp-for="Education" rows="4" class="form-control no-resize" placeholder="Education . . ."></textarea>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12">
-                                    <button type="submit" class="btn btn-primary btn-round">Submit</button>
-                                    <button type="submit" class="btn btn-default btn-round btn-simple">Cancel</button>
-                                </div>
-                            </div>
-                        </form>
+<body id="top">
+    <section class="page-title bg-1">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="block text-center">
+                        <span class="text-white">Book your Seat</span>
+                        <h1 class="text-capitalize mb-5 text-lg">Appoinment</h1>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
+    <section class="appoinment section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="mt-3">
+                        <div class="feature-icon mb-3">
+                            <i class="icofont-support text-lg"></i>
+                        </div>
+                        <span class="h3">Call for an Emergency Service!</span>
+                        <h2 class="text-color mt-3">+84 789 1256 </h2>
+                    </div>
+                </div>
 
+                <div class="col-lg-8">
+                    <div class="appoinment-wrap mt-5 mt-lg-0 pl-lg-5">
+                        <h2 class="mb-2 title-color">Book an appoinment</h2>
+                        <p class="mb-4">Mollitia dicta commodi est recusandae iste, natus eum asperiores corrupti qui velit . Iste dolorum atque similique praesentium soluta.</p>
+                        @* <form class="appoinment-form" method="post" asp-action="Appointment" asp-controller="Home"> *@
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Department</label>
+                                    <select asp-for="DepartmentId" class="form-control" id="departmentSelect">
+                                        <option value="" selected disabled hidden></option>
+
+                                        @for (int i = 0; i < Model.Departments.Count(); i++)
+                                        {
+                                            <option value="@Model.Departments[i].Id">@Model.Departments[i].DepartmentName</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Doctor</label>
+                                    <select asp-for="ScheduleId" class="form-control" id="scheduleSelect" onchange="handleRoomId()">
+                                        <option value="" selected disabled hidden></option>
+                                        @for (int i = 0; i < Model.Schedules.Count(); i++)
+                                        {
+                                            <option value="@Model.Schedules[i].Id">@Model.Schedules[i].WorkTime</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Date</label>
+                                    <select asp-for="RoomId" class="form-control" id="roomSelect">
+                                    </select>
+                                </div>
+                            </div>
+
+                            @*                            <div class="col-lg-6">
+                            <div class="form-group">
+                            <label>Available Times</label>
+                            <select asp-for="AppointmentTime" class="form-control" id="exampleFormControlSelect4" onchange="ChangeTime()"></select>
+                            </div>
+                            </div>*@
+                            @*
+                            <div class="col-lg-6">
+                            <div class="form-group">
+                            <label asp-for="Fullname">Fullname</label>
+                            <input asp-for="Fullname" id="name" type="text" class="form-control" placeholder="Full Name" oninput="handleNameInput()">
+                            <label id="emptyName" style="color:red; display:none;">Enter fullname</label>
+                            </div>
+                            </div> *@
+                            @*
+                            <div class="col-lg-6">
+                            <div class="form-group">
+                            <label asp-for="PhoneNumber">Phone Number</label>
+                            <input asp-for="PhoneNumber" id="phone" type="Number" class="form-control" placeholder="Phone Number" oninput="handlePhoneInput()">
+                            <label id="emptyPhone" style="color:red; display:none;">Enter phone number</label>
+                            </div>
+                            </div>*@
+                        </div>
+
+
+                        <button onclick="CallAppointment()" class="btn btn-main btn-round-full" type="submit">Make Appoinment<i class="icofont-simple-right ml-2"></i></button>
+
+                        <div style="border-radius:20px;" class="modal fade" id="success" tabindex="-1" role="dialog">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    
+                                    <button type="submit" onclick="SendSMS()" class="btn btn-primary btn-round waves-effect" style="background-color:rgba(34,58,102,255); border-radius:30px; color:white; margin:20%; width:35%; margin-left:32%;">Send SMS</button>
+                                    <button type="submit" onclick="SendEmail()" class="btn btn-primary btn-round waves-effect" style="background-color:rgba(34,58,102,255); border-radius:30px; color:white; margin-left:32%; margin-bottom:20%; width:35%">Send Email</button>
+                                </div>
+                            </div>
+                        </div>
+                        @* </form> *@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div style="border-radius:20px;" class="modal fade" id="addevent" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="title" id="defaultModalLabel">Book appointment</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div class="form-line">
+                            <input type="number" class="form-control" placeholder="Card number">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-line">
+                            <input type="text" class="form-control" placeholder="Exp date">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-line">
+                            <input class="form-control no-resize" placeholder="Security code"></input>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button style="background-color:#223a66; margin:auto; border-radius:30px;" type="button" class="btn btn-primary btn-round waves-effect" data-dismiss="modal" data-toggle="modal" data-target="#successpay">Pay</button>
+                    <button style="background-color:#223a66; margin:auto; border-radius:30px;" type="button" class="btn btn-primary btn-round waves-effect" data-toggle="modal" data-target="#success" type="button" data-dismiss="modal">Pay</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div style="border-radius:20px;" class="modal fade" id="success" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <h1 style="color:springgreen">Your payment was successfully</h1>
+                <div class="modal-footer">
+                    <button asp-action="Index" asp-controller="Home" class="btn btn-primary btn-round waves-effect" style="background-color:springgreen; margin:auto; border-radius:30px; color:white">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="border-radius:20px;" class="modal fade" id="successpay" tabindex="-1" role="dialog">
+        <img src="~/UserFiles/images/success.gif" />
+        <div class="modal-footer">
+            <button style="background-color:#223a66; margin:auto; border-radius:30px;" type="button" class="btn btn-primary btn-round waves-effect" data-dismiss="modal" data-toggle="modal" data-target="#successpay">OK</button>
+        </div>
+    </div>
+
+    <div style="border-radius:20px;" class="modal fade" id="successpay" tabindex="-1" role="dialog">
+        <img src="~/UserFiles/images/success.gif" />
+        <div class="modal-footer">
+            <button onclick="SendSMS()" style="background-color:#223a66; margin:auto; border-radius:30px;" type="button" class="btn btn-primary btn-round waves-effect" data-dismiss="modal" data-toggle="modal" data-target="#successpay">OK</button>
+        </div>
+    </div>
+
+    <script src="~/AccessaryFiles/js/signalr/dist/browser/signalR.js"></script>
+    <!--
+    Essential Scripts
+    =====================================-->
+    <!-- Main jQuery -->
 <script src="~/AdminFiles/assets/bundles/libscripts.bundle.js"></script> <!-- Bootstrap JS and jQuery v3.2.1 -->
 <script src="~/AdminFiles/assets/bundles/vendorscripts.bundle.js"></script> <!-- slimscroll, waves Scripts Plugin Js -->
 
 <script src="~/AdminFiles/assets/plugins/dropzone/dropzone.js"></script> <!-- Dropzone Plugin Js -->
 <script src="~/AdminFiles/assets/bundles/mainscripts.bundle.js"></script><!-- Custom Js -->
+    <!-- Bootstrap 4.3.2 -->
+    <script src="~/UserFiles/plugins/bootstrap/js/popper.js"></script>
+    <script src="~/UserFiles/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/UserFiles/plugins/counterup/jquery.easing.js"></script>
+    <!-- Slick Slider -->
+    <script src="~/UserFiles/plugins/slick-carousel/slick/slick.min.js"></script>
+    <!-- Counterup -->
+    <script src="~/UserFiles/plugins/counterup/jquery.waypoints.min.js"></script>
 
+    <script src="~/UserFiles/plugins/shuffle/shuffle.min.js"></script>
+    <script src="~/UserFiles/plugins/counterup/jquery.counterup.min.js"></script>
+    <!-- Google Map -->
+    <script src="~/UserFiles/plugins/google-map/map.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkeLMlsiwzp6b3Gnaxd86lvakimwGA6UA&callback=initMap"></script>
 
-<script src="~/AccessaryFiles/js/signalr/dist/browser/signalR.js"></script>
-<script src="~/AccessaryFiles/js/user.js"></script>
-<script src="~/AccessaryFiles/js/site.js"></script>
+    <script src="~/UserFiles/js/script.js"></script>
+    <script src="~/UserFiles/js/contact.js"></script>
 
+    <script src="~/AccessaryFiles/js/user.js"></script>
+    <script src="~/AccessaryFiles/js/site.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.10.0/main.min.js"></script>
+</body>
+</html>
