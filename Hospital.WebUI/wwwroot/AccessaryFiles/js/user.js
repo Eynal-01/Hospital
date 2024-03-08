@@ -1,4 +1,5 @@
-﻿var departmentName = "";
+﻿
+var departmentName = "";
 
 
 var d = document.getElementById("departmentSelect");

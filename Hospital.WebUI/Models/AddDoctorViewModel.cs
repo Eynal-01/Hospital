@@ -1,4 +1,5 @@
-﻿using HospitalProject.Entities.DbEntities;
+﻿using Hospital.Entities.DbEntities;
+using HospitalProject.Entities.DbEntities;
 using System.ComponentModel.DataAnnotations;
 
 namespace Hospital.WebUI.Models
@@ -59,7 +60,11 @@ namespace Hospital.WebUI.Models
         public string? Education { get; set; }
 
         public List<Department>? Departments { get; set; }
+        public List<Schedule>? Schedules { get; set; }
+        public List<Room>? Rooms { get; set; }
         public int? DepartmentId { get; set; }
+        public int? ScheduleId { get; set; }
+        public int? RoomId { get; set; }
 
     }
 }

@@ -70,7 +70,7 @@
                                 <div class="col-sm-3">
                                     <div class="form-group">
                                         <label>Birthday</label>
-                                        <input asp-for="DateOfBirth" type="datetime" class="form-control">
+                                        <input asp-for="DateOfBirth" type="datetime" class="form-control" placeholder="dd/mm/yy">
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
@@ -104,6 +104,39 @@
                                         <option value="@Model.Departments[i].Id">@Model.Departments[i].DepartmentName</option>
                                     }
                                 </select>
+                                <select asp-for="ScheduleId" class="form-control" id="exampleFormControlSelect2">
+                                    @for (int i = 0; i < Model.Schedules.Count(); i++)
+                                    {
+                                        <option value="@Model.Schedules[i].Id">@Model.Schedules[i].WorkTime</option>
+                                    }
+                                </select>
+                              @*   <select asp-for="RoomId" class="form-control" id="exampleFormControlSelect2">
+                                    @for (int i = 0; i < Model.Rooms.Count(); i++)
+                                    {
+                                        <option value="@Model.Rooms[i].Id">@Model.Rooms[i].RoomNo</option>
+                                    }
+                                </select> *@
+
+                                <div id="rooms">
+                                 @foreach (var room in Model.Rooms)
+                                    {
+                                        <div class="room">
+                                            <h2>@room.RoomNo</h2>
+                                            @if (room.Doctors.Count == 0)
+                                            {
+                                                <h3>Empty room for both of times</h3>
+                                            }
+                                            else{
+                                                @foreach (var d in room.Doctors)
+                                                {
+                                                    <h3>@d.FirstName - @d.LastName</h3>
+                                                    <h2>Time : @d.Schedule.WorkTime</h2>
+                                                }
+                                            }
+                                        </div>
+                                    }
+                                </div>
+
                                 <div class="col-lg-12 col-md-12 col-sm-12">
                                     <div class="dz-message">
                                         <div class="drag-icon-cph"> <i class="material-icons">touch_app</i> </div>
