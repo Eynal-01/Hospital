@@ -1109,12 +1109,12 @@ function GetAllDepartment() {
                 doctorAndAdminDepartments += `
                     <div class="col-lg-4 col-md-6 col-sm-12">
                           <div class="card project_widget">
-                              <div class="pw_img">
+                              <div class="pw_img" style="text-align:center; padding:7%;">
                                   <img class="img-fluid" src="${data.departments[i].imageUrl}" alt="About the image">
                               </div>
                               <div class="pw_content">
-                                  <div class="pw_header">
-                                      <h6>${data.departments[i].departmentName}</h6>
+                                  <div class="pw_header" style="text-align:center;">
+                                      <h3 style="margin:-5%">${data.departments[i].departmentName}</h3>
                                   </div>
                                   <div class="pw_meta">
                                       <p>${data.departments[i].content}</p>
@@ -1314,7 +1314,6 @@ document.getElementById("departmentSelect").addEventListener("change", function 
     })
 });
 
-<<<<<<< HEAD
 
 
 //var btn = $("#make");
@@ -1586,10 +1585,28 @@ function DoctorAppointments() {
         }
     })
 }
-=======
 document.getElementById("doctorSelect").addEventListener("change", function () {
     GetDay();
     GetTime();
     SendSMS();
 });
->>>>>>> Murad_PatientDevelopmentShow
+
+
+function handleRoomId() {
+    var time = document.getElementById("scheduleSelect").value;
+    $.ajax({
+        url: `/Admin/FilterRooms?time=${time}`,
+        method: "GET",
+
+        success: function (data) {
+            let content = "";
+            for (var i = 0; i < data.length; i++) {
+                content += `
+                     <option value="${data[i].id}">${data[i].roomNo}</option>`;
+            }
+            $("#roomSelect").html(content);
+        }
+    })
+}
+
+

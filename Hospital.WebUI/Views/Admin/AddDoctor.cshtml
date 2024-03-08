@@ -43,36 +43,30 @@
                     <div class="body">
                         <form asp-controller="Admin" asp-action="AddDoctor" method="post" enctype="multipart/form-data">
                             <div class="row clearfix">
-                                <div class="col-sm-6">
+                                <div class="col-sm-3">
                                     <div class="form-group">
                                         <input asp-for="FirstName" type="text" class="form-control" placeholder="First Name">
                                     </div>
                                 </div>
-                                <div class="col-sm-6">
+                                <div class="col-sm-3">
                                     <div class="form-group">
                                         <input asp-for="LastName" type="text" class="form-control" placeholder="Last Name">
                                     </div>
                                 </div>
-                                <div class="col-sm-6">
+                                <div class="col-sm-3">
                                     <div class="form-group">
                                         <input asp-for="Username" type="text" class="form-control" placeholder="User Name">
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row clearfix">
                                 <div class="col-sm-3">
                                     <select asp-for="Gender" class="form-control show-tick">
-                                        <option value="">- Gender -</option>
+                                        <option value="">- Gender -</option> 
                                         <option value="Male">Male</option>
                                         <option value="Female">Female</option>
                                     </select>
                                 </div>
-                                <div class="col-sm-3">
-                                    <div class="form-group">
-                                        <label>Birthday</label>
-                                        <input asp-for="DateOfBirth" type="datetime" class="form-control" placeholder="dd/mm/yy">
-                                    </div>
-                                </div>
+                            </div>
+                            <div class="row clearfix">
                                 <div class="col-sm-3">
                                     <div class="form-group">
                                         <input asp-for="Address" type="text" class="form-control" placeholder="Address">
@@ -90,63 +84,29 @@
                                 </div>
                                 <div class="col-sm-3">
                                     <div class="form-group">
-                                        <input asp-for="MobileNumber" type="text" class="form-control" placeholder="Phone">
+                                        <input asp-for="MobileNumber" type="number" class="form-control" placeholder="Phone">
                                     </div>
                                 </div>
-                                <div class="col-sm-6">
+                                <div class="col-sm-3">
                                     <div class="form-group">
                                         <input asp-for="Email" type="text" class="form-control" placeholder="Enter Your Email">
                                     </div>
                                 </div>
-                                <select asp-for="DepartmentId" class="form-control" id="exampleFormControlSelect1">
+                                <select class="col-sm-3" asp-for="DepartmentId" class="form-control" id="exampleFormControlSelect1">
                                     @for (int i = 0; i < Model.Departments.Count(); i++)
                                     {
                                         <option value="@Model.Departments[i].Id">@Model.Departments[i].DepartmentName</option>
                                     }
                                 </select>
-                                <select asp-for="ScheduleId" class="form-control" id="exampleFormControlSelect2">
+                                <select class="col-sm-3" asp-for="ScheduleId" class="form-control" id="scheduleSelect" onchange="handleRoomId()">
                                     @for (int i = 0; i < Model.Schedules.Count(); i++)
                                     {
                                         <option value="@Model.Schedules[i].Id">@Model.Schedules[i].WorkTime</option>
                                     }
                                 </select>
-                              @*   <select asp-for="RoomId" class="form-control" id="exampleFormControlSelect2">
-                                    @for (int i = 0; i < Model.Rooms.Count(); i++)
-                                    {
-                                        <option value="@Model.Rooms[i].Id">@Model.Rooms[i].RoomNo</option>
-                                    }
-                                </select> *@
 
-                                <div id="rooms">
-                                 @foreach (var room in Model.Rooms)
-                                    {
-                                        <div class="room">
-                                            <h2>@room.RoomNo</h2>
-                                            @if (room.Doctors.Count == 0)
-                                            {
-                                                <h3>Empty room for both of times</h3>
-                                            }
-                                            else{
-                                                @foreach (var d in room.Doctors)
-                                                {
-                                                    <h3>@d.FirstName - @d.LastName</h3>
-                                                    <h2>Time : @d.Schedule.WorkTime</h2>
-                                                }
-                                            }
-                                        </div>
-                                    }
-                                </div>
+                               <select class="col-sm-3" id="roomSelect" asp-for="RoomId" class="form-control"></select> 
 
-                                <div class="col-lg-12 col-md-12 col-sm-12">
-                                    <div class="dz-message">
-                                        <div class="drag-icon-cph"> <i class="material-icons">touch_app</i> </div>
-                                        <h3>Drop files here or click to upload.</h3>
-                                        <em>(This is just a demo dropzone. Selected files are <strong>not</strong> actually uploaded.)</em>
-                                    </div>
-                                    <div class="fallback">
-                                        <input asp-for="File" name="file" type="file" multiple />
-                                    </div>
-                                </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <input type="text" asp-for="Password" class="form-control" placeholder="Password">
@@ -157,12 +117,43 @@
                                         <input type="text" asp-for="ConfirmPassword" class="form-control" placeholder="Confirm Password">
                                     </div>
                                 </div>
-                                <div class="col-sm-12">
+
+                                @*  <div id="rooms">
+                                @foreach (var room in Model.Rooms)
+                                {
+                                <div class="room">
+                                <h2>@room.RoomNo</h2>
+                                @if (room.Doctors.Count == 0)
+                                {
+                                <h3>Empty room for both of times</h3>
+                                }
+                                else{
+                                @foreach (var d in room.Doctors)
+                                {
+                                <h3>@d.FirstName - @d.LastName</h3>
+                                <h2>Time : @d.Schedule.WorkTime</h2>
+                                }
+                                }
+                                </div>
+                                }
+                                </div> *@
+
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                    <div class="dz-message">
+                                        <h3 style="margin-top:3%">Drop files here or click to upload.</h3>
+                                        <em>(This is just a demo dropzone. Selected files are <strong>not</strong> actually uploaded.)</em>
+                                    </div>
+                                    <div class="fallback">
+                                        <input asp-for="File" name="file" type="file" multiple />
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6" style="margin-top:5%">
                                     <div class="form-group">
                                         <textarea asp-for="ShortBiography" rows="4" class="form-control no-resize" placeholder="Information . . ."></textarea>
                                     </div>
                                 </div>
-                                <div class="col-sm-12">
+                                <div class="col-sm-6" style="margin-top:5%">
                                     <div class="form-group">
                                         <textarea asp-for="Education" rows="4" class="form-control no-resize" placeholder="Education . . ."></textarea>
                                     </div>
@@ -178,112 +169,16 @@
             </div>
         </div>
     </div>
-    <div class="row clearfix">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="header">
-                    <h2><strong>Doctor's</strong> Account Information <small>Description text here...</small> </h2>
-                    <ul class="header-dropdown">
-                        <li class="remove">
-                            <a role="button" class="boxs-close"><i class="zmdi zmdi-close"></i></a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="body">
-                    <div class="row clearfix">
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <input type="text" class="form-control" placeholder="User Name">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Password">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Confirm Password">
-                            </div>
-                        </div>
-                        <div class="col-sm-12">
-                            <button type="submit" class="btn btn-primary btn-round">Submit</button>
-                            <button type="submit" class="btn btn-default btn-round btn-simple">Cancel</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row clearfix">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="header">
-                    <h2><strong>Doctor</strong> Social Media Info <small>Description text here...</small> </h2>
-                    <ul class="header-dropdown">
-                        <li class="remove">
-                            <a role="button" class="boxs-close"><i class="zmdi zmdi-close"></i></a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="body">
-                    <div class="row clearfix">
-                        <div class="col-sm-6">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="zmdi zmdi-facebook"></i></span>
-                                <input type="text" class="form-control" placeholder="Facebook">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="zmdi zmdi-twitter"></i></span>
-                                <input type="text" class="form-control" placeholder="Twitter">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="zmdi zmdi-google-plus"></i></span>
-                                <input type="text" class="form-control" placeholder="Google Plus">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="zmdi zmdi-linkedin"></i></span>
-                                <input type="text" class="form-control" placeholder="LinkedIN">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="zmdi zmdi-behance"></i></span>
-                                <input type="text" class="form-control" placeholder="Behance">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="zmdi zmdi-dribbble"></i></span>
-                                <input type="text" class="form-control" placeholder="dribbble">
-                            </div>
-                        </div>
-                        <div class="col-sm-12">
-                            <p> <b>With Search Bar</b> </p>
-                            <select class="form-control z-index show-tick" data-live-search="true">
-                                <option>Hot Dog, Fries and a Soda</option>
-                                <option>Burger, Shake and a Smile</option>
-                                <option>Sugar, Spice and all things nice</option>
-                            </select>
-                            <button type="submit" class="btn btn-primary btn-round">Submit</button>
-                            <button type="submit" class="btn btn-default btn-round btn-simple">Cancel</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    </div>
 </section>
-<!-- Jquery Core Js -->
+
 <script src="~/AdminFiles/assets/bundles/libscripts.bundle.js"></script> <!-- Bootstrap JS and jQuery v3.2.1 -->
 <script src="~/AdminFiles/assets/bundles/vendorscripts.bundle.js"></script> <!-- slimscroll, waves Scripts Plugin Js -->
 
 <script src="~/AdminFiles/assets/plugins/dropzone/dropzone.js"></script> <!-- Dropzone Plugin Js -->
 <script src="~/AdminFiles/assets/bundles/mainscripts.bundle.js"></script><!-- Custom Js -->
+
+
+<script src="~/AccessaryFiles/js/signalr/dist/browser/signalR.js"></script>
+<script src="~/AccessaryFiles/js/user.js"></script>
+<script src="~/AccessaryFiles/js/site.js"></script>
+

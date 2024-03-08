@@ -225,16 +225,7 @@
             <div class="tab-pane stretchRight active" id="dashboard">
                 <div class="menu">
                     <ul class="list">
-                        <li>
-                            <div class="user-info">
-                                <div class="image"><a href="/Admin/DoctorProfile"><img src="../assets/images/profile_av.jpg" alt="User"></a></div>
-                                <div class="detail">
-                                    <h4>@user.</h4>
-                                    <small>Admin</small>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="header">MAIN</li>
+                        @await Component.InvokeAsync("AdminInfo")
                         <li><a href="/Admin/Index"><i class="zmdi zmdi-home"></i><span>Dashboard</span></a></li>
                         <li><a href="/Admin/Appointments"><i class="zmdi zmdi-calendar-check"></i><span>Appointment</span> </a></li>
                         <li>
@@ -856,7 +847,7 @@
     </aside>
 
     <!-- Chat-launcher -->
-    <div class="chat-launcher"></div>
+   @*  <div class="chat-launcher"></div> *@
     <div class="chat-wrapper">
         <div class="card">
             <div class="header">
