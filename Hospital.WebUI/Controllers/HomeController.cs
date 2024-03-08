@@ -24,67 +24,65 @@ namespace Hospital.WebUI.Controllers
 		private readonly IDataService _dataService;
 		private readonly CustomIdentityDbContext _context;
 
-<<<<<<< HEAD
-        public HomeController(CustomIdentityDbContext dbContext, UserManager<CustomIdentityUser> userManager, IDataService dataService/*, DoctorController doctorController*/)
-        {
-            _dbContext = dbContext;
-            _userManager = userManager;
-            _dataService = dataService;
-        }
+		public HomeController(CustomIdentityDbContext dbContext, UserManager<CustomIdentityUser> userManager, IDataService dataService/*, DoctorController doctorController*/)
+		{
+			_dbContext = dbContext;
+			_userManager = userManager;
+			_dataService = dataService;
+		}
 
-        [HttpGet]
-        public async Task<IActionResult> Appointment()
-        {
-            var departments = await _dbContext.Departments.ToListAsync();
-            var viewModel = new AppoinmentViewModel
-            {
-                Departments = new List<Department>(),
-            };
-            if (departments != null)
-            {
-                viewModel.Departments = departments;
-            }
-            return View(viewModel);
-        }
+		[HttpGet]
+		public async Task<IActionResult> Appointment()
+		{
+			var departments = await _dbContext.Departments.ToListAsync();
+			var viewModel = new AppoinmentViewModel
+			{
+				Departments = new List<Department>(),
+			};
+			if (departments != null)
+			{
+				viewModel.Departments = departments;
+			}
+			return View(viewModel);
+		}
 
-        [HttpPost]
-        public async Task<IActionResult> Appointment(AppoinmentViewModel viewModel)
-        {
-            if (ModelState.IsValid)
-            {
-                var user = await _userManager.GetUserAsync(HttpContext.User);
-                var patient = await _dbContext.Patients.FirstOrDefaultAsync(p => p.Email == user.Email && p.UserName == user.UserName);
-                var appointments = await _dbContext.Appointments.ToListAsync();
-                var receivedData = _dataService.RetrieveData();
-                var department = await _dbContext.Departments.FirstOrDefaultAsync(d => d.Id == viewModel.DepartmentId);
-                var doctor = await _dbContext.Doctors.FirstOrDefaultAsync(d => d.Id == viewModel.DoctorId);
-                var doctors = _dbContext.Doctors.ToList();
+		[HttpPost]
+		public async Task<IActionResult> Appointment(AppoinmentViewModel viewModel)
+		{
+			if (ModelState.IsValid)
+			{
+				var user = await _userManager.GetUserAsync(HttpContext.User);
+				var patient = await _dbContext.Patients.FirstOrDefaultAsync(p => p.Email == user.Email && p.UserName == user.UserName);
+				var appointments = await _dbContext.Appointments.ToListAsync();
+				var receivedData = _dataService.RetrieveData();
+				var department = await _dbContext.Departments.FirstOrDefaultAsync(d => d.Id == viewModel.DepartmentId);
+				var doctor = await _dbContext.Doctors.FirstOrDefaultAsync(d => d.Id == viewModel.DoctorId);
+				var doctors = _dbContext.Doctors.ToList();
 
-                //var names = viewModel.Fullname.Split(' ');
+				//var names = viewModel.Fullname.Split(' ');
 
-                var appoinment = new Appointment
-                {
-                    Age = patient.Age,
-                    DoctorId = doctor.Id,
-                    DepartmentId = department.Id,
-                    PatientId = patient.Id.ToString(),
-                    Message = viewModel.Message,
-                    AppointmentTime = viewModel.AppointmentTime,
-                    AppointmentDate = viewModel.AppointmentDate
-                };
-                for (int i = 0; i < doctors.Count(); i++)
-                {
-                    if (doctors[i].Id == doctor.Id)
-                    {
-                    }
-                }
-                await _dbContext.Appointments.AddAsync(appoinment);
-                await _dbContext.SaveChangesAsync();
-                return RedirectToAction("SuccessPay", "Home");
-            }
-            return RedirectToAction("Appointment", "Home");
-        }
-=======
+				var appoinment = new Appointment
+				{
+					Age = patient.Age,
+					DoctorId = doctor.Id,
+					DepartmentId = department.Id,
+					PatientId = patient.Id.ToString(),
+					Message = viewModel.Message,
+					AppointmentTime = viewModel.AppointmentTime,
+					AppointmentDate = viewModel.AppointmentDate
+				};
+				for (int i = 0; i < doctors.Count(); i++)
+				{
+					if (doctors[i].Id == doctor.Id)
+					{
+					}
+				}
+				await _dbContext.Appointments.AddAsync(appoinment);
+				await _dbContext.SaveChangesAsync();
+				return RedirectToAction("SuccessPay", "Home");
+			}
+			return RedirectToAction("Appointment", "Home");
+		}
 
 		public HomeController(CustomIdentityDbContext dbContext, UserManager<CustomIdentityUser> userManager, IDataService dataService, CustomIdentityDbContext context)
 		{
@@ -92,62 +90,6 @@ namespace Hospital.WebUI.Controllers
 			_userManager = userManager;
 			_dataService = dataService;
 			_context = context;
-		}
-
-		[HttpGet]
-		public async Task<IActionResult> Appointment()
-		{
-			var doctors = await _dbContext.Doctors.ToListAsync();
-			var departments = await _dbContext.Departments.ToListAsync();
-			var availableDates = await _dbContext.AvailableDates.ToListAsync();
-			var availableTimes = await _dbContext.AvailableTimes.ToListAsync();
-			var viewModel = new AppoinmentViewModel
-			{
-				Departments = new List<Department>(),
-			};
-			if (doctors != null)
-			{
-				viewModel.Doctors = doctors;
-			}
-			if (departments != null)
-			{
-				viewModel.Departments = departments;
-			}
-			if (availableTimes != null)
-			{
-				viewModel.AvailableTimes = availableTimes;
-			}
-			if (availableDates != null)
-			{
-				viewModel.AvailableDates = availableDates;
-			}
-			return View(viewModel);
-		}
-
-		[HttpPost]
-		public async Task<IActionResult> Appoinment(AppoinmentViewModel viewModel)
-		{
-			var user = await _userManager.GetUserAsync(HttpContext.User);
-			var patient = await _dbContext.Patients.FirstOrDefaultAsync(p => p.Email == user.Email && p.UserName == user.UserName);
-			var appointments = await _dbContext.Appointments.ToListAsync();
-			var receivedData = _dataService.RetrieveData();
-			var department = await _dbContext.Departments.FirstOrDefaultAsync(d => d.Id == viewModel.DepartmentId);
-			var doctor = await _dbContext.Doctors.FirstOrDefaultAsync(d => d.Id == viewModel.DoctorId);
->>>>>>> Murad_PatientDevelopmentShow
-
-			var appoinment = new Appointment
-			{
-				Age = patient.Age,
-				DoctorId = doctor.Id,
-				DepartmentId = department.Id,
-				PatientId = patient.Id.ToString(),
-				Message = viewModel.Message,
-				AppointmentTime = viewModel.AppointmentTime,
-				AppointmentDate = viewModel.AppointmentDate
-			};
-			await _dbContext.Appointments.AddAsync(appoinment);
-			await _dbContext.SaveChangesAsync();
-			return RedirectToAction("Appoinment", "Home");
 		}
 
 		public async Task<Patient> CurrentUser()
@@ -183,40 +125,6 @@ namespace Hospital.WebUI.Controllers
 						images[k] = images[k].TrimStart();
 					}
 
-<<<<<<< HEAD
-        [HttpGet]
-        public async Task<string> CheckInputs(string phoneNumber, string fullName, string date, string time, string message)
-        {
-            var v = "";
-            if (phoneNumber == "0")
-            {
-                v += "phone is null";
-            }
-            if (fullName == null)
-            {
-                v += " fullname is null";
-            }
-            if (phoneNumber != "0" && fullName != null && date == null && time != null && message != null)
-            {
-                v += "okay";
-            }
-            return v;
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetAvailableDays(string doctorId)
-        {
-            var noWorkingTimes = await _dbContext.NoWorkingTimes.ToListAsync();
-            var counter = 0;
-            var admins = await _dbContext.Admins.ToListAsync();
-            for (int i = 0; i < admins.Count(); i++)
-            {
-                if (admins[i].WorkDaysCount > 0)
-                {
-                    counter = admins[i].WorkDaysCount;
-                }
-            }
-=======
 					var poo = new PostsShowViewModel();
 					poo.PostId = post[i].Id;
 					poo.Admin = item;
@@ -230,7 +138,25 @@ namespace Hospital.WebUI.Controllers
 			}
 			return Ok(new { posts = posts });
 		}
->>>>>>> Murad_PatientDevelopmentShow
+
+		[HttpGet]
+		public async Task<string> CheckInputs(string phoneNumber, string fullName, string date, string time, string message)
+		{
+			var v = "";
+			if (phoneNumber == "0")
+			{
+				v += "phone is null";
+			}
+			if (fullName == null)
+			{
+				v += " fullname is null";
+			}
+			if (phoneNumber != "0" && fullName != null && date == null && time != null && message != null)
+			{
+				v += "okay";
+			}
+			return v;
+		}
 
 		[HttpGet]
 		public async Task<IActionResult> GetAvailableDays(string doctorId)
@@ -267,6 +193,8 @@ namespace Hospital.WebUI.Controllers
 			return Ok(dateList);
 		}
 
+
+		[HttpGet]
 		[HttpGet]
 		public async Task<IActionResult> GetAvailableTimes(string doctorId, string appointmentDate)
 		{
@@ -280,14 +208,6 @@ namespace Hospital.WebUI.Controllers
 				var time = $"{s} - {e}";
 				timeList.Add(time);
 
-<<<<<<< HEAD
-        public async Task<IActionResult> GetDoctors(int departmentId)
-        {
-            var doctors = await _dbContext.Doctors.Where(d => d.DepartmentId == departmentId).ToListAsync();
-
-            return Ok(doctors);
-        }
-=======
 				for (int k = 0; k < appointments.Count(); k++)
 				{
 					if (appointments[k].AppointmentTime == time
@@ -300,7 +220,6 @@ namespace Hospital.WebUI.Controllers
 			}
 			return Ok(timeList);
 		}
->>>>>>> Murad_PatientDevelopmentShow
 
 		public async Task<IActionResult> GetDoctors(int departmentId)
 		{
@@ -349,24 +268,29 @@ namespace Hospital.WebUI.Controllers
 
 				await _dbContext.PostViews.AddAsync(postView);
 
-<<<<<<< HEAD
-        public IActionResult Service()
-        {
-            return View();
-        }
-
-        public IActionResult SuccessPay()
-        {
-            return View();
-        }
-    }
-=======
 				_dbContext.Update(postT);
 				await _dbContext.SaveChangesAsync();
 			}
 
 			return View(post);
 		}
+		public IActionResult Service()
+		{
+			return View();
+		}
+
+		public IActionResult SuccessPay()
+		{
+			return View();
+		}
+
+		//=======
+		//				_dbContext.Update(postT);
+		//				await _dbContext.SaveChangesAsync();
+		//			}
+
+		//			return View(post);
+		//		}
 
 		public IActionResult Comfirmation()
 		{
@@ -405,10 +329,9 @@ namespace Hospital.WebUI.Controllers
 			return View();
 		}
 
-		public IActionResult Service()
-		{
-			return View();
-		}
+		//public IActionResult Service()
+		//{
+		//	return View();
+		//}
 	}
->>>>>>> Murad_PatientDevelopmentShow
 }
