@@ -3,7 +3,7 @@
 
 var d = document.getElementById("departmentSelect");
 var doct = document.getElementById("doctorSelect");
-var n = document.getElementById("name");
+//var n = document.getElementById("name");
 var p = document.getElementById("phone");
 var message = document.getElementById("message");
 var date = document.getElementById("dateSelect");
@@ -834,14 +834,14 @@ function CallAppointment() {
         doct.style.backgroundColor = "transparent";
     }
 
-    if (n.value.trim() == "") {
-        console.log("name is null");
-        n.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
-        //emptyName.style.display = "inline-block";
-    }
-    else {
-        n.style.backgroundColor = "transparent";
-    }
+    //if (n.value.trim() == "") {
+    //    console.log("name is null");
+    //    n.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
+    //    //emptyName.style.display = "inline-block";
+    //}
+    //else {
+    //    n.style.backgroundColor = "transparent";
+    //}
 
     if (p.value == "0" || phone.length < 9) {
         console.log("phone is null");
@@ -907,16 +907,16 @@ function CallAppointment() {
 //}
 //}
 
-function ChangeName() {
+//function ChangeName() {
 
 
-    if (n.innerHTML != "") {
-        n.style.backgroundColor = "transparent";
-    }
-    else {
-        n.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
-    }
-}
+//    if (n.innerHTML != "") {
+//        n.style.backgroundColor = "transparent";
+//    }
+//    else {
+//        n.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
+//    }
+//}
 
 function ChangePhone() {
     if (p.innerHTML != "") {
@@ -972,10 +972,10 @@ function ChangeMessage() {
 //    })
 //});
 
-function handleNameInput() {
-    emptyName.style.display = "none";
-    n.style.backgroundColor = "transparent";
-}
+//function handleNameInput() {
+//    emptyName.style.display = "none";
+//    n.style.backgroundColor = "transparent";
+//}
 
 function handlePhoneInput() {
     emptyPhone.style.display = "none";

@@ -22,6 +22,7 @@ namespace Hospital.Entities.Data
         {
         }
 
+
         public DbSet<Post> Posts { get; set; }
         public DbSet<Appointment>? Appointments { get; set; }
         public DbSet<Admin>? Admins { get; set; }
@@ -40,7 +41,9 @@ namespace Hospital.Entities.Data
         public DbSet<AvailableTime>? AvailableTimes { get; set; }
         public DbSet<AvailableDate>? AvailableDates { get; set; }
         public DbSet<NoWorkingTime>? NoWorkingTimes { get; set; }
-        
+        public DbSet<Room> Rooms { get; set; }
+        public DbSet<Schedule> Schedules { get; set; }
+
 
         //protected override void OnModelCreating(ModelBuilder builder)
         //{

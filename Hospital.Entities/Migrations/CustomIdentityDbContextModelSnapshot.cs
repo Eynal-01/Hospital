@@ -209,6 +209,38 @@ namespace Hospital.Entities.Migrations
                     b.ToTable("Posts");
                 });
 
+            modelBuilder.Entity("Hospital.Entities.DbEntities.Room", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("RoomNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Rooms");
+                });
+
+            modelBuilder.Entity("Hospital.Entities.DbEntities.Schedule", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("WorkTime")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Schedules");
+                });
+
             modelBuilder.Entity("HospitalProject.Entities.DbEntities.Admin", b =>
                 {
                     b.Property<string>("Id")
@@ -455,9 +487,6 @@ namespace Hospital.Entities.Migrations
                     b.Property<int?>("DepartmentId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("DoctorScheduleId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Education")
                         .HasColumnType("nvarchar(max)");
 
@@ -525,8 +554,6 @@ namespace Hospital.Entities.Migrations
 
                     b.HasIndex("CalendarId");
 
-                    b.HasIndex("DoctorScheduleId");
-
                     b.ToTable("Doctors");
                 });
 
@@ -538,10 +565,13 @@ namespace Hospital.Entities.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("AvailableDays")
+                    b.Property<string>("DoctorId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Status")
+                    b.Property<string>("RoomId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ScheduleId")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -942,10 +972,6 @@ namespace Hospital.Entities.Migrations
                     b.HasOne("HospitalProject.Entities.DbEntities.Calendar", null)
                         .WithMany("Doctors")
                         .HasForeignKey("CalendarId");
-
-                    b.HasOne("HospitalProject.Entities.DbEntities.DoctorSchedule", null)
-                        .WithMany("Doctors")
-                        .HasForeignKey("DoctorScheduleId");
                 });
 
             modelBuilder.Entity("HospitalProject.Entities.DbEntities.Message", b =>
@@ -1093,11 +1119,6 @@ namespace Hospital.Entities.Migrations
                     b.Navigation("Patients");
 
                     b.Navigation("Recipes");
-                });
-
-            modelBuilder.Entity("HospitalProject.Entities.DbEntities.DoctorSchedule", b =>
-                {
-                    b.Navigation("Doctors");
                 });
 
             modelBuilder.Entity("HospitalProject.Entities.DbEntities.Patient", b =>
