@@ -16,5 +16,6 @@ namespace Hospital.WebUI.Models
         public string? BigTitle { get; set; }
         [Required]
         public string? FirstContent { get; set; }
+        public int Id { get; set; }
     }
 }

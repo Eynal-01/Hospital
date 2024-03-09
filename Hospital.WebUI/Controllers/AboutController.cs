@@ -36,7 +36,7 @@ namespace Hospital.WebUI.Controllers
         public async Task<AllAboutsViewModel> GetAllAboutsUsers()
         {
             var abouts = await GetAllAbouts();
-            var doctors = await _context.Doctors.Include(nameof(Doctor.Department)).ToListAsync();
+            var doctors = await _context.Doctors.ToListAsync();
 
             var viewModel = new AllAboutsViewModel
             {

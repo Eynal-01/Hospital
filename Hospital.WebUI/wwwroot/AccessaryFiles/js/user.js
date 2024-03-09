@@ -1327,8 +1327,7 @@ function GetAllAbouts() {
             var bigTitle = "";
             var patientInDoctors = "";
 
-            var adminContent = "";
-            var doctorContent = "";
+            var aboutInDoctorsAndAdmin = "";
 
             for (var i = 0; i < data.doctors.length; i++) {
                 patientInDoctors += `
@@ -1338,7 +1337,6 @@ function GetAllAbouts() {
                
 				 		<div class="content">
 				 			<h4 class="mt-4 mb-0"><a href="doctor-single.html">${data.doctors[i].firstName}  ${data.doctors[i].lastName}</a></h4>
-				 			<p>${data.doctors[i].department.departmentName}</p>
 				 		</div>
 				 	</div>
 				 </div>
@@ -1366,10 +1364,33 @@ function GetAllAbouts() {
                     <p>${data.abouts[i].firstContent}</p>
                 
                 `;
+
+                aboutInDoctorsAndAdmin+= `
+    
+                   <div class="col-lg-4 col-md-6 col-sm-12">
+                            <div class="card project_widget">
+                                <div class="pw_img">
+                                    <img class="img-fluid" src="${data.abouts[i].imageUrl}" alt="About the image">
+                                </div>
+                                <div class="pw_content">
+                                    <div class="pw_header">
+                                        <h6>${data.abouts[i].title}</h6>
+                                    </div>
+                                    <div class="pw_meta">
+                                        <p>${data.abouts[i].content}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                
+                `;
             }
 
             $("#patientAbouts").html(patientContent);
             $("#bigTitle").html(bigTitle);
+            $("#aboutsAdmin").html(aboutInDoctorsAndAdmin);
+            $("#doctorsAdmin").html(aboutInDoctorsAndAdmin);
+            //$("#aboutsAdmin").html(aboutInDoctorsAndAdmin);
             $("#patientAboutPageFirstContent").html(patientAboutPageFirstContent);
         }
     })
