@@ -1317,27 +1317,59 @@ document.getElementById("departmentSelect").addEventListener("change", function 
 
 function GetAllAbouts() {
     $.ajax({
-        url: `/Abouts/GetAllAbouts`,
+        url: `/About/GetAllAboutsUsers`,
         method: "GET",
 
-        success: function () {
+        success: function (data) {
 
             var patientContent = "";
+            var patientAboutPageFirstContent = "";
+            var bigTitle = "";
+            var patientInDoctors = "";
+
             var adminContent = "";
             var doctorContent = "";
 
-            for (var i = 0; i < data.length; i++) {
+            for (var i = 0; i < data.doctors.length; i++) {
+                patientInDoctors += `
+               <div class="col-lg-3 col-md-6 col-sm-6">
+				 	<div class="team-block mb-5 mb-lg-0">
+				 		<img src="${data.doctors[i].imageUrl}" alt="" class="img-fluid w-100">
+               
+				 		<div class="content">
+				 			<h4 class="mt-4 mb-0"><a href="doctor-single.html">${data.doctors[i].firstName}  ${data.doctors[i].lastName}</a></h4>
+				 			<p>${data.doctors[i].department.departmentName}</p>
+				 		</div>
+				 	</div>
+				 </div>
+                `;
+            }
+
+            for (var i = 0; i < data.abouts.length; i++) {
                 patientContent += `
                 <div class="col-lg-3 col-md-6">
 					<div class="about-block-item mb-5 mb-lg-0">
-						<img src="${data[i].imageUrl}" alt="" class="img-fluid w-100">
-						<h4 class="mt-3">${data[i].title}</h4>
-						<p>${data[i].content}</p>
+						<img src="${data.abouts[i].imageUrl}" alt="" class="img-fluid w-100">
+						<h4 class="mt-3">${data.abouts[i].title}</h4>
+						<p>${data.abouts[i].content}</p>
 					</div>
 				</div>
                 `;
+
+                bigTitle += `
+					<h2 class="title-color">${data.abouts[i].bigTitle}</h2>
+                `;
+
+                patientAboutPageFirstContent += `
+                
+                    <p>${data.abouts[i].firstContent}</p>
+                
+                `;
             }
+
             $("#patientAbouts").html(patientContent);
+            $("#bigTitle").html(bigTitle);
+            $("#patientAboutPageFirstContent").html(patientAboutPageFirstContent);
         }
     })
 }

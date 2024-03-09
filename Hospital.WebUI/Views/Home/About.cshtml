@@ -59,12 +59,10 @@
 	<section class="section about-page">
 		<div class="container">
 			<div class="row">
-				<div class="col-lg-4">
-					<h2 class="title-color">Personal care for your healthy living</h2>
+				<div class="col-lg-4" id="bigTitle">
 				</div>
-				<div class="col-lg-8">
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt, quod laborum alias. Vitae dolorum, officia sit! Saepe ullam facere at, consequatur incidunt, quae esse, quis ut reprehenderit dignissimos, libero delectus.</p>
-					<img src="~/images/about/sign.png" alt="" class="img-fluid">
+				<div class="col-lg-8" id="patientAboutPageFirstContent">
+					
 				</div>
 			</div>
 		</div>
@@ -90,53 +88,12 @@
 				</div>
 			</div>
 
-			<div class="row">
-				<div class="col-lg-3 col-md-6 col-sm-6">
-					<div class="team-block mb-5 mb-lg-0">
-						<img src="~/images/team/1.jpg" alt="" class="img-fluid w-100">
-
-						<div class="content">
-							<h4 class="mt-4 mb-0"><a href="doctor-single.html">John Marshal</a></h4>
-							<p>Internist, Emergency Physician</p>
-						</div>
-					</div>
-				</div>
-
-				<div class="col-lg-3 col-md-6 col-sm-6">
-					<div class="team-block mb-5 mb-lg-0">
-						<img src="~/images/team/2.jpg" alt="" class="img-fluid w-100">
-
-						<div class="content">
-							<h4 class="mt-4 mb-0"><a href="doctor-single.html">Marshal Root</a></h4>
-							<p>Surgeon, Сardiologist</p>
-						</div>
-					</div>
-				</div>
-
-				<div class="col-lg-3 col-md-6 col-sm-6">
-					<div class="team-block mb-5 mb-lg-0">
-						<img src="~/images/team/3.jpg" alt="" class="img-fluid w-100">
-
-						<div class="content">
-							<h4 class="mt-4 mb-0"><a href="doctor-single.html">Siamon john</a></h4>
-							<p>Internist, General Practitioner</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-3 col-md-6 col-sm-6">
-					<div class="team-block">
-						<img src="~/images/team/4.jpg" alt="" class="img-fluid w-100">
-
-						<div class="content">
-							<h4 class="mt-4 mb-0"><a href="doctor-single.html">Rishat Ahmed</a></h4>
-							<p>Orthopedic Surgeon</p>
-						</div>
-					</div>
-				</div>
+			<div class="row" id="homeIndoctors">
+				
 			</div>
 		</div>
 	</section>
-
+@*
 	<section class="section testimonial">
 		<div class="container">
 			<div class="row">
@@ -207,11 +164,13 @@
 				</div>
 			</div>
 		</div>
-	</section>
+	</section>*@
 
 	<!--
 	Essential Scripts
 	=====================================-->
+	<script src="~/AccessaryFiles/js/signalr/dist/browser/signalR.js"></script>
+
 	<script src="~/plugins/jquery/jquery.js"></script>
 	<!-- Bootstrap 4.3.2 -->
 	<script src="~/plugins/bootstrap/js/popper.js"></script>
@@ -230,6 +189,9 @@
 
 	<script src="~/js/script.js"></script>
 	<script src="~/js/contact.js"></script>
+
+	<script src="~/AccessaryFiles/js/site.js"></script>
+	<script src="~/AccessaryFiles/js/user.js"></script>
 
 </body>
 </html>

@@ -1,5 +1,7 @@
 ﻿using Hospital.Entities.Data;
 using Hospital.Entities.DbEntities;
+using Hospital.WebUI.Models;
+using HospitalProject.Entities.DbEntities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -31,9 +33,24 @@ namespace Hospital.WebUI.Controllers
             return abouts;
         }
 
-        public async Task<IActionResult> AddAbouts()
+        public async Task<AllAboutsViewModel> GetAllAboutsUsers()
         {
-            
+            var abouts = await GetAllAbouts();
+            var doctors = await _context.Doctors.Include(nameof(Doctor.Department)).ToListAsync();
+
+            var viewModel = new AllAboutsViewModel
+            {
+                Doctors = doctors,
+                Abouts = abouts
+            };
+
+            return viewModel;
         }
+
+        //[HttpPost]
+        //public async Task<IActionResult> AddAbouts(AddAboutViewModel viewModel)
+        //{
+
+        //}
     }
 }
