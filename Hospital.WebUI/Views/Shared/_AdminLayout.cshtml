@@ -14,6 +14,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
+    <!-- bootstrap.min css -->
+    <link rel="stylesheet" href="~/UserFiles/plugins/bootstrap/css/bootstrap.min.css">
+    <!-- Icon Font Css -->
+    <link rel="stylesheet" href="~/UserFiles/plugins/icofont/icofont.min.css">
+    <link rel="stylesheet" href="~/UserFiles/css/style.css">
+    <!-- Slick Slider  CSS -->
+    <link rel="stylesheet" href="~/UserFiles/plugins/slick-carousel/slick/slick.css">
+    <link rel="stylesheet" href="~/UserFiles/plugins/slick-carousel/slick/slick-theme.css">
 </head>
 <body class="theme-cyan">
     <!-- Page Loader -->
@@ -39,9 +47,10 @@
             @* <li class="d-none d-lg-inline-block"><a href="mail-inbox.html" title="Inbox"><i class="zmdi zmdi-email"></i></a></li> *@
             @* <li><a href="contact.html" title="Contact List"><i class="zmdi zmdi-account-box-phone"></i></a></li> *@
             <li class="dropdown">
-                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button">
-                    <i class="zmdi zmdi-notifications"></i>
-                    <div class="notify"><span class="heartbit"></span><span class="point"></span></div>
+               @*  <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button">
+               @*  <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="invoicebutton">
+                    <i class="zmdi zmdi-notifications"></i> *@
+                    @* <div class="notify"><span class="heartbit"></span><span class="point"></span></div> *@
                 </a>
                 <ul class="dropdown-menu pullDown">
                     <li class="body">
@@ -107,12 +116,12 @@
                 </ul>
             </li>
             <li class="dropdown">
-                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button">
-                    <i class="zmdi zmdi-flag"></i>
-                    <div class="notify">
+                @* <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button">
+                    <i class="zmdi zmdi-flag"></i> *@
+                  @*   <div class="notify">
                         <span class="heartbit"></span>
                         <span class="point"></span>
-                    </div>
+                    </div> *@
                 </a>
                 <ul class="dropdown-menu pullDown">
                     <li class="header">Project</li>
@@ -216,7 +225,8 @@
         </ul>
     </nav>
     <!-- Left Sidebar -->
-    <aside id="leftsidebar" class="sidebar">
+    <aside id="leftsidebar" class="sidebar"
+        >
         <ul class="nav nav-tabs">
             @* <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#dashboard"><i class="zmdi zmdi-home m-r-5"></i>Oreo</a></li> *@
             @* <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#user">Doctor</a></li> *@
@@ -241,17 +251,17 @@
                             <ul class="ml-menu">
                                 <li><a href="/Admin/Patients">All Patients</a></li>
                                 @* <li class="active"><a href="add-patient.html">Add Patient</a></li> *@
-                                <li><a href="/Admin/PatientInvoice">Invoice</a></li>
+                                @* <li><a href="/Admin/PatientInvoice">Invoice</a></li> *@
                             </ul>
                         </li>
-                        <li>
+                       @*  <li>
                             <a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-balance-wallet"></i><span>Payments</span> </a>
                             <ul class="ml-menu">
                                 <li><a href="/Admin/payments">Payments</a></li>
-                                @* <li><a href="/Admin/AddPayment">Add Payment</a></li> *@
-                                <li><a href="/Admin/PatientInvoice">Invoice</a></li>
+                                <li><a href="/Admin/AddPayment">Add Payment</a></li> 
+                                 <li><a href="/Admin/PatientInvoice">Invoice</a></li>
                             </ul>
-                        </li>
+                        </li> *@
                         <li>
                             <a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-label-alt"></i><span>Departments</span> </a>
                             <ul class="ml-menu">
@@ -259,18 +269,18 @@
                                 <li><a href="/Admin/AllDepartments">All Departments</a></li>
                             </ul>
                         </li>
-                        <li>
+                       @*  <li>
                             <a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-lock"></i><span>Authentication</span> </a>
                             <ul class="ml-menu">
                                 <li><a href="/Authentication/Login">Sign In</a> </li>
                                 <li><a href="/Authentication/Register">Sign Up</a> </li>
-                                @* <li><a href="forgot-password">Forgot Password</a> </li> *@
+                                <li><a href="forgot-password">Forgot Password</a> </li>
                                 <li><a href="/Admin/Error400">Page 404</a> </li>
                                 <li><a href="/Admin/Error500">Page 500</a> </li>
                                 <li><a href="/Admin/PageOffline">Page Offline</a> </li>
-                                @* <li><a href="Admin/Locked">Locked Screen</a> </li> *@
+                                <li><a href="Admin/Locked">Locked Screen</a> </li>
                             </ul>
-                        </li>
+                        </li> *@
                         <li>
                             <a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-blogger"></i><span>Blog</span></a>
                             <ul class="ml-menu">

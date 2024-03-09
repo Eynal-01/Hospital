@@ -138,14 +138,14 @@ function PostFilterAdmin(departmentId) {
 
                         images += `
                              <div class="carousel-item active" style="text-align:center;width:100%;">
-                               <img class="img-fluid"  src="${data.value.posts[i].images[k]}" alt="Responsive image" >
+                               <img class="img-fluid"  src="${data.value.posts[i].images[k]}" alt="Responsive image">
                             </div>
                        `;
                     }
                     else {
                         images += `
                           <div class="carousel-item" style="text-align:center;width:100%;">
-                               <img class="img-fluid" src="${data.value.posts[i].images[k]}" alt="Responsive image" >
+                               <img class="img-fluid" src="${data.value.posts[i].images[k]}" alt="Responsive image">
                           </div>
                        `;
                     }
@@ -594,7 +594,7 @@ function GetAllPostAllUsers() {
 
             postCategories += ` 
                       <li class="align-items-center">
-					     <a onclick="PostFilterPatient('All')">All</a>
+					     <a style="margin-left:10%" onclick="PostFilterPatient('All')">All</a>
 					     <span>(${data.posts.length})</span>
 					  </li>
                `;
@@ -613,7 +613,7 @@ function GetAllPostAllUsers() {
 
                     postCategories += ` 
                               <li class="align-items-center">
-				          	     <a onclick="PostFilterPatient('${data.posts[i].department.id}')">${data.posts[i].department.departmentName}</a>
+				          	     <a style="margin-left:10%" onclick="PostFilterPatient('${data.posts[i].department.id}')">${data.posts[i].department.departmentName}</a>
 				          	     <span>(${postCategoriessInCount})</span>
 				          	  </li>
                           `;
@@ -623,7 +623,7 @@ function GetAllPostAllUsers() {
 
             postCategoriesAdmin += ` 
                       <li class="align-items-center">
-					     <a onclick="PostFilterAdmin('All')">All</a>
+					     <a style="margin-left:10%" onclick="PostFilterAdmin('All')">All</a>
 					     <span>(${data.posts.length})</span>
 					  </li>
                `;
@@ -642,7 +642,7 @@ function GetAllPostAllUsers() {
 
                     postCategoriesAdmin += ` 
                               <li class="align-items-center">
-				          	     <a onclick="PostFilterAdmin('${data.posts[i].department.id}')">${data.posts[i].department.departmentName}</a>
+				          	     <a style="margin-left:10%" onclick="PostFilterAdmin('${data.posts[i].department.id}')">${data.posts[i].department.departmentName}</a>
 				          	     <span>(${postCategoriessInCountAdmin})</span>
 				          	  </li>
                           `;
@@ -653,7 +653,7 @@ function GetAllPostAllUsers() {
 
             postCategoriesDoctor += ` 
                       <li class="align-items-center">
-					     <a onclick="PostFilterDoctor('All')">All</a>
+					     <a style="margin-left:10%" onclick="PostFilterDoctor('All')">All</a>
 					     <span>(${data.posts.length})</span>
 					  </li>
                `;
@@ -672,7 +672,7 @@ function GetAllPostAllUsers() {
 
                     postCategoriesDoctor += ` 
                               <li class="align-items-center">
-				          	     <a onclick="PostFilterDoctor('${data.posts[i].department.id}')">${data.posts[i].department.departmentName}</a>
+				          	     <a style="margin-left:10%" onclick="PostFilterDoctor('${data.posts[i].department.id}')">${data.posts[i].department.departmentName}</a>
 				          	     <span>(${postCategoriessInCountDoctor})</span>
 				          	  </li>
                           `;
@@ -1232,6 +1232,7 @@ function GetTime() {
 
 function SendSMS() {
     var phoneNumber = $("#phone").val();
+    console.log("send sms called");
     $.ajax({
         url: `/SendSMS/SendText`,
         method: 'POST',
@@ -1242,7 +1243,24 @@ function SendSMS() {
         error: function (xhr, status, error) {
             console.error('Error:', error);
         }
-    });
+    })
+}
+
+function SendEmail() {
+    var email = $("emailReg").val();
+    console.log("send email called");
+    $.ajax({
+        url: `/SendEmail/SendEmailText`,
+        method: "POST",
+
+        success: function () {
+            console.log("Email sent");
+            DoctorAppointments();
+        },
+        error: function (xhr, status, error) {
+            console.log("Error : ", error);
+        }
+    })
 }
 
 document.getElementById("departmentSelect").addEventListener("change", function () {
@@ -1331,8 +1349,9 @@ function CallAppointment() {
     //var message1 = $("message").val();
 
 
-    if (d.value != null && doct.value != null && p.value != "0"
-        && message.value != null && date.value != null && time.value != null) {
+    if (d.value != null && doct.value != "" && p.value != "0"
+        && message.value != "" && date.value != null && time.value != null) {
+        console.log("intro");
         $.ajax({
             url: `/Home/Appointment`,
             method: "POST",
@@ -1346,6 +1365,7 @@ function CallAppointment() {
     }
 
     if (d.value.trim() == "") {
+        console.log("department is null");
         d.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
         //emptyName.style.display = "inline-block";
     }
@@ -1585,6 +1605,7 @@ function DoctorAppointments() {
         }
     })
 }
+
 document.getElementById("doctorSelect").addEventListener("change", function () {
     GetDay();
     GetTime();
@@ -1616,3 +1637,23 @@ function handleRoomId() {
         }
     })
 }
+
+
+//document.getElementById("emptyRoom").addEventListener("click", function () {
+//    var schedule = document.getElementById("schedule1").val();
+//    var room = document.getElementById("room").val();
+//    $.ajax({
+//        url: `/Admin/SetRoomToDoctor?workingTime=${schedule}&roomNo=${room}`,
+//        method: "POST",
+
+//        success: function (data) {
+//            console.log("Schedule and room added", data)
+//        }
+//    })
+//});
+
+//document.getElementById("fullRoom").addEventListener("click", function () {
+//    var word = document.getElementById("roomFull");
+//    word.style.display="inline-block"
+//});
+

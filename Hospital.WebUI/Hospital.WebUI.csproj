@@ -67,6 +67,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="NETCore.MailKit" Version="2.1.0" />
     <PackageReference Include="Twilio" Version="7.0.0" />
     <PackageReference Include="Twilio.AspNet.Core" Version="8.0.0" />
   </ItemGroup>

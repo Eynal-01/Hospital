@@ -10,7 +10,7 @@ select.selectpicker {
   display: none !important;
 }
 .bootstrap-select {
-  width: 220px \0;
+  width: 220px;
   /*IE9 and below*/
 }
 .bootstrap-select > .dropdown-toggle {
@@ -117,12 +117,12 @@ select.selectpicker {
 .bootstrap-select.btn-group.bs-container .dropdown-menu {
   z-index: 1060;
 }
-.bootstrap-select.btn-group .dropdown-toggle .filter-option {
+/*.bootstrap-select.btn-group .dropdown-toggle .filter-option {
   display: inline-block;
   overflow: hidden;
   width: 100%;
   text-align: left;
-}
+}*/
 .bootstrap-select.btn-group .dropdown-toggle .caret {
   position: absolute;
   top: 50%;
@@ -172,9 +172,9 @@ select.selectpicker {
 .bootstrap-select.btn-group .dropdown-menu li a span.check-mark {
   display: none;
 }
-.bootstrap-select.btn-group .dropdown-menu li a span.text {
+/*.bootstrap-select.btn-group .dropdown-menu li a span.text {
   display: inline-block;
-}
+}*/
 .bootstrap-select.btn-group .dropdown-menu li small {
   padding-left: 0.5em;
 }
@@ -201,23 +201,23 @@ select.selectpicker {
   margin: 0 5px;
   white-space: nowrap;
 }
-.bootstrap-select.btn-group.fit-width .dropdown-toggle .filter-option {
+/*.bootstrap-select.btn-group.fit-width .dropdown-toggle .filter-option {
   position: static;
-}
+}*/
 .bootstrap-select.btn-group.fit-width .dropdown-toggle .caret {
   position: static;
   top: auto;
   margin-top: -1px;
 }
-.bootstrap-select.btn-group.show-tick .dropdown-menu li.selected a span.check-mark {
+/*.bootstrap-select.btn-group.show-tick .dropdown-menu li.selected a span.check-mark {
   position: absolute;
   display: inline-block;
   right: 15px;
   margin-top: 5px;
-}
-.bootstrap-select.btn-group.show-tick .dropdown-menu li a span.text {
+}*/
+/*.bootstrap-select.btn-group.show-tick .dropdown-menu li a span.text {
   margin-right: 34px;
-}
+}*/
 .bootstrap-select.show-menu-arrow.open > .dropdown-toggle {
   z-index: 1061;
 }

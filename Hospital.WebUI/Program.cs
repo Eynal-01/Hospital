@@ -51,6 +51,7 @@ builder.Services.AddScoped<IPostService, PostService>();
 
 builder.Services.AddScoped<IMediaService, MediaService>();
 
+builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 builder.Services.AddIdentity<CustomIdentityUser,CustomIdentityRole>()
     .AddEntityFrameworkStores<CustomIdentityDbContext>()

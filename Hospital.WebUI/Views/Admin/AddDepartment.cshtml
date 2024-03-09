@@ -36,21 +36,21 @@
 				<div class="card">
 					<div class="header">
 						<h2><strong>Add</strong> Departments<small>Description text here...</small> </h2>
-						<ul class="header-dropdown">
+						@* <ul class="header-dropdown">
 							<li class="remove">
 								<a role="button" class="boxs-close"><i class="zmdi zmdi-close"></i></a>
 							</li>
-						</ul>
+						</ul> *@
 					</div>
 					<div class="body">
 						<form asp-action="AddDepartment" asp-controller="Admin" enctype="multipart/form-data">
 							<div class="row clearfix">
-								<div class="col-sm-12">
+								<div class="col-sm-6">
 									<div class="form-group">
 										<input type="text" asp-for="Name" class="form-control" placeholder="Departments Name">
 									</div>
 								</div>
-								<div class="col-sm-12">
+								<div class="col-sm-6">
 									<div class="form-group">
 										<textarea asp-for="Content" rows="4" class="form-control no-resize" placeholder="Please type what you want..."></textarea>
 									</div>
