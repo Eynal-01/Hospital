@@ -681,6 +681,7 @@ function GetAllPostAllUsers() {
 
             PopularPosts();
             GetAllDoctors();
+            GetAllAbouts();
 
             for (var i = 0; i < data.posts.length; i++) {
                 images = "";
@@ -1314,7 +1315,32 @@ document.getElementById("departmentSelect").addEventListener("change", function 
     })
 });
 
-<<<<<<< HEAD
+function GetAllAbouts() {
+    $.ajax({
+        url: `/Abouts/GetAllAbouts`,
+        method: "GET",
+
+        success: function () {
+
+            var patientContent = "";
+            var adminContent = "";
+            var doctorContent = "";
+
+            for (var i = 0; i < data.length; i++) {
+                patientContent += `
+                <div class="col-lg-3 col-md-6">
+					<div class="about-block-item mb-5 mb-lg-0">
+						<img src="${data[i].imageUrl}" alt="" class="img-fluid w-100">
+						<h4 class="mt-3">${data[i].title}</h4>
+						<p>${data[i].content}</p>
+					</div>
+				</div>
+                `;
+            }
+            $("#patientAbouts").html(patientContent);
+        }
+    })
+}
 
 
 //var btn = $("#make");
@@ -1586,10 +1612,9 @@ function DoctorAppointments() {
         }
     })
 }
-=======
+
 document.getElementById("doctorSelect").addEventListener("change", function () {
     GetDay();
     GetTime();
     SendSMS();
 });
->>>>>>> Murad_PatientDevelopmentShow

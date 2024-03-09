@@ -23,14 +23,17 @@ namespace Hospital.WebUI.Controllers
 		private readonly IDataService _dataService;
 		private readonly CustomIdentityDbContext _context;
 
-		public HomeController(CustomIdentityDbContext dbContext, UserManager<CustomIdentityUser> userManager, IDataService dataService/*, DoctorController doctorController*/)
-		{
-			_dbContext = dbContext;
-			_userManager = userManager;
-			_dataService = dataService;
-		}
 
-		[HttpGet]
+        public HomeController(CustomIdentityDbContext dbContext, UserManager<CustomIdentityUser> userManager, IDataService dataService, CustomIdentityDbContext context)
+        {
+            _dbContext = dbContext;
+            _userManager = userManager;
+            _dataService = dataService;
+            _context = context;
+        }
+
+
+        [HttpGet]
 		public async Task<IActionResult> Appointment()
 		{
 			var departments = await _dbContext.Departments.ToListAsync();
@@ -81,14 +84,6 @@ namespace Hospital.WebUI.Controllers
 				return RedirectToAction("SuccessPay", "Home");
 			}
 			return RedirectToAction("Appointment", "Home");
-		}
-
-		public HomeController(CustomIdentityDbContext dbContext, UserManager<CustomIdentityUser> userManager, IDataService dataService, CustomIdentityDbContext context)
-		{
-			_dbContext = dbContext;
-			_userManager = userManager;
-			_dataService = dataService;
-			_context = context;
 		}
 
 		public async Task<Patient> CurrentUser()

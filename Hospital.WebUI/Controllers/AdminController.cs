@@ -191,8 +191,17 @@ namespace Hospital.WebUI.Controllers
 			return View(viewModel);
 		}
 
+		public async Task<IActionResult> About()
+		{
+			return View();
+		}
 
-		public async Task<IActionResult> GetAvailableDays(int availableCount)
+		//public async Task<IActionResult> AddAbout()
+		//{
+
+		//}
+
+        public async Task<IActionResult> GetAvailableDays(int availableCount)
 		{
 			var admins = await _context.Admins.ToListAsync();
 			for (int i = 0; i < admins.Count(); i++)
