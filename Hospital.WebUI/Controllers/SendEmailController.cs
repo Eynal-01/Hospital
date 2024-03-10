@@ -13,13 +13,13 @@ namespace Hospital.WebUI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SendEmailText()
+        public async Task<IActionResult> SendEmailText(string email)
             {
-            var email = "baxsiyeveynal97@gmail.com";
-            var subject = "Test";
+            
+            var subject = "Hospital Project";
             var message = "Mail for course project";
             await _emailSender.SendEmailAsync(email, subject, message);
-            return Ok();
+            return RedirectToAction("Index", "Home");
         }
     }
 }

@@ -1178,8 +1178,9 @@ function GetDay() {
         url: `/Home/GetAvailableDays?doctorId=${availableDoctor}`,
         method: "GET",
         success: function (data) {
-            console.log(data)
-            var content = "";
+            console.log(data);
+
+            var content = `<option value="" selected disabled hidden>Select a date</option>`
 
             for (var i = 0; i < data.length; i++) {
                 content += `
@@ -1201,15 +1202,16 @@ function GetDay() {
 
 function GetTime() {
     var availableDoctor = $("#doctorSelect").val();
-    var appointmentDate = $("#dateSelect").val();
+    var dateValue = document.getElementById("dateSelect").value;
 
-    //if (availableDoctor != null) {
+    console.log(dateValue);
+
     $.ajax({
-        url: `/Home/GetAvailableTimes?doctorId=${availableDoctor}&appointmentDate=${appointmentDate}`,
+        url: `/Home/GetAvailableTimes?doctorId=${availableDoctor}&appointmentDate=${dateValue}`,
         method: "GET",
         success: function (data) {
             console.log(data)
-            var content = "";
+            var content = `<option value="" selected disabled hidden>Select a time</option>`;
 
             for (var i = 0; i < data.length; i++) {
                 content += `
@@ -1250,7 +1252,7 @@ function SendEmail() {
     var email = $("emailReg").val();
     console.log("send email called");
     $.ajax({
-        url: `/SendEmail/SendEmailText`,
+        url: `/SendEmail/SendEmailText?email=${email}`,
         method: "POST",
 
         success: function () {
@@ -1262,6 +1264,7 @@ function SendEmail() {
         }
     })
 }
+
 
 document.getElementById("departmentSelect").addEventListener("change", function () {
     var departmentId = this.value;
@@ -1276,52 +1279,32 @@ document.getElementById("departmentSelect").addEventListener("change", function 
         url: `/Home/getDoctors?departmentId=${departmentId}`,
         method: "GET",
 
+
+
         success: function (data) {
             var content = "";
             //console.log(data);
+            var option = document.createElement("option");
+            option.text = "Select a doctor";
+            option.value = 0;
+            //option.disabled = true;
+            doctorSelect.appendChild(option);
             data.forEach(function (doctor) {
                 var option = document.createElement("option");
                 option.text = doctor.firstName + " " + doctor.lastName;
                 option.value = doctor.id;
                 doctorSelect.appendChild(option);
-                //content += `
-                //  <option value="${doctor.id}">${doctor[i].departmentName}</option>
-                //`;
             });
-            //console.log(data[0]);
-            //for (var i = 0; i < data.length; i++) {
-            //    if (i == 0) {
-            //        //console.log("hgkj")
-            //        content += `
-            //          <option value="${data[i].id}" selected>${data[i].departmentName}</option>
-            //        `;
-            //    }
-            //    else {
-            //        content += `
-            //          <option value="${data[i].id}">${data[i].firstName} ${data[i].lastName}</option>
-            //        `;
-            //    }
-            //}
-
-            //$("#doctorSelect").html(content);
-
-
-            //if (data != null && data.length > 0) {
-            //}
-            //else {
-            //}
+            //GetDay();
+            //GetTime();
 
             if (data.length > 0) {
                 doct.style.backgroundColor = "transparent";
                 date.style.backgroundColor = "transparent";
                 time.style.backgroundColor = "transparent";
 
-                GetDay();
-                GetTime();
             }
             else {
-                //console.log(data.length);
-                //$("#exampleFormControlSelect3"
                 document.getElementById("dateSelect").innerHTML = "";
                 document.getElementById("exampleFormControlSelect4").innerHTML = "";
                 doct.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
@@ -1332,12 +1315,31 @@ document.getElementById("departmentSelect").addEventListener("change", function 
     })
 });
 
+document.getElementById("doctorSelect").addEventListener("change", function () {
+    GetDay();
+    //GetTime();
+});
+
+document.getElementById("dateSelect").addEventListener("change", function () {
+    GetTime();
+});
 
 
 //var btn = $("#make");
 //var emptyPhone = document.getElementById("emptyPhone");
 //var emptyName = document.getElementById("emptyName");
 
+
+function CallSuccessPage() {
+    $.ajax({
+        url: `/Home/SuccessPay`,
+        method: "GET",
+
+        //success: function () {
+        //    console.log("Send page called");
+        //}
+    })
+}
 
 function CallAppointment() {
     //var department = $("departmentSelect").val();
@@ -1348,6 +1350,13 @@ function CallAppointment() {
     //var time1 = $("exampleFormControlSelect4").val();
     //var message1 = $("message").val();
 
+    var s = document.getElementById("success");
+    s.innerHTML = `<div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <button type="submit" onclick="SendSMS()" class="btn btn-primary btn-round waves-effect" style="background-color:rgba(34,58,102,255); border-radius:30px; color:white; margin:20%; width:35%; margin-left:32%;">Send SMS</button>
+                                    <button type="submit" onclick="SendEmail()" class="btn btn-primary btn-round waves-effect" style="background-color:rgba(34,58,102,255); border-radius:30px; color:white; margin-left:32%; margin-bottom:20%; width:35%">Send Email</button>
+                                </div>
+                            </div>`;
 
     if (d.value != null && doct.value != "" && p.value != "0"
         && message.value != "" && date.value != null && time.value != null) {
@@ -1355,11 +1364,13 @@ function CallAppointment() {
         $.ajax({
             url: `/Home/Appointment`,
             method: "POST",
-            data: { DoctorId: doct.value, DepartmentId: d.value, PhoneNumber: p.value, Message: message.value, Date: date.value, Time: time.value },
+            data: { DoctorId: doct.value, DepartmentId: d.value, PhoneNumber: p.value, Message: message.value, appointmentDate: date.value, appointmentTime: time.value },
             dataType: "json",
 
-            success: function (data) {
+            success: function () {
                 console.log("aynthing is null");
+                //CallSuccessPage();
+                
             }
         })
     }
@@ -1373,7 +1384,7 @@ function CallAppointment() {
         d.style.backgroundColor = "transparent";
     }
 
-    if (doct.value.trim() == "") {
+    if (doct.value.trim() == "" || doct.value.trim() == "Select a doctor") {
         console.log("doctor is null");
         doct.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
         //emptyName.style.display = "inline-block";
@@ -1401,7 +1412,7 @@ function CallAppointment() {
     }
 
     //console.log(date.value);
-    if (date == null || date.value == "") {
+    if (date == null || date.value == "" || date.value == "Select a date") {
         console.log("date is null");
         date.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
         //emptyName.style.display = "inline-block";
@@ -1410,7 +1421,7 @@ function CallAppointment() {
         date.style.backgroundColor = "transparent";
     }
 
-    if (time == null || time.value == "") {
+    if (time == null || time.value == "" || time.value == "Select a time") {
         console.log("time is null");
         time.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
         //emptyName.style.display = "inline-block";
@@ -1606,11 +1617,11 @@ function DoctorAppointments() {
     })
 }
 
-document.getElementById("doctorSelect").addEventListener("change", function () {
-    GetDay();
-    GetTime();
-    SendSMS();
-});
+//document.getElementById("doctorSelect").addEventListener("change", function () {
+//    GetDay();
+//    GetTime();
+//    SendSMS();
+//});
 
 
 function handleRoomId() {

@@ -30,7 +30,7 @@ namespace Hospital.WebUI.Controllers
                     to: new Twilio.Types.PhoneNumber("+994" + numbers[i]));
                 return StatusCode(200, new { message = message.Sid });
             }
-            return Ok();
+            return RedirectToAction("Index", "Home");
 
         }
     }
