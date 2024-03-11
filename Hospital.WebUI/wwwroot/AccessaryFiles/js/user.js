@@ -1315,6 +1315,55 @@ document.getElementById("departmentSelect").addEventListener("change", function 
     })
 });
 
+//function AddBigAboutFirst() {
+//    var title = document.getElementById("firstBigTitle");
+//    var content = document.getElementById("firstBigContent");
+//    //console.log(title);
+//    //if (title.value.trim() != "" && content.value.trim() != "") {
+//    //console.log("suc");
+//    $.ajax({
+//        url: `/Admin/AddAbout`,
+//        method: "POST",
+//        data: { BigTitle: title.value, FirstContent: content.value },
+//        dataType: "json",
+
+//        success: function (data) {
+//            console.log("aynthing is null");
+//        }
+//    })
+//    //}
+//    //else {
+//    if (title.value.trim() == "") {
+//        title.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
+//    }
+//    if (content.value.trim() == "") {
+//        content.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
+//    }
+////}
+//}
+
+//function HandleBigTitleChange() {
+//    //console.log("dxcxcx");
+//    var title = document.getElementById("firstBigTitle");
+//    if (title.value.trim() == "") {
+//        title.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
+//    }
+//    else {
+//        title.style.backgroundColor = "transparent";
+//    }
+//}
+
+//function HandleBigContentChange() {
+//    //console.log("df");
+//    var content = document.getElementById("firstBigContent");
+//    if (content.value.trim() == "") {
+//        content.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
+//    }
+//    else {
+//        content.style.backgroundColor = "transparent";
+//    }
+//}
+
 function GetAllAbouts() {
     $.ajax({
         url: `/About/GetAllAboutsUsers`,
@@ -1341,33 +1390,13 @@ function GetAllAbouts() {
 				 	</div>
 				 </div>
                 `;
-                
             }
 
             for (var i = 0; i < data.abouts.length; i++) {
-                patientContent += `
-                <div class="col-lg-3 col-md-6">
-					<div class="about-block-item mb-5 mb-lg-0">
-						<img src="${data.abouts[i].imageUrl}" alt="" class="img-fluid w-100">
-						<h4 class="mt-3">${data.abouts[i].title}</h4>
-						<p>${data.abouts[i].content}</p>
-					</div>
-				</div>
-                `;
+                if (data.abouts[i].title != null) {
 
-                bigTitle += `
-					<h2 class="title-color">${data.abouts[i].bigTitle}</h2>
-                `;
-
-                patientAboutPageFirstContent += `
-                
-                    <p>${data.abouts[i].firstContent}</p>
-                
-                `;
-
-                aboutInDoctorsAndAdmin+= `
-    
-                   <div class="col-lg-4 col-md-6 col-sm-12">
+                    aboutInDoctorsAndAdmin += `
+                     <div class="col-lg-4 col-md-6 col-sm-12">
                             <div class="card project_widget">
                                 <div class="pw_img">
                                     <img class="img-fluid" src="${data.abouts[i].imageUrl}" alt="About the image">
@@ -1382,8 +1411,29 @@ function GetAllAbouts() {
                                 </div>
                             </div>
                         </div>
+                     `;
+
+                    patientContent += `
+                        <div class="col-lg-3 col-md-6">
+				        	<div class="about-block-item mb-5 mb-lg-0">
+				        		<img src="${data.abouts[i].imageUrl}" alt="" class="img-fluid w-100">
+				        		<h4 class="mt-3">${data.abouts[i].title}</h4>
+				        		<p>${data.abouts[i].content}</p>
+				        	</div>
+				        </div>
+                        `;
+                }
+                else {
+                    bigTitle += `
+					   <h2 class="title-color">${data.abouts[i].bigTitle}</h2>
+                    `;
+
+                    patientAboutPageFirstContent += `
                 
-                `;
+                       <p>${data.abouts[i].firstContent}</p>
+                
+                     `;
+                }
             }
 
             $("#patientAbouts").html(patientContent);

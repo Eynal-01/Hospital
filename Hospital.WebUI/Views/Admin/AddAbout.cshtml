@@ -1,6 +1,6 @@
-﻿@model AddAboutViewModel
+﻿@model AllAboutViewModel
 
-<title>:: Oreo Hospital :: Add Departments</title>
+<title>:: Oreo Hospital :: Add Abouts</title>
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <!-- Favicon-->
 <link rel="stylesheet" href="~/AdminFiles/assets/plugins/bootstrap/css/bootstrap.min.css">
@@ -13,92 +13,104 @@
 
 
 <section class="content">
-	<div class="block-header">
-		<div class="row">
-			<div class="col-lg-7 col-md-5 col-sm-12">
-				<h2>
-					Add About
-					<small>Welcome to Oreo</small>
-				</h2>
-			</div>
-			<div class="col-lg-5 col-md-7 col-sm-12">
-				<ul class="breadcrumb float-md-right">
-					<li class="breadcrumb-item"><a href="/Admin/Index"><i class="zmdi zmdi-home"></i> Oreo</a></li>
-					<li class="breadcrumb-item"><a href="javascript:void(0);">Departments</a></li>
-					<li class="breadcrumb-item active">Add</li>
-				</ul>
-			</div>
-		</div>
-	</div>
-	<div class="container-fluid">
-		<div class="row clearfix">
-			<div class="col-lg-12 col-md-12 col-sm-12">
-				<div class="card">
-					<div class="header">
-						<h2><strong>Add</strong> Departments<small>Description text here...</small> </h2>
-						<ul class="header-dropdown">
-							<li class="remove">
-								<a role="button" class="boxs-close"><i class="zmdi zmdi-close"></i></a>
-							</li>
-						</ul>
-					</div>
-					<div class="body">
-						<form asp-action="AddAbout" asp-controller="Admin" enctype="multipart/form-data">
-							<div class="row clearfix">
-								<div class="col-sm-12" style="display:none">
-									<div class="form-group">
-										<input type="text" asp-for="Id" class="form-control" placeholder="Big Title">
-									</div>
-								</div>
-								<div class="col-sm-12">
-									<div class="form-group">
-										<input type="text" asp-for="BigTitle" class="form-control" placeholder="Big Title">
-									</div>
-								</div>
-								<div class="col-sm-12">
-									<div class="form-group">
-										<textarea asp-for="FirstContent" rows="4" class="form-control no-resize" placeholder="Big Title content..."></textarea>
-									</div>
-								</div>
-								<div class="col-sm-12">
-									<div class="form-group">
-										<input type="text" asp-for="Title" class="form-control" placeholder="About Single Title">
-									</div>
-								</div>
-								<div class="col-sm-12">
-									<div class="form-group">
-										<textarea asp-for="Content" rows="4" class="form-control no-resize" placeholder="About Single Content"></textarea>
-									</div>
-								</div>
-								<div class="col-sm-12">
-									<input type="file" asp-for="File" />
-									@*								<form id="frmFileUpload" class="dropzone m-b-20 dz-clickable" enctype="multipart/form-data">
-									<div class="dz-message">
-									<div class="drag-icon-cph"> <i class="material-icons">touch_app</i> </div>
-									<h3>Drop files here or click to upload.</h3>
-									<em>(This is just a demo dropzone. Selected files are <strong>not</strong> actually uploaded.)</em>
-									</div>
-									</form>*@
-								</div>
-							</div>
-							<div class="row clearfix">
-								<div class="col-sm-12">
-									@if (Model.AboutsCount != 0)
-									{
-										<button type="submit" class="btn btn-primary btn-round">Update About</button>
-									}
-									else
-									{
-										<button type="submit" class="btn btn-primary btn-round">Add About</button>
-									}
-								</div>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="block-header">
+        <div class="row">
+            <div class="col-lg-7 col-md-5 col-sm-12">
+                <h2>
+                    Add About
+                    <small>Welcome to Oreo</small>
+                </h2>
+            </div>
+            <div class="col-lg-5 col-md-7 col-sm-12">
+                <ul class="breadcrumb float-md-right">
+                    <li class="breadcrumb-item"><a href="/Admin/Index"><i class="zmdi zmdi-home"></i> Oreo</a></li>
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">Abouts</a></li>
+                    <li class="breadcrumb-item active">Add</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="card">
+                    <div class="header">
+                        <h2><strong>Add and Update</strong> Abouts<small>Description text here...</small> </h2>
+                    </div>
+                    <div class="body">
+                        <form asp-action="AddAbout" asp-controller="Admin" enctype="multipart/form-data">
+                            <div class="row clearfix">
+                                <div class="col-sm-12" style="display:none">
+                                    <div class="form-group">
+                                        <input type="text" asp-for="addAboutViewModel.Id" class="form-control" placeholder="Big Title">
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <input type="text" asp-for="addAboutViewModel.BigTitle" class="form-control" placeholder="Big Title">
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <textarea asp-for="addAboutViewModel.FirstContent" rows="4" class="form-control no-resize" placeholder="Big Title content..."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row clearfix">
+                                <div class="col-sm-12">
+                                    @if (Model.addAboutViewModel.AboutsCount != null && Model.addAboutViewModel.AboutsCount != 0)
+                                    {
+                                        <button type="submit" class="btn btn-primary btn-round">Update About</button>
+                                    }
+                                    else
+                                    {
+                                        <button type="submit" class="btn btn-primary btn-round">Add About</button>
+                                    }
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            @if (Model.addAboutViewModel.AboutsCount != null && Model.addAboutViewModel.AboutsCount != 0)
+            {
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2><strong>Add</strong> Single Abouts<small>Description text here...</small> </h2>
+                        </div>
+                        <div class="body">
+                            <form asp-action="AddSingleAbout" asp-controller="Admin" enctype="multipart/form-data">
+                                <div class="row clearfix">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <input type="text" asp-for="addSingleAboutViewModel.Title" class="form-control" placeholder="About Single Title">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <textarea asp-for="addSingleAboutViewModel.Content" rows="4" class="form-control no-resize" placeholder="About Single Content"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <input type="file" asp-for="addSingleAboutViewModel.File" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row clearfix">
+                                    <div class="col-sm-12">
+                                        <button type="submit" class="btn btn-primary btn-round">Add About</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
 </section>
 <script src="~/AccessaryFiles/js/signalr/dist/browser/signalR.js"></script>
 <!-- Jquery Core Js -->
@@ -114,12 +126,12 @@
 <script src="~/AccessaryFiles/js/user.js"></script>
 <script src="~/AccessaryFiles/js/site.js"></script>
 <script>
-	$(function () {
-		//Datetimepicker plugin
-		$('.datetimepicker').bootstrapMaterialDatePicker({
-			format: 'dddd DD MMMM YYYY - HH:mm',
-			clearButton: true,
-			weekStart: 1
-		});
-	});
+    $(function () {
+        //Datetimepicker plugin
+        $('.datetimepicker').bootstrapMaterialDatePicker({
+            format: 'dddd DD MMMM YYYY - HH:mm',
+            clearButton: true,
+            weekStart: 1
+        });
+    });
 </script>

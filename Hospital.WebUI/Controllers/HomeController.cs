@@ -226,7 +226,7 @@ namespace Hospital.WebUI.Controllers
 			return View();
 		}
 
-		public IActionResult About()
+		public async Task<IActionResult> About()
 		{
 			return View();
 		}
