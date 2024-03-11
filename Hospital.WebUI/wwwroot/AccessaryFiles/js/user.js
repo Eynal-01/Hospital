@@ -34,19 +34,19 @@ function GetAllPatients() {
                      <td>${data[i].fullName}</td>
 
                     `;
+
                 }
+                //var id12 = "";
+                //for (var k = 0; k < 3; k++) {
+                //    id12 += data[i].id[k];
+                //}
                 content += `
                  <tr onclick="PatientProfile('${data[i].id}')">
-                     <td><span class="list-icon"><img class="patients-img" src="/AccessaryFiles/images/${data[i].avatart}" alt=""></span></td>
-                     <td><span class="list-name">${data[i].id}</span></td> 
-                     ${name}
-                     <td>${data[i].age}</td>
-                     <td>${data[i].address}</td>
+                     <td><span class="list-name">${data[i].idv}</span></td> 
+                     <td>${data[i].userName}</td>
                      <td>${data[i].phoneNumber}</td>
-                     <td>11 Jan 2018</td>
-                     <td><span class="badge badge-success">Approved</span></td>
                  </tr>
-                
+          
                 `;
             }
             $("#patients").html(content);
@@ -1004,10 +1004,10 @@ function GetAllDoctors() {
                          <div class="card xl-blue member-card doctor">
                              <div class="body">
                                  <div class="member-thumb">
-                                     <img src="${data.doctors[i].avatar}" class="img-fluid" alt="profile-image">
+                                     <img style="width:90%; height:30%; margin:auto;" src="${data.doctors[i].avatar}" class="img-fluid" alt="profile-image">
                                  </div>
                                  <div class="detail">
-                                     <h4 class="m-b-0">Dr. ${data.doctors[i].firstName} ${data.doctors[i].lastName}</h4>
+                                     <p class="m-b-0">Dr. ${data.doctors[i].firstName}<br/>${data.doctors[i].lastName}</p>
                                      <p class="text-muted">${data.doctors[i].department.departmentName}</p>
                                      <ul class="social-links list-inline m-t-20">
                                          <li><a title="facebook" href="#"><i class="zmdi zmdi-facebook"></i></a></li>
@@ -1079,16 +1079,17 @@ function GetAllAppointments() {
 
             for (var i = 0; i < data.length; i++) {
                 //var doctor = GetAppointmentDoctor(data[i].doctorId)
+                var date1 = data[i].appointmentDate.split("T")[0];
                 content += `
                   <tr>
                       <td>${data[i].id}</td>
-                      <td>${data[i].appointmentDate} ${data[i].appointmentTime}</td>
+                      <td>${date1} ${data[i].appointmentTime}</td>
                       <td>${data[i].patient.userName}</td>
-                      <td>32</td>
                       <td>${data[i].doctor.firstName} ${data[i].doctor.lastName}</td>
                       <td>${data[i].department.departmentName}</td>
                  </tr>`;
             }
+            //<td>32</td>
             $("#appointments").html(content);
         }
     })
@@ -1248,11 +1249,12 @@ function SendSMS() {
     })
 }
 
+
+
 function SendEmail() {
-    var email = $("emailReg").val();
     console.log("send email called");
     $.ajax({
-        url: `/SendEmail/SendEmailText?email=${email}`,
+        url: `/SendEmail/SendEmailText?`,
         method: "POST",
 
         success: function () {
@@ -1350,17 +1352,22 @@ function CallAppointment() {
     //var time1 = $("exampleFormControlSelect4").val();
     //var message1 = $("message").val();
 
-    var s = document.getElementById("success");
-    s.innerHTML = `<div class="modal-dialog" role="document">
+    console.log(d.value);          //any
+    console.log(doct.value);       //none
+    console.log(p.value);          //0
+    console.log(message.value);    //any
+    console.log(date.value);       //none
+    console.log(time.value);       //none
+    if (d.value != null && doct.value != null && p.value != "0"
+        && message.value != " " && date.value != null && time.value != null) {
+        console.log("intro");
+        var s = document.getElementById("success");
+        s.innerHTML = `<div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <button type="submit" onclick="SendSMS()" class="btn btn-primary btn-round waves-effect" style="background-color:rgba(34,58,102,255); border-radius:30px; color:white; margin:20%; width:35%; margin-left:32%;">Send SMS</button>
                                     <button type="submit" onclick="SendEmail()" class="btn btn-primary btn-round waves-effect" style="background-color:rgba(34,58,102,255); border-radius:30px; color:white; margin-left:32%; margin-bottom:20%; width:35%">Send Email</button>
                                 </div>
                             </div>`;
-
-    if (d.value != null && doct.value != "" && p.value != "0"
-        && message.value != "" && date.value != null && time.value != null) {
-        console.log("intro");
         $.ajax({
             url: `/Home/Appointment`,
             method: "POST",
@@ -1370,7 +1377,7 @@ function CallAppointment() {
             success: function () {
                 console.log("aynthing is null");
                 //CallSuccessPage();
-                
+
             }
         })
     }
@@ -1384,7 +1391,7 @@ function CallAppointment() {
         d.style.backgroundColor = "transparent";
     }
 
-    if (doct.value.trim() == "" || doct.value.trim() == "Select a doctor") {
+    if (doct.value.trim() == "") {
         console.log("doctor is null");
         doct.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
         //emptyName.style.display = "inline-block";
@@ -1404,7 +1411,7 @@ function CallAppointment() {
 
     if (p.value == "0" || phone.length < 9) {
         console.log("phone is null");
-        p.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
+        p.style.borderColor = "rgba(255, 99, 71, 0.8)";
         //emptyName.style.display = "inline-block";
     }
     else {
@@ -1412,32 +1419,32 @@ function CallAppointment() {
     }
 
     //console.log(date.value);
-    if (date == null || date.value == "" || date.value == "Select a date") {
+    if (date.value == "Select a date") {
         console.log("date is null");
-        date.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
+        date.style.borderColor = "rgba(255, 99, 71, 0.8)";
         //emptyName.style.display = "inline-block";
     }
     else {
-        date.style.backgroundColor = "transparent";
+        date.style.borderColor = "transparent";
     }
 
     if (time == null || time.value == "" || time.value == "Select a time") {
         console.log("time is null");
-        time.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
+        time.style.borderColor = "rgba(255, 99, 71, 0.8)";
         //emptyName.style.display = "inline-block";
     }
     else {
-        time.style.backgroundColor = "transparent";
+        time.style.borderColor = "transparent";
     }
 
     //console.log(message);
     if (message.value.trim() == "") {
         console.log("message is null");
-        message.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
+        message.style.borderColor = "rgba(255, 99, 71, 0.8)";
         //emptyName.style.display = "inline-block";
     }
     else {
-        message.style.backgroundColor = "transparent";
+        message.style.borderColor = "transparent";
     }
 }
 

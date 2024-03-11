@@ -51,7 +51,8 @@ namespace Hospital.WebUI.Controllers
                 var doctor = await _dbContext.Doctors.FirstOrDefaultAsync(d => d.Id == viewModel.DoctorId);
                 var doctors = _dbContext.Doctors.ToList();
 
-                //var names = viewModel.Fullname.Split(' ');
+                var date1 = viewModel.AppointmentDate.ToString().Split('T')[0];
+                var date2 = date1.Split(' ')[0];
 
                 var appoinment = new Appointment
                 {
@@ -61,14 +62,8 @@ namespace Hospital.WebUI.Controllers
                     PatientId = patient.Id.ToString(),
                     Message = viewModel.Message,
                     AppointmentTime = viewModel.AppointmentTime,
-                    AppointmentDate = viewModel.AppointmentDate
+                    AppointmentDate = DateTime.Parse(date2),
                 };
-                //for (int i = 0; i < doctors.Count(); i++)
-                //{
-                //    if (doctors[i].Id == doctor.Id)
-                //    {
-                //    }
-                //}
                 await _dbContext.Appointments.AddAsync(appoinment);
                 await _dbContext.SaveChangesAsync();
                 return RedirectToAction("SuccessPay", "Home");
@@ -193,8 +188,9 @@ namespace Hospital.WebUI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAvailableTimes(string doctorId, string appointmentDate)
         {
+            var s = appointmentDate + " 00:00:00";
             var appointments = await _context.Appointments
-                //.Where(a => a.DoctorId == doctorId && a.AppointmentDate.ToString() == appointmentDate)
+                //.Where(a => a.DoctorId == doctorId && a.AppointmentDate.ToString() == s)
                 .ToListAsync();
 
             var timeSlots = new List<string>();
@@ -234,7 +230,7 @@ namespace Hospital.WebUI.Controllers
 
                 var appointmentSlot = $"{appointmentStartTime:hh\\:mm} - {appointmentEndTime:hh\\:mm}";
 
-                if (timeSlots.Contains(appointmentSlot))
+                if (timeSlots.Contains(appointmentSlot) && appointment.AppointmentDate.ToString()==s)
                 {
                     timeSlots.Remove(appointmentSlot);
                 }

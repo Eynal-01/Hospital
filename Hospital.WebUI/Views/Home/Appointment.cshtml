@@ -84,7 +84,7 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label>Department</label>
-                                    <select asp-for="DepartmentId" class="form-control" id="departmentSelect">
+                                    <select style="border-radius:20px" asp-for="DepartmentId" class="form-control" id="departmentSelect">
                                         <option value="" selected disabled >Select a department</option>
 
                                         @for (int i = 0; i < Model.Departments.Count(); i++)
@@ -97,15 +97,15 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label>Doctor</label>
-                                    <select asp-for="DoctorId" class="form-control" id="doctorSelect">
-                                        <option value="none" selected disabled >Select a doctor</option>
+                                    <select style="border-radius:20px" asp-for="DoctorId" class="form-control" id="doctorSelect">
+                                        <option value="none" selected disabled>Select a doctor</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label>Date</label>
-                                    <select asp-for="DateId" class="form-control" id="dateSelect">
+                                    <label>Available Dates</label>
+                                    <select style="border-radius:20px" asp-for="DateId" class="form-control" id="dateSelect">
                                         <option value="none" selected disabled >Select a date</option>
                                     </select>
                                 </div>
@@ -114,7 +114,7 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label>Available Times</label>
-                                    <select asp-for="AppointmentTime" class="form-control" id="exampleFormControlSelect4" onchange="ChangeTime()">
+                                    <select style="border-radius:20px" asp-for="AppointmentTime" class="form-control" id="exampleFormControlSelect4" onchange="ChangeTime()">
                                         <option value="none" selected disabled >Select a time</option>
                                     </select>
                                 </div>
@@ -123,7 +123,7 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label asp-for="PhoneNumber">Phone Number</label>
-                                    <input asp-for="PhoneNumber" id="phone" type="Number" class="form-control" placeholder="Phone Number" oninput="handlePhoneInput()">
+                                    <input style="border-radius:20px" asp-for="PhoneNumber" id="phone" type="Number" class="form-control" placeholder="Phone Number" oninput="handlePhoneInput()">
                                     <label id="emptyPhone" style="color:red; display:none;">Enter phone number</label>
                                 </div>
                             </div>
@@ -131,7 +131,7 @@
                         <div class="form-group-2 mb-4">
                             <label asp-for="Message">Message</label>
 
-                            <textarea asp-for="Message" id="message" class="form-control" rows="6" placeholder="Your Message" oninput="ChangeMessage()"></textarea>
+                            <textarea style="border-radius:20px" asp-for="Message" id="message" class="form-control" rows="6" placeholder="Your Message" oninput="ChangeMessage()"></textarea>
                         </div>
 
                      <button onclick="CallAppointment()" class="btn btn-main btn-round-full" type="button">Make Appointment<i class="icofont-simple-right ml-2"></i></button>

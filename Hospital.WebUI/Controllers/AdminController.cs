@@ -355,7 +355,7 @@ namespace Hospital.WebUI.Controllers
             return View();
         }
 
-        public IActionResult Appointments()
+        public IActionResult AllAppointments()
         {
             return View();
         }
