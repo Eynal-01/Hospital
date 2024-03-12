@@ -79,67 +79,69 @@
                     <div class="appoinment-wrap mt-5 mt-lg-0 pl-lg-5">
                         <h2 class="mb-2 title-color">Book an appoinment</h2>
                         <p class="mb-4">Mollitia dicta commodi est recusandae iste, natus eum asperiores corrupti qui velit . Iste dolorum atque similique praesentium soluta.</p>
-                        @* <form class="appoinment-form" method="post" asp-action="Appointment" asp-controller="Home"> *@
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label>Department</label>
-                                    <select style="border-radius:20px" asp-for="DepartmentId" class="form-control" id="departmentSelect">
-                                        <option value="" selected disabled >Select a department</option>
+                        <form class="appoinment-form" method="post" asp-action="Appointment" asp-controller="Home">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Department</label>
+                                        <select style="border-radius:20px" asp-for="DepartmentId" class="form-control" id="departmentSelect">
+                                            <option value="" selected disabled>Select a department</option>
 
-                                        @for (int i = 0; i < Model.Departments.Count(); i++)
-                                        {
-                                            <option value="@Model.Departments[i].Id">@Model.Departments[i].DepartmentName</option>
-                                        }
-                                    </select>
+                                            @for (int i = 0; i < Model.Departments.Count(); i++)
+                                            {
+                                                <option value="@Model.Departments[i].Id">@Model.Departments[i].DepartmentName</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Doctor</label>
+                                        <select style="border-radius:20px" asp-for="DoctorId" class="form-control" id="doctorSelect">
+                                            <option value="none" selected disabled>Select a doctor</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Available Dates</label>
+                                        <select style="border-radius:20px" asp-for="DateId" class="form-control" id="dateSelect">
+                                            <option value="none" selected disabled>Select a date</option>
+                                        </select>
+                                        <span asp-validation-for="DateId" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Available Times</label>
+                                        <select style="border-radius:20px" asp-for="AppointmentTime" class="form-control" id="exampleFormControlSelect4" onchange="ChangeTime()">
+                                            <option value="none" selected disabled>Select a time</option>
+                                        </select>
+                                        <span asp-validation-for="AppointmentTime" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label asp-for="PhoneNumber">Phone Number</label>
+                                        <input style="border-radius:20px" asp-for="PhoneNumber" id="phone" type="Number" class="form-control" placeholder="Phone Number" oninput="handlePhoneInput()">
+                                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label>Doctor</label>
-                                    <select style="border-radius:20px" asp-for="DoctorId" class="form-control" id="doctorSelect">
-                                        <option value="none" selected disabled>Select a doctor</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label>Available Dates</label>
-                                    <select style="border-radius:20px" asp-for="DateId" class="form-control" id="dateSelect">
-                                        <option value="none" selected disabled >Select a date</option>
-                                    </select>
-                                </div>
-                            </div>
+                            <div class="form-group-2 mb-4">
+                                <label asp-for="Message">Message</label>
 
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label>Available Times</label>
-                                    <select style="border-radius:20px" asp-for="AppointmentTime" class="form-control" id="exampleFormControlSelect4" onchange="ChangeTime()">
-                                        <option value="none" selected disabled >Select a time</option>
-                                    </select>
-                                </div>
+                                <textarea style="border-radius:20px" asp-for="Message" id="message" class="form-control" rows="6" placeholder="Your Message" oninput="ChangeMessage()"></textarea>
+                                <span asp-validation-for="Message" class="text-danger"></span>
                             </div>
-
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label asp-for="PhoneNumber">Phone Number</label>
-                                    <input style="border-radius:20px" asp-for="PhoneNumber" id="phone" type="Number" class="form-control" placeholder="Phone Number" oninput="handlePhoneInput()">
-                                    <label id="emptyPhone" style="color:red; display:none;">Enter phone number</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group-2 mb-4">
-                            <label asp-for="Message">Message</label>
-
-                            <textarea style="border-radius:20px" asp-for="Message" id="message" class="form-control" rows="6" placeholder="Your Message" oninput="ChangeMessage()"></textarea>
-                        </div>
-
-                     <button onclick="CallAppointment()" class="btn btn-main btn-round-full" type="button">Make Appointment<i class="icofont-simple-right ml-2"></i></button>
+                            <button onclick="CallAppointment()" class="btn btn-main btn-round-full" type="button">Make Appointment<i class="icofont-simple-right ml-2"></i></button>
+                        </form>
 
                     </div>
-                        <div style="border-radius:20px; margin-right:50%;" id="success" tabindex="-1" role="dialog">
-                            
-                        </div>
+                    <div style="border-radius:20px; margin-right:50%;" id="success" tabindex="-1" role="dialog">
+                    </div>
                 </div>
             </div>
         </div>

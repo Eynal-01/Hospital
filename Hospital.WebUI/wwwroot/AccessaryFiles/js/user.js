@@ -1126,9 +1126,9 @@ function GetAllDepartment() {
                     `;
 
                 patientDe += `
-			        	<div class="col-lg-4 col-md-6 ">
-			        		<div class="department-block mb-5">			<img src="${data.departments[i].imageUrl}" alt="" class="img-fluid w-100">
-			        			<div class="content">
+			        	<div class="col-lg-4 col-md-6 " style="width:30%; heught:30vh;">
+			        		<div class="department-block mb-5">			<img style="width:90%; height:35vh; margin-top:5%" src="${data.departments[i].imageUrl}" alt="" class="img-fluid w-100">
+			        			<div class="content" style="overflow: clip;">
 			        				<h4 class="mt-4 mb-2 title-color">${data.departments[i].departmentName}</h4>
 			        				<p class="mb-4">${data.departments[i].content}</p>
 			        				<a href="/Departmen/DepartmentSinglePatient?departmentId=${data.departments[i].id}" class="read-more">Learn More  <i class="icofont-simple-right ml-2"></i></a>
@@ -1358,8 +1358,8 @@ function CallAppointment() {
     console.log(message.value);    //any
     console.log(date.value);       //none
     console.log(time.value);       //none
-    if (d.value != null && doct.value != null && p.value != "0"
-        && message.value != " " && date.value != null && time.value != null) {
+    if (d.value != null && doct.value != " " && p.value != "0"
+        && message.value != " " && date.value != " " && time.value != " ") {
         console.log("intro");
         var s = document.getElementById("success");
         s.innerHTML = `<div class="modal-dialog" role="document">
@@ -1384,30 +1384,21 @@ function CallAppointment() {
 
     if (d.value.trim() == "") {
         console.log("department is null");
-        d.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
+        d.style.borderColor = "rgba(255, 99, 71, 0.8)";
         //emptyName.style.display = "inline-block";
     }
     else {
-        d.style.backgroundColor = "transparent";
+        d.style.borderColor = "transparent";
     }
 
-    if (doct.value.trim() == "") {
+    if (doct.value.trim() == "Select a doctor") {
         console.log("doctor is null");
-        doct.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
+        doct.style.borderColor = "rgba(255, 99, 71, 0.8)";
         //emptyName.style.display = "inline-block";
     }
     else {
-        doct.style.backgroundColor = "transparent";
+        doct.style.borderColor = "transparent";
     }
-
-    //if (n.value.trim() == "") {
-    //    console.log("name is null");
-    //    n.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
-    //    //emptyName.style.display = "inline-block";
-    //}
-    //else {
-    //    n.style.backgroundColor = "transparent";
-    //}
 
     if (p.value == "0" || phone.length < 9) {
         console.log("phone is null");
@@ -1415,7 +1406,7 @@ function CallAppointment() {
         //emptyName.style.display = "inline-block";
     }
     else {
-        p.style.backgroundColor = "transparent";
+        p.style.borderColor = "transparent";
     }
 
     //console.log(date.value);
@@ -1448,41 +1439,6 @@ function CallAppointment() {
     }
 }
 
-//function ChangeDepartment() {
-//d.style.backgroundColor = "transparent";
-//console.log(doct.value);
-//if (doct.innerHTML.trim != "") {
-//    doct.style.backgroundColor = "transparent";
-//}
-//else {
-//    doct.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
-//}
-
-//if (time.innerHTML.trim != "") {
-//    time.style.backgroundColor = "transparent";
-//}
-//else {
-//    time.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
-//}
-
-//if (date.innerHTML.trim != "") {
-//    date.style.backgroundColor = "transparent";
-//}
-//else {
-//    date.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
-//}
-//}
-
-//function ChangeName() {
-
-
-//    if (n.innerHTML != "") {
-//        n.style.backgroundColor = "transparent";
-//    }
-//    else {
-//        n.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
-//    }
-//}
 
 function ChangePhone() {
     if (p.innerHTML != "") {
