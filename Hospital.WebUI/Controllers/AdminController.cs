@@ -51,23 +51,6 @@ namespace Hospital.WebUI.Controllers
             var doctors = await _context.Doctors.Include(d => d.Schedule).ToListAsync();
             var rooms = await _context.Rooms.ToListAsync();
 
-            //var resultRoom = from d in doctors
-            //				 join r in rooms on d.RoomId equals r.Id
-            //				 select new
-            //				 {
-            //					 RoomNo = r.RoomNo,
-            //					 Doctors = doctors,
-            //					 Id = r.Id
-            //				 };
-            //var result = resultRoom.Select(rr =>
-            //{
-            //	return new Room
-            //	{
-            //		RoomNo = rr.RoomNo,
-            //		Doctors = doctors,
-            //		Id = rr.Id
-            //	};
-            //});
             var viewModel = new AddDoctorViewModel
             {
                 ImageUrl = user.Avatar,
@@ -126,7 +109,6 @@ namespace Hospital.WebUI.Controllers
                         var doctor = new Doctor
                         {
                             Address = viewModel.Address,
-                            //BirthDate = viewModel.DateOfBirth,
                             City = viewModel.City,
                             Country = viewModel.Country,
                             Email = viewModel.Email,
@@ -139,8 +121,6 @@ namespace Hospital.WebUI.Controllers
                             PhoneNumber = viewModel.MobileNumber.ToString(),
                             Avatar = viewModel.ImageUrl,
                             PasswordHash = newPassword,
-                            //WorkStartTime = viewModel.WorkStartTime,
-                            //WorkEndTime = viewModel.WorkEndTime,
                             Bio = viewModel.ShortBiography,
                             DepartmentId = viewModel.DepartmentId.ToString(),
                             Education = viewModel.Education,
@@ -166,11 +146,6 @@ namespace Hospital.WebUI.Controllers
                                     Name = "doctor"
                                 };
                                 var resul = await _roleManager.CreateAsync(role);
-                                //if (!resul.Succeeded)
-                                //{
-                                //    ModelState.AddModelError("", "Error");
-                                //    return View(registerViewModel);
-                                //}
                             }
                         }
                         await _context.Doctors.AddAsync(doctor);    
@@ -308,13 +283,6 @@ namespace Hospital.WebUI.Controllers
             return Ok(department);
         }
 
-        //[HttpGet]
-        //public async Task<IActionResult> GetAppointmentDoctor(string id)
-        //{
-        //    var doctor = await _context.Doctors.FirstOrDefaultAsync(i => i.Id == id);
-        //    return Ok(doctor);
-        //}
-
         public async Task<IActionResult> DoctorProfile(DoctorProfileViewModel doctor)
         {
             var department = await _context.Departments.FirstOrDefaultAsync(d => d.Id == doctor.DepartmentId.ToString());
@@ -343,7 +311,6 @@ namespace Hospital.WebUI.Controllers
             var departments = await _context.Departments.ToListAsync();
             return Ok(departments);
         }
-
 
         public IActionResult AddBlog()
         {
