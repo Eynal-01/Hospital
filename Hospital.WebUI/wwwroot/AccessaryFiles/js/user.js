@@ -1068,8 +1068,9 @@ function DoctorShowPost() {
     })
 }
 
+
 function GetAllAppointments() {
-    //console.log("GetAllAppointments work");
+    console.log("GetAllAppointments work");
     $.ajax({
         url: `/Admin/ShowAllAppointments`,
         method: "GET",
@@ -1079,21 +1080,22 @@ function GetAllAppointments() {
 
             for (var i = 0; i < data.length; i++) {
                 //var doctor = GetAppointmentDoctor(data[i].doctorId)
-                var date1 = data[i].appointmentDate.split("T")[0];
                 content += `
                   <tr>
                       <td>${data[i].id}</td>
-                      <td>${date1} ${data[i].appointmentTime}</td>
+                      <td>${data[i].appointmentDate} ${data[i].appointmentTime}</td>
                       <td>${data[i].patient.userName}</td>
+                      <td>32</td>
                       <td>${data[i].doctor.firstName} ${data[i].doctor.lastName}</td>
                       <td>${data[i].department.departmentName}</td>
                  </tr>`;
             }
-            //<td>32</td>
             $("#appointments").html(content);
         }
     })
 }
+
+
 
 function GetAllDepartment() {
     $.ajax({
