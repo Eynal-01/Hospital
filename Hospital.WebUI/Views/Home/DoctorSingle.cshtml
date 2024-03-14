@@ -13,6 +13,7 @@
 	<!-- bootstrap.min css -->
 	<link rel="stylesheet" href="~/plugins/bootstrap/css/bootstrap.min.css">
 	<!-- Icon Font Css -->
+	<link rel="stylesheet" href="~/UserFiles/css/style.css" />
 	<link rel="stylesheet" href="~/plugins/icofont/icofont.min.css">
 	<!-- Slick Slider  CSS -->
 	<link rel="stylesheet" href="~/plugins/slick-carousel/slick/slick.css">
@@ -55,8 +56,8 @@
 						<img src="images/team/1.jpg" alt="" class="img-fluid w-100">
 
 						<div class="info-block mt-4">
-							<h4 class="mb-0">Alexandar james</h4>
-							<p>Orthopedic Surgary</p>
+							<h4 class="mb-0">@ViewBag.Doctor.FirstName @ViewBag.Doctor.LastName</h4>
+							<p>@ViewBag.Doctor.Department.DepartmentName</p>
 
 							<ul class="list-inline mt-4 doctor-social-links">
 								<li class="list-inline-item"><a href="#"><i class="icofont-facebook"></i></a></li>
@@ -73,53 +74,10 @@
 					<div class="doctor-details mt-4 mt-lg-0">
 						<h2 class="text-md">Introducing to myself</h2>
 						<div class="divider my-4"></div>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam tempore cumque voluptate beatae quis inventore sapiente nemo, a eligendi nostrum expedita veritatis neque incidunt ipsa doloribus provident ex, at ullam. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam, perferendis officiis esse quae, nobis eius explicabo quidem? Officia accusamus repudiandae ea esse non reiciendis accusantium voluptates, facilis enim, corrupti eligendi?</p>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nemo recusandae veritatis minus optio quod obcaecati laborum temporibus, deleniti vero perferendis molestias, ducimus facilis, sunt minima. Tempora, amet quasi asperiores voluptas?</p>
+						@* <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam tempore cumque voluptate beatae quis inventore sapiente nemo, a eligendi nostrum expedita veritatis neque incidunt ipsa doloribus provident ex, at ullam. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam, perferendis officiis esse quae, nobis eius explicabo quidem? Officia accusamus repudiandae ea esse non reiciendis accusantium voluptates, facilis enim, corrupti eligendi?</p> *@
+						<p>@ViewBag.Doctor.Education</p>
 
 						<a href="appoinment.html" class="btn btn-main-2 btn-round-full mt-3">Make an Appoinment<i class="icofont-simple-right ml-2  "></i></a>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-
-	<section class="section doctor-qualification gray-bg">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-6">
-					<div class="section-title">
-						<h3>My Educational Qualifications</h3>
-						<div class="divider my-4"></div>
-					</div>
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="col-lg-6">
-					<div class="edu-block mb-5">
-						<span class="h6 text-muted">Year(2005-2007) </span>
-						<h4 class="mb-3 title-color">MBBS, M.D at University of Wyoming</h4>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi doloremque harum, mollitia, soluta maxime porro veritatis fuga autem impedit corrupti aperiam sint, architecto, error nesciunt temporibus! Vel quod, dolor aliquam!</p>
-					</div>
-
-					<div class="edu-block">
-						<span class="h6 text-muted">Year(2007-2009) </span>
-						<h4 class="mb-3 title-color">M.D. of Netherland Medical College</h4>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi doloremque harum, mollitia, soluta maxime porro veritatis fuga autem impedit corrupti aperiam sint, architecto, error nesciunt temporibus! Vel quod, dolor aliquam!</p>
-					</div>
-				</div>
-
-				<div class="col-lg-6">
-					<div class="edu-block mb-5">
-						<span class="h6 text-muted">Year(2009-2010) </span>
-						<h4 class="mb-3 title-color">MBBS, M.D at University of Japan</h4>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi doloremque harum, mollitia, soluta maxime porro veritatis fuga autem impedit corrupti aperiam sint, architecto, error nesciunt temporibus! Vel quod, dolor aliquam!</p>
-					</div>
-
-					<div class="edu-block">
-						<span class="h6 text-muted">Year(2010-2011) </span>
-						<h4 class="mb-3 title-color">M.D. of Canada Medical College</h4>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi doloremque harum, mollitia, soluta maxime porro veritatis fuga autem impedit corrupti aperiam sint, architecto, error nesciunt temporibus! Vel quod, dolor aliquam!</p>
 					</div>
 				</div>
 			</div>

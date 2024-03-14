@@ -1,87 +1,169 @@
 ﻿@model RegisterViewModel
-<<<<<<< HEAD
 
+<!doctype html>
+<html class="no-js " lang="en">
 
-=======
->>>>>>> 53ed3239f12de2a0334fd312fcf518784355e12f
-
-<!DOCTYPE html>
-<html lang="en">
-
-
-<!-- register24:03-->
+<!-- Mirrored from thememakker.com/templates/oreo/hospital/html/light/sign-up.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 10 Feb 2024 08:15:20 GMT -->
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico">
-    <title>Preclinic - Medical & Hospital - Bootstrap 4 Admin Template</title>
-    <link rel="stylesheet" type="text/css" href="~/AdminFiles/assets/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="~/AdminFiles/assets/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="~/AdminFiles/assets/css/style.css">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
 
+    <title>:: Oreo Hospital :: </title>
+    <!-- Favicon-->
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="~/AdminFiles/assets/plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/AdminFiles/assets/css/main.css">
+    <link rel="stylesheet" href="~/AdminFiles/assets/css/authentication.css">
+    <link rel="stylesheet" href="~/AdminFiles/assets/css/color_skins.css">
     <link rel="stylesheet" type="text/css" href="~/AdminFiles/assets/css/myCss.css">
-    <!--[if lt IE 9]>
-		<script src="assets/js/html5shiv.min.js"></script>
-		<script src="assets/js/respond.min.js"></script>
-	<![endif]-->
 </head>
 
-<body>
-    <div class="main-wrapper  account-wrapper">
-        <div class="account-page">
-            <div class="account-center">
-                <div class="account-box background">
-                    <img src="~/AdminFiles/assets/img/LoginAndRegisterWallpaper.jpg" alt="image"/>
-                    <form asp-action="Register" asp-controller="Authentication" method="post" class="form-signin">
-                        <div class="account-logo">
-                            <a href="index-2.html"><img src="~/AdminFiles/assets/img/logo-dark.png" alt=""></a>
+<body class="theme-cyan authentication sidebar-collapse body">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top navbar-transparent">
+        <div class="container">
+            <div class="navbar-translate n_logo">
+                <a class="navbar-brand" href="javascript:void(0);" title="" target="_blank">Oreo</a>
+                <button class="navbar-toggler" type="button">
+                    <span class="navbar-toggler-bar bar1"></span>
+                    <span class="navbar-toggler-bar bar2"></span>
+                    <span class="navbar-toggler-bar bar3"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index-2.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="javascript:void(0);">Search Result</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" title="Follow us on Twitter" href="javascript:void(0);" target="_blank">
+                            <i class="zmdi zmdi-twitter"></i>
+                            <p class="d-lg-none d-xl-none">Twitter</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" title="Like us on Facebook" href="javascript:void(0);" target="_blank">
+                            <i class="zmdi zmdi-facebook"></i>
+                            <p class="d-lg-none d-xl-none">Facebook</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" title="Follow us on Instagram" href="javascript:void(0);" target="_blank">
+                            <i class="zmdi zmdi-instagram"></i>
+                            <p class="d-lg-none d-xl-none">Instagram</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-white btn-round" href="/Authentication/Login">SIGN IN</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- End Navbar -->
+    <div class="page-header">
+        @*<div class="page-header-image" style="background:url(~/AdminFiles/assets/images/login.jpg)"></div>*@
+        <div class="container">
+            <div class="col-md-12 content-center">
+                <div class="card-plain">
+                    <form asp-action="Register" asp-controller="Authentication" method="post" class="form">
+                        <div class="header">
+                            <div class="logo-container">
+                                <img src="https://thememakker.com/templates/oreo/hospital/html/assets/images/logo.svg" alt="">
+                            </div>
+                            <h5>Sign Up</h5>
+                            <span>Register a new membership</span>
                         </div>
-                        <div class="form-group" style="display:none;">
-                            <label asp-for="Selected">Selected</label>
-                            <input asp-for="Selected" type="text" class="form-control">
+                        <div class="content">
+                            <div style="display:none;">
+                                <label asp-for="Selected">Selected</label>
+                                <input asp-for="Selected" type="text" />
+                            </div>
+                            <div class="input-group">
+                                <input asp-for="UserName" type="text" class="form-control" placeholder="Enter User Name">
+                                <span class="input-group-addon">
+                                    <i class="zmdi zmdi-account-circle"></i>
+                                </span>
+                            </div>
+                            <div class="input-group">
+                                <input asp-for="Email" id="emailReg" type="email" type="text" class="form-control" placeholder="Enter Email">
+                                <span class="input-group-addon">
+                                    <i class="zmdi zmdi-email"></i>
+                                </span>
+                            </div>
+                            <div class="input-group">
+                                <input asp-for="Password" type="password" placeholder="Password" class="form-control" />
+                                <span class="input-group-addon">
+                                    <i class="zmdi zmdi-lock"></i>
+                                </span>
+                            </div>
+                            <div class="input-group">
+                                <input asp-for="ConfirmPassword" type="password" placeholder="Confirm Password" class="form-control" />
+                                <span class="input-group-addon">
+                                    <i class="zmdi zmdi-lock"></i>
+                                </span>
+                            </div>
+                            <div class="input-group">
+                                <input asp-for="MobileNumber" type="number" placeholder="Mobile Number" class="form-control" />
+                                <span class="input-group-addon">
+                                    <i class="zmdi zmdi-phone"></i>
+                                </span>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label asp-for="UserName">Username</label>
-                            <input asp-for="UserName" type="text" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="Email">Email Address</label>
-                            <input asp-for="Email" type="email" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="Password">Password</label>
-                            <input asp-for="Password" type="password" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="ConfirmPassword">Confirm Password</label>
-                            <input asp-for="ConfirmPassword" type="password" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="MobileNumber">Mobile Number</label>
-                            <input asp-for="MobileNumber" type="number" class="form-control">
-                        </div>
-@*                         <div class="form-group checkbox">
-                            <label>
-                                <input type="checkbox"> I have read and agree the Terms & Conditions
+                        <div class="checkbox">
+                            <input id="terms" type="checkbox">
+                            <label for="terms">
+                                I read and agree to the <a href="javascript:void(0);">terms of usage</a>
                             </label>
-                        </div> *@
-                        <div class="form-group text-center">
-                            <button class="btn btn-primary account-btn" type="submit">Signup</button>
                         </div>
-@*                         <div class="text-center login-link">
-                            Already have an account? <a asp-action="Login" asp-controller="Admin">Login</a>
-                        </div> *@
+                        <div class="footer text-center">
+
+                            <button class="btn btn-primary btn-round btn-block  waves-effect waves-light" type="submit">SIGN UP</button>
+                            @*<h5><a class="link" href="sign-in.html">You already have a membership?</a></h5>*@
+                        </div>
                     </form>
                 </div>
             </div>
         </div>
+        <footer class="footer">
+            <div class="container">
+                <nav>
+                    <ul>
+                        <li><a href="http://thememakker.com/contact/" target="_blank">Contact Us</a></li>
+                        <li><a href="http://thememakker.com/about/" target="_blank">About Us</a></li>
+                        <li><a href="javascript:void(0);">FAQ</a></li>
+                    </ul>
+                </nav>
+                <div class="copyright">
+                    &copy;
+                    <script>
+                        document.write(new Date().getFullYear())
+                    </script>,
+                    <span>Designed by <a href="http://thememakker.com/" target="_blank">ThemeMakker</a></span>
+                </div>
+            </div>
+        </footer>
     </div>
-    <script src="~/AdminFiles/assets/js/jquery-3.2.1.min.js"></script>
-	<script src="~/AdminFiles/assets/js/popper.min.js"></script>
-    <script src="~/AdminFiles/assets/js/bootstrap.min.js"></script>
-    <script src="~/AdminFiles/assets/js/app.js"></script>
+
+    <!-- Jquery Core Js -->
+    <script src="~/AdminFiles/assets/bundles/libscripts.bundle.js"></script>
+    <script src="~/AdminFiles/assets/bundles/vendorscripts.bundle.js"></script> <!-- Lib Scripts Plugin Js -->
+    <script>
+        $(".navbar-toggler").on('click', function () {
+            $("html").toggleClass("nav-open");
+        });
+    </script>
+@*     <script src="~/AccessaryFiles/js/signalr/dist/browser/signalR.js"></script>
+
+    <script src="~/AccessaryFiles/js/site.js"></script>
+    <script src="~/AccessaryFiles/js/user.js"></script> *@
 </body>
 
-
-<!-- register24:03-->
+<!-- Mirrored from thememakker.com/templates/oreo/hospital/html/light/sign-up.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 10 Feb 2024 08:15:20 GMT -->
 </html>
