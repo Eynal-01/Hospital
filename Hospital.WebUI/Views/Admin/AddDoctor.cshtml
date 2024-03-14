@@ -1,21 +1,55 @@
-@model AddDoctorViewModel
+﻿@model AddDoctorViewModel
+
+@* <head>
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
+
+    <!-- bootstrap.min css -->
+    <link rel="stylesheet" href="~/UserFiles/plugins/bootstrap/css/bootstrap.min.css">
+    <!-- Icon Font Css -->
+    <link rel="stylesheet" href="~/UserFiles/plugins/icofont/icofont.min.css">
+    <link rel="stylesheet" href="~/UserFiles/css/style.css" />
+    <!-- Slick Slider  CSS -->
+    <link rel="stylesheet" href="~/UserFiles/plugins/slick-carousel/slick/slick.css">
+    <link rel="stylesheet" href="~/UserFiles/plugins/slick-carousel/slick/slick-theme.css">
+
+    <!-- Main Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.10.0/main.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/UserFiles/css/style.css">
+</head> *@
+@{
+    var count = 0;
+    var selectedId = 0;
+}
 
 <title>:: Oreo Hospital :: Add Doctors</title>
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <!-- Favicon-->
-<link rel="stylesheet" href="~/AdminFiles/assets/plugins/bootstrap/css/bootstrap.min.css">
+@* <link rel="stylesheet" href="~/AdminFiles/assets/plugins/bootstrap/css/bootstrap.min.css"> *@
 <link rel="stylesheet" href="~/AdminFiles/assets/plugins/dropzone/dropzone.css">
-<link rel="stylesheet" href="~/AdminFiles/assets/plugins/bootstrap-select/css/bootstrap-select.css" />
+@* <link rel="stylesheet" href="~/AdminFiles/assets/plugins/bootstrap-select/css/bootstrap-select.css" /> *@
 <!-- Custom Css -->
 <link rel="stylesheet" href="~/AdminFiles/assets/css/main.css">
 <link rel="stylesheet" href="~/AdminFiles/assets/css/color_skins.css">
+<style>
+    .room {
+        cursor: pointer;
+    }
 
+        .room:hover {
+            box-shadow: 0 0 10px 1px springgreen;
+        }
+
+    .dropdown-toggle {
+        display: none;
+    }
+</style>
 <section class="content">
     <div class="block-header">
         <div class="row">
             <div class="col-lg-7 col-md-5 col-sm-12">
                 <h2>
-                    Add Doctors
+                    Add Doctor
                     <small class="text-muted">Welcome to Oreo</small>
                 </h2>
             </div>
@@ -43,36 +77,37 @@
                     <div class="body">
                         <form asp-controller="Admin" asp-action="AddDoctor" method="post" enctype="multipart/form-data">
                             <div class="row clearfix">
-                                <div class="col-sm-6">
+                                <div class="col-sm-3">
                                     <div class="form-group">
                                         <input asp-for="FirstName" type="text" class="form-control" placeholder="First Name">
                                     </div>
                                 </div>
-                                <div class="col-sm-6">
+                                <div class="col-sm-3">
                                     <div class="form-group">
                                         <input asp-for="LastName" type="text" class="form-control" placeholder="Last Name">
                                     </div>
                                 </div>
-                                <div class="col-sm-6">
+                                <div class="col-sm-3">
                                     <div class="form-group">
                                         <input asp-for="Username" type="text" class="form-control" placeholder="User Name">
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row clearfix">
                                 <div class="col-sm-3">
-                                    <select asp-for="Gender" class="form-control show-tick">
-                                        <option value="">- Gender -</option>
-                                        <option value="Male">Male</option>
-                                        <option value="Female">Female</option>
-                                    </select>
-                                </div>
-                                <div class="col-sm-3">
-                                    <div class="form-group">
-                                        <label>Birthday</label>
-                                        <input asp-for="DateOfBirth" type="datetime" class="form-control" placeholder="dd/mm/yy">
+                                    <div class="form-check">
+                                        <input asp-for="Gender" value="Male" class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                                        <label class="form-check-label" for="flexRadioDefault1">
+                                            Male
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" value="Female" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+                                        <label class="form-check-label" for="flexRadioDefault2">
+                                            Female
+                                        </label>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="row clearfix">
                                 <div class="col-sm-3">
                                     <div class="form-group">
                                         <input asp-for="Address" type="text" class="form-control" placeholder="Address">
@@ -93,84 +128,121 @@
                                         <input asp-for="MobileNumber" type="text" class="form-control" placeholder="Phone">
                                     </div>
                                 </div>
-                                <div class="col-sm-6">
+                                <div class="col-sm-3">
                                     <div class="form-group">
                                         <input asp-for="Email" type="text" class="form-control" placeholder="Enter Your Email">
                                     </div>
                                 </div>
-                                <select asp-for="DepartmentId" class="form-control" id="exampleFormControlSelect1">
-                                    @for (int i = 0; i < Model.Departments.Count(); i++)
-                                    {
-                                        <option value="@Model.Departments[i].Id">@Model.Departments[i].DepartmentName</option>
-                                    }
-                                </select>
-                                <select asp-for="ScheduleId" class="form-control" id="exampleFormControlSelect2">
-                                    @for (int i = 0; i < Model.Schedules.Count(); i++)
-                                    {
-                                        <option value="@Model.Schedules[i].Id">@Model.Schedules[i].WorkTime</option>
-                                    }
-                                </select>
-                              @*   <select asp-for="RoomId" class="form-control" id="exampleFormControlSelect2">
-                                    @for (int i = 0; i < Model.Rooms.Count(); i++)
-                                    {
-                                        <option value="@Model.Rooms[i].Id">@Model.Rooms[i].RoomNo</option>
-                                    }
-                                </select> *@
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <select asp-for="DepartmentId" class="form-control" id="departmentSelect">
+                                            <option value="" selected disabled hidden></option>
 
-                                <div id="rooms">
-                                 @foreach (var room in Model.Rooms)
-                                    {
-                                        <div class="room">
-                                            <h2>@room.RoomNo</h2>
-                                            @if (room.Doctors.Count == 0)
+                                            @for (int i = 0; i < Model.Departments.Count(); i++)
                                             {
-                                                <h3>Empty room for both of times</h3>
+                                                <option value="@Model.Departments[i].Id">@Model.Departments[i].DepartmentName</option>
                                             }
-                                            else{
-                                                @foreach (var d in room.Doctors)
-                                                {
-                                                    <h3>@d.FirstName - @d.LastName</h3>
-                                                    <h2>Time : @d.Schedule.WorkTime</h2>
-                                                }
-                                            }
-                                        </div>
-                                    }
+                                        </select>
+                                    </div>
                                 </div>
+                                <div class="col-sm-4">
+                                    <select asp-for="ScheduleId" style="width:340%; height:6vh; border-radius:30px; border-color:rgb(214, 207, 205)">
+                                        @foreach (var item in Model.Rooms)
+                                        {
+                                            if (item != null)
+                                            {
+                                                <option value="@item.Id" style="padding:200%; font-size:100%" disabled>
+                                                    <section style="border-top:5px solid lightgray;margin-top:20px !important;">
+                                                        @* <h2 id="room">@item.RoomNo</h2> *@
+                                                        @if (item.Doctors != null)
+                                                        {
+                                                            @foreach (var d in item.Doctors)
+                                                            {
+                                                                if (d.ScheduleId != 0)
+                                                                {
+                                                                    ++count;
+                                                                    selectedId = d.ScheduleId.GetValueOrDefault();
+                                                                    <section id="fullRoom" style="box-shadow:0 0 5px 1px red">
+                                                                        <h2 id="room">@item.RoomNo</h2>
+                                                                        <h3>@d.FirstName - @d.LastName</h3>
+                                                                        <h4>@d.Schedule.WorkTime - reserved</h4>
+                                                                    </section>
+                                                                }
+                                                            }
+                                                            if (count != 2)
+                                                            {
+                                                                @foreach (var s in Model.Schedules)
+                                                                {
+                                                                    @if (s.Id != selectedId)
+                                                                    {
+                                                                <option style="padding:200%; font-size:100%">
+                                                                    <section class="room" id="emptyRoom" pointer="cursor" style="box-shadow:0 0 5px 1px springgreen">
+                                                                        <h2 id="room">@item.RoomNo -- </h2>
+                                                                        <h3 id="schedule1">@s.WorkTime -- </h3>
+                                                                        <h4>Currently is free</h4>
+                                                                    </section>
+                                                                </option>
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            @foreach (var s in Model.Schedules)
+                                                            {
+                                                        <option style="padding:200%; font-size:100%">
+                                                            <section class="room" style="box-shadow:0 0 5px 1px springgreen">
+                                                                <h2 id="room">@item.RoomNo -- </h2>
+                                                                <h3>@s.WorkTime -- </h3>
+                                                                <h4>Currently is free</h4>
+                                                            </section>
+                                                        </option>
+                                                            }
+                                                        }
+        </section>
+                                                                    </option>
+                                            }
 
-                                <div class="col-lg-12 col-md-12 col-sm-12">
-                                    <div class="dz-message">
-                                        <div class="drag-icon-cph"> <i class="material-icons">touch_app</i> </div>
-                                        <h3>Drop files here or click to upload.</h3>
-                                        <em>(This is just a demo dropzone. Selected files are <strong>not</strong> actually uploaded.)</em>
-                                    </div>
-                                    <div class="fallback">
-                                        <input asp-for="File" name="file" type="file" multiple />
-                                    </div>
+                                        }
+                                    </select>
+
                                 </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <input type="text" asp-for="Password" class="form-control" placeholder="Password">
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <input type="text" asp-for="ConfirmPassword" class="form-control" placeholder="Confirm Password">
-                                    </div>
-                                </div>
-                                <div class="col-sm-12">
-                                    <div class="form-group">
-                                        <textarea asp-for="ShortBiography" rows="4" class="form-control no-resize" placeholder="Information . . ."></textarea>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12">
-                                    <div class="form-group">
-                                        <textarea asp-for="Education" rows="4" class="form-control no-resize" placeholder="Education . . ."></textarea>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12">
-                                    <button type="submit" class="btn btn-primary btn-round">Submit</button>
-                                    <button type="submit" class="btn btn-default btn-round btn-simple">Cancel</button>
-                                </div>
+<br />
+<div class="col-sm-6">
+    <div class="form-group">
+        <input type="password" asp-for="Password" class="form-control" placeholder="Password">
+    </div>
+</div>
+<div class="col-sm-6">
+    <div class="form-group">
+        <input type="password" asp-for="ConfirmPassword" class="form-control" placeholder="Confirm Password">
+    </div>
+</div>
+
+<div class="col-lg-12 col-md-12 col-sm-12">
+    <div class="dz-message">
+        <h3>Drop files here or click to upload.</h3>
+        <em>(This is just a demo dropzone. Selected files are <strong>not</strong> actually uploaded.)</em>
+    </div>
+    <div class="fallback">
+        <input asp-for="File" name="file" type="file" multiple />
+    </div>
+</div>
+
+<div class="col-sm-6" style="margin-top:7%">
+    <div class="form-group">
+        <textarea asp-for="ShortBiography" rows="4" class="form-control no-resize" placeholder="Information . . ."></textarea>
+    </div>
+</div>
+<div class="col-sm-6" style="margin-top:7%">
+    <div class="form-group">
+        <textarea asp-for="Education" rows="4" class="form-control no-resize" placeholder="Education . . ."></textarea>
+    </div>
+</div>
+<div class="col-sm-12">
+    <button type="submit" class="btn btn-primary btn-round">Submit</button>
+    <button type="reset" class="btn btn-default btn-round btn-simple">Cancel</button>
+</div>
                             </div>
                         </form>
                     </div>
@@ -178,110 +250,39 @@
             </div>
         </div>
     </div>
-    <div class="row clearfix">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="header">
-                    <h2><strong>Doctor's</strong> Account Information <small>Description text here...</small> </h2>
-                    <ul class="header-dropdown">
-                        <li class="remove">
-                            <a role="button" class="boxs-close"><i class="zmdi zmdi-close"></i></a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="body">
-                    <div class="row clearfix">
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <input type="text" class="form-control" placeholder="User Name">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Password">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Confirm Password">
-                            </div>
-                        </div>
-                        <div class="col-sm-12">
-                            <button type="submit" class="btn btn-primary btn-round">Submit</button>
-                            <button type="submit" class="btn btn-default btn-round btn-simple">Cancel</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row clearfix">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="header">
-                    <h2><strong>Doctor</strong> Social Media Info <small>Description text here...</small> </h2>
-                    <ul class="header-dropdown">
-                        <li class="remove">
-                            <a role="button" class="boxs-close"><i class="zmdi zmdi-close"></i></a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="body">
-                    <div class="row clearfix">
-                        <div class="col-sm-6">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="zmdi zmdi-facebook"></i></span>
-                                <input type="text" class="form-control" placeholder="Facebook">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="zmdi zmdi-twitter"></i></span>
-                                <input type="text" class="form-control" placeholder="Twitter">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="zmdi zmdi-google-plus"></i></span>
-                                <input type="text" class="form-control" placeholder="Google Plus">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="zmdi zmdi-linkedin"></i></span>
-                                <input type="text" class="form-control" placeholder="LinkedIN">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="zmdi zmdi-behance"></i></span>
-                                <input type="text" class="form-control" placeholder="Behance">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="zmdi zmdi-dribbble"></i></span>
-                                <input type="text" class="form-control" placeholder="dribbble">
-                            </div>
-                        </div>
-                        <div class="col-sm-12">
-                            <p> <b>With Search Bar</b> </p>
-                            <select class="form-control z-index show-tick" data-live-search="true">
-                                <option>Hot Dog, Fries and a Soda</option>
-                                <option>Burger, Shake and a Smile</option>
-                                <option>Sugar, Spice and all things nice</option>
-                            </select>
-                            <button type="submit" class="btn btn-primary btn-round">Submit</button>
-                            <button type="submit" class="btn btn-default btn-round btn-simple">Cancel</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    </div>
 </section>
-<!-- Jquery Core Js -->
+@*
+<script src="~/UserFiles/plugins/jquery/jquery.js"></script>
+<!-- Bootstrap 4.3.2 -->
+<script src="~/UserFiles/plugins/bootstrap/js/popper.js"></script>
+<script src="~/UserFiles/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="~/UserFiles/plugins/counterup/jquery.easing.js"></script>
+<!-- Slick Slider -->
+<script src="~/UserFiles/plugins/slick-carousel/slick/slick.min.js"></script>
+<!-- Counterup -->
+<script src="~/UserFiles/plugins/counterup/jquery.waypoints.min.js"></script>
+
+<script src="~/UserFiles/plugins/shuffle/shuffle.min.js"></script>
+<script src="~/UserFiles/plugins/counterup/jquery.counterup.min.js"></script>
+<!-- Google Map -->
+<script src="~/UserFiles/plugins/google-map/map.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkeLMlsiwzp6b3Gnaxd86lvakimwGA6UA&callback=initMap"></script>
+
+<script src="~/UserFiles/js/script.js"></script>
+<script src="~/UserFiles/js/contact.js"></script>
+
+<script src="~/AccessaryFiles/js/user.js"></script>
+<script src="~/AccessaryFiles/js/site.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.10.0/main.min.js"></script>
+ *@
+
+
+
+
+<script src="~/AccessaryFiles/js/signalr/dist/browser/signalR.js"></script>
+<script src="~/AccessaryFiles/js/site.js"></script>
+<script src="~/AccessaryFiles/js/user.js"></script>
+
 <script src="~/AdminFiles/assets/bundles/libscripts.bundle.js"></script> <!-- Bootstrap JS and jQuery v3.2.1 -->
 <script src="~/AdminFiles/assets/bundles/vendorscripts.bundle.js"></script> <!-- slimscroll, waves Scripts Plugin Js -->
 

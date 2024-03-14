@@ -27,19 +27,7 @@ namespace Hospital.WebUI.Models
         [DataType(DataType.Password)]
         public string? ConfirmPassword { get; set; }
 
-        [Required]
-        [DataType(DataType.DateTime)]
-        public DateTime DateOfBirth { get; set; }
-
-        [Required]
-        [DataType(DataType.Date)]
-        public DateTime WorkStartTime { get; set; }
-
-        [Required]
-        [DataType(DataType.Date)]
-        public DateTime WorkEndTime { get; set; }
-
-        [Required]
+        //[Required]
         public string? Gender { get; set; }
 
         [Required]
@@ -52,19 +40,19 @@ namespace Hospital.WebUI.Models
         public string? City { get; set; }
 
         [Required]
-        [DataType(DataType.PhoneNumber)]
         public int MobileNumber { get; set; }
         public string? ImageUrl { get; set; } = "userWithoutPicture.jpg";
         public IFormFile? File { get; set; }
+        [Required]
         public string? ShortBiography { get; set; }
+        [Required]
         public string? Education { get; set; }
-
         public List<Department>? Departments { get; set; }
         public List<Schedule>? Schedules { get; set; }
         public List<Room>? Rooms { get; set; }
         public int? DepartmentId { get; set; }
-        public int? ScheduleId { get; set; }
+        [Required]
+        public string? ScheduleId { get; set; }
         public int? RoomId { get; set; }
-
     }
 }

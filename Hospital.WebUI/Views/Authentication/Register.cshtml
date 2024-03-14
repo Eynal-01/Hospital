@@ -39,9 +39,6 @@
                         <a class="nav-link" href="index-2.html">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="javascript:void(0);">Search Result</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" title="Follow us on Twitter" href="javascript:void(0);" target="_blank">
                             <i class="zmdi zmdi-twitter"></i>
                             <p class="d-lg-none d-xl-none">Twitter</p>
@@ -60,7 +57,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link btn btn-white btn-round" href="sign-in.html">SIGN IN</a>
+                        <a class="nav-link btn btn-white btn-round" href="/Authentication/Login">SIGN IN</a>
                     </li>
                 </ul>
             </div>
@@ -92,7 +89,7 @@
                                 </span>
                             </div>
                             <div class="input-group">
-                                <input asp-for="Email" type="email" type="text" class="form-control" placeholder="Enter Email">
+                                <input asp-for="Email" id="emailReg" type="email" type="text" class="form-control" placeholder="Enter Email">
                                 <span class="input-group-addon">
                                     <i class="zmdi zmdi-email"></i>
                                 </span>

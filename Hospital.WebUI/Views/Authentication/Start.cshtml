@@ -1,14 +1,9 @@
 ﻿@model RegisterViewModel
-
 @{
     Layout = null;
 }
-
 <!DOCTYPE html>
 <html lang="en">
-
-
-<!-- register24:03-->
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
@@ -32,46 +27,40 @@
         .box {
             width: 100px;
             height: 100px;
-            transition: transform 0.5s ease; /* Adding transition for smooth effect */
+            transition: transform 0.5s ease;
         }
 
             .box:hover {
-                transform: scale(1.2); /* Scale the size to 1.2 times when hovered */
+                transform: scale(0.8);
             }
     </style>
 </head>
-
 <body class="body">
-    <div style="height:100vh">
+    <div style="height:75vh; padding-left:5%; padding-right:5%; padding-top:6%;">
         <div style="display:flex;flex-direction:row;justify-content:space-around;margin:auto;height:100%;" class="background">
-            @*             <h1 style="height:80vh;background-color:red;margin-top:20px">dfdsf</h1>
-            <h1 style="height:80vh;background-color:red">dfdsf</h1>
-            <h1 style="height:80vh;background-color:red">dfdsf</h1> *@
-            <div class="box" style="height:80vh;width:20%;background-color:rgba(0,0,255,0.2);border-radius:30px;margin-top:4%">
-                <h1 style="text-align:center;margin:auto;color: #ffffff;margin-top:10%;font-size:40px;">Patient</h1>
-
+            <div class="box" style="height:70vh;width:20%;background-color:rgba(0,0,255,0.2);border-radius:30px;">
+                <h1 style="text-align:center;margin:auto;color: #ffffff;margin-top:20%;font-size:40px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">Patient</h1>
                 <button onclick="location.href='/Authentication/Selected?selected=Patient'" style="width:100%; height:100%; background-color:transparent; border:none;">
                     <i class="fa-solid fa-user" style="color: #ffffff;font-size:200px;"></i>
+                    <i class="fa-solid fa-user-patient"></i>
                 </button>
             </div>
-            <div class="box" style="height:80vh;width:20%;background-color:rgba(0,0,255,0.2);border-radius:30px;margin-top:4%">
-                <h1 style="text-align:center;margin:auto;color: #ffffff;margin-top:10%;font-size:40px;">Doctor</h1>
-                <button onclick="location.href='/Authentication/Selected?selected=Doctor'" style="width:100%; height:100%; background-color:transparent; border:none;">
 
+            <div class="box" style="height:70vh;width:20%;background-color:rgba(0,0,255,0.2);border-radius:30px;">
+                <h1 style="text-align:center;margin:auto;color: #ffffff;margin-top:20%;font-size:40px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">Doctor</h1>
+                <button onclick="location.href='/Authentication/Selected?selected=Doctor'" style="width:100%; height:100%; background-color:transparent; border:none;">
                     <i class="fa-solid fa-user-doctor fa-2xl" style="color: #ffffff;font-size:200px;"></i>
                 </button>
             </div>
-            <div class="box" style="height:80vh;width:20%;background-color:rgba(0,0,255,0.2);border-radius:30px;margin-top:4%">
-                <h1 style="text-align:center;margin:auto;color: #ffffff;margin-top:10%;font-size:40px;">Admin</h1>
+            <div class="box" style="height:70vh;width:20%;background-color:rgba(0,0,255,0.2);border-radius:30px;">
+                <h1 style="text-align:center;margin:auto;color: #ffffff;margin-top:20%;font-size:40px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">Admin</h1>
                 <button onclick="location.href='/Authentication/Selected?selected=Admin'" style="width:100%; height:100%; background-color:transparent; border:none;">
                     <i class="fa-solid fa-user-tie" style="color: #ffffff;font-size:200px;"></i>
+                    <i class="fa-solid fa-user-admin"></i>
                 </button>
             </div>
         </div>
     </div>
 </body>
-
-
-<!-- register24:03-->
 </html>
 

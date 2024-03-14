@@ -49,31 +49,14 @@ namespace Hospital.WebUI.Controllers
             var departments = await _context.Departments.ToListAsync();
             var schedules = await _context.Schedules.ToListAsync();
             var doctors = await _context.Doctors.Include(d => d.Schedule).ToListAsync();
-            var rooms = await _context.Rooms.OrderBy(r => r.Doctors.Count).ToListAsync();
+            var rooms = await _context.Rooms.ToListAsync();
 
-            var resultRoom = from d in doctors
-                             join r in rooms on d.RoomId equals r.Id
-                             select new
-                             {
-                                 RoomNo = r.RoomNo,
-                                 Doctors = doctors,
-                                 Id = r.Id
-                             };
-            var result = resultRoom.Select(rr =>
-            {
-                return new Room
-                {
-                    RoomNo = rr.RoomNo,
-                    Doctors = doctors,
-                    Id = rr.Id
-                };
-            });
             var viewModel = new AddDoctorViewModel
             {
                 ImageUrl = user.Avatar,
                 Departments = departments,
                 Schedules = schedules,
-                Rooms = result.ToList(),
+                Rooms = rooms
             };
             return View(viewModel);
         }
@@ -86,108 +69,6 @@ namespace Hospital.WebUI.Controllers
             {
                 Departments = departments,
             };
-            return View(viewModel);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> AddDoctor(AddDoctorViewModel viewModel)
-        {
-            if (ModelState.IsValid)
-            {
-
-                var user = await CurrentUser();
-                if (viewModel.Password == viewModel.ConfirmPassword)
-                {
-                    if (viewModel != null)
-                    {
-                        var helper = new ImageHelper(_webHost);
-                        if (viewModel.File != null)
-                        {
-                            viewModel.ImageUrl = await helper.SaveFile(viewModel.File);
-                            user.Avatar = viewModel.ImageUrl;
-                        }
-                    }
-                    var newPassword = HashPassword(viewModel.Password);
-                    var doctor = new Doctor
-                    {
-                        Address = viewModel.Address,
-                        BirthDate = viewModel.DateOfBirth,
-                        City = viewModel.City,
-                        Country = viewModel.Country,
-                        Email = viewModel.Email,
-                        NormalizedEmail = viewModel.Email.ToUpper(),
-                        FirstName = viewModel.FirstName,
-                        Gender = viewModel.Gender,
-                        LastName = viewModel.LastName,
-                        UserName = viewModel.Username,
-                        NormalizedUserName = viewModel.Username.ToUpper(),
-                        PhoneNumber = viewModel.MobileNumber.ToString(),
-                        Avatar = viewModel.ImageUrl,
-                        PasswordHash = newPassword,
-                        WorkStartTime = viewModel.WorkStartTime,
-                        WorkEndTime = viewModel.WorkEndTime,
-                        Bio = viewModel.ShortBiography,
-                        DepartmentId = viewModel.DepartmentId.ToString(),
-                        ScheduleId = viewModel.ScheduleId,
-                        RoomId = viewModel.RoomId,
-                        Education = viewModel.Education,
-                    };
-
-                    //var customUser = new CustomIdentityUser()
-                    //{
-                    //    //Address = viewModel.Address,
-                    //    //BirthDate = viewModel.DateOfBirth,
-                    //    //City = viewModel.City,
-                    //    //Country = viewModel.Country,
-                    //    Email = viewModel.Email,
-                    //    NormalizedEmail = viewModel.Email.ToUpper(),
-                    //    //FirstName = viewModel.FirstName,
-                    //    //Gender = viewModel.Gender,
-                    //    //LastName = viewModel.LastName,
-                    //    UserName = viewModel.Username,
-                    //    NormalizedUserName = viewModel.Username.ToUpper(),
-                    //    PhoneNumber = viewModel.MobileNumber.ToString(),
-                    //    PasswordHash = newPassword,
-                    //    //Avatar = viewModel.ImageUrl
-                    //};
-
-
-                    var customUser = new CustomIdentityUser
-                    {
-                        Email = viewModel.Email,
-                        UserName = viewModel.Username,
-                        PhoneNumber = viewModel.MobileNumber.ToString(),
-                    };
-
-                    var result = await _userManager.CreateAsync(customUser, viewModel.Password);
-
-                    if (result.Succeeded)
-                    {
-                        if (!await _roleManager.RoleExistsAsync("doctor"))
-                        {
-                            var role = new CustomIdentityRole
-                            {
-                                Name = "doctor"
-                            };
-                            var resul = await _roleManager.CreateAsync(role);
-                            //if (!resul.Succeeded)
-                            //{
-                            //    ModelState.AddModelError("", "Error");
-                            //    return View(registerViewModel);
-                            //}
-                        }
-                    }
-
-                    await _userManager.AddToRoleAsync(customUser, "doctor");
-
-                    //await _context.Users.AddAsync(customUser);
-                    await _context.Doctors.AddAsync(doctor);
-                    await _context.SaveChangesAsync();
-                }
-                return RedirectToAction("AddDoctor", "Admin");
-            }
-            var departments = await _context.Departments.ToListAsync();
-            viewModel.Departments = departments;
             return View(viewModel);
         }
 
@@ -449,13 +330,6 @@ namespace Hospital.WebUI.Controllers
             return Ok(department);
         }
 
-        //[HttpGet]
-        //public async Task<IActionResult> GetAppointmentDoctor(string id)
-        //{
-        //    var doctor = await _context.Doctors.FirstOrDefaultAsync(i => i.Id == id);
-        //    return Ok(doctor);
-        //}
-
         public async Task<IActionResult> DoctorProfile(DoctorProfileViewModel doctor)
         {
             var department = await _context.Departments.FirstOrDefaultAsync(d => d.Id == doctor.DepartmentId.ToString());
@@ -479,12 +353,102 @@ namespace Hospital.WebUI.Controllers
             return View(viewModel);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> AddDoctor(AddDoctorViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                if (viewModel.ScheduleId != "")
+                {
+                    var con = viewModel.ScheduleId.Split("--");
+                    var schedule = await _context.Schedules.FirstOrDefaultAsync(d => d.WorkTime == con[1].Trim());
+                    var room = await _context.Rooms.FirstOrDefaultAsync(d => d.RoomNo == con[0].Trim());
+
+
+
+                    if (viewModel.Password == viewModel.ConfirmPassword)
+                    {
+                        var newPassword = HashPassword(viewModel.Password);
+
+                        if (viewModel.File != null)
+                        {
+                            var helper = new ImageHelper(_webHost);
+
+                            var mediaUrl = await _mediaService.UploadMediaAsync(viewModel.File);
+
+                            if (mediaUrl != string.Empty)
+                            {
+                                var isVideoFile = _mediaService.IsVideoFile(viewModel.File);
+                                viewModel.ImageUrl = mediaUrl;
+                            }
+                            else
+                            {
+                                return BadRequest("error");
+                            }
+                        }
+
+                        var doctor = new Doctor
+                        {
+                            Address = viewModel.Address,
+                            City = viewModel.City,
+                            Country = viewModel.Country,
+                            Email = viewModel.Email,
+                            NormalizedEmail = viewModel.Email.ToUpper(),
+                            FirstName = viewModel.FirstName,
+                            Gender = viewModel.Gender,
+                            LastName = viewModel.LastName,
+                            UserName = viewModel.Username,
+                            NormalizedUserName = viewModel.Username.ToUpper(),
+                            PhoneNumber = viewModel.MobileNumber.ToString(),
+                            Avatar = viewModel.ImageUrl,
+                            PasswordHash = newPassword,
+                            Bio = viewModel.ShortBiography,
+                            DepartmentId = viewModel.DepartmentId.ToString(),
+                            Education = viewModel.Education,
+                            ScheduleId = schedule.Id,
+                            RoomId = room.Id,
+                        };
+
+                        var customUser = new CustomIdentityUser
+                        {
+                            Email = viewModel.Email,
+                            UserName = viewModel.Username,
+                            PhoneNumber = viewModel.MobileNumber.ToString(),
+                        };
+
+                        var result = await _userManager.CreateAsync(customUser, viewModel.Password);
+
+                        if (result.Succeeded)
+                        {
+                            if (!await _roleManager.RoleExistsAsync("doctor"))
+                            {
+                                var role = new CustomIdentityRole
+                                {
+                                    Name = "doctor"
+                                };
+                                var resul = await _roleManager.CreateAsync(role);
+                            }
+                        }
+                        await _context.Doctors.AddAsync(doctor);
+                        await _context.SaveChangesAsync();
+                    }
+                }
+            }
+
+            var departments = await _context.Departments.ToListAsync();
+            var schedules = await _context.Schedules.ToListAsync();
+            var rooms = await _context.Rooms.ToListAsync();
+            viewModel.Departments = departments;
+            viewModel.Schedules = schedules;
+            viewModel.Rooms = rooms;
+            return View(viewModel);
+        }
+
         public async Task<IActionResult> GetAllDepartment()
         {
             var departments = await _context.Departments.ToListAsync();
             return Ok(departments);
         }
-
 
         public IActionResult AddBlog()
         {
@@ -496,7 +460,7 @@ namespace Hospital.WebUI.Controllers
             return View();
         }
 
-        public IActionResult Appointments()
+        public IActionResult AllAppointments()
         {
             return View();
         }
@@ -577,7 +541,13 @@ namespace Hospital.WebUI.Controllers
             return View();
         }
 
+      
         public IActionResult BlogList()
+        {
+            return View();
+        }
+
+        public IActionResult Appointments()
         {
             return View();
         }
@@ -614,6 +584,26 @@ namespace Hospital.WebUI.Controllers
             ViewBag.Post = post;
 
             return View();
+        }
+
+        public async Task<IActionResult> FilterRooms(int time)
+        {
+            var timee = await _context.Schedules.FirstOrDefaultAsync(t => t.Id == time);
+            var doctors = await _context.Doctors.Where(d => d.ScheduleId == timee.Id).ToListAsync();
+            var rooms = new List<Room>();
+
+            if (doctors.Count() > 0)
+            {
+                for (var i = 0; i < doctors.Count(); i++)
+                {
+                    rooms = await _context.Rooms.Where(r => r.Id != doctors[i].RoomId).ToListAsync();
+                }
+            }
+            else
+            {
+                rooms = await _context.Rooms.ToListAsync();
+            }
+            return Ok(rooms);
         }
     }
 }
