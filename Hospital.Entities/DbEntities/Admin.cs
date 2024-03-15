@@ -25,5 +25,6 @@ namespace HospitalProject.Entities.DbEntities
 
         public virtual ICollection<Post>? Posts { get; set; }
         public virtual ICollection<PostView>? PostViews { get; set; }
+        public virtual ICollection<Chat>? Chats { get; set; }
     }
 }

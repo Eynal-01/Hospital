@@ -682,6 +682,7 @@ function GetAllPostAllUsers() {
             PopularPosts();
             GetAllDoctors();
             GetAllAbouts();
+            GetChat();
 
             for (var i = 0; i < data.posts.length; i++) {
                 images = "";
@@ -950,6 +951,231 @@ function checkRadioButton(radioButton) {
         PatientDoctorFilterPatient(radioButton.value);
     }
 }
+function SendMeesage(receiverId, senderId) {
+    let element = document.getElementById("message");
+    if (element != null && element.value != "") {
+        content = element.value;
+    }
+    var object = {
+        receiverId: receiverId,
+        senderId: senderId,
+        message: content
+    };
+
+    $.ajax({
+        url: `/Chat/AddMessage`,
+        method: "POST",
+        data: object,
+        success: function (data) {
+            //GetMessageCall(receiverId, senderId);
+
+            //SendFollowCall(receiverId);
+            //SendFollowCall(senderId);
+
+            //GetMessageLiveChatCall(receiverId, senderId);
+            //GetMessageLiveChatCall(senderId, receiverId);
+
+
+            //if (element != null) {
+            //    element.value = "";
+            //}
+
+            //if (liveChatSendMessage != null) {
+            //    liveChatSendMessage.value = "";
+            //}
+        }
+    })
+}
+
+function UserMessageClick(doctorId) {
+    //alert(doctorId);
+    $.ajax({
+        url: `/Chat/GetClickedUserMessages?doctorId=${doctorId}`,
+        method: "GET",
+        success: function (data) {
+            var content = "";
+            var message = "";
+            console.log(data);
+            for (var i = 0; i < data.currentChat.messages.length; i++) {
+                if (data.currentChat.messages[i].senderId != data.currentUserId) {
+                    content += `
+                           <li>
+                               <div class="message-data">
+                                   <span class="message-data-name"><i class="zmdi zmdi-circle online"></i> Aiden</span> <span class="message-data-time">10:12 AM, Today</span>
+                               </div>
+                               <div class="message my-message">
+                                   <p> ${data.currentChat.messages[i].content} </p>
+                               </div>
+                           </li>
+                    `;
+                }
+                else {
+                    content += `
+                    
+                              <li class="clearfix">
+                                  <div class="message-data text-right"> <span class="message-data-time">10:10 AM, Today</span> &nbsp; &nbsp; <span class="message-data-name">Charlotte</span> <i class="zmdi zmdi-circle me"></i> </div>
+                                  <div class="message other-message float-right"> ${data.currentChat.messages[i].content} </div>
+                              </li>
+                    
+                    `;
+                }
+            }
+            message = `
+                  <input id="message" type="text" class="form-control" placeholder="Enter text here...">
+                                    <span class="input-group-addon">
+                                        <a onclick="SendMeesage('${data.currentChat.receiverId}','${data.currentChat.senderId}')">
+                                            <i class="zmdi zmdi-mail-send"></i>
+                                        </a>
+                                    </span>
+            `;
+
+            $("#messages").html(content);
+            $("#doctorMessages").html(content);
+            $("#sendMessage").html(message);
+        }
+    })
+}
+
+function UserMessageClickDoctor(doctorId) {
+    //alert(doctorId);
+    $.ajax({
+        url: `/Chat/GetClickedUserMessagesDoctor?doctorId=${doctorId}`,
+        method: "GET",
+        success: function (data) {
+            var content = "";
+            var message = "";
+            console.log(data);
+            for (var i = 0; i < data.currentChat.messages.length; i++) {
+                if (data.currentChat.messages[i].senderId != data.currentUserId) {
+                    content += `
+                           <li>
+                               <div class="message-data">
+                                   <span class="message-data-name"><i class="zmdi zmdi-circle online"></i> Aiden</span> <span class="message-data-time">10:12 AM, Today</span>
+                               </div>
+                               <div class="message my-message">
+                                   <p> ${data.currentChat.messages[i].content} </p>
+                               </div>
+                           </li>
+                    `;
+                }
+                else {
+                    content += `
+                    
+                              <li class="clearfix">
+                                  <div class="message-data text-right"> <span class="message-data-time">10:10 AM, Today</span> &nbsp; &nbsp; <span class="message-data-name">Charlotte</span> <i class="zmdi zmdi-circle me"></i> </div>
+                                  <div class="message other-message float-right"> ${data.currentChat.messages[i].content} </div>
+                              </li>
+                    
+                    `;
+                }
+            }
+            message = `
+                  <input id="message" type="text" class="form-control" placeholder="Enter text here...">
+                                    <span class="input-group-addon">
+                                        <a onclick="SendMeesage('${data.currentChat.receiverId}','${data.currentChat.senderId}')">
+                                            <i class="zmdi zmdi-mail-send"></i>
+                                        </a>
+                                    </span>
+            `;
+
+            $("#messages").html(content);
+            $("#doctorMessages").html(content);
+            $("#sendMessage").html(message);
+        }
+    })
+}
+
+
+function GetChat() {
+    $.ajax({
+        url: `/Chat/GetUserChatInUser`,
+        method: "GET",
+        success: function (data) {
+            var content = "";
+            var chatHeader = "";
+            for (var i = 0; i < data.doctors.length; i++) {
+                if (i == 0) {
+                    content += `
+                          <li class="clearfix active" href=/Chat/GetClickedUserMessages?doctorId=${data.doctors[i].id}">
+                              <img src="${data.doctors[i].avatar}" alt="avatar" />
+                              <div class="about">
+                                  <div class="name">${data.doctors[i].firstName} ${data.doctors[i].lastName}</div>
+                                  <div class="status"> <i class="zmdi zmdi-circle online"></i> online </div>
+                              </div>
+                          </li>
+                    `;
+
+                    chatHeader = `
+                                <img src="${data.doctors[i].avatar}" alt="avatar" />
+                                <div class="chat-about">
+                                    <div class="chat-with">${data.doctors[i].firstName} ${data.doctors[i].lastName}</div>
+                                    <div class="chat-num-messages">already 8 messages</div>
+                                </div>
+                                <a href="javascript:void(0);" class="list_btn btn btn-primary btn-round float-md-right"><i class="zmdi zmdi-comments"></i></a>
+                    `;
+
+                    UserMessageClick(data.doctors[i].id);
+                }
+                else {
+                    content += `
+                        <li class="clearfix" href=/Chat/GetClickedUserMessages?doctorId=${data.doctors[i].id}">
+                            <img src="${data.doctors[i].avatar}" alt="avatar" />
+                            <div class="about">
+                                <div class="name">${data.doctors[i].firstName} ${data.doctors[i].lastName}</div>
+                                <div class="status"> <i class="zmdi zmdi-circle offline"></i> left 7 mins ago </div>
+                            </div>
+                        </li>
+                `;
+                }
+            }
+            console.log(data.admins);
+            for (var i = 0; i < data.admins.length; i++) {
+                    console.log("sdf");
+                if (content == "") {
+
+                    content += `
+                        <li class="clearfix">
+                            <img src="${data.admins[i].avatar}" alt="avatar" />
+                            <div class="about">
+                                <div class="name">${data.admins[i].userName}</div>
+                                <div class="status"> <i class="zmdi zmdi-circle offline"></i> left 7 mins ago </div>
+                            </div>
+                        </li>
+                `;
+
+                    chatHeader = `
+                                <img src="${data.admins[i].avatar}" alt="avatar" />
+                                <div class="chat-about">
+                                    <div class="chat-with">${data.admins[i].userName}</div>
+                                    <div class="chat-num-messages">already 8 messages</div>
+                                </div>
+                                <a href="javascript:void(0);" class="list_btn btn btn-primary btn-round float-md-right"><i class="zmdi zmdi-comments"></i></a>
+                    `;
+
+                    UserMessageClickDoctor(data.admins[i].id);
+                }
+                else {
+
+                    content += `
+                        <li class="clearfix active">
+                            <img src="${data.admins[i].avatar}" alt="avatar" />
+                            <div class="about">
+                                <div class="name">${data.admins[i].userName}</div>
+                                <div class="status"> <i class="zmdi zmdi-circle offline"></i> left 7 mins ago </div>
+                            </div>
+                        </li>
+                `;
+                }
+            }
+
+
+            $("#doctorInChatContact").html(content);
+            $("#chatHeader").html(chatHeader);
+            $("#doctorInchatHeader").html(chatHeader);
+            $("#adminInChatContact").html(content);
+        }
+    })
+}
 
 function GetAllDoctors() {
     $.ajax({
@@ -992,7 +1218,7 @@ function GetAllDoctors() {
 				    			</div>
 				    		</div>
 				    		<div class="content mt-3">
-				    			<h4 class="mb-0"><a href="/DoctorsShow/PatientInDoctorProfile('${data.doctors[i].id}')">${data.doctors[i].firstName}<br/>${data.doctors[i].lastName}</a ></h4 >
+				    			<h4 class="mb-0"><a href='/DoctorsShow/PatientInDoctorProfile?doctorId=${data.doctors[i].id}'>${data.doctors[i].firstName}<br/>${data.doctors[i].lastName}</a ></h4 >
 				    			<p>${data.doctors[i].department.departmentName}</p>
 				    		</div>
 				    	</div>

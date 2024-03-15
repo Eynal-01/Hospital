@@ -40,6 +40,7 @@ namespace HospitalProject.Entities.DbEntities
         public int WorkDayCount { get; set; }
         public virtual Department? Department { get; set; }
         public virtual ICollection<PostView>? PostViews { get; set; }
+        public virtual ICollection<Chat>? Chats { get; set; }
 
         //public ICollection<AvailableTime>? AvailableTimes { get; set; }
     }
