@@ -17,7 +17,7 @@ namespace HospitalProject.Entities.DbEntities
         public DateTime? BirthDate { get; set; }
         public string? Gender { get; set; }
         public string? Address { get; set; }
-        public string? Avatar { get; set; } = "userWithoutPicture.png";
+        public string? Avatar { get; set; } = "https://res.cloudinary.com/dvcq24ogl/image/upload/v1709901715/oc7rwjbfbbgjq5e2gqso.png";
         public string? City { get; set; }
         public string? Country { get; set; }
         public string? Bio { get; set; }

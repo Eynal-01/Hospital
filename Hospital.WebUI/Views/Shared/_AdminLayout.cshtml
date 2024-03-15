@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="~/UserFiles/plugins/slick-carousel/slick/slick-theme.css">
 </head>
 <body class="theme-cyan">
-    <!-- Page Loader -->
+    <!-- Page Loader 
     <div class="page-loader-wrapper">
         <div class="loader">
             <div class="m-t-30"><img class="zmdi-hc-spin" src="https://thememakker.com/templates/oreo/hospital/html/assets/images/logo.svg" width="48" height="48" alt="Oreo"></div>
@@ -39,7 +39,7 @@
             <li>
                 <div class="navbar-header">
                     <a href="javascript:void(0);" class="bars"></a>
-                    <a class="navbar-brand" href="/Admin/Index"><img src="https://thememakker.com/templates/oreo/hospital/html/assets/images/logo.svg" width="30" alt="Oreo"><span class="m-l-10">Oreo</span></a>
+                    @* <a class="navbar-brand" href="/Admin/Index"><img src="https://thememakker.com/templates/oreo/hospital/html/assets/images/logo.svg" width="30" alt="Oreo"><span class="m-l-10">Oreo</span></a> *@
                 </div>
             </li>
             <li><a href="javascript:void(0);" class="ls-toggle-btn" data-close="true"><i class="zmdi zmdi-swap"></i></a></li>
@@ -156,6 +156,7 @@
                                     <div class="progress-container progress-info">
                                         <span class="progress-badge">Gynecology</span>
                                         <div class="progress">
+                                            <a href="c:\users\eynal\source\repos\hospital\hospital.webui\views\shared\_adminlayout.cshtml">c:\users\eynal\source\repos\hospital\hospital.webui\views\shared\_adminlayout.cshtml</a>
                                             <div class="progress-bar" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 45%;">
                                                 <span class="progress-value">45%</span>
                                             </div>
@@ -237,13 +238,13 @@
                     <ul class="list">
                         @await Component.InvokeAsync("AdminInfo")
                         <li><a href="/Admin/Index"><i class="zmdi zmdi-home"></i><span>Dashboard</span></a></li>
-                        <li><a href="/Admin/Appointments"><i class="zmdi zmdi-calendar-check"></i><span>Appointment</span> </a></li>
+                        <li><a href="/Admin/AllAppointments" class="nav-link active"><i class="zmdi zmdi-calendar-check"></i><span>Appointment</span> </a></li>
                         <li>
                             <a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-account-add"></i><span>Doctors</span> </a>
                             <ul class="ml-menu">
                                 <li><a href="/Admin/Doctors">All Doctors</a></li>
                                 <li><a href="/Admin/AddDoctor">Add Doctor</a></li>
-                                <li><a href="/Admin/Events">Doctor Schedule</a></li>
+                                @* <li><a href="/Admin/Events">Doctor Schedule</a></li> *@
                             </ul>
                         </li>
                         <li>
@@ -254,14 +255,14 @@
                                 @* <li><a href="/Admin/PatientInvoice">Invoice</a></li> *@
                             </ul>
                         </li>
-                       @*  <li>
+                        <li>
                             <a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-balance-wallet"></i><span>Payments</span> </a>
                             <ul class="ml-menu">
                                 <li><a href="/Admin/payments">Payments</a></li>
                                 <li><a href="/Admin/AddPayment">Add Payment</a></li> 
                                  <li><a href="/Admin/PatientInvoice">Invoice</a></li>
                             </ul>
-                        </li> *@
+                        </li>
                         <li>
                             <a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-label-alt"></i><span>Departments</span> </a>
                             <ul class="ml-menu">
@@ -269,7 +270,7 @@
                                 <li><a href="/Admin/AllDepartments">All Departments</a></li>
                             </ul>
                         </li>
-                       @*  <li>
+                        <li>
                             <a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-lock"></i><span>Authentication</span> </a>
                             <ul class="ml-menu">
                                 <li><a href="/Authentication/Login">Sign In</a> </li>
@@ -280,7 +281,7 @@
                                 <li><a href="/Admin/PageOffline">Page Offline</a> </li>
                                 <li><a href="Admin/Locked">Locked Screen</a> </li>
                             </ul>
-                        </li> *@
+                        </li>
                         <li>
                             <a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-blogger"></i><span>Blog</span></a>
                             <ul class="ml-menu">
@@ -290,7 +291,19 @@
                                 @* <li><a href="blog-grid.html">Blog Grid</a></li> *@
                                 @* <li><a href="blog-details.html">Blog Single</a></li> *@
                             </ul>
-                        @*  <li>
+                         </li>
+
+                        <li>
+                            <a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-blogger"></i><span>About</span></a>
+                            <ul class="ml-menu">
+                                @* <li><a href="blog-dashboard.html">Blog Dashboard</a></li> *@
+                                <li><a href="/Admin/Abouts">Abouts</a></li>
+                                <li><a href="/Admin/AddAbout">Add About</a></li>
+                                @* <li><a href="blog-grid.html">Blog Grid</a></li> *@
+                                @* <li><a href="blog-details.html">Blog Single</a></li> *@
+                            </ul>
+                        </li>
+                         @*
                         <a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-folder"></i><span>File Manager</span> </a>
                         <ul class="ml-menu">
                         <li><a href="file-dashboard.html">All File</a></li>

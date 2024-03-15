@@ -5,10 +5,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
-using System;
-using System.Media;
-using Microsoft.AspNetCore.Components.Forms;
 using Hospital.Entities.DbEntities;
 using Hospital.Business.Abstract;
 
@@ -23,21 +19,31 @@ namespace Hospital.WebUI.Controllers
         private readonly IDataService _dataService;
         private readonly CustomIdentityDbContext _context;
 
-        [HttpGet]
-        public async Task<IActionResult> Appointment()
+
+        public HomeController(CustomIdentityDbContext dbContext, UserManager<CustomIdentityUser> userManager, IDataService dataService, CustomIdentityDbContext context)
         {
-            var departments = await _dbContext.Departments.ToListAsync();
-            var viewModel = new AppoinmentViewModel
-            {
-                Departments = new List<Department>(),
-            };
-            if (departments != null)
-            {
-                viewModel.Departments = departments;
-            }
-            return View(viewModel);
+            _dbContext = dbContext;
+            _userManager = userManager;
+            _dataService = dataService;
+            _context = context;
         }
 
+
+        [HttpGet]
+		public async Task<IActionResult> Appointment()
+		{
+			var departments = await _dbContext.Departments.ToListAsync();
+			var viewModel = new AppoinmentViewModel
+			{
+				Departments = new List<Department>(),
+			};
+			if (departments != null)
+			{
+				viewModel.Departments = departments;
+			}
+			return View(viewModel);
+		}
+     
         [HttpPost]
         public async Task<IActionResult> Appointment(AppoinmentViewModel viewModel)
         {
@@ -51,7 +57,8 @@ namespace Hospital.WebUI.Controllers
                 var doctor = await _dbContext.Doctors.FirstOrDefaultAsync(d => d.Id == viewModel.DoctorId);
                 var doctors = _dbContext.Doctors.ToList();
 
-                //var names = viewModel.Fullname.Split(' ');
+                var date1 = viewModel.AppointmentDate.ToString().Split('T')[0];
+                var date2 = date1.Split(' ')[0];
 
                 var appoinment = new Appointment
                 {
@@ -61,14 +68,8 @@ namespace Hospital.WebUI.Controllers
                     PatientId = patient.Id.ToString(),
                     Message = viewModel.Message,
                     AppointmentTime = viewModel.AppointmentTime,
-                    AppointmentDate = viewModel.AppointmentDate
+                    AppointmentDate = DateTime.Parse(date2),
                 };
-                //for (int i = 0; i < doctors.Count(); i++)
-                //{
-                //    if (doctors[i].Id == doctor.Id)
-                //    {
-                //    }
-                //}
                 await _dbContext.Appointments.AddAsync(appoinment);
                 await _dbContext.SaveChangesAsync();
                 return RedirectToAction("SuccessPay", "Home");
@@ -76,21 +77,14 @@ namespace Hospital.WebUI.Controllers
             return RedirectToAction("SuccessPay", "Home");
         }
 
-        public HomeController(CustomIdentityDbContext dbContext, UserManager<CustomIdentityUser> userManager, IDataService dataService, CustomIdentityDbContext context)
-        {
-            _dbContext = dbContext;
-            _userManager = userManager;
-            _dataService = dataService;
-            _context = context;
-        }
 
-        public async Task<Patient> CurrentUser()
-        {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
-            var admin = await _dbContext.Patients.FirstOrDefaultAsync(a => a.UserName == user.UserName && a.Email == user.Email);
-            return admin;
-        }
-
+		public async Task<Patient> CurrentUser()
+		{
+			var user = await _userManager.GetUserAsync(HttpContext.User);
+			var admin = await _dbContext.Patients.FirstOrDefaultAsync(a => a.UserName == user.UserName && a.Email == user.Email);
+			return admin;
+		}
+      
         public async Task<IActionResult> GetAllPost()
         {
             var user = await CurrentUser();
@@ -193,8 +187,9 @@ namespace Hospital.WebUI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAvailableTimes(string doctorId, string appointmentDate)
         {
+            var s = appointmentDate + " 00:00:00";
             var appointments = await _context.Appointments
-                //.Where(a => a.DoctorId == doctorId && a.AppointmentDate.ToString() == appointmentDate)
+                //.Where(a => a.DoctorId == doctorId && a.AppointmentDate.ToString() == s)
                 .ToListAsync();
 
             var timeSlots = new List<string>();
@@ -205,6 +200,7 @@ namespace Hospital.WebUI.Controllers
                 return NotFound("Doctor not found");
             }
 
+		
             var timeAround = await _context.Schedules.FirstOrDefaultAsync(t => t.Id == doctor.ScheduleId);
             if (timeAround == null)
             {
@@ -234,7 +230,7 @@ namespace Hospital.WebUI.Controllers
 
                 var appointmentSlot = $"{appointmentStartTime:hh\\:mm} - {appointmentEndTime:hh\\:mm}";
 
-                if (timeSlots.Contains(appointmentSlot))
+                if (timeSlots.Contains(appointmentSlot) && appointment.AppointmentDate.ToString()==s)
                 {
                     timeSlots.Remove(appointmentSlot);
                 }
@@ -256,8 +252,6 @@ namespace Hospital.WebUI.Controllers
                 currentTime = nextTime;
             }
         }
-
-
 
 
         //[HttpGet]
@@ -333,15 +327,6 @@ namespace Hospital.WebUI.Controllers
 
 
 
-
-
-
-
-
-
-
-
-
         //private void GenerateTimeSlotsForRange(TimeSpan startTime, TimeSpan endTime, ref List<string> timeSlots)
         //{
         //    DateTime currentTime = DateTime.Today.Add(startTime);
@@ -401,11 +386,10 @@ namespace Hospital.WebUI.Controllers
             return View();
         }
 
-        public IActionResult About()
+        public async Task<IActionResult> About()
         {
             return View();
         }
-
         public IActionResult BlogSindebar()
         {
             return View();

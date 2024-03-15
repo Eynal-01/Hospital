@@ -51,23 +51,6 @@ namespace Hospital.WebUI.Controllers
             var doctors = await _context.Doctors.Include(d => d.Schedule).ToListAsync();
             var rooms = await _context.Rooms.ToListAsync();
 
-            //var resultRoom = from d in doctors
-            //				 join r in rooms on d.RoomId equals r.Id
-            //				 select new
-            //				 {
-            //					 RoomNo = r.RoomNo,
-            //					 Doctors = doctors,
-            //					 Id = r.Id
-            //				 };
-            //var result = resultRoom.Select(rr =>
-            //{
-            //	return new Room
-            //	{
-            //		RoomNo = rr.RoomNo,
-            //		Doctors = doctors,
-            //		Id = rr.Id
-            //	};
-            //});
             var viewModel = new AddDoctorViewModel
             {
                 ImageUrl = user.Avatar,
@@ -89,105 +72,144 @@ namespace Hospital.WebUI.Controllers
             return View(viewModel);
         }
 
+        public async Task<IActionResult> Abouts()
+        {
+            var abouts = await _context.Abouts.ToListAsync();
+            var doctors = await _context.Doctors.ToListAsync();
+            var viewModel = new AllAboutsViewModel
+            {
+                Abouts = abouts,
+                Doctors = doctors
+            };
+            ViewBag.ViewModel = viewModel;
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AddAbout()
+        {
+            var abouts = await _context.Abouts.ToListAsync();
+            var viewModel = new AddAboutViewModel();
+            if (abouts.Count() == 0)
+            {
+                viewModel = new AddAboutViewModel
+                {
+                    AboutsCount = abouts.Count(),
+                };
+            }
+            else
+            {
+                viewModel = new AddAboutViewModel
+                {
+                    AboutsCount = abouts.Count(),
+                    BigTitle = abouts[0].BigTitle,
+                    //Content = abouts[0].Content,
+                    FirstContent = abouts[0].FirstContent,
+                    //Title = abouts[0].Title,
+                    //ImageUrl = abouts[0].ImageUrl,
+                    Id = abouts[0].Id
+                };
+            }
+            var sibgleAbout = new AddAboutSingleViewModel
+            {
+                Content = "",
+                Title = "",
+                ImageUrl = ""
+            };
+
+            var allViewModel = new AllAboutViewModel
+            {
+                addAboutViewModel = viewModel,
+                addSingleAboutViewModel = sibgleAbout
+            };
+            return View(allViewModel);
+        }
+
+
         [HttpPost]
-        public async Task<IActionResult> AddDoctor(AddDoctorViewModel viewModel)
+        public async Task<IActionResult> AddAbout(AllAboutViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                if (viewModel.ScheduleId != "")
+                var abouts = await _context.Abouts.ToListAsync();
+                var about = new About
                 {
-                    var con = viewModel.ScheduleId.Split("--");
-                    var schedule = await _context.Schedules.FirstOrDefaultAsync(d => d.WorkTime == con[1].Trim());
-                    var room = await _context.Rooms.FirstOrDefaultAsync(d => d.RoomNo == con[0].Trim());
+                    BigTitle = viewModel.addAboutViewModel.BigTitle,
+                    //Content = viewModel.Content,
+                    FirstContent = viewModel.addAboutViewModel.FirstContent,
+                    //Title = viewModel.Title,
+                };
+                //if (viewModel.File != null)
+                //{
+                //    var helper = new ImageHelper(_webHost);
 
+                //    var mediaUrl = await _mediaService.UploadMediaAsync(viewModel.File);
 
-
-                    if (viewModel.Password == viewModel.ConfirmPassword)
-                    {
-                        var newPassword = HashPassword(viewModel.Password);
-
-                        if (viewModel.File != null)
-                        {
-                            var helper = new ImageHelper(_webHost);
-
-                            var mediaUrl = await _mediaService.UploadMediaAsync(viewModel.File);
-
-                            if (mediaUrl != string.Empty)
-                            {
-                                var isVideoFile = _mediaService.IsVideoFile(viewModel.File);
-                                viewModel.ImageUrl = mediaUrl;
-                            }
-                            else
-                            {
-                                return BadRequest("error");
-                            }
-                        }
-
-                        var doctor = new Doctor
-                        {
-                            Address = viewModel.Address,
-                            //BirthDate = viewModel.DateOfBirth,
-                            City = viewModel.City,
-                            Country = viewModel.Country,
-                            Email = viewModel.Email,
-                            NormalizedEmail = viewModel.Email.ToUpper(),
-                            FirstName = viewModel.FirstName,
-                            Gender = viewModel.Gender,
-                            LastName = viewModel.LastName,
-                            UserName = viewModel.Username,
-                            NormalizedUserName = viewModel.Username.ToUpper(),
-                            PhoneNumber = viewModel.MobileNumber.ToString(),
-                            Avatar = viewModel.ImageUrl,
-                            PasswordHash = newPassword,
-                            //WorkStartTime = viewModel.WorkStartTime,
-                            //WorkEndTime = viewModel.WorkEndTime,
-                            Bio = viewModel.ShortBiography,
-                            DepartmentId = viewModel.DepartmentId.ToString(),
-                            Education = viewModel.Education,
-                            ScheduleId = schedule.Id,
-                            RoomId = room.Id,
-                        };
-
-                        var customUser = new CustomIdentityUser
-                        {
-                            Email = viewModel.Email,
-                            UserName = viewModel.Username,
-                            PhoneNumber = viewModel.MobileNumber.ToString(),
-                        };
-
-                        var result = await _userManager.CreateAsync(customUser, viewModel.Password);
-
-                        if (result.Succeeded)
-                        {
-                            if (!await _roleManager.RoleExistsAsync("doctor"))
-                            {
-                                var role = new CustomIdentityRole
-                                {
-                                    Name = "doctor"
-                                };
-                                var resul = await _roleManager.CreateAsync(role);
-                                //if (!resul.Succeeded)
-                                //{
-                                //    ModelState.AddModelError("", "Error");
-                                //    return View(registerViewModel);
-                                //}
-                            }
-                        }
-                        await _context.Doctors.AddAsync(doctor);    
-                        await _context.SaveChangesAsync();  
-                    }
+                //    if (mediaUrl != string.Empty)
+                //    {
+                //        var isVideoFile = _mediaService.IsVideoFile(viewModel.File);
+                //        about.ImageUrl = mediaUrl;
+                //    }
+                //    else
+                //    {
+                //        return BadRequest("error");
+                //    }
+                //}
+                if (abouts.Count() == 0)
+                {
+                    await _context.Abouts.AddAsync(about);
                 }
+                else
+                {
+                    var aboutOld = await _context.Abouts.FirstOrDefaultAsync(d => d.Id == viewModel.addAboutViewModel.Id);
+                    aboutOld.FirstContent = viewModel.addAboutViewModel.FirstContent;
+                    //aboutOld.Title = viewModel.Title;
+                    //aboutOld.Content = viewModel.Content;
+                    aboutOld.BigTitle = viewModel.addAboutViewModel.BigTitle;
+                    _context.Abouts.Update(aboutOld);
+                }
+                await _context.SaveChangesAsync();
+                return RedirectToAction("AddAbout", "Admin");
             }
-
-            var departments = await _context.Departments.ToListAsync();
-            var schedules = await _context.Schedules.ToListAsync();
-            var rooms = await _context.Rooms.ToListAsync();
-            viewModel.Departments = departments;
-            viewModel.Schedules = schedules;
-            viewModel.Rooms = rooms;
             return View(viewModel);
         }
 
+
+        [HttpPost]
+        public async Task<IActionResult> AddSingleAbout(AllAboutViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var abouts = await _context.Abouts.ToListAsync();
+                var about = new About
+                {
+                    BigTitle = abouts[0].BigTitle,
+                    FirstContent = abouts[0].FirstContent,
+                    Content = viewModel.addSingleAboutViewModel.Content,
+                    Title = viewModel.addSingleAboutViewModel.Title,
+                };
+                if (viewModel.addSingleAboutViewModel.File != null)
+                {
+
+                    var mediaUrl = await _mediaService.UploadMediaAsync(viewModel.addSingleAboutViewModel.File);
+
+                    if (mediaUrl != string.Empty)
+                    {
+                        var isVideoFile = _mediaService.IsVideoFile(viewModel.addSingleAboutViewModel.File);
+                        about.ImageUrl = mediaUrl;
+                    }
+                    else
+                    {
+                        return BadRequest("error");
+                    }
+                }
+
+                await _context.Abouts.AddAsync(about);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("AddAbout", "Admin");
+            }
+            return RedirectToAction("AddAbout",viewModel);
+        }
 
         public async Task<IActionResult> GetAvailableDays(int availableCount)
         {
@@ -308,13 +330,6 @@ namespace Hospital.WebUI.Controllers
             return Ok(department);
         }
 
-        //[HttpGet]
-        //public async Task<IActionResult> GetAppointmentDoctor(string id)
-        //{
-        //    var doctor = await _context.Doctors.FirstOrDefaultAsync(i => i.Id == id);
-        //    return Ok(doctor);
-        //}
-
         public async Task<IActionResult> DoctorProfile(DoctorProfileViewModel doctor)
         {
             var department = await _context.Departments.FirstOrDefaultAsync(d => d.Id == doctor.DepartmentId.ToString());
@@ -338,12 +353,102 @@ namespace Hospital.WebUI.Controllers
             return View(viewModel);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> AddDoctor(AddDoctorViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                if (viewModel.ScheduleId != "")
+                {
+                    var con = viewModel.ScheduleId.Split("--");
+                    var schedule = await _context.Schedules.FirstOrDefaultAsync(d => d.WorkTime == con[1].Trim());
+                    var room = await _context.Rooms.FirstOrDefaultAsync(d => d.RoomNo == con[0].Trim());
+
+
+
+                    if (viewModel.Password == viewModel.ConfirmPassword)
+                    {
+                        var newPassword = HashPassword(viewModel.Password);
+
+                        if (viewModel.File != null)
+                        {
+                            var helper = new ImageHelper(_webHost);
+
+                            var mediaUrl = await _mediaService.UploadMediaAsync(viewModel.File);
+
+                            if (mediaUrl != string.Empty)
+                            {
+                                var isVideoFile = _mediaService.IsVideoFile(viewModel.File);
+                                viewModel.ImageUrl = mediaUrl;
+                            }
+                            else
+                            {
+                                return BadRequest("error");
+                            }
+                        }
+
+                        var doctor = new Doctor
+                        {
+                            Address = viewModel.Address,
+                            City = viewModel.City,
+                            Country = viewModel.Country,
+                            Email = viewModel.Email,
+                            NormalizedEmail = viewModel.Email.ToUpper(),
+                            FirstName = viewModel.FirstName,
+                            Gender = viewModel.Gender,
+                            LastName = viewModel.LastName,
+                            UserName = viewModel.Username,
+                            NormalizedUserName = viewModel.Username.ToUpper(),
+                            PhoneNumber = viewModel.MobileNumber.ToString(),
+                            Avatar = viewModel.ImageUrl,
+                            PasswordHash = newPassword,
+                            Bio = viewModel.ShortBiography,
+                            DepartmentId = viewModel.DepartmentId.ToString(),
+                            Education = viewModel.Education,
+                            ScheduleId = schedule.Id,
+                            RoomId = room.Id,
+                        };
+
+                        var customUser = new CustomIdentityUser
+                        {
+                            Email = viewModel.Email,
+                            UserName = viewModel.Username,
+                            PhoneNumber = viewModel.MobileNumber.ToString(),
+                        };
+
+                        var result = await _userManager.CreateAsync(customUser, viewModel.Password);
+
+                        if (result.Succeeded)
+                        {
+                            if (!await _roleManager.RoleExistsAsync("doctor"))
+                            {
+                                var role = new CustomIdentityRole
+                                {
+                                    Name = "doctor"
+                                };
+                                var resul = await _roleManager.CreateAsync(role);
+                            }
+                        }
+                        await _context.Doctors.AddAsync(doctor);
+                        await _context.SaveChangesAsync();
+                    }
+                }
+            }
+
+            var departments = await _context.Departments.ToListAsync();
+            var schedules = await _context.Schedules.ToListAsync();
+            var rooms = await _context.Rooms.ToListAsync();
+            viewModel.Departments = departments;
+            viewModel.Schedules = schedules;
+            viewModel.Rooms = rooms;
+            return View(viewModel);
+        }
+
         public async Task<IActionResult> GetAllDepartment()
         {
             var departments = await _context.Departments.ToListAsync();
             return Ok(departments);
         }
-
 
         public IActionResult AddBlog()
         {
@@ -355,7 +460,7 @@ namespace Hospital.WebUI.Controllers
             return View();
         }
 
-        public IActionResult Appointments()
+        public IActionResult AllAppointments()
         {
             return View();
         }
@@ -436,7 +541,13 @@ namespace Hospital.WebUI.Controllers
             return View();
         }
 
+      
         public IActionResult BlogList()
+        {
+            return View();
+        }
+
+        public IActionResult Appointments()
         {
             return View();
         }

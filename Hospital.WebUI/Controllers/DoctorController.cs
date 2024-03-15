@@ -1,5 +1,7 @@
 ﻿using Hospital.Entities.Data;
 using Hospital.Entities.DbEntities;
+using Hospital.WebUI.Abstract;
+using Hospital.WebUI.Helpers;
 using Hospital.WebUI.Models;
 using HospitalProject.Entities.DbEntities;
 using Microsoft.AspNetCore.Authorization;
@@ -14,14 +16,26 @@ namespace Hospital.WebUI.Controllers
     {
         private readonly UserManager<CustomIdentityUser> _userManager;
         public CustomIdentityDbContext _dbContext { get; set; }
+		private IWebHostEnvironment _webHost;
+		private readonly IMediaService _mediaService;
 
-        public DoctorController(UserManager<CustomIdentityUser> userManager, CustomIdentityDbContext dbContext)
-        {
-            _userManager = userManager;
-            _dbContext = dbContext;
-        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userManager"></param>
+        /// <param name="dbContext"></param>
+        /// <param name="webHost"></param>
+        /// <param name="mediaService"></param>
 
-        [HttpGet]
+		public DoctorController(UserManager<CustomIdentityUser> userManager, CustomIdentityDbContext dbContext, IWebHostEnvironment webHost, IMediaService mediaService)
+		{
+			_userManager = userManager;
+			_dbContext = dbContext;
+			_webHost = webHost;
+			_mediaService = mediaService;
+		}
+
+		[HttpGet]
         public async Task<IActionResult> ShowAllAppointments()
         {
             var doctor = await CurrentUser();
@@ -57,6 +71,20 @@ namespace Hospital.WebUI.Controllers
         {
             return View();
         }
+
+		public async Task<IActionResult> Abouts()
+		{
+
+			var abouts = await _dbContext.Abouts.ToListAsync();
+			var doctors = await _dbContext.Doctors.ToListAsync();
+			var viewModel = new AllAboutsViewModel
+			{
+				Abouts = abouts,
+				Doctors = doctors
+			};
+			ViewBag.ViewModel = viewModel;
+			return View();
+		}
 
 		public async Task<IActionResult> BlogSingle(PostsShowViewModel post)
 		{

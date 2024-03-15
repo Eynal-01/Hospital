@@ -34,19 +34,19 @@ function GetAllPatients() {
                      <td>${data[i].fullName}</td>
 
                     `;
+
                 }
+                //var id12 = "";
+                //for (var k = 0; k < 3; k++) {
+                //    id12 += data[i].id[k];
+                //}
                 content += `
                  <tr onclick="PatientProfile('${data[i].id}')">
-                     <td><span class="list-icon"><img class="patients-img" src="/AccessaryFiles/images/${data[i].avatart}" alt=""></span></td>
-                     <td><span class="list-name">${data[i].id}</span></td> 
-                     ${name}
-                     <td>${data[i].age}</td>
-                     <td>${data[i].address}</td>
+                     <td><span class="list-name">${data[i].idv}</span></td> 
+                     <td>${data[i].userName}</td>
                      <td>${data[i].phoneNumber}</td>
-                     <td>11 Jan 2018</td>
-                     <td><span class="badge badge-success">Approved</span></td>
                  </tr>
-                
+          
                 `;
             }
             $("#patients").html(content);
@@ -681,6 +681,7 @@ function GetAllPostAllUsers() {
 
             PopularPosts();
             GetAllDoctors();
+            GetAllAbouts();
 
             for (var i = 0; i < data.posts.length; i++) {
                 images = "";
@@ -987,11 +988,11 @@ function GetAllDoctors() {
 				    	<div class="position-relative doctor-inner-box">
 				    		<div class="doctor-profile">
 				    			<div class="doctor-img">
-				    				<img src="${data.doctors[i].avatar}" alt="doctor-image" class="img-fluid w-100">
+				    				<img style="width:90%; height:22vh; margin:auto;" src="${data.doctors[i].avatar}" alt="doctor-image" class="img-fluid w-100">
 				    			</div>
 				    		</div>
 				    		<div class="content mt-3">
-				    			<h4 class="mb-0"><a href="/DoctorsShow/PatientInDoctorProfile('${data.doctors[i].id}')">${data.doctors[i].firstName} ${data.doctors[i].lastName}</a ></h4 >
+				    			<h4 class="mb-0"><a href="/DoctorsShow/PatientInDoctorProfile('${data.doctors[i].id}')">${data.doctors[i].firstName}<br/>${data.doctors[i].lastName}</a ></h4 >
 				    			<p>${data.doctors[i].department.departmentName}</p>
 				    		</div>
 				    	</div>
@@ -1004,10 +1005,10 @@ function GetAllDoctors() {
                          <div class="card xl-blue member-card doctor">
                              <div class="body">
                                  <div class="member-thumb">
-                                     <img src="${data.doctors[i].avatar}" class="img-fluid" alt="profile-image">
+                                     <img style="width:90%; height:22vh; margin:auto;" src="${data.doctors[i].avatar}" class="img-fluid" alt="profile-image">
                                  </div>
                                  <div class="detail">
-                                     <h4 class="m-b-0">Dr. ${data.doctors[i].firstName} ${data.doctors[i].lastName}</h4>
+                                     <p class="m-b-0">Dr. ${data.doctors[i].firstName}<br/>${data.doctors[i].lastName}</p>
                                      <p class="text-muted">${data.doctors[i].department.departmentName}</p>
                                      <ul class="social-links list-inline m-t-20">
                                          <li><a title="facebook" href="#"><i class="zmdi zmdi-facebook"></i></a></li>
@@ -1027,10 +1028,10 @@ function GetAllDoctors() {
                              <div class="card xl-blue member-card doctor">
                                  <div class="body">
                                      <div class="member-thumb">
-                                         <img src="${data.doctors[i].avatar}" class="img-fluid" alt="profile-image">
+                                         <img style="width:90%; height:22vh; margin:auto;" src="${data.doctors[i].avatar}" class="img-fluid" alt="profile-image">
                                      </div>
                                      <div class="detail">
-                                         <h4 class="m-b-0">Dr. ${data.doctors[i].firstName} ${data.doctors[i].lastName}</h4>
+                                         <h4 class="m-b-0">Dr. ${data.doctors[i].firstName}<br/>${data.doctors[i].lastName}</h4>
                                      <p class="text-muted">${data.doctors[i].department.departmentName}</p>
                                          <ul class="social-links list-inline m-t-20">
                                              <li><a title="facebook" href="#"><i class="zmdi zmdi-facebook"></i></a></li>
@@ -1068,8 +1069,9 @@ function DoctorShowPost() {
     })
 }
 
+
 function GetAllAppointments() {
-    //console.log("GetAllAppointments work");
+    console.log("GetAllAppointments work");
     $.ajax({
         url: `/Admin/ShowAllAppointments`,
         method: "GET",
@@ -1084,7 +1086,6 @@ function GetAllAppointments() {
                       <td>${data[i].id}</td>
                       <td>${data[i].appointmentDate} ${data[i].appointmentTime}</td>
                       <td>${data[i].patient.userName}</td>
-                      <td>32</td>
                       <td>${data[i].doctor.firstName} ${data[i].doctor.lastName}</td>
                       <td>${data[i].department.departmentName}</td>
                  </tr>`;
@@ -1093,6 +1094,8 @@ function GetAllAppointments() {
         }
     })
 }
+
+
 
 function GetAllDepartment() {
     $.ajax({
@@ -1125,9 +1128,9 @@ function GetAllDepartment() {
                     `;
 
                 patientDe += `
-			        	<div class="col-lg-4 col-md-6 ">
-			        		<div class="department-block mb-5">			<img src="${data.departments[i].imageUrl}" alt="" class="img-fluid w-100">
-			        			<div class="content">
+			        	<div class="col-lg-4 col-md-6 " style="width:30%; heught:30vh;">
+			        		<div class="department-block mb-5">			<img style="width:90%; height:35vh; margin-top:5%" src="${data.departments[i].imageUrl}" alt="" class="img-fluid w-100">
+			        			<div class="content" style="overflow: clip;">
 			        				<h4 class="mt-4 mb-2 title-color">${data.departments[i].departmentName}</h4>
 			        				<p class="mb-4">${data.departments[i].content}</p>
 			        				<a href="/Departmen/DepartmentSinglePatient?departmentId=${data.departments[i].id}" class="read-more">Learn More  <i class="icofont-simple-right ml-2"></i></a>
@@ -1248,11 +1251,12 @@ function SendSMS() {
     })
 }
 
+
+
 function SendEmail() {
-    var email = $("emailReg").val();
     console.log("send email called");
     $.ajax({
-        url: `/SendEmail/SendEmailText?email=${email}`,
+        url: `/SendEmail/SendEmailText?`,
         method: "POST",
 
         success: function () {
@@ -1315,6 +1319,136 @@ document.getElementById("departmentSelect").addEventListener("change", function 
     })
 });
 
+//function AddBigAboutFirst() {
+//    var title = document.getElementById("firstBigTitle");
+//    var content = document.getElementById("firstBigContent");
+//    //console.log(title);
+//    //if (title.value.trim() != "" && content.value.trim() != "") {
+//    //console.log("suc");
+//    $.ajax({
+//        url: `/Admin/AddAbout`,
+//        method: "POST",
+//        data: { BigTitle: title.value, FirstContent: content.value },
+//        dataType: "json",
+
+//        success: function (data) {
+//            console.log("aynthing is null");
+//        }
+//    })
+//    //}
+//    //else {
+//    if (title.value.trim() == "") {
+//        title.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
+//    }
+//    if (content.value.trim() == "") {
+//        content.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
+//    }
+////}
+//}
+
+//function HandleBigTitleChange() {
+//    //console.log("dxcxcx");
+//    var title = document.getElementById("firstBigTitle");
+//    if (title.value.trim() == "") {
+//        title.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
+//    }
+//    else {
+//        title.style.backgroundColor = "transparent";
+//    }
+//}
+
+//function HandleBigContentChange() {
+//    //console.log("df");
+//    var content = document.getElementById("firstBigContent");
+//    if (content.value.trim() == "") {
+//        content.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
+//    }
+//    else {
+//        content.style.backgroundColor = "transparent";
+//    }
+//}
+
+function GetAllAbouts() {
+    $.ajax({
+        url: `/About/GetAllAboutsUsers`,
+        method: "GET",
+
+        success: function (data) {
+
+            var patientContent = "";
+            var patientAboutPageFirstContent = "";
+            var bigTitle = "";
+            var patientInDoctors = "";
+
+            var aboutInDoctorsAndAdmin = "";
+
+            for (var i = 0; i < data.doctors.length; i++) {
+                patientInDoctors += `
+               <div class="col-lg-3 col-md-6 col-sm-6">
+				 	<div class="team-block mb-5 mb-lg-0">
+				 		<img src="${data.doctors[i].imageUrl}" alt="" class="img-fluid w-100">
+               
+				 		<div class="content">
+				 			<h4 class="mt-4 mb-0"><a href="doctor-single.html">${data.doctors[i].firstName}  ${data.doctors[i].lastName}</a></h4>
+				 		</div>
+				 	</div>
+				 </div>
+                `;
+            }
+
+            for (var i = 0; i < data.abouts.length; i++) {
+                if (data.abouts[i].title != null) {
+
+                    aboutInDoctorsAndAdmin += `
+                     <div class="col-lg-4 col-md-6 col-sm-12">
+                            <div class="card project_widget">
+                                <div class="pw_img">
+                                    <img class="img-fluid" src="${data.abouts[i].imageUrl}" alt="About the image">
+                                </div>
+                                <div class="pw_content">
+                                    <div class="pw_header">
+                                        <h6>${data.abouts[i].title}</h6>
+                                    </div>
+                                    <div class="pw_meta">
+                                        <p>${data.abouts[i].content}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                     `;
+
+                    patientContent += `
+                        <div class="col-lg-3 col-md-6">
+				        	<div class="about-block-item mb-5 mb-lg-0">
+				        		<img src="${data.abouts[i].imageUrl}" alt="" class="img-fluid w-100">
+				        		<h4 class="mt-3">${data.abouts[i].title}</h4>
+				        		<p>${data.abouts[i].content}</p>
+				        	</div>
+				        </div>
+                        `;
+                }
+                else {
+                    bigTitle += `
+					   <h2 class="title-color">${data.abouts[i].bigTitle}</h2>
+                    `;
+
+                    patientAboutPageFirstContent += `
+                
+                       <p>${data.abouts[i].firstContent}</p>
+                
+                     `;
+                }
+            }
+
+            $("#patientAbouts").html(patientContent);
+            $("#bigTitle").html(bigTitle);
+            $("#aboutsAdmin").html(aboutInDoctorsAndAdmin);
+            $("#doctorsAdmin").html(aboutInDoctorsAndAdmin);
+            //$("#aboutsAdmin").html(aboutInDoctorsAndAdmin);
+            $("#patientAboutPageFirstContent").html(patientAboutPageFirstContent);
+        }
+    })
+}
 document.getElementById("doctorSelect").addEventListener("change", function () {
     GetDay();
     //GetTime();
@@ -1350,17 +1484,22 @@ function CallAppointment() {
     //var time1 = $("exampleFormControlSelect4").val();
     //var message1 = $("message").val();
 
-    var s = document.getElementById("success");
-    s.innerHTML = `<div class="modal-dialog" role="document">
+    console.log(d.value);          //any
+    console.log(doct.value);       //none
+    console.log(p.value);          //0
+    console.log(message.value);    //any
+    console.log(date.value);       //none
+    console.log(time.value);       //none
+    if (d.value != null && doct.value != " " && p.value != "0"
+        && message.value != " " && date.value != " " && time.value != " ") {
+        console.log("intro");
+        var s = document.getElementById("success");
+        s.innerHTML = `<div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <button type="submit" onclick="SendSMS()" class="btn btn-primary btn-round waves-effect" style="background-color:rgba(34,58,102,255); border-radius:30px; color:white; margin:20%; width:35%; margin-left:32%;">Send SMS</button>
                                     <button type="submit" onclick="SendEmail()" class="btn btn-primary btn-round waves-effect" style="background-color:rgba(34,58,102,255); border-radius:30px; color:white; margin-left:32%; margin-bottom:20%; width:35%">Send Email</button>
                                 </div>
                             </div>`;
-
-    if (d.value != null && doct.value != "" && p.value != "0"
-        && message.value != "" && date.value != null && time.value != null) {
-        console.log("intro");
         $.ajax({
             url: `/Home/Appointment`,
             method: "POST",
@@ -1370,112 +1509,67 @@ function CallAppointment() {
             success: function () {
                 console.log("aynthing is null");
                 //CallSuccessPage();
-                
+
             }
         })
     }
 
     if (d.value.trim() == "") {
         console.log("department is null");
-        d.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
+        d.style.borderColor = "rgba(255, 99, 71, 0.8)";
         //emptyName.style.display = "inline-block";
     }
     else {
-        d.style.backgroundColor = "transparent";
+        d.style.borderColor = "transparent";
     }
 
-    if (doct.value.trim() == "" || doct.value.trim() == "Select a doctor") {
+    if (doct.value.trim() == "Select a doctor") {
         console.log("doctor is null");
-        doct.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
+        doct.style.borderColor = "rgba(255, 99, 71, 0.8)";
         //emptyName.style.display = "inline-block";
     }
     else {
-        doct.style.backgroundColor = "transparent";
+        doct.style.borderColor = "transparent";
     }
-
-    //if (n.value.trim() == "") {
-    //    console.log("name is null");
-    //    n.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
-    //    //emptyName.style.display = "inline-block";
-    //}
-    //else {
-    //    n.style.backgroundColor = "transparent";
-    //}
 
     if (p.value == "0" || phone.length < 9) {
         console.log("phone is null");
-        p.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
+        p.style.borderColor = "rgba(255, 99, 71, 0.8)";
         //emptyName.style.display = "inline-block";
     }
     else {
-        p.style.backgroundColor = "transparent";
+        p.style.borderColor = "transparent";
     }
 
     //console.log(date.value);
-    if (date == null || date.value == "" || date.value == "Select a date") {
+    if (date.value == "Select a date") {
         console.log("date is null");
-        date.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
+        date.style.borderColor = "rgba(255, 99, 71, 0.8)";
         //emptyName.style.display = "inline-block";
     }
     else {
-        date.style.backgroundColor = "transparent";
+        date.style.borderColor = "transparent";
     }
 
     if (time == null || time.value == "" || time.value == "Select a time") {
         console.log("time is null");
-        time.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
+        time.style.borderColor = "rgba(255, 99, 71, 0.8)";
         //emptyName.style.display = "inline-block";
     }
     else {
-        time.style.backgroundColor = "transparent";
+        time.style.borderColor = "transparent";
     }
 
     //console.log(message);
     if (message.value.trim() == "") {
         console.log("message is null");
-        message.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
+        message.style.borderColor = "rgba(255, 99, 71, 0.8)";
         //emptyName.style.display = "inline-block";
     }
     else {
-        message.style.backgroundColor = "transparent";
+        message.style.borderColor = "transparent";
     }
 }
-
-//function ChangeDepartment() {
-//d.style.backgroundColor = "transparent";
-//console.log(doct.value);
-//if (doct.innerHTML.trim != "") {
-//    doct.style.backgroundColor = "transparent";
-//}
-//else {
-//    doct.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
-//}
-
-//if (time.innerHTML.trim != "") {
-//    time.style.backgroundColor = "transparent";
-//}
-//else {
-//    time.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
-//}
-
-//if (date.innerHTML.trim != "") {
-//    date.style.backgroundColor = "transparent";
-//}
-//else {
-//    date.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
-//}
-//}
-
-//function ChangeName() {
-
-
-//    if (n.innerHTML != "") {
-//        n.style.backgroundColor = "transparent";
-//    }
-//    else {
-//        n.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
-//    }
-//}
 
 function ChangePhone() {
     if (p.innerHTML != "") {
@@ -1540,8 +1634,6 @@ function handlePhoneInput() {
     emptyPhone.style.display = "none";
     p.style.backgroundColor = "transparent";
 }
-
-
 
 //var toastId = "myToast";
 
@@ -1617,12 +1709,11 @@ function DoctorAppointments() {
     })
 }
 
-//document.getElementById("doctorSelect").addEventListener("change", function () {
-//    GetDay();
-//    GetTime();
-//    SendSMS();
-//});
-
+document.getElementById("doctorSelect").addEventListener("change", function () {
+    GetDay();
+    GetTime();
+    SendSMS();
+});
 
 function handleRoomId() {
     var time = document.getElementById("scheduleSelect").value;
@@ -1648,23 +1739,3 @@ function handleRoomId() {
         }
     })
 }
-
-
-//document.getElementById("emptyRoom").addEventListener("click", function () {
-//    var schedule = document.getElementById("schedule1").val();
-//    var room = document.getElementById("room").val();
-//    $.ajax({
-//        url: `/Admin/SetRoomToDoctor?workingTime=${schedule}&roomNo=${room}`,
-//        method: "POST",
-
-//        success: function (data) {
-//            console.log("Schedule and room added", data)
-//        }
-//    })
-//});
-
-//document.getElementById("fullRoom").addEventListener("click", function () {
-//    var word = document.getElementById("roomFull");
-//    word.style.display="inline-block"
-//});
-
