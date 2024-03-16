@@ -1,7 +1,10 @@
 ﻿using Hospital.Entities.Data;
+using Hospital.Entities.DbEntities;
 using Hospital.WebUI.Models;
+using HospitalProject.Entities.DbEntities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace HospitalProject.WebUI.Controllers
 {
@@ -20,6 +23,24 @@ namespace HospitalProject.WebUI.Controllers
             _customIdentityDbContext = customIdentityDbContext;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+
+        public IActionResult Start()
+        {
+            return View();
+        }
+
+        public IActionResult Selected(string selected)
+        {
+            selected = selected.Trim();
+            selected = selected.ToLower();
+
+            return RedirectToAction("Login", "Authentication", new { selected });
+        }
+
         [HttpGet]
         public IActionResult Login(string selected)
         {
@@ -27,6 +48,7 @@ namespace HospitalProject.WebUI.Controllers
             viewModel.Selected = selected;
             return View(viewModel);
         }
+
 
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel loginViewModel)
@@ -37,25 +59,124 @@ namespace HospitalProject.WebUI.Controllers
             if (ModelState.IsValid)
             {
                 var signIn = await _signInManager.PasswordSignInAsync(loginViewModel.UserName, loginViewModel.Password, true, false);
+
                 if (signIn.Succeeded)
                 {
-                    var user = _customIdentityDbContext.Users.SingleOrDefault(i => i.UserName == loginViewModel.UserName);
+                    dynamic user;
+                    if (loginViewModel.Selected == "patient")
+                    {
+                        user = _customIdentityDbContext.Patients.SingleOrDefault(i => i.UserName == loginViewModel.UserName);
+                    }
+                    else if (loginViewModel.Selected == "doctor")
+                    {
+                        user = _customIdentityDbContext.Doctors.SingleOrDefault(i => i.UserName == loginViewModel.UserName);
+                    }
+                    else
+                    {
+                        user = _customIdentityDbContext.Admins.SingleOrDefault(i => i.UserName == loginViewModel.UserName);
+                    }
+
+                    var userr = await _customIdentityDbContext.Users.FirstOrDefaultAsync(u => u.UserName == loginViewModel.UserName);
                     if (user != null)
                     {
                         _customIdentityDbContext.Update(user);
                         await _customIdentityDbContext.SaveChangesAsync();
                     }
-                    return RedirectToAction("Index", "Home");
+                    if (user != null)
+                    {
+                        var role = await _userManager.GetRolesAsync(userr);
+                        if (loginViewModel.Selected == "patient" && role[0] == "patient")
+                        {
+                            return RedirectToAction("Index", "Home");
+                        }
+                        else if (loginViewModel.Selected == "doctor" && role[0] == "doctor")
+                        {
+                            return RedirectToAction("Index", "Doctor");
+                        }
+                        else if (loginViewModel.Selected == "admin" && role[0] == "admin")
+                        {
+                            return RedirectToAction("Index", "Admin");
+                        }
+                    }
                 }
             }
             return View(loginViewModel);
         }
-        public IActionResult Register()
-        {
-            return View();
-        }
 
 
+        //public async Task<IActionResult> Login(LoginViewModel loginViewModel)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var role = new List<string>();
+        //        var signIn = await _signInManager.PasswordSignInAsync(loginViewModel.UserName, loginViewModel.Password, true, false);
+
+        //        if (signIn.Succeeded)
+        //        {
+        //            dynamic user;
+        //            if (loginViewModel.Selected == "patient")
+        //            {
+        //                user = await _customIdentityDbContext.Patients.SingleOrDefaultAsync(i => i.UserName == loginViewModel.UserName);
+        //                role.Add("patient");
+        //                _customIdentityDbContext.Update(user);
+        //                await _customIdentityDbContext.SaveChangesAsync();
+        //                if (role[0] == "patient")
+        //                {
+        //                    return RedirectToAction("Index", "Home");
+        //                }
+        //            }
+        //            else if (loginViewModel.Selected == "doctor")
+        //            {
+        //                user = await _customIdentityDbContext.Doctors.SingleOrDefaultAsync(i => i.UserName == loginViewModel.UserName);
+        //                role.Add("doctor");
+        //                _customIdentityDbContext.Update(user);
+        //                await _customIdentityDbContext.SaveChangesAsync();
+        //                if (role[0] == "doctor")
+        //                {
+        //                    return RedirectToAction("Index", "Doctor");
+        //                }
+        //            }
+        //            else
+        //            {
+        //                user = await _customIdentityDbContext.Admins.SingleOrDefaultAsync(i => i.UserName == loginViewModel.UserName);
+        //                role.Add("admin");
+        //                _customIdentityDbContext.Update(user);
+        //                await _customIdentityDbContext.SaveChangesAsync();
+        //                if (role[0] == "admin")
+        //                {
+        //                    return RedirectToAction("Index", "Admin");
+        //                }
+        //            }
+
+        //            //if (user != null)
+        //            //{
+
+
+        //            //    if (user != null)
+        //            //    {
+        //            //        var userId = user.Id;
+        //            //        var roles = await _userManager.GetRolesAsync(user);
+        //            //        if (roles!=0)
+        //            //        {
+        //            //            if (loginViewModel.Selected == "patient" && roles[0] == "patient")
+        //            //            {
+        //            //                return RedirectToAction("Index", "Home");
+        //            //            }
+        //            //            else if (loginViewModel.Selected == "doctor" && roles[0] == "doctor")
+        //            //            {
+        //            //                return RedirectToAction("Index", "Doctor");
+        //            //            }
+        //            //            else if (loginViewModel.Selected == "admin" && roles[0] == "admin")
+        //            //            {
+        //            //                return RedirectToAction("Index", "Admin");
+        //            //            }
+        //            //        }
+        //            //    }
+        //            //}
+        //        }
+        //    }
+        //    return View(loginViewModel);
+        //}
 
 
         [HttpGet]
@@ -72,32 +193,76 @@ namespace HospitalProject.WebUI.Controllers
         {
             if (ModelState.IsValid && registerViewModel.ConfirmPassword == registerViewModel.Password)
             {
-                var user = new CustomIdentityUser
+                dynamic signInUser = null;
+                if (registerViewModel.Selected == "patient")
+                {
+                    signInUser = new Patient
+                    {
+                        Email = registerViewModel.Email,
+                        UserName = registerViewModel.UserName,
+                        PhoneNumber = registerViewModel.MobileNumber.ToString(),
+                    };
+                }
+                else if (registerViewModel.Selected == "doctor")
+                {
+                    signInUser = new Doctor
+                    {
+                        Email = registerViewModel.Email,
+                        UserName = registerViewModel.UserName,
+                        PhoneNumber = registerViewModel.MobileNumber.ToString(),
+                    };
+                }
+                else
+                {
+                    signInUser = new Admin
+                    {
+                        Email = registerViewModel.Email,
+                        UserName = registerViewModel.UserName,
+                        PhoneNumber = registerViewModel.MobileNumber.ToString(),
+                    };
+                }
+
+                var v = new CustomIdentityUser
                 {
                     Email = registerViewModel.Email,
                     UserName = registerViewModel.UserName,
                     PhoneNumber = registerViewModel.MobileNumber.ToString(),
                 };
 
-                var result = await _userManager.CreateAsync(user, registerViewModel.Password);
-                if (result.Succeeded)
+                if (signInUser != null)
                 {
-                    if (!await _roleManager.RoleExistsAsync(registerViewModel.Selected))
+                    var result = await _userManager.CreateAsync(v, registerViewModel.Password);
+                    if (result.Succeeded)
                     {
-                        var role = new CustomIdentityRole
+                        if (registerViewModel.Selected == "patient")
                         {
-                            Name = registerViewModel.Selected,
-                        };
-                        var resul = await _roleManager.CreateAsync(role);
-                        if (!resul.Succeeded)
-                        {
-                            ModelState.AddModelError("", "Error");
-                            return View(registerViewModel);
+                            await _customIdentityDbContext.Patients.AddAsync(signInUser);
                         }
-                    }
+                        else if (registerViewModel.Selected == "doctor")
+                        {
+                            await _customIdentityDbContext.Doctors.AddAsync(signInUser);
+                        }
+                        else if (registerViewModel.Selected == "admin")
+                        {
+                            await _customIdentityDbContext.Admins.AddAsync(signInUser);
+                        }
+                        if (!await _roleManager.RoleExistsAsync(registerViewModel.Selected))
+                        {
+                            var role = new CustomIdentityRole
+                            {
+                                Name = registerViewModel.Selected,
+                            };
+                            var resul = await _roleManager.CreateAsync(role);
+                            if (!resul.Succeeded)
+                            {
+                                ModelState.AddModelError("", "Error");
+                                return View(registerViewModel);
+                            }
+                        }
 
-                    await _userManager.AddToRoleAsync(user, registerViewModel.Selected);
-                    return RedirectToAction("Login", "Authentication");
+                        await _userManager.AddToRoleAsync(v, registerViewModel.Selected);
+                        return RedirectToAction("Login", "Authentication", new { registerViewModel.Selected });
+                    }
                 }
             }
             return View(registerViewModel);

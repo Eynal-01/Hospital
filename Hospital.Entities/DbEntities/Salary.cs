@@ -8,6 +8,7 @@ namespace HospitalProject.Entities.DbEntities
 {
     public class Salary
     {
+        public int SalaryId { get; set; }
         public double Amount { get; set; }
         public Guid? EmployeeId { get; set; }
         public string? PaymentMethod { get; set; }

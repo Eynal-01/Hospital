@@ -4,13 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HospitalProject.Entities.DbEntities
+namespace Hospital.Entities.DbEntities
 {
     public class Calendar
     {
         public int Id { get; set; }
         public ICollection<Doctor>? Doctors { get; set; }
-        public ICollection<DateTime>? DoctorAvailableTimes { get; set; }
         public string? Event { get; set; }
     }
 }
