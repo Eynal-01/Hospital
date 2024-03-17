@@ -36,11 +36,8 @@ namespace Hospital.Entities.DbEntities
         public ICollection<Patient>? Patients { get; set; }
         public ICollection<Appointment>? Appointments { get; set; }
         public ICollection<Recipe>? Recipes { get; set; }
-        //public virtual Department? Department { get; set; }
-        public int WorkDayCount { get; set; }
+        public int WorkDayCount { get; set; }   
         public virtual Department? Department { get; set; }
         public virtual ICollection<PostView>? PostViews { get; set; }
-
-        //public ICollection<AvailableTime>? AvailableTimes { get; set; }
     }
 }

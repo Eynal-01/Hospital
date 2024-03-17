@@ -1103,7 +1103,7 @@ function GetAllAppointmentsOfPatient() {
         method: "GET",
 
         success: function (data) {
-            let content ="";
+            let content = "";
 
             for (var i = 0; i < data.length; i++) {
                 //var doctor = GetAppointmentDoctor(data[i].doctorId)
@@ -1185,7 +1185,7 @@ function GetAllDepartment() {
 //    })
 //}
 
-function GetDays() { 
+function GetDays() {
     var availablecount = $("#availableDay").val();
     $.ajax({
         url: `/Admin/GetAvailableDays?availableCount=${availablecount}`,
@@ -1760,3 +1760,20 @@ function handleRoomId() {
         }
     })
 }
+
+
+//function DoctorPatients() {
+//    $.ajax({
+//        url: `/Doctor/GetPatientsOfDoctor`,
+//        method: "GET",
+
+//        success: function (data) {
+//            let content = ``;
+//            for (var i = 0; i < data.length; i++) {
+//                content += `${data[i].userName}`;
+
+//            }
+//        }
+
+//    })
+//}

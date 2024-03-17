@@ -24,10 +24,7 @@ builder.Services.AddControllersWithViews()
 
 var context = builder.Configuration.GetConnectionString("mydb");
 
-builder.Services.AddDbContext<CustomIdentityDbContext>(opt =>
-{
-    opt.UseSqlServer(context);
-});
+builder.Services.AddDbContext<CustomIdentityDbContext>(option =>option.UseSqlServer(context));
 
 builder.Services.AddScoped<IDoctorDal, EFDoctorDal>();
 builder.Services.AddScoped<IDoctorService, DoctorService>();

@@ -16,14 +16,14 @@ namespace Hospital.WebUI.Controllers
     public class HomeController : Controller
     {
         private readonly UserManager<CustomIdentityUser> _userManager;
-        public CustomIdentityDbContext _dbContext { get; set; }
+        //private readonly CustomIdentityDbContext _dbContext;
         private readonly IDataService _dataService;
         private readonly CustomIdentityDbContext _context;
 
 
-        public HomeController(CustomIdentityDbContext dbContext, UserManager<CustomIdentityUser> userManager, IDataService dataService, CustomIdentityDbContext context)
+        public HomeController(/*CustomIdentityDbContext dbContext, */UserManager<CustomIdentityUser> userManager, IDataService dataService, CustomIdentityDbContext context)
         {
-            _dbContext = dbContext;
+            //_dbContext = dbContext;
             _userManager = userManager;
             _dataService = dataService;
             _context = context;
@@ -31,32 +31,32 @@ namespace Hospital.WebUI.Controllers
 
 
         [HttpGet]
-		public async Task<IActionResult> Appointment()
-		{
-			var departments = await _dbContext.Departments.ToListAsync();
-			var viewModel = new AppoinmentViewModel
-			{
-				Departments = new List<Department>(),
-			};
-			if (departments != null)
-			{
-				viewModel.Departments = departments;
-			}
-			return View(viewModel);
-		}
-     
+        public async Task<IActionResult> Appointment()
+        {
+            var departments = await _context.Departments.ToListAsync();
+            var viewModel = new AppoinmentViewModel
+            {
+                Departments = new List<Department>(),
+            };
+            if (departments != null)
+            {
+                viewModel.Departments = departments;
+            }
+            return View(viewModel);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Appointment(AppoinmentViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
                 var user = await _userManager.GetUserAsync(HttpContext.User);
-                var patient = await _dbContext.Patients.FirstOrDefaultAsync(p => p.Email == user.Email && p.UserName == user.UserName);
-                var appointments = await _dbContext.Appointments.ToListAsync();
+                var patient = await _context.Patients.FirstOrDefaultAsync(p => p.Email == user.Email && p.UserName == user.UserName);
+                var appointments = await _context.Appointments.ToListAsync();
                 var receivedData = _dataService.RetrieveData();
-                var department = await _dbContext.Departments.FirstOrDefaultAsync(d => d.Id == viewModel.DepartmentId);
-                var doctor = await _dbContext.Doctors.FirstOrDefaultAsync(d => d.Id == viewModel.DoctorId);
-                var doctors = _dbContext.Doctors.ToList();
+                var department = await _context.Departments.FirstOrDefaultAsync(d => d.Id == viewModel.DepartmentId);
+                var doctor = await _context.Doctors.FirstOrDefaultAsync(d => d.Id == viewModel.DoctorId);
+                var doctors = _context.Doctors.ToList();
 
                 var date1 = viewModel.AppointmentDate.ToString().Split('T')[0];
                 var date2 = date1.Split(' ')[0];
@@ -71,30 +71,30 @@ namespace Hospital.WebUI.Controllers
                     AppointmentTime = viewModel.AppointmentTime,
                     AppointmentDate = DateTime.Parse(date2),
                 };
-                await _dbContext.Appointments.AddAsync(appoinment);
-                await _dbContext.SaveChangesAsync();
+                await _context.Appointments.AddAsync(appoinment);
+                await _context.SaveChangesAsync();
                 return RedirectToAction("SuccessPay", "Home");
             }
             return RedirectToAction("SuccessPay", "Home");
         }
 
 
-		public async Task<Patient> CurrentUser()
-		{
-			var user = await _userManager.GetUserAsync(HttpContext.User);
-			var admin = await _dbContext.Patients.FirstOrDefaultAsync(a => a.UserName == user.UserName && a.Email == user.Email);
-			return admin;
-		}
-      
+        public async Task<Patient> CurrentUser()
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var admin = await _context.Patients.FirstOrDefaultAsync(a => a.UserName == user.UserName && a.Email == user.Email);
+            return admin;
+        }
+
         public async Task<IActionResult> GetAllPost()
         {
             var user = await CurrentUser();
 
-            var data = await _dbContext.Admins.ToListAsync();
+            var data = await _context.Admins.ToListAsync();
             var posts = new List<PostsShowViewModel>();
             foreach (var item in data)
             {
-                var post = await _dbContext.Posts.Where(p => p.AdminId == item.Id).ToListAsync();
+                var post = await _context.Posts.Where(p => p.AdminId == item.Id).ToListAsync();
                 for (int i = 0; i < post.Count(); i++)
                 {
                     var images = post[i].ImageUrl.Split(':').ToList();
@@ -147,9 +147,9 @@ namespace Hospital.WebUI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAvailableDays(string doctorId)
         {
-            var noWorkingTimes = await _dbContext.NoWorkingTimes.ToListAsync();
+            var noWorkingTimes = await _context.NoWorkingTimes.ToListAsync();
             var counter = 0;
-            var admins = await _dbContext.Admins.ToListAsync();
+            var admins = await _context.Admins.ToListAsync();
             for (int i = 0; i < admins.Count(); i++)
             {
                 if (admins[i].WorkDaysCount > 0)
@@ -159,7 +159,7 @@ namespace Hospital.WebUI.Controllers
             }
 
             DateTime startDate = DateTime.Today;
-            var appointments = await _dbContext.Appointments.ToListAsync();
+            var appointments = await _context.Appointments.ToListAsync();
             List<string> dateList = new List<string>();
 
             for (int i = 0; i < counter; i++)
@@ -201,7 +201,6 @@ namespace Hospital.WebUI.Controllers
                 return NotFound("Doctor not found");
             }
 
-		
             var timeAround = await _context.Schedules.FirstOrDefaultAsync(t => t.Id == doctor.ScheduleId);
             if (timeAround == null)
             {
@@ -231,12 +230,11 @@ namespace Hospital.WebUI.Controllers
 
                 var appointmentSlot = $"{appointmentStartTime:hh\\:mm} - {appointmentEndTime:hh\\:mm}";
 
-                if (timeSlots.Contains(appointmentSlot) && appointment.AppointmentDate.ToString()==s)
+                if (timeSlots.Contains(appointmentSlot) && appointment.AppointmentDate.ToString() == s)
                 {
                     timeSlots.Remove(appointmentSlot);
                 }
             }
-
             return Ok(timeSlots);
         }
 
@@ -249,7 +247,6 @@ namespace Hospital.WebUI.Controllers
                 DateTime nextTime = currentTime.AddMinutes(30);
                 var appTime = $"{currentTime.ToString("HH:mm")} - {nextTime.ToString("HH:mm")}";
                 timeSlots.Add(appTime);
-
                 currentTime = nextTime;
             }
         }
@@ -378,7 +375,7 @@ namespace Hospital.WebUI.Controllers
 
         public async Task<IActionResult> GetDoctors(int departmentId)
         {
-            var doctors = await _dbContext.Doctors.Where(d => d.DepartmentId == departmentId.ToString()).ToListAsync();
+            var doctors = await _context.Doctors.Where(d => d.DepartmentId == departmentId.ToString()).ToListAsync();
             return Ok(doctors);
         }
 
@@ -395,11 +392,16 @@ namespace Hospital.WebUI.Controllers
         {
             return View();
         }
-        
+
         public IActionResult PastAppointments()
         {
             ShowAllAppointmentsOfPatient();
-            return View();  
+            return View();
+        }
+
+        public IActionResult Recipes()
+        {
+            return View();
         }
 
         [HttpGet]
@@ -407,11 +409,11 @@ namespace Hospital.WebUI.Controllers
         {
             var user = await CurrentUser();
 
-            var postT = await _dbContext.Posts.FirstOrDefaultAsync(p => p.Id == post.PostId);
-            post.Admin = await _dbContext.Admins.FirstOrDefaultAsync(a => a.Id == post.AdminId);
-            post.Department = await _dbContext.Departments.FirstOrDefaultAsync(p => p.Id == post.DepartmentId);
+            var postT = await _context.Posts.FirstOrDefaultAsync(p => p.Id == post.PostId);
+            post.Admin = await _context.Admins.FirstOrDefaultAsync(a => a.Id == post.AdminId);
+            post.Department = await _context.Departments.FirstOrDefaultAsync(p => p.Id == post.DepartmentId);
 
-            var postView = await _dbContext.PostViews.FirstOrDefaultAsync(f => f.PatientId == user.Id && f.PostId == postT.Id);
+            var postView = await _context.PostViews.FirstOrDefaultAsync(f => f.PatientId == user.Id && f.PostId == postT.Id);
 
             if (postView == null)
             {
@@ -426,10 +428,10 @@ namespace Hospital.WebUI.Controllers
                 postT.ViewCount += 1;
                 post.ViewCount += 1;
 
-                await _dbContext.PostViews.AddAsync(postView);
+                await _context.PostViews.AddAsync(postView);
 
-                _dbContext.Update(postT);
-                await _dbContext.SaveChangesAsync();
+                _context.Update(postT);
+                await _context.SaveChangesAsync();
             }
 
             return View(post);
@@ -484,10 +486,25 @@ namespace Hospital.WebUI.Controllers
         [HttpGet]
         public async Task<IActionResult> ShowAllAppointmentsOfPatient()
         {
+            var user = await CurrentUser();
+            //var user = await _userManager.GetUserAsync(HttpContext.User);
+            //var role = await _userManager.GetRolesAsync(user);
+            var result = new List<Appointment>();
+            //if (role[0] == "patient")
+            //{
+                //var user1 = await _context.Patients.FirstOrDefaultAsync(p => p.UserName == user.UserName);
+                result =  await _context.Appointments.Where(a => a.PatientId == user.Id.ToString()).ToListAsync();
+            //}
+            return Ok(result);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ShowAllReceipesOfPatient()
+        {
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            var current = await _context.Patients.FirstOrDefaultAsync(p=>p.UserName==user.UserName);
+            var current = await _context.Patients.FirstOrDefaultAsync(p => p.UserName == user.UserName);
             var feg = current.Id;
-            var result = await _context.Appointments.Where(a=>a.PatientId == current.Id).ToListAsync(); 
+            var result = await _context.Recipes.Where(r => r.Patient.Id == current.Id).ToListAsync();
             return Ok(result);
         }
     }

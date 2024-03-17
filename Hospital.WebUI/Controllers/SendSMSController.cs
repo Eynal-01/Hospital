@@ -15,17 +15,13 @@ namespace Hospital.WebUI.Controllers
     public class SendSMSController : ControllerBase
     {
         private UserManager<CustomIdentityUser> _userManager;
-        private RoleManager<CustomIdentityRole> _roleManager;
-        private IWebHostEnvironment _webHost;
         private readonly CustomIdentityDbContext _context;
         private readonly string accountSid = "AC3e0d0c3d03757e62aa7be691723ca5f7";
         private readonly string authToken = "ef5007e8c66d5a0ceafeb68f0f49f395";
 
-        public SendSMSController(UserManager<CustomIdentityUser> userManager, RoleManager<CustomIdentityRole> roleManager, IWebHostEnvironment webHost, CustomIdentityDbContext context)
+        public SendSMSController(UserManager<CustomIdentityUser> userManager, CustomIdentityDbContext context)
         {
             _userManager = userManager;
-            _roleManager = roleManager;
-            _webHost = webHost;
             _context = context;
         }
 
