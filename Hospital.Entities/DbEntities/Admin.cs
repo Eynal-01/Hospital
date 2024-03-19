@@ -22,8 +22,10 @@ namespace HospitalProject.Entities.DbEntities
         public string? Country { get; set; }
         public int WorkDaysCount { get; set; }
         public bool? IsPostView { get; set; }
+        public int MissedNotifCount { get; set; }
 
         public virtual ICollection<Post>? Posts { get; set; }
         public virtual ICollection<PostView>? PostViews { get; set; }
+        public virtual ICollection<Chat>? Chats { get; set; }
     }
 }

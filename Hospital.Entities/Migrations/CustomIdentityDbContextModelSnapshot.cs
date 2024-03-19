@@ -365,6 +365,9 @@ namespace Hospital.Entities.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<int>("MissedNotifCount")
+                        .HasColumnType("int");
+
                     b.Property<string>("NormalizedEmail")
                         .HasColumnType("nvarchar(max)");
 
@@ -498,20 +501,29 @@ namespace Hospital.Entities.Migrations
 
             modelBuilder.Entity("HospitalProject.Entities.DbEntities.Chat", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("ReceiverAdminId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ReceiverUserId")
+                    b.Property<string>("ReceiverDoctorId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("SenderUserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<string>("ReceiverId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SenderId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ReceiverUserId");
+                    b.HasIndex("ReceiverAdminId");
 
-                    b.HasIndex("SenderUserId");
+                    b.HasIndex("ReceiverDoctorId");
 
                     b.ToTable("Chats");
                 });
@@ -600,6 +612,9 @@ namespace Hospital.Entities.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<int>("MissedNotifCount")
+                        .HasColumnType("int");
+
                     b.Property<string>("NormalizedEmail")
                         .HasColumnType("nvarchar(max)");
 
@@ -679,39 +694,50 @@ namespace Hospital.Entities.Migrations
 
             modelBuilder.Entity("HospitalProject.Entities.DbEntities.Message", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                    b.Property<string>("ChatId")
-                        .HasColumnType("nvarchar(450)");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
+
+                    b.Property<int>("ChatId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ReceiverUserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<string>("DateTimeString")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("SenderUserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<bool>("HasSeen")
+                        .HasColumnType("bit");
 
-                    b.Property<DateTime>("SentDate")
+                    b.Property<bool>("IsImage")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ReceiverId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SenderId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("WriteTime")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("Id");
+                    b.HasKey("id");
 
                     b.HasIndex("ChatId");
-
-                    b.HasIndex("ReceiverUserId");
-
-                    b.HasIndex("SenderUserId");
 
                     b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("HospitalProject.Entities.DbEntities.Notification", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
@@ -722,17 +748,33 @@ namespace Hospital.Entities.Migrations
                     b.Property<string>("Message")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ReceiverAdminId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ReceiverDoctorId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("ReceiverId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SenderAdminId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("SenderDoctorId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("SenderId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ReceiverId");
+                    b.HasIndex("ReceiverAdminId");
 
-                    b.HasIndex("SenderId");
+                    b.HasIndex("ReceiverDoctorId");
+
+                    b.HasIndex("SenderAdminId");
+
+                    b.HasIndex("SenderDoctorId");
 
                     b.ToTable("Notifications");
                 });
@@ -1099,17 +1141,17 @@ namespace Hospital.Entities.Migrations
 
             modelBuilder.Entity("HospitalProject.Entities.DbEntities.Chat", b =>
                 {
-                    b.HasOne("Hospital.Entities.Data.CustomIdentityUser", "ReceiverUser")
-                        .WithMany()
-                        .HasForeignKey("ReceiverUserId");
+                    b.HasOne("HospitalProject.Entities.DbEntities.Admin", "ReceiverAdmin")
+                        .WithMany("Chats")
+                        .HasForeignKey("ReceiverAdminId");
 
-                    b.HasOne("Hospital.Entities.Data.CustomIdentityUser", "SenderUser")
-                        .WithMany()
-                        .HasForeignKey("SenderUserId");
+                    b.HasOne("HospitalProject.Entities.DbEntities.Doctor", "ReceiverDoctor")
+                        .WithMany("Chats")
+                        .HasForeignKey("ReceiverDoctorId");
 
-                    b.Navigation("ReceiverUser");
+                    b.Navigation("ReceiverAdmin");
 
-                    b.Navigation("SenderUser");
+                    b.Navigation("ReceiverDoctor");
                 });
 
             modelBuilder.Entity("HospitalProject.Entities.DbEntities.Doctor", b =>
@@ -1141,36 +1183,38 @@ namespace Hospital.Entities.Migrations
                 {
                     b.HasOne("HospitalProject.Entities.DbEntities.Chat", "Chat")
                         .WithMany("Messages")
-                        .HasForeignKey("ChatId");
-
-                    b.HasOne("Hospital.Entities.Data.CustomIdentityUser", "ReceiverUser")
-                        .WithMany()
-                        .HasForeignKey("ReceiverUserId");
-
-                    b.HasOne("Hospital.Entities.Data.CustomIdentityUser", "SenderUser")
-                        .WithMany()
-                        .HasForeignKey("SenderUserId");
+                        .HasForeignKey("ChatId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Chat");
-
-                    b.Navigation("ReceiverUser");
-
-                    b.Navigation("SenderUser");
                 });
 
             modelBuilder.Entity("HospitalProject.Entities.DbEntities.Notification", b =>
                 {
-                    b.HasOne("Hospital.Entities.Data.CustomIdentityUser", "Receiver")
+                    b.HasOne("HospitalProject.Entities.DbEntities.Admin", "ReceiverAdmin")
                         .WithMany()
-                        .HasForeignKey("ReceiverId");
+                        .HasForeignKey("ReceiverAdminId");
 
-                    b.HasOne("Hospital.Entities.Data.CustomIdentityUser", "Sender")
+                    b.HasOne("HospitalProject.Entities.DbEntities.Doctor", "ReceiverDoctor")
                         .WithMany()
-                        .HasForeignKey("SenderId");
+                        .HasForeignKey("ReceiverDoctorId");
 
-                    b.Navigation("Receiver");
+                    b.HasOne("HospitalProject.Entities.DbEntities.Admin", "SenderAdmin")
+                        .WithMany()
+                        .HasForeignKey("SenderAdminId");
 
-                    b.Navigation("Sender");
+                    b.HasOne("HospitalProject.Entities.DbEntities.Doctor", "SenderDoctor")
+                        .WithMany()
+                        .HasForeignKey("SenderDoctorId");
+
+                    b.Navigation("ReceiverAdmin");
+
+                    b.Navigation("ReceiverDoctor");
+
+                    b.Navigation("SenderAdmin");
+
+                    b.Navigation("SenderDoctor");
                 });
 
             modelBuilder.Entity("HospitalProject.Entities.DbEntities.Patient", b =>
@@ -1263,6 +1307,8 @@ namespace Hospital.Entities.Migrations
 
             modelBuilder.Entity("HospitalProject.Entities.DbEntities.Admin", b =>
                 {
+                    b.Navigation("Chats");
+
                     b.Navigation("PostViews");
 
                     b.Navigation("Posts");
@@ -1286,6 +1332,8 @@ namespace Hospital.Entities.Migrations
             modelBuilder.Entity("HospitalProject.Entities.DbEntities.Doctor", b =>
                 {
                     b.Navigation("Appointments");
+
+                    b.Navigation("Chats");
 
                     b.Navigation("Patients");
 

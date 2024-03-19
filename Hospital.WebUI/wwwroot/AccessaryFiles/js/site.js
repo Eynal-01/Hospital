@@ -10,6 +10,7 @@ connection.start().then(function () {
 })
 
 connection.on("Connect", function (role) {
+    //console.log("df");
     if (role === "admin") {
         GetAllPatients();
         GetAllAppointments();
@@ -50,6 +51,14 @@ async function DoctorCall(id) {
     await connection.invoke("DoctorCall", id);
 }
 
+function GetMessageLiveChatCall(id, id2) {
+    //console.log(id);
+    //console.log(id2);
+    //console.log("Received sender: " + id);
+    //console.log("Received receiver: " + id2);
+    connection.invoke("LiveChatCall", id, id2);
+}
+
 connection.on("AdminRefresh", function (id) {
     GetAllPatients();
     GetAllAppointments();
@@ -64,3 +73,13 @@ connection.on("DoctorPostShow", function (id) {
     //GetAllUsers();
     //GetMyAndFriendPosts();
 })
+
+connection.on("ReceiveMessage", function (id) {
+    //console.log("Received message: " + message);
+    UserMessage(id);
+});
+
+//connection.on("LiveChat", function (id) {
+//    //console.log("sadads");
+//    UserMessage(id);
+//})

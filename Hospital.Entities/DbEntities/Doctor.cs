@@ -30,6 +30,7 @@ namespace HospitalProject.Entities.DbEntities
         public string? Education { get; set; }
         public string? Status { get; set; }
         public bool? IsPostView { get; set; }
+        public int MissedNotifCount { get; set; }
 
         public DateTime WorkStartTime { get; set; }
         public DateTime WorkEndTime { get; set; }
@@ -40,6 +41,7 @@ namespace HospitalProject.Entities.DbEntities
         public int WorkDayCount { get; set; }
         public virtual Department? Department { get; set; }
         public virtual ICollection<PostView>? PostViews { get; set; }
+        public virtual ICollection<Chat>? Chats { get; set; }
 
         //public ICollection<AvailableTime>? AvailableTimes { get; set; }
     }

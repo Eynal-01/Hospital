@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Asn1.Mozilla;
 using System.Security.Cryptography;
 
 namespace Hospital.WebUI.Controllers
@@ -429,7 +430,13 @@ namespace Hospital.WebUI.Controllers
                                 var resul = await _roleManager.CreateAsync(role);
                             }
                         }
+<<<<<<< HEAD
                         await _userManager.AddToRoleAsync(customUser, "doctor");
+=======
+
+                        await _userManager.AddToRoleAsync(customUser, "doctor");
+
+>>>>>>> Mura_Chat
                         await _context.Doctors.AddAsync(doctor);
                         await _context.SaveChangesAsync();
                     }
@@ -443,6 +450,11 @@ namespace Hospital.WebUI.Controllers
             viewModel.Schedules = schedules;
             viewModel.Rooms = rooms;
             return View(viewModel);
+        }
+
+        public async Task<IActionResult> Chat()
+        {
+            return View();
         }
 
         public async Task<IActionResult> GetAllDepartment()

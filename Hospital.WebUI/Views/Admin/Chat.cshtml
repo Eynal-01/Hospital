@@ -151,7 +151,7 @@
                     <div class="card">
                         <div class="search">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search..." />
+                                <input type="text" class="form-control" placeholder="Search...">
                                 <span class="input-group-addon">
                                     <i class="zmdi zmdi-search"></i>
                                 </span>
@@ -459,7 +459,7 @@
                     <div class="card chat-app">
                         <div id="plist" class="people-list">
                             <div class="input-group">
-                                <input type="text" id="contactSearch" class="form-control" placeholder="Search..." oninput="handleChatPeopleSearch()">
+                                <input id="adminContactSearch" type="text" class="form-control" placeholder="Search..." oninput="handleChatPeopleSearch()">
                                 <span class="input-group-addon">
                                     <i class="zmdi zmdi-search"></i>
                                 </span>
@@ -467,29 +467,36 @@
                             <div class="tab-content">
                                 <div role="tabpanel" class="tab-pane stretchRight active" id="people">
                                     <ul class="chat-list list-unstyled m-b-0" id="adminInChatContact">
+
+
                                     </ul>
                                 </div>
                             </div>
                         </div>
                         <div class="chat">
-                            <div class="chat-header clearfix" id="doctorInchatHeader">
+                            <div class="chat-header clearfix" id="chatHeader">
                             </div>
                             <div class="chat-history xl-slategray">
-                                @*                                 <div class="chat-content" id="doctorMessages" style="list-style:none;">
+@*                                 <div class="chat-content" id="messages">
 
                                 </div> *@
-                                <ul class="m-b-0" id="doctorMessages" style="list-style:none;">
-                                </ul>
 
+                                <ul class="m-b-0" id="messages" style="list-style:none;">
+
+                                </ul>
                             </div>
                             <div class="chat-message clearfix">
                                 <div class="input-group p-t-15" id="sendMessage">
+                                   
                                 </div>
+                                @*                                <a href="javascript:void(0);" class="btn btn-raised btn-warning btn-round"><i class="zmdi zmdi-camera"></i></a>
+                                <a href="javascript:void(0);" class="btn btn-raised btn-info btn-round"><i class="zmdi zmdi-file-text"></i></a>*@
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
     </section>
 
     <script src="~/AccessaryFiles/js/signalr/dist/browser/signalR.js"></script>
