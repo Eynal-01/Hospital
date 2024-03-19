@@ -21,8 +21,8 @@ namespace Hospital.WebUI.Hubs
         {
             var user = await _userManager.GetUserAsync(_contextAccessor.HttpContext.User);
             var role = await _userManager.GetRolesAsync(user);
-            string ro = role[0];
-            await Clients.Others.SendAsync("Connect", ro);
+            //string ro = role[0];
+            //await Clients.Others.SendAsync("Connect", ro);
             var d = role[0].Trim();
             await Clients.All.SendAsync("Connect", d);
         }

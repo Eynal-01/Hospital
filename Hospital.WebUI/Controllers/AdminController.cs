@@ -208,7 +208,7 @@ namespace Hospital.WebUI.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction("AddAbout", "Admin");
             }
-            return RedirectToAction("AddAbout",viewModel);
+            return RedirectToAction("AddAbout", viewModel);
         }
 
         public async Task<IActionResult> GetAvailableDays(int availableCount)
@@ -343,14 +343,14 @@ namespace Hospital.WebUI.Controllers
             var patient = await _context.Patients.FirstOrDefaultAsync(p => p.Id == id);
             var viewModel = new PatientProfileViewModel
             {
-                Address = patient.Address,
+                //Address = patient.Address,
                 Email = patient.Email,
-                Fullname = patient.FullName,
+                //Fullname = patient.FullName,
                 Username = patient.UserName,
                 PhoneNumber = patient.PhoneNumber,
                 ImageUrl = patient.Avatar,
             };
-            return View(viewModel);
+            return RedirectToAction("PatientProfile1", "Admin", viewModel);
         }
 
         [HttpPost]
@@ -429,6 +429,7 @@ namespace Hospital.WebUI.Controllers
                                 var resul = await _roleManager.CreateAsync(role);
                             }
                         }
+                        await _userManager.AddToRoleAsync(customUser, "doctor");
                         await _context.Doctors.AddAsync(doctor);
                         await _context.SaveChangesAsync();
                     }
@@ -541,7 +542,7 @@ namespace Hospital.WebUI.Controllers
             return View();
         }
 
-      
+
         public IActionResult BlogList()
         {
             return View();
@@ -552,6 +553,11 @@ namespace Hospital.WebUI.Controllers
             return View();
         }
 
+        public IActionResult PatientProfile1(PatientProfileViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            return View();
+        }
         public async Task<IActionResult> BlogSingle(PostsShowViewModel post)
         {
             var user = await CurrentUser();

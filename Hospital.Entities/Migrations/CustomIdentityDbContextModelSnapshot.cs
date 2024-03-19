@@ -856,8 +856,11 @@ namespace Hospital.Entities.Migrations
                     b.Property<string>("PatientId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTime?>("WriteTime")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("RecipeHeader")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WriteTime")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -1188,17 +1191,13 @@ namespace Hospital.Entities.Migrations
 
             modelBuilder.Entity("HospitalProject.Entities.DbEntities.Recipe", b =>
                 {
-                    b.HasOne("HospitalProject.Entities.DbEntities.Doctor", "Doctor")
+                    b.HasOne("HospitalProject.Entities.DbEntities.Doctor", null)
                         .WithMany("Recipes")
                         .HasForeignKey("DoctorId");
 
-                    b.HasOne("HospitalProject.Entities.DbEntities.Patient", "Patient")
+                    b.HasOne("HospitalProject.Entities.DbEntities.Patient", null)
                         .WithMany("Recipes")
                         .HasForeignKey("PatientId");
-
-                    b.Navigation("Doctor");
-
-                    b.Navigation("Patient");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

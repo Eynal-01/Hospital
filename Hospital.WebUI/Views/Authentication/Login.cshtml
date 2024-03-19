@@ -56,12 +56,12 @@
                             <p class="d-lg-none d-xl-none">Instagram</p>
                         </a>
                     </li>
-                    @if (Model.Selected == "patient" )
-                    {
+                    @* @if (Model.Selected == "patient" ) *@
+                    @* { *@
                     <li class="nav-item">
                         <a asp-action="Register" asp-controller="Authentication" asp-route-selected="@Model.Selected" class="nav-link btn btn-white btn-round">SIGN UP</a>
                     </li>
-                    }
+                    @* } *@
                 </ul>
             </div>
         </div>

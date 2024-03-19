@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Hospital.Entities.DbEntities;
 using Hospital.Business.Abstract;
+using Twilio.Rest.Trunking.V1;
 
 namespace Hospital.WebUI.Controllers
 {
@@ -30,20 +31,20 @@ namespace Hospital.WebUI.Controllers
 
 
         [HttpGet]
-		public async Task<IActionResult> Appointment()
-		{
-			var departments = await _dbContext.Departments.ToListAsync();
-			var viewModel = new AppoinmentViewModel
-			{
-				Departments = new List<Department>(),
-			};
-			if (departments != null)
-			{
-				viewModel.Departments = departments;
-			}
-			return View(viewModel);
-		}
-     
+        public async Task<IActionResult> Appointment()
+        {
+            var departments = await _dbContext.Departments.ToListAsync();
+            var viewModel = new AppoinmentViewModel
+            {
+                Departments = new List<Department>(),
+            };
+            if (departments != null)
+            {
+                viewModel.Departments = departments;
+            }
+            return View(viewModel);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Appointment(AppoinmentViewModel viewModel)
         {
@@ -78,13 +79,13 @@ namespace Hospital.WebUI.Controllers
         }
 
 
-		public async Task<Patient> CurrentUser()
-		{
-			var user = await _userManager.GetUserAsync(HttpContext.User);
-			var admin = await _dbContext.Patients.FirstOrDefaultAsync(a => a.UserName == user.UserName && a.Email == user.Email);
-			return admin;
-		}
-      
+        public async Task<Patient> CurrentUser()
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var admin = await _dbContext.Patients.FirstOrDefaultAsync(a => a.UserName == user.UserName && a.Email == user.Email);
+            return admin;
+        }
+
         public async Task<IActionResult> GetAllPost()
         {
             var user = await CurrentUser();
@@ -200,7 +201,7 @@ namespace Hospital.WebUI.Controllers
                 return NotFound("Doctor not found");
             }
 
-		
+
             var timeAround = await _context.Schedules.FirstOrDefaultAsync(t => t.Id == doctor.ScheduleId);
             if (timeAround == null)
             {
@@ -230,7 +231,7 @@ namespace Hospital.WebUI.Controllers
 
                 var appointmentSlot = $"{appointmentStartTime:hh\\:mm} - {appointmentEndTime:hh\\:mm}";
 
-                if (timeSlots.Contains(appointmentSlot) && appointment.AppointmentDate.ToString()==s)
+                if (timeSlots.Contains(appointmentSlot) && appointment.AppointmentDate.ToString() == s)
                 {
                     timeSlots.Remove(appointmentSlot);
                 }
@@ -466,6 +467,11 @@ namespace Hospital.WebUI.Controllers
             return View();
         }
 
+        public IActionResult Appointments()
+        {
+            return View();
+        }
+
         public async Task<IActionResult> DoctorSingle(DoctorProfileViewModel viewModel)
         {
             var department = await _context.Departments.FirstOrDefaultAsync(d => d.Id == viewModel.DepartmentId);
@@ -473,5 +479,7 @@ namespace Hospital.WebUI.Controllers
             ViewBag.Doctor = viewModel;
             return View();
         }
+
+       
     }
 }

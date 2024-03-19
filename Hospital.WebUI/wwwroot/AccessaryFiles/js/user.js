@@ -1,7 +1,6 @@
 ﻿
+
 var departmentName = "";
-
-
 var d = document.getElementById("departmentSelect");
 var doct = document.getElementById("doctorSelect");
 //var n = document.getElementById("name");
@@ -12,7 +11,6 @@ var time = document.getElementById("exampleFormControlSelect4");
 
 
 function GetAllPatients() {
-    /*    console.log("dsdsdd");*/
     $.ajax({
         url: `/Admin/AllPatients`,
         method: "GET",
@@ -21,61 +19,24 @@ function GetAllPatients() {
             let name = "";
 
             for (var i = 0; i < data.length; i++) {
-                if (data[i].fullName == null || data[i].fullName == "") {
-                    name = `
-                    
-                     <td>${data[i].userName}</td>
 
-                    `;
+                if (data[i].fullName == null || data[i].fullName == "") {
+                    name = `<td>${data[i].userName}</td>`;
                 }
                 else {
-                    name = `
-
-                     <td>${data[i].fullName}</td>
-
-                    `;
-
+                    name = `<td>${data[i].fullName}</td>`;
                 }
-                //var id12 = "";
-                //for (var k = 0; k < 3; k++) {
-                //    id12 += data[i].id[k];
-                //}
                 content += `
-                 <tr onclick="PatientProfile('${data[i].id}')">
-                     <td><span class="list-name">${data[i].idv}</span></td> 
+                 <tr onclick="window.location.href='/Admin/PatientProfile?id=${data[i].id}'">
+                     <td>${data[i].id}</td> 
                      <td>${data[i].userName}</td>
                      <td>${data[i].phoneNumber}</td>
-                 </tr>
-          
-                `;
+                 </tr>`;
             }
             $("#patients").html(content);
         }
     })
 }
-
-
-function PatientProfile(id) {
-    $.ajax({
-        url: `/Admin/PatientProfile/${id}`,
-        method: "GET",
-
-        success: function (data) {
-            //console.log("s");
-        }
-    })
-}
-
-//function UserRefresh() {
-//    $.ajax({
-//        url: `/Admin/GetAll/${id}`,
-//        method: "GET",
-
-//        success: function (data) {
-//            console.log("s");
-//        }
-//    })
-//}
 
 function PostFilterAdmin(departmentId) {
     $.ajax({
@@ -918,6 +879,7 @@ function PatientDoctorFilterPatient(departmentId) {
         success: function (data) {
             //console.log(data);
             var context = "";
+            var context2 = "";
 
             for (var i = 0; i < data.length; i++) {
                 context += `
@@ -937,9 +899,32 @@ function PatientDoctorFilterPatient(departmentId) {
 				    </div>
                 
                 `;
+                context2 += `
+                     <div class="col-lg-3 col-md-4 col-sm-6">
+                         <div class="card xl-blue member-card doctor">
+                             <div class="body">
+                                 <div class="member-thumb">
+                                     <img style="width:90%; height:22vh; margin:auto;" src="${data[i].avatar}" class="img-fluid" alt="profile-image">
+                                 </div>
+                                 <div class="detail">
+                                     <p class="m-b-0">Dr. ${data[i].firstName}<br/>${data[i].lastName}</p>
+                                     <p class="text-muted">${data[i].department.departmentName}</p>
+                                     <ul class="social-links list-inline m-t-20">
+                                         <li><a title="facebook" href="#"><i class="zmdi zmdi-facebook"></i></a></li>
+                                         <li><a title="twitter" href="#"><i class="zmdi zmdi-twitter"></i></a></li>
+                                         <li><a title="instagram" href="#"><i class="zmdi zmdi-instagram"></i></a></li>
+                                     </ul>
+                                     <a href='/DoctorsShow/AdminInDoctorProfile?doctorId=${data[i].id}'  class="btn btn-default btn-round btn-simple" >View Profile</a>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+                `;
+
             }
 
             $("#patientDoctors").html(context);
+            $("#adminDoctors").html(context2);
         }
     })
 }
@@ -1689,19 +1674,20 @@ document.getElementById("okSuccess").addEventListener("click", function () {
 
 function DoctorAppointments() {
     $.ajax({
-        url: `/Doctor/ShowAllAppointments`,
+        url: `/Appointment/ShowAllAppointmentsForDoctor`,
         method: "GET",
 
         success: function (data) {
+            console.log(data);
             let content = "";
 
             for (var i = 0; i < data.length; i++) {
-                //var doctor = GetAppointmentDoctor(da ta[i].doctorId)
                 content += `
                   <tr>
                       <td>${data[i].id}</td>
                       <td>${data[i].appointmentDate} ${data[i].appointmentTime}</td>
-                      <td>${data[i].patient.firstName} ${data[i].patient.lastName}</td>
+                      <td>${data[i].patient.userName}</td>
+                      <td>${data[i].patient.age}</td>
                  </tr>`;
             }
             $("#doctorAppointments").html(content);
@@ -1736,6 +1722,102 @@ function handleRoomId() {
             //    option.value = room.id;
             //    roomSelect.appendChild(option);
             //});
+        }
+    })
+}
+
+
+
+function GetAllAppointmentOfPatient() {
+    $.ajax({
+        url: `/Appointment/GetAllAppointmentsOfPatient`,
+        method: "GET",
+
+        success: function (data) {
+            let content = ``;
+            for (var i = 0; i < data.length; i++) {
+                content += `
+                  <tr>
+                      <td>${data[i].id}</td>
+                      <td>${data[i].appointmentDate} ${data[i].appointmentTime}</td>
+                      <td>${data[i].doctor.firstName} ${data[i].doctor.lastName}</td>
+                      <td>${data[i].department.departmentName}</td>
+                 </tr>`;
+            }
+            console.log(content);
+            $("#patientAppointments").html(content);
+        }
+    })
+}
+
+function GetDoctorPatients() {
+    $.ajax({
+        url: `/Doctor/ShowAllDoctorPatient`,
+        method: "GET",
+        success: function (data) {
+            let content = "";
+            for (var i = 0; i < data.length; i++) {
+                console.log(data);
+                content += `
+                 <tr onclick="window.location.href='/Doctor/PatientProfile?id=${data[i].id}'">
+                     <td><span class="list-name">${data[i].id}</span></td> 
+                     <td><span class="list-name">${data[i].userName}</span></td> 
+                     <td>${data[i].age}</td>
+                     <td>${data[i].phoneNumber}</td>
+                 </tr>`;
+            }
+            $("#doctorPatients").html(content);
+        }
+    })
+}
+
+function GetAllRecipesOfPatient(id) {
+    $.ajax({
+        url: `/Appointment/GetAllRecipesOfCurrent?id=${id}`,
+        method: "GET",
+        success: function (data) {
+            let content = "";
+            for (var i = 0; i < data.length; i++) {
+                content +=
+                    `<tr onclick="RecipeView('${data[i].id}')">
+                     <td>${data[i].recipeHeader}</td>
+                     <td>${data[i].writeTime}</td>
+                     </tr>`;
+            }
+            $("#recipesOfPatient").html(content);
+        }
+    })
+}
+
+function ReceipClick(id) {
+    var header = document.getElementById("recipeHeaderL");
+    var content = document.getElementById("recipeContentL");
+
+    $.ajax({
+        url: `/Appointment/GetByIdRecipe?id=${id}`,
+        method: "GET",
+        success: function (data) {
+
+            header.innerHTML = data.recipeHeader;
+            content.innerHTML = data.content;
+        }
+    })
+}
+
+
+function AddRecipe(id) {
+    console.log("dvedeywdue");
+    var contentRecipe = $("#recipeContent").val();
+    var headerRecipe = $("#recipeHeader").val();
+    console.log(id);
+    console.log(contentRecipe);
+    console.log(headerRecipe);
+    $.ajax({
+        url: `/Doctor/AddRecipeToPatient?id=${id}&content=${contentRecipe}&header=${headerRecipe}`,
+        method: "POST",
+        success: function (data) {
+            location.reload();
+            console.log("Recipe successfully added ", data);
         }
     })
 }

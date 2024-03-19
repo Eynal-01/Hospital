@@ -15,7 +15,12 @@ connection.on("Connect", function (role) {
         GetAllAppointments();
         GetAllDoctors();
     }
+    //if (role === "patient") {
+    //}9
+    DoctorAppointments();
+    GetAllAppointmentOfPatient();
     GetAllDepartment();
+    GetDoctorPatients();
     //else if (role == "patient") {
     //    GetAllPostPatient();
     //}
