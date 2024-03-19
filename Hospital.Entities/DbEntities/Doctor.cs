@@ -30,6 +30,7 @@ namespace HospitalProject.Entities.DbEntities
         public string? Education { get; set; }
         public string? Status { get; set; }
         public bool? IsPostView { get; set; }
+        public int MissedNotifCount { get; set; }
 
         public DateTime WorkStartTime { get; set; }
         public DateTime WorkEndTime { get; set; }

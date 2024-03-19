@@ -56,12 +56,12 @@
                             <p class="d-lg-none d-xl-none">Instagram</p>
                         </a>
                     </li>
-@*                    @if (Model.Selected == "patient" )
-                    {*@
-                    <li class="nav-item">
-                        <a asp-action="Register" asp-controller="Authentication" asp-route-selected="@Model.Selected" class="nav-link btn btn-white btn-round">SIGN UP</a>
-                    </li>
-                    @*}*@
+                    @if (Model.Selected == "patient" || Model.Selected == "admin")
+                    {
+                        <li class="nav-item">
+                            <a asp-action="Register" asp-controller="Authentication" asp-route-selected="@Model.Selected" class="nav-link btn btn-white btn-round">SIGN UP</a>
+                        </li>
+                    }
                 </ul>
             </div>
         </div>
@@ -108,12 +108,12 @@
         </div>
         <footer class="footer">
             <div class="container">
-               @*  <nav>
-                    <ul>
-                        <li><a href="http://thememakker.com/contact/" target="_blank">Contact Us</a></li>
-                        <li><a href="http://thememakker.com/about/" target="_blank">About Us</a></li>
-                        <li><a href="javascript:void(0);">FAQ</a></li>
-                    </ul>
+                @*  <nav>
+                <ul>
+                <li><a href="http://thememakker.com/contact/" target="_blank">Contact Us</a></li>
+                <li><a href="http://thememakker.com/about/" target="_blank">About Us</a></li>
+                <li><a href="javascript:void(0);">FAQ</a></li>
+                </ul>
                 </nav> *@
                 <div class="copyright">
                     &copy;
@@ -127,7 +127,7 @@
     </div>
 
     <script src="~/AdminFiles/assets/bundles/libscripts.bundle.js"></script>
-    <script src="~/AdminFiles/assets/bundles/vendorscripts.bundle.js"></script> 
+    <script src="~/AdminFiles/assets/bundles/vendorscripts.bundle.js"></script>
 
     <script>
         $(".navbar-toggler").on('click', function () {

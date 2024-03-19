@@ -459,7 +459,7 @@
                     <div class="card chat-app">
                         <div id="plist" class="people-list">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search...">
+                                <input id="adminContactSearch" type="text" class="form-control" placeholder="Search..." oninput="handleChatPeopleSearch()">
                                 <span class="input-group-addon">
                                     <i class="zmdi zmdi-search"></i>
                                 </span>
@@ -477,27 +477,13 @@
                             <div class="chat-header clearfix" id="chatHeader">
                             </div>
                             <div class="chat-history xl-slategray">
-                                <div class="chat-content" id="messages">
+@*                                 <div class="chat-content" id="messages">
 
-                                </div>
-                                @*<ul class="m-b-0" id="messages">*@
-                                   @* <li class="clearfix">
-                                        <div class="message-data text-right"> <span class="message-data-time">10:10 AM, Today</span> &nbsp; &nbsp; <span class="message-data-name">Charlotte</span> <i class="zmdi zmdi-circle me"></i> </div>
-                                        <div class="message other-message float-right"> Hi Aiden, how are you? How is the project coming along? </div>
-                                    </li>
-                                    <li>
-                                        <div class="message-data">
-                                            <span class="message-data-name"><i class="zmdi zmdi-circle online"></i> Aiden</span> <span class="message-data-time">10:12 AM, Today</span>
-                                        </div>
-                                        <div class="message my-message">
-                                            <p>Are we meeting today? Project has been already finished and I have results to show you.</p>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="message-data"> <span class="message-data-name"><i class="zmdi zmdi-circle online"></i> Aiden</span> <span class="message-data-time">10:31 AM, Today</span> </div>
-                                        <i class="zmdi zmdi-circle online"></i> <i class="zmdi zmdi-circle online" style="color: #AED2A6"></i> <i class="zmdi zmdi-circle online" style="color:#DAE9DA"></i>
-                                    </li>*@
-                                @*</ul>*@
+                                </div> *@
+
+                                <ul class="m-b-0" id="messages" style="list-style:none;">
+
+                                </ul>
                             </div>
                             <div class="chat-message clearfix">
                                 <div class="input-group p-t-15" id="sendMessage">

@@ -41,6 +41,7 @@ namespace Hospital.Entities.Migrations
                     Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     WorkDaysCount = table.Column<int>(type: "int", nullable: false),
                     IsPostView = table.Column<bool>(type: "bit", nullable: true),
+                    MissedNotifCount = table.Column<int>(type: "int", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -331,32 +332,6 @@ namespace Hospital.Entities.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Notifications",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    SenderId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    ReceiverId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    Message = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsCheck = table.Column<bool>(type: "bit", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Notifications", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Notifications_AspNetUsers_ReceiverId",
-                        column: x => x.ReceiverId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Notifications_AspNetUsers_SenderId",
-                        column: x => x.SenderId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Payments",
                 columns: table => new
                 {
@@ -420,6 +395,7 @@ namespace Hospital.Entities.Migrations
                     Education = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsPostView = table.Column<bool>(type: "bit", nullable: true),
+                    MissedNotifCount = table.Column<int>(type: "int", nullable: false),
                     WorkStartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     WorkEndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     WorkDayCount = table.Column<int>(type: "int", nullable: false),
@@ -486,6 +462,47 @@ namespace Hospital.Entities.Migrations
                     table.ForeignKey(
                         name: "FK_Chats_Doctors_ReceiverDoctorId",
                         column: x => x.ReceiverDoctorId,
+                        principalTable: "Doctors",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Notifications",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SenderId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ReceiverId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Message = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsCheck = table.Column<bool>(type: "bit", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    SenderAdminId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    SenderDoctorId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    ReceiverDoctorId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    ReceiverAdminId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Notifications", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Notifications_Admins_ReceiverAdminId",
+                        column: x => x.ReceiverAdminId,
+                        principalTable: "Admins",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Notifications_Admins_SenderAdminId",
+                        column: x => x.SenderAdminId,
+                        principalTable: "Admins",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Notifications_Doctors_ReceiverDoctorId",
+                        column: x => x.ReceiverDoctorId,
+                        principalTable: "Doctors",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Notifications_Doctors_SenderDoctorId",
+                        column: x => x.SenderDoctorId,
                         principalTable: "Doctors",
                         principalColumn: "Id");
                 });
@@ -811,14 +828,24 @@ namespace Hospital.Entities.Migrations
                 column: "ChatId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Notifications_ReceiverId",
+                name: "IX_Notifications_ReceiverAdminId",
                 table: "Notifications",
-                column: "ReceiverId");
+                column: "ReceiverAdminId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Notifications_SenderId",
+                name: "IX_Notifications_ReceiverDoctorId",
                 table: "Notifications",
-                column: "SenderId");
+                column: "ReceiverDoctorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Notifications_SenderAdminId",
+                table: "Notifications",
+                column: "SenderAdminId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Notifications_SenderDoctorId",
+                table: "Notifications",
+                column: "SenderDoctorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Patients_DoctorId",

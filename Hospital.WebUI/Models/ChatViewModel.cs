@@ -11,5 +11,6 @@ namespace Hospital.WebUI.Models
         public string? CurrentUserId { get; set; }
         public Admin? FriendAdmin { get; set; }
         public Doctor? FriendDoctor { get; set; }
+        public List<NotificationViewModel>? Notifications { get; set; }
     }
 }
