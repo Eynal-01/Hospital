@@ -61,6 +61,11 @@ namespace Hospital.WebUI.Controllers
             return Ok(new { doctors = doctors, admins = admins });
         }
 
+       /// <summary>
+       /// 
+       /// </summary>
+       /// <returns></returns>
+
         public async Task<IActionResult> GetUserChatInUser()
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
