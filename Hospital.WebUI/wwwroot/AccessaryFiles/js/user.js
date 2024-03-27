@@ -1,14 +1,6 @@
-<<<<<<< HEAD
-﻿
-
-var departmentName = "";
-=======
-﻿//import { end } from "@popperjs/core";
-
 var departmentName = "";
 var currentUserClickedChatUserId = "";
 
->>>>>>> Mura_Chat
 var d = document.getElementById("departmentSelect");
 var doct = document.getElementById("doctorSelect");
 //var n = document.getElementById("name");
@@ -1560,7 +1552,7 @@ function GetAllDoctors() {
 				    			</div>
 				    		</div>
 				    		<div class="content mt-3">
-				    			<h4 class="mb-0"><a href='/DoctorsShow/PatientInDoctorProfile?doctorId=${data.doctors[i].id}'>${data.doctors[i].firstName}<br/>${data.doctors[i].lastName}</a ></h4 >
+				    			<h4 class="mb-0"><a href="/DoctorsShow/PatientInDoctorProfile('${data.doctors[i].id}')">${data.doctors[i].firstName}<br/>${data.doctors[i].lastName}</a ></h4 >
 				    			<p>${data.doctors[i].department.departmentName}</p>
 				    		</div>
 				    	</div>
@@ -1623,7 +1615,6 @@ function GetAllDoctors() {
         }
     })
 }
-
 function DoctorShowPost() {
     $.ajax({
         url: `/Admin/DoctorShowPost`,
@@ -2333,6 +2324,7 @@ function GetAllAppointmentOfPatient() {
     })
 }
 
+
 function GetDoctorPatients() {
     $.ajax({
         url: `/Doctor/ShowAllDoctorPatient`,
@@ -2354,20 +2346,52 @@ function GetDoctorPatients() {
     })
 }
 
+//function GetAllRecipesOfPatientForP() {
+//    $.ajax({
+//        url: `/Home/GetAllRecipesOfPatient`,
+//        method: "GET",
+
+//        success: function (data) {
+//            let content = "";
+//            for (var i = 0; i < data.length; i++) {
+//                content +=
+//                    `<tr onclick="RecipeView('${data[i].id}')">
+//                     <td>${data[i].recipeHeader}</td>
+//                     <td>${data[i].doctorName}</td>
+//                     <td>${data[i].departmentName}</td>
+//                     <td>${data[i].writeTime}</td>
+//                     </tr>`;
+//            }
+            
+//        }
+//    })
+//}
+
+
 function GetAllRecipesOfPatient(id) {
     $.ajax({
         url: `/Appointment/GetAllRecipesOfCurrent?id=${id}`,
         method: "GET",
         success: function (data) {
             let content = "";
+            let content1 = "";
             for (var i = 0; i < data.length; i++) {
                 content +=
                     `<tr onclick="RecipeView('${data[i].id}')">
                      <td>${data[i].recipeHeader}</td>
                      <td>${data[i].writeTime}</td>
                      </tr>`;
+
+                content1 +=
+                    `<tr onclick="RecipeView('${data[i].id}')">
+                     <td>${data[i].recipeHeader}</td>
+                     <td>${data[i].doctorName}</td>
+                     <td>${data[i].departmentName}</td>
+                     <td>${data[i].writeTime}</td>
+                     </tr>`;
             }
             $("#recipesOfPatient").html(content);
+            $("#patientRecipes").html(content1);
         }
     })
 }
@@ -2380,13 +2404,31 @@ function ReceipClick(id) {
         url: `/Appointment/GetByIdRecipe?id=${id}`,
         method: "GET",
         success: function (data) {
-
+            console.log("suuuuuccccceesssss");
             header.innerHTML = data.recipeHeader;
             content.innerHTML = data.content;
         }
     })
 }
 
+function RecipeClick(id) {
+    var header = document.getElementById("recipeHeaderL");
+    var depart = document.getElementById("recipeDepartment");
+    var content = document.getElementById("recipeContentL");
+    var doctor1 = document.getElementById("recipeDoctor");
+    console.log("suuuuuccccceesssss");
+
+    $.ajax({
+        url: `/Home/GetByIdRecipe?id=${id}`,
+        method: "GET",
+        success: function (data) {
+            doctor1.innerHTML = data.doctorName;
+            depart.innerHTML = data.departmentName;
+            header.innerHTML = data.recipeHeader;
+            content.innerHTML = data.content;
+        }
+    })
+}
 
 function AddRecipe(id) {
     console.log("dvedeywdue");

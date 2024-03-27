@@ -14,5 +14,7 @@ namespace HospitalProject.Entities.DbEntities
         public string? WriteTime { get; set; }
         public string? PatientId { get; set; }
         public string? DoctorId { get; set; }
+        public string? DoctorName { get; set; }
+        public string? DepartmentName { get; set; }
     }
 }

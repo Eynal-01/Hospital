@@ -670,7 +670,9 @@ namespace Hospital.Entities.Migrations
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     WriteTime = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PatientId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    DoctorId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    DoctorId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    DoctorName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DepartmentName = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {

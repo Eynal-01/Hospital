@@ -69,4 +69,4 @@ namespace Hospital.WebUI.Controllers
             return Ok(receip);
         }
     }
-}
+} 

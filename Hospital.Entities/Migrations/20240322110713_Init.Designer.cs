@@ -12,11 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hospital.Entities.Migrations
 {
     [DbContext(typeof(CustomIdentityDbContext))]
-<<<<<<<< HEAD:Hospital.Entities/Migrations/20240319101455_Init.Designer.cs
-    [Migration("20240319101455_Init")]
-========
-    [Migration("20240318131834_Init")]
->>>>>>>> Mura_Chat:Hospital.Entities/Migrations/20240318131834_Init.Designer.cs
+    [Migration("20240322110713_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -898,8 +894,14 @@ namespace Hospital.Entities.Migrations
                     b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("DepartmentName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("DoctorId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("DoctorName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PatientId")
                         .HasColumnType("nvarchar(450)");

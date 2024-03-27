@@ -143,25 +143,19 @@ namespace Hospital.WebUI.Controllers
             var user = await _userManager.GetUserAsync(HttpContext.User);
             var doctor = await _dbContext.Doctors.FirstOrDefaultAsync(d => d.Email == user.Email && d.UserName == user.UserName);
             var allRecipesCount = _dbContext.Recipes.Count();
+            var departmentOfDoctor = await _dbContext.Departments.FirstOrDefaultAsync(d => d.Id == doctor.DepartmentId);
             Recipe newRecipe = new Recipe()
             {
-                //Id = allRecipesCount += 1,
                 Content = content,
                 RecipeHeader = header,
                 PatientId = patient.Id,
                 DoctorId = doctor.Id,
                 WriteTime = DateTime.Now.ToShortDateString(),
+                DoctorName = $"{doctor.FirstName} {doctor.LastName}",
+                DepartmentName = departmentOfDoctor.DepartmentName
             };
-            //try
-            //{
             await _dbContext.Recipes.AddAsync(newRecipe);
             await _dbContext.SaveChangesAsync();
-            //}
-            //catch (Exception ex)
-            //{
-
-            //    throw;
-            //}
 
             //var recipesOfPatient = await _dbContext.Recipes.Where(r=>r.PatientId==patient.Id).ToListAsync();
             var pat = await _dbContext.Patients.FirstOrDefaultAsync(d => d.Id == id);
@@ -175,6 +169,16 @@ namespace Hospital.WebUI.Controllers
             };
 
             return RedirectToAction("PatientProfile11", viewModel);
+        }
+
+        public async Task<IActionResult> PatientProfile11(PatientProfileViewModel viewModel)
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var cu = await _dbContext.Doctors.FirstOrDefaultAsync(x => x.UserName == user.UserName && x.Email == user.Email);
+            var receips = await _dbContext.Recipes.Where(d => d.PatientId == viewModel.PatientId && d.DoctorId == cu.Id).ToListAsync();
+            viewModel.Recipes = receips;
+            ViewBag.ViewModel = viewModel;
+            return View();
         }
 
         public IActionResult Error500()
@@ -234,16 +238,6 @@ namespace Hospital.WebUI.Controllers
 
         public IActionResult PatientInvoice()
         {
-            return View();
-        }
-
-        public async Task<IActionResult> PatientProfile11(PatientProfileViewModel viewModel)
-        {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
-            var cu = await _dbContext.Doctors.FirstOrDefaultAsync(x => x.UserName == user.UserName && x.Email == user.Email);
-            var receips = await _dbContext.Recipes.Where(d => d.PatientId == viewModel.PatientId && d.DoctorId == cu.Id).ToListAsync();
-            viewModel.Recipes = receips;
-            ViewBag.ViewModel = viewModel;
             return View();
         }
 

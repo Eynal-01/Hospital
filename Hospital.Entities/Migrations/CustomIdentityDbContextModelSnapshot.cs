@@ -892,8 +892,14 @@ namespace Hospital.Entities.Migrations
                     b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("DepartmentName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("DoctorId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("DoctorName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PatientId")
                         .HasColumnType("nvarchar(450)");

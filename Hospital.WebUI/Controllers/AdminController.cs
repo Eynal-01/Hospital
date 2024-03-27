@@ -430,13 +430,7 @@ namespace Hospital.WebUI.Controllers
                                 var resul = await _roleManager.CreateAsync(role);
                             }
                         }
-<<<<<<< HEAD
                         await _userManager.AddToRoleAsync(customUser, "doctor");
-=======
-
-                        await _userManager.AddToRoleAsync(customUser, "doctor");
-
->>>>>>> Mura_Chat
                         await _context.Doctors.AddAsync(doctor);
                         await _context.SaveChangesAsync();
                     }

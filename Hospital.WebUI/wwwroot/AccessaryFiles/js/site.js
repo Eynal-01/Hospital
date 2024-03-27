@@ -10,7 +10,6 @@ connection.start().then(function () {
 })
 
 connection.on("Connect", function (role) {
-    //console.log("df");
     if (role === "admin") {
         GetAllPatients();
         GetAllAppointments();
@@ -20,6 +19,7 @@ connection.on("Connect", function (role) {
     //}9
     DoctorAppointments();
     GetAllAppointmentOfPatient();
+    GetAllRecipesOfPatientForP();
     GetAllDepartment();
     GetDoctorPatients();
     //else if (role == "patient") {
