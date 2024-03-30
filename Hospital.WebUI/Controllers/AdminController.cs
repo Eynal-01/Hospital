@@ -46,6 +46,11 @@ namespace Hospital.WebUI.Controllers
             return admin;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+
         [HttpGet]
         public async Task<IActionResult> AddDoctor()
         {
