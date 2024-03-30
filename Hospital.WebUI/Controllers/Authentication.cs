@@ -3,6 +3,7 @@ using Hospital.WebUI.Models;
 using HospitalProject.Entities.DbEntities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace HospitalProject.WebUI.Controllers
 {
@@ -74,22 +75,27 @@ namespace HospitalProject.WebUI.Controllers
                         user = _customIdentityDbContext.Admins.SingleOrDefault(i => i.UserName == loginViewModel.UserName);
                     }
 
+                    var userr = await _customIdentityDbContext.Users.FirstOrDefaultAsync(u => u.UserName == loginViewModel.UserName);
                     if (user != null)
                     {
                         _customIdentityDbContext.Update(user);
                         await _customIdentityDbContext.SaveChangesAsync();
                     }
-                    if (loginViewModel.Selected == "patient")
+                    if (user != null)
                     {
-                        return RedirectToAction("Index", "Home");
-                    }
-                    else if (loginViewModel.Selected == "doctor")
-                    {
-                        return RedirectToAction("Index", "Doctor");
-                    }
-                    else
-                    {
-                        return RedirectToAction("Index", "Admin");
+                        var role = await _userManager.GetRolesAsync(userr);
+                        if (loginViewModel.Selected == "patient" && role[0] == "patient")
+                        {
+                            return RedirectToAction("Index", "Home");
+                        }
+                        else if (loginViewModel.Selected == "doctor" && role[0] == "doctor")
+                        {
+                            return RedirectToAction("Index", "Doctor");
+                        }
+                        else if (loginViewModel.Selected == "admin" && role[0] == "admin")
+                        {
+                            return RedirectToAction("Index", "Admin");
+                        }
                     }
                 }
             }
@@ -183,6 +189,32 @@ namespace HospitalProject.WebUI.Controllers
                 }
             }
             return View(registerViewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> LogOut(string selected)
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var role = await _userManager.GetRolesAsync(user);
+
+            if (role[0] == "admin")
+            {
+                var admin = await _customIdentityDbContext.Admins.FirstOrDefaultAsync(d => d.Email == user.Email && d.UserName == user.UserName);
+                admin.IsOnline = false;
+
+                _customIdentityDbContext.Admins.Update(admin);
+                await _customIdentityDbContext.SaveChangesAsync();
+            }
+            else if (role[0] == "doctor")
+            {
+                var doctor = await _customIdentityDbContext.Doctors.FirstOrDefaultAsync(d => d.Email == user.Email && d.UserName == user.UserName);
+                doctor.IsOnline = false;
+
+                _customIdentityDbContext.Doctors.Update(doctor);
+                await _customIdentityDbContext.SaveChangesAsync();
+            }
+
+            return RedirectToAction("Login", "Authentication", new { selected });
         }
     }
 }

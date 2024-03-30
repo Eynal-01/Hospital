@@ -14,8 +14,8 @@ namespace Hospital.Business.Concrete
     {
         public Task SendEmailAsync(string email, string subject, string message)
         {
-            var mail = "eynalr2024001@outlook.com";
-            var psw = "Eynal2004";
+            var mail = "novenahospital@outlook.com";
+            var psw = "Novena_2024";
             var client = new SmtpClient("smtp.office365.com", 587)
             {
                 EnableSsl = true,

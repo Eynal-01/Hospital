@@ -42,7 +42,9 @@ namespace Hospital.Business.Concrete
 
         public async Task<Notification?> GetNotificationByIdAsync(string notificationId)
         {
-            return await _notificationDal.GetAsync(n => n.Id == notificationId);
+            var notification = new Notification();
+            return notification;
+            //return await _notificationDal.GetAsync(n => n.Id == notificationId);
         }
 
         public async Task<int> GetUnreadNotificationCountAsync(string userId)

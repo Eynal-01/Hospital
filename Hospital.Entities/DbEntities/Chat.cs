@@ -8,36 +8,14 @@ using System.Threading.Tasks;
 
 namespace HospitalProject.Entities.DbEntities
 {
-    public class Chat:IEntity
+    public class Chat : IEntity
     {
-        /// <summary>
-        /// Gets or sets the ID of the chat.
-        /// </summary>
-        public string? Id { get; set; }
+        public int Id { get; set; }
+        public string? ReceiverId { get; set; }
+        public string? SenderId { get; set; }
 
-        /// <summary>
-        /// Gets or sets the ID of the sender user associated with the chat.
-        /// </summary>
-        public string? SenderUserId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the sender user associated with the chat.
-        /// </summary>
-        public CustomIdentityUser? SenderUser { get; set; }
-
-        /// <summary>
-        /// Gets or sets the ID of the receiver user associated with the chat.
-        /// </summary>
-        public string? ReceiverUserId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the receiver user associated with the chat.
-        /// </summary>
-        public CustomIdentityUser? ReceiverUser { get; set; }
-
-        /// <summary>
-        /// Gets or sets the collection of messages associated with the chat.
-        /// </summary>
-        public virtual IEnumerable<Message>? Messages { get; set; } = new List<Message>();
+        public virtual Admin? ReceiverAdmin { get; set; }
+        public virtual Doctor? ReceiverDoctor { get; set; }
+        public virtual ICollection<Message>? Messages { get; set; }
     }
 }

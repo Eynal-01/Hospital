@@ -11,21 +11,29 @@ namespace HospitalProject.Entities.DbEntities
 {
     public class Notification:IEntity
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
 
         public string? SenderId { get; set; }
 
-        public virtual CustomIdentityUser? Sender { get; set; }
-
         public string? ReceiverId { get; set; }
 
-        public virtual CustomIdentityUser? Receiver { get; set; }
+        //public string? SenderDoctorId { get; set; }
+
+        //public string? ReceiverDoctorId { get; set; }
+
 
         public string? Message { get; set; }
 
         public bool IsCheck { get; set; } = false;
 
         public DateTime Date { get; set; }
+
+        public virtual Admin? SenderAdmin { get; set; }
+        public virtual Doctor? SenderDoctor { get; set; }
+
+
+        public virtual Doctor? ReceiverDoctor { get; set; }
+        public virtual Admin? ReceiverAdmin { get; set; }
 
         public Notification()
         {

@@ -1,0 +1,74 @@
+﻿<title>:: Oreo Hospital :: Patients</title>
+<link rel="icon" href="~/UserFiles/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="~/UserFiles/assets/plugins/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="~/UserFiles/assets/css/main.css">
+<link rel="stylesheet" href="~/UserFiles/assets/css/color_skins.css">
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row clearfix">
+            <div class="col-md-12">
+                <div class="header">
+                    <h2 style="width:34%; margin:auto;"><strong>Appointments</strong> List</h2>
+                </div>
+                <div class="card patients-list">
+                    <div class="body">
+                        <div class="tab-content m-t-10">
+                            <div class="tab-pane table-responsive active" id="All">
+                                <table class="table m-b-0 table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Recipe header</th>
+                                            <th>Doctor</th>
+                                            <th>Department</th>
+                                            <th>Recipe Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="patientRecipes">
+                                        @for (int i = 0; i < ViewBag.ViewModel.Recipes.Count; i++)
+                                        {
+                                            <tr onclick="RecipeClick('@ViewBag.ViewModel.Recipes[i].Id')" data-toggle="modal" data-target="#recipeView1">
+                                                <td>@ViewBag.ViewModel.Recipes[i].RecipeHeader</td>
+                                                <td>@ViewBag.ViewModel.Recipes[i].WriteTime</td>
+                                                <td>@ViewBag.ViewModel.Recipes[i].DoctorName</td>
+                                                <td>@ViewBag.ViewModel.Recipes[i].DepartmentName</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" id="recipeView1" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document" id="modalDialog">
+        <div class="modal-content" id="modalContent">
+            <div class="modal-header" id="modalHeader">
+                <h4 class="title" id="defaultModalLabel">Recipe</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label id="recipeDoctor" class="form-control"></label>
+                        <label id="recipeDepartment" class="form-control"></label>
+                        <label id="recipeHeaderL" class="form-control"></label>
+                        <label class="form-control" id="recipeContentL" style="margin-top:5%;"></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/AccessaryFiles/js/signalr/dist/browser/signalR.js"></script>
+<script src="~/UserFiles/assets/bundles/libscripts.bundle.js"></script> <!-- Bootstrap JS and jQuery v3.2.1 -->
+<script src="~/UserFiles/assets/bundles/vendorscripts.bundle.js"></script> <!-- slimscroll, waves Scripts Plugin Js -->
+<script src="~/UserFiles/assets/bundles/mainscripts.bundle.js"></script><!-- Custom Js -->
+<script src="~/AccessaryFiles/js/user.js"></script>
+<script src="~/AccessaryFiles/js/site.js"></script>
+@* <script src="~/AccessaryFiles/lib/jquery/dist/jquery.min.js"></script>  *@

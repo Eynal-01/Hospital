@@ -15,26 +15,40 @@ connection.on("Connect", function (role) {
         GetAllAppointments();
         GetAllDoctors();
     }
+    if (role === "doctor") {
+        DoctorAppointments();
+        GetDoctorPatients();
+    }
+
     GetAllDepartment();
-    //else if (role == "patient") {
-    //    GetAllPostPatient();
-    //}
-    //if (role == "doctor") {
-    //    console.log(role);
     GetAllPostAllUsers();
+
+    GetAllAppointmentOfPatient();
+    //GetAllRecipesOfPatientForP();
+})
+
+connection.on("Disconnect", function (info) {
+    //if (role === "admin") {
+    //    GetAllPatients();
+    //    GetAllAppointments();
+    //    GetAllDoctors();
     //}
-    //else if (role == "admin") {
-    //    console.log(role);
-    //    GetAllPostAdmin();
+    //if (role === "patient") {
+    //    GetAllAppointmentOfPatient();
+    //    GetAllRecipesOfPatientForP();
+    //}
+    //if (role === "doctor") {
+    //    DoctorAppointments();
+    //    GetDoctorPatients();
     //}
 
-    //GetAllUsers();
-    //element.style.display = "block";
-    //element.innerHTML = info;
-    //setTimeout(() => {
-    //    element.innerHTML = "";
-    //    element.style.display = "none";
-    //}, 5000);
+    //GetAllDepartment();
+    ////else if (role == "patient") {
+    ////    GetAllPostPatient();
+    ////}
+    ////if (role == "doctor") {
+    ////    console.log(role);
+    GetAllPostAllUsers();
 })
 
 async function AdminCall(id) {
@@ -43,6 +57,14 @@ async function AdminCall(id) {
 
 async function DoctorCall(id) {
     await connection.invoke("DoctorCall", id);
+}
+
+function GetMessageLiveChatCall(id, id2) {
+    //console.log(id);
+    //console.log(id2);
+    //console.log("Received sender: " + id);
+    //console.log("Received receiver: " + id2);
+    connection.invoke("LiveChatCall", id, id2);
 }
 
 connection.on("AdminRefresh", function (id) {
@@ -59,3 +81,13 @@ connection.on("DoctorPostShow", function (id) {
     //GetAllUsers();
     //GetMyAndFriendPosts();
 })
+
+connection.on("ReceiveMessage", function (id) {
+    //console.log("Received message: " + message);
+    UserMessage(id);
+});
+
+//connection.on("LiveChat", function (id) {
+//    //console.log("sadads");
+//    UserMessage(id);
+//})

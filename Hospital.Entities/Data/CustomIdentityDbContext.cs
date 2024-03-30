@@ -43,7 +43,9 @@ namespace Hospital.Entities.Data
         public DbSet<NoWorkingTime>? NoWorkingTimes { get; set; }
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Schedule> Schedules { get; set; }
+        public DbSet<About> Abouts { get; set; }
         public DbSet<PostView>? PostViews { get; set; }
+        public DbSet<HospitalInfo> HospitalInfo { get; set; }
 
         //protected override void OnModelCreating(ModelBuilder builder)
         //{

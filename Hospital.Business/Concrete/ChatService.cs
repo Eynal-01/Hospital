@@ -25,13 +25,13 @@ namespace Hospital.Business.Concrete
 
         public async Task<IEnumerable<Chat>> GetAllUserChats(string userId)
         {
-            var chats = await _chatDal.GetListAsync(c => c.SenderUserId == userId || c.ReceiverUserId == userId);
+            var chats = await _chatDal.GetListAsync(c => c.SenderId == userId || c.ReceiverId == userId);
 
             var uniqueChats = chats.GroupBy(c =>
             {
-                string id1 = c.SenderUserId;
+                string id1 = c.SenderId;
 
-                string id2 = c.ReceiverUserId;
+                string id2 = c.ReceiverId;
 
                 return id1.CompareTo(id2) < 0 ? $"{id1}_{id2}" : $"{id2}_{id1}";
             })
@@ -42,12 +42,14 @@ namespace Hospital.Business.Concrete
 
         public async Task<Chat?> GetChatAsync(string senderUserId, string receiverUserId)
         {
-            return await _chatDal.GetAsync(c => c.SenderUserId == senderUserId && c.ReceiverUserId == receiverUserId);
+            return await _chatDal.GetAsync(c => c.SenderId == senderUserId && c.ReceiverId == receiverUserId);
         }
 
         public async Task<Chat?> GetChatByIdAsync(string chatId)
         {
-            return await _chatDal.GetAsync(c => c.Id == chatId);
+            //return await _chatDal.GetAsync(c => c.Id == chatId);
+            var chat = new Chat();
+            return chat;
         }
     }
 }

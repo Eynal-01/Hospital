@@ -5,12 +5,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
-using System;
-using System.Media;
-using Microsoft.AspNetCore.Components.Forms;
 using Hospital.Entities.DbEntities;
 using Hospital.Business.Abstract;
+using Twilio.Rest.Trunking.V1;
 
 namespace Hospital.WebUI.Controllers
 {
@@ -22,6 +19,16 @@ namespace Hospital.WebUI.Controllers
         public CustomIdentityDbContext _dbContext { get; set; }
         private readonly IDataService _dataService;
         private readonly CustomIdentityDbContext _context;
+
+
+        public HomeController(CustomIdentityDbContext dbContext, UserManager<CustomIdentityUser> userManager, IDataService dataService, CustomIdentityDbContext context)
+        {
+            _dbContext = dbContext;
+            _userManager = userManager;
+            _dataService = dataService;
+            _context = context;
+        }
+
 
         [HttpGet]
         public async Task<IActionResult> Appointment()
@@ -51,7 +58,8 @@ namespace Hospital.WebUI.Controllers
                 var doctor = await _dbContext.Doctors.FirstOrDefaultAsync(d => d.Id == viewModel.DoctorId);
                 var doctors = _dbContext.Doctors.ToList();
 
-                //var names = viewModel.Fullname.Split(' ');
+                var date1 = viewModel.AppointmentDate.ToString().Split('T')[0];
+                var date2 = date1.Split(' ')[0];
 
                 var appoinment = new Appointment
                 {
@@ -61,14 +69,8 @@ namespace Hospital.WebUI.Controllers
                     PatientId = patient.Id.ToString(),
                     Message = viewModel.Message,
                     AppointmentTime = viewModel.AppointmentTime,
-                    AppointmentDate = viewModel.AppointmentDate
+                    AppointmentDate = DateTime.Parse(date2),
                 };
-                //for (int i = 0; i < doctors.Count(); i++)
-                //{
-                //    if (doctors[i].Id == doctor.Id)
-                //    {
-                //    }
-                //}
                 await _dbContext.Appointments.AddAsync(appoinment);
                 await _dbContext.SaveChangesAsync();
                 return RedirectToAction("SuccessPay", "Home");
@@ -76,13 +78,6 @@ namespace Hospital.WebUI.Controllers
             return RedirectToAction("SuccessPay", "Home");
         }
 
-        public HomeController(CustomIdentityDbContext dbContext, UserManager<CustomIdentityUser> userManager, IDataService dataService, CustomIdentityDbContext context)
-        {
-            _dbContext = dbContext;
-            _userManager = userManager;
-            _dataService = dataService;
-            _context = context;
-        }
 
         public async Task<Patient> CurrentUser()
         {
@@ -193,8 +188,9 @@ namespace Hospital.WebUI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAvailableTimes(string doctorId, string appointmentDate)
         {
+            var s = appointmentDate + " 00:00:00";
             var appointments = await _context.Appointments
-                //.Where(a => a.DoctorId == doctorId && a.AppointmentDate.ToString() == appointmentDate)
+                //.Where(a => a.DoctorId == doctorId && a.AppointmentDate.ToString() == s)
                 .ToListAsync();
 
             var timeSlots = new List<string>();
@@ -204,6 +200,7 @@ namespace Hospital.WebUI.Controllers
             {
                 return NotFound("Doctor not found");
             }
+
 
             var timeAround = await _context.Schedules.FirstOrDefaultAsync(t => t.Id == doctor.ScheduleId);
             if (timeAround == null)
@@ -234,7 +231,7 @@ namespace Hospital.WebUI.Controllers
 
                 var appointmentSlot = $"{appointmentStartTime:hh\\:mm} - {appointmentEndTime:hh\\:mm}";
 
-                if (timeSlots.Contains(appointmentSlot))
+                if (timeSlots.Contains(appointmentSlot) && appointment.AppointmentDate.ToString() == s)
                 {
                     timeSlots.Remove(appointmentSlot);
                 }
@@ -257,158 +254,10 @@ namespace Hospital.WebUI.Controllers
             }
         }
 
-
-
-
-        //[HttpGet]
-        //public async Task<IActionResult> GetAvailableTimes(string doctorId, string appointmentDate)
-        //{
-        //    var appointments = await _context.Appointments
-        //        .Where(a => a.DoctorId == doctorId && a.AppointmentDate.Date == DateTime.Parse(appointmentDate).Date)
-        //        .ToListAsync();
-
-        //    var doctor = await _context.Doctors.FirstOrDefaultAsync(d => d.Id == doctorId);
-        //    if (doctor == null)
-        //    {
-        //        return NotFound("Doctor not found");
-        //    }
-
-        //    var timeAround = await _context.Schedules.FirstOrDefaultAsync(t => t.Id == doctor.ScheduleId);
-        //    if (timeAround == null)
-        //    {
-        //        return NotFound("Schedule not found");
-        //    }
-
-        //    var timeSlots = GenerateTimeSlotsForRange(timeAround);
-
-        //    // Retrieve all the dates for which there are appointments
-        //    var appointmentDates = appointments.Select(a => a.AppointmentDate).Distinct();
-
-        //    // Remove the entire date if all time slots are booked
-        //    foreach (var appointmentDate in appointmentDates)
-        //    {
-        //        var bookedTimeSlots = appointments
-        //            .Where(a => a.AppointmentDate.Date == appointmentDate)
-        //            .Select(a => a.AppointmentTime)
-        //            .ToList();
-
-        //        if (bookedTimeSlots.Count == timeSlots.Count)
-        //        {
-        //            timeSlots.RemoveAll(slot => slot.Contains(appointmentDate.ToString("yyyy-MM-dd")));
-        //        }
-        //    }
-
-        //    return Ok(timeSlots);
-        //}
-
-        //private List<string> GenerateTimeSlotsForRange(Schedule schedule)
-        //{
-        //    var timeSlots = new List<string>();
-        //    TimeSpan startTime;
-        //    TimeSpan endTime;
-
-        //    if (schedule.WorkTime.Split('-')[0].Trim() == "09:00")
-        //    {
-        //        startTime = morningStart;
-        //        endTime = morningEnd;
-        //    }
-        //    else
-        //    {
-        //        startTime = afternoonStart;
-        //        endTime = afternoonEnd;
-        //    }
-
-        //    DateTime currentDate = DateTime.Today.Add(startTime);
-
-        //    while (currentDate.TimeOfDay < endTime)
-        //    {
-        //        DateTime nextTime = currentDate.AddMinutes(30);
-        //        var appTime = $"{currentDate.ToString("HH:mm")} - {nextTime.ToString("HH:mm")} {currentDate.Date:yyyy-MM-dd}";
-        //        timeSlots.Add(appTime);
-        //        currentDate = nextTime;
-        //    }
-
-        //    return timeSlots;
-        //}
-
-
-
-
-
-
-
-
-
-
-
-
-        //private void GenerateTimeSlotsForRange(TimeSpan startTime, TimeSpan endTime, ref List<string> timeSlots)
-        //{
-        //    DateTime currentTime = DateTime.Today.Add(startTime);
-
-        //    while (currentTime.TimeOfDay < endTime)
-        //    {
-        //        DateTime nextTime = currentTime.AddMinutes(30);
-        //        var appTime = $"{currentTime.ToString("HH:mm")} - {nextTime.ToString("HH:mm")}";
-        //        timeSlots.Add(appTime);
-
-        //        currentTime = nextTime;
-        //    }
-
-        //}
-
-        //[HttpGet]
-        //public async Task<IActionResult> GetAvailableTimes(string doctorId, string appointmentDate)
-        //{
-        //    var appointments = await _context.Appointments.ToListAsync();
-        //    List<string> timeSlots = new List<string>();
-        //    var doctor = await _context.Doctors.FirstOrDefaultAsync(d => d.Id == doctorId);
-        //    var timeAround = await _context.Schedules.FirstOrDefaultAsync(t => t.Id == doctor.ScheduleId);
-
-        //    var morningSpan = new TimeSpan();
-
-        //    var start = timeAround.WorkTime.Split('-')[0].Trim();
-        //    var end = timeAround.WorkTime.Split('-')[1].Trim();
-        //    if (start == "09:00")
-        //    {
-        //        GenerateTimeSlotsForRange(morningStart, morningEnd, ref timeSlots);
-        //    }
-        //    else
-        //    {
-        //        GenerateTimeSlotsForRange(afternoonStart, afternoonEnd, ref timeSlots);
-        //    }
-
-        //    for (int k = 0; k < appointments.Count(); k++)
-        //    {
-        //        if (appointments[k].AppointmentTime.Split('-')[0].Trim() == 
-        //            && appointments[k].DoctorId == doctorId
-        //            && appointments[k].AppointmentDate.ToString().Split(" ")[0] == appointmentDate)
-        //        {
-        //            timeSlots.Remove(appTime);
-        //        }
-        //    }
-        //    return Ok(timeSlots);
-        //}
-
         public async Task<IActionResult> GetDoctors(int departmentId)
         {
             var doctors = await _dbContext.Doctors.Where(d => d.DepartmentId == departmentId.ToString()).ToListAsync();
             return Ok(doctors);
-        }
-
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        public IActionResult About()
-        {
-            return View();
-        }
-
-        public IActionResult BlogSindebar()
-        {
-            return View();
         }
 
         [HttpGet]
@@ -443,6 +292,51 @@ namespace Hospital.WebUI.Controllers
 
             return View(post);
         }
+
+        public async Task<IActionResult> DoctorSingle(DoctorProfileViewModel viewModel)
+        {
+            var department = await _context.Departments.FirstOrDefaultAsync(d => d.Id == viewModel.DepartmentId);
+            viewModel.Department = department;
+            ViewBag.Doctor = viewModel;
+            return View();
+        }
+
+        public async Task<IActionResult> DepartmentSingle(DepartmentSingleViewModel viewModel)
+        {
+            var department = await _context.Departments.FirstOrDefaultAsync(d => d.Id == viewModel.DepartmentId);
+
+            ViewBag.Department = department;
+
+            return View();
+        }
+
+        public async Task<IActionResult> GetAllRecipesOfPatient()
+        {
+            var user = await CurrentUser();
+            var recipes = _context.Recipes.Where(r => r.PatientId == user.Id.ToString()).ToList();
+            return Ok(recipes);
+        }
+
+        public async Task<IActionResult> Recipes()
+        {
+            var user = await CurrentUser();
+            var recipes = _context.Recipes.Where(r=>r.PatientId == user.Id.ToString()).ToList();
+            var viewModel = new PatientProfileViewModel
+            {
+                Recipes = recipes   
+            };
+            ViewBag.ViewModel = viewModel;               
+            return View();      
+
+        }
+
+        public async Task<IActionResult> GetByIdRecipe(string id)
+        {
+            var receip = await _context.Recipes.FirstOrDefaultAsync(d => d.Id.ToString() == id);
+
+            return Ok(receip);
+        }
+
         public IActionResult Service()
         {
             return View();
@@ -468,25 +362,27 @@ namespace Hospital.WebUI.Controllers
             return View();
         }
 
-        public async Task<IActionResult> DepartmentSingle(DepartmentSingleViewModel viewModel)
-        {
-            var department = await _context.Departments.FirstOrDefaultAsync(d => d.Id == viewModel.DepartmentId);
-
-            ViewBag.Department = department;
-
-            return View();
-        }
-
         public IActionResult Doctor()
         {
             return View();
         }
 
-        public async Task<IActionResult> DoctorSingle(DoctorProfileViewModel viewModel)
+        public IActionResult Appointments()
         {
-            var department = await _context.Departments.FirstOrDefaultAsync(d => d.Id == viewModel.DepartmentId);
-            viewModel.Department = department;
-            ViewBag.Doctor = viewModel;
+            return View();
+        }
+
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> About()
+        {
+            return View();
+        }
+        public IActionResult BlogSindebar()
+        {
             return View();
         }
     }

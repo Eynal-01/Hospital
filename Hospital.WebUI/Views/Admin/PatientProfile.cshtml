@@ -31,18 +31,18 @@
             <div class="col-lg-4 col-md-12 col-sm-12">
                 <div class="card member-card">
                     <div class="header l-coral">
-                        @if (Model.Fullname != null)
+                        @*                         @if (Model.Fullname != null)
                         {
-                            <h4 class="m-t-10">
-                                @Model.Fullname
-                            </h4>
+                        <h4 class="m-t-10">
+                        @Model.Fullname
+                        </h4>
                         }
                         else
-                        {
-                            <h4 class="m-t-10">
-                                @Model.Username
-                            </h4>
-                        }
+                        { *@
+                        <h4 class="m-t-10">
+                            @Model.Username
+                        </h4>
+                        @* } *@
                     </div>
                     <div class="member-img">
                         <a href="patient-invoice.html">
@@ -63,8 +63,8 @@
                         <strong>Phone</strong>
                         <p>@Model.PhoneNumber</p>
                         <hr>
-                        <strong>Address</strong>
-                        <address>@Model.Address</address>
+@*                         <strong>Address</strong>
+                        <address>@Model.Address</address> *@
                     </div>
                 </div>
                 <div class="card">

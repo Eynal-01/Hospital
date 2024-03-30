@@ -10,6 +10,23 @@ namespace Hospital.Entities.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Abouts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BigTitle = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FirstContent = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Abouts", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Admins",
                 columns: table => new
                 {
@@ -18,12 +35,14 @@ namespace Hospital.Entities.Migrations
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BirthDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Gender = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsOnline = table.Column<bool>(type: "bit", nullable: true),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     City = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Avatar = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     WorkDaysCount = table.Column<int>(type: "int", nullable: false),
                     IsPostView = table.Column<bool>(type: "bit", nullable: true),
+                    MissedNotifCount = table.Column<int>(type: "int", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -150,6 +169,24 @@ namespace Hospital.Entities.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_DoctorSchedules", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "HospitalInfo",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    HospitalWorkongStartTime = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    HospitalWorkongEndTime = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    HospitalOpenTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    HospitalCloseTime = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_HospitalInfo", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -314,55 +351,6 @@ namespace Hospital.Entities.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Chats",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    SenderUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    ReceiverUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Chats", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Chats_AspNetUsers_ReceiverUserId",
-                        column: x => x.ReceiverUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Chats_AspNetUsers_SenderUserId",
-                        column: x => x.SenderUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Notifications",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    SenderId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    ReceiverId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    Message = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsCheck = table.Column<bool>(type: "bit", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Notifications", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Notifications_AspNetUsers_ReceiverId",
-                        column: x => x.ReceiverId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Notifications_AspNetUsers_SenderId",
-                        column: x => x.SenderId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Payments",
                 columns: table => new
                 {
@@ -413,6 +401,7 @@ namespace Hospital.Entities.Migrations
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BirthDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsOnline = table.Column<bool>(type: "bit", nullable: true),
                     Gender = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Avatar = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -426,6 +415,7 @@ namespace Hospital.Entities.Migrations
                     Education = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsPostView = table.Column<bool>(type: "bit", nullable: true),
+                    MissedNotifCount = table.Column<int>(type: "int", nullable: false),
                     WorkStartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     WorkEndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     WorkDayCount = table.Column<int>(type: "int", nullable: false),
@@ -471,33 +461,69 @@ namespace Hospital.Entities.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Messages",
+                name: "Chats",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    SentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ChatId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    SenderUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    ReceiverUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ReceiverId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SenderId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ReceiverAdminId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    ReceiverDoctorId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Messages", x => x.Id);
+                    table.PrimaryKey("PK_Chats", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Messages_AspNetUsers_ReceiverUserId",
-                        column: x => x.ReceiverUserId,
-                        principalTable: "AspNetUsers",
+                        name: "FK_Chats_Admins_ReceiverAdminId",
+                        column: x => x.ReceiverAdminId,
+                        principalTable: "Admins",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Messages_AspNetUsers_SenderUserId",
-                        column: x => x.SenderUserId,
-                        principalTable: "AspNetUsers",
+                        name: "FK_Chats_Doctors_ReceiverDoctorId",
+                        column: x => x.ReceiverDoctorId,
+                        principalTable: "Doctors",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Notifications",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SenderId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ReceiverId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Message = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsCheck = table.Column<bool>(type: "bit", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    SenderAdminId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    SenderDoctorId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    ReceiverDoctorId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    ReceiverAdminId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Notifications", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Notifications_Admins_ReceiverAdminId",
+                        column: x => x.ReceiverAdminId,
+                        principalTable: "Admins",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Messages_Chats_ChatId",
-                        column: x => x.ChatId,
-                        principalTable: "Chats",
+                        name: "FK_Notifications_Admins_SenderAdminId",
+                        column: x => x.SenderAdminId,
+                        principalTable: "Admins",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Notifications_Doctors_ReceiverDoctorId",
+                        column: x => x.ReceiverDoctorId,
+                        principalTable: "Doctors",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Notifications_Doctors_SenderDoctorId",
+                        column: x => x.SenderDoctorId,
+                        principalTable: "Doctors",
                         principalColumn: "Id");
                 });
 
@@ -535,6 +561,32 @@ namespace Hospital.Entities.Migrations
                         column: x => x.DoctorId,
                         principalTable: "Doctors",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Messages",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsImage = table.Column<bool>(type: "bit", nullable: false),
+                    WriteTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateTimeString = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ReceiverId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SenderId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ChatId = table.Column<int>(type: "int", nullable: false),
+                    HasSeen = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Messages", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_Messages_Chats_ChatId",
+                        column: x => x.ChatId,
+                        principalTable: "Chats",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -634,10 +686,13 @@ namespace Hospital.Entities.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    RecipeHeader = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    WriteTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    WriteTime = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PatientId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    DoctorId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    DoctorId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    DoctorName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DepartmentName = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -761,14 +816,14 @@ namespace Hospital.Entities.Migrations
                 column: "CalendarId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Chats_ReceiverUserId",
+                name: "IX_Chats_ReceiverAdminId",
                 table: "Chats",
-                column: "ReceiverUserId");
+                column: "ReceiverAdminId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Chats_SenderUserId",
+                name: "IX_Chats_ReceiverDoctorId",
                 table: "Chats",
-                column: "SenderUserId");
+                column: "ReceiverDoctorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Doctors_CalendarId",
@@ -796,24 +851,24 @@ namespace Hospital.Entities.Migrations
                 column: "ChatId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Messages_ReceiverUserId",
-                table: "Messages",
-                column: "ReceiverUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Messages_SenderUserId",
-                table: "Messages",
-                column: "SenderUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Notifications_ReceiverId",
+                name: "IX_Notifications_ReceiverAdminId",
                 table: "Notifications",
-                column: "ReceiverId");
+                column: "ReceiverAdminId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Notifications_SenderId",
+                name: "IX_Notifications_ReceiverDoctorId",
                 table: "Notifications",
-                column: "SenderId");
+                column: "ReceiverDoctorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Notifications_SenderAdminId",
+                table: "Notifications",
+                column: "SenderAdminId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Notifications_SenderDoctorId",
+                table: "Notifications",
+                column: "SenderDoctorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Patients_DoctorId",
@@ -879,6 +934,9 @@ namespace Hospital.Entities.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Abouts");
+
+            migrationBuilder.DropTable(
                 name: "Appointments");
 
             migrationBuilder.DropTable(
@@ -901,6 +959,9 @@ namespace Hospital.Entities.Migrations
 
             migrationBuilder.DropTable(
                 name: "DoctorSchedules");
+
+            migrationBuilder.DropTable(
+                name: "HospitalInfo");
 
             migrationBuilder.DropTable(
                 name: "Messages");
@@ -936,10 +997,10 @@ namespace Hospital.Entities.Migrations
                 name: "Chats");
 
             migrationBuilder.DropTable(
-                name: "Posts");
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Posts");
 
             migrationBuilder.DropTable(
                 name: "Admins");
