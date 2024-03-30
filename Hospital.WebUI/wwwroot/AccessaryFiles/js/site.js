@@ -5,6 +5,7 @@ var connection = new signalR.HubConnectionBuilder().withUrl("/userhub").build();
 connection.start().then(function () {
     //GetAllUsers();
     console.log("Connected");
+    console.log("Connected");
 }).catch(function (err) {
     return console.error(err.toString());
 })
@@ -15,17 +16,15 @@ connection.on("Connect", function (role) {
         GetAllAppointments();
         GetAllDoctors();
     }
-    if (role === "patient") {
-        GetAllAppointmentOfPatient();
-        GetAllRecipesOfPatientForP();
-    }
     if (role === "doctor") {
         GetDoctorPatients();
         DoctorAppointments();
     }
 
+    GetPastPatients();
     GetAllDepartment();
     GetAllPostAllUsers();
+    GetAllAppointmentOfPatient();
 })
 
 async function AdminCall(id) {
@@ -68,3 +67,27 @@ connection.on("ReceiveMessage", function (id) {
 //    //console.log("sadads");
 //    UserMessage(id);
 //})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        

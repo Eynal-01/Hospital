@@ -324,9 +324,7 @@ namespace Hospital.WebUI.Controllers
         public async Task<IActionResult> GetDoctorIdDepartment(string doctorId)
         {
             var doctor = await _context.Doctors.FirstOrDefaultAsync(d => d.Id == doctorId);
-
             var departmen = await _context.Departments.FirstOrDefaultAsync(d => d.Id == doctor.DepartmentId.ToString());
-
             var department = departmen.DepartmentName;
             return Ok(department);
         }

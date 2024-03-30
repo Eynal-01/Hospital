@@ -4,10 +4,11 @@ using HospitalProject.Entities.DbEntities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Twilio.AspNet.Core;
 
 namespace Hospital.WebUI.Controllers
 {
-    public class AppointmentController:Controller
+    public class AppointmentController : Controller
     {
         private readonly UserManager<CustomIdentityUser> _userManager;
         private readonly IDataService _dataService;
@@ -36,6 +37,47 @@ namespace Hospital.WebUI.Controllers
                 .Include(nameof(Appointment.Patient))
                 .ToListAsync();
             return Ok(appointments);
+        }
+        public async Task<IActionResult> SearchDoctors(string word)
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var current = await _context.Doctors.FirstOrDefaultAsync(d => d.UserName == user.UserName && d.Email == user.Email);
+            if (word != null && word.Trim() != "")
+            {
+                List<Doctor> doctors = null;
+                if (current != null)
+                {
+                    doctors = await _context.Doctors.Where(d => d.Id != current.Id && d.FirstName.Contains(word.Trim()) || d.LastName.Contains(word.Trim())).Include(nameof(Doctor.Department)).ToListAsync();
+                }
+                else
+                {
+                    doctors = await _context.Doctors.Where(d => d.FirstName.Contains(word.Trim()) || d.LastName.Contains(word.Trim())).Include(nameof(Doctor.Department)).ToListAsync();
+                }
+                return Ok(doctors);
+            }
+
+            List<Doctor> docss = null;
+            if (current != null)
+            {
+                docss = await _context.Doctors.Include(nameof(Doctor.Department)).Where(d => d.Id != current.Id).ToListAsync();
+            }
+            else
+            {
+                docss = await _context.Doctors.Include(nameof(Doctor.Department)).ToListAsync();
+            }
+
+            return Ok(docss);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllAppointmentsDescending()
+        {
+            var appos = _context.Appointments
+                    .OrderByDescending(a => a.AppointmentDate)
+                    .Include(a => a.Patient)
+                    .Take(4)
+                    .ToList();
+            return Ok(appos);
         }
 
         public async Task<IActionResult> GetAllAppointmentsOfPatient()
@@ -69,4 +111,4 @@ namespace Hospital.WebUI.Controllers
             return Ok(receip);
         }
     }
-} 
+}

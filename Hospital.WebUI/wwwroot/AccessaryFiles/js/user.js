@@ -3,12 +3,16 @@ var currentUserClickedChatUserId = "";
 
 var d = document.getElementById("departmentSelect");
 var doct = document.getElementById("doctorSelect");
-//var n = document.getElementById("name");
 var p = document.getElementById("phone");
 var message = document.getElementById("message");
 var date = document.getElementById("dateSelect");
 var time = document.getElementById("exampleFormControlSelect4");
 
+function shortenGuid(guid) {
+    var guidString = guid.toString();
+    var shortGuid = guidString.substring(0, 8);
+    return shortGuid;
+}
 
 function GetAllPatients() {
     $.ajax({
@@ -17,7 +21,16 @@ function GetAllPatients() {
         success: function (data) {
             let content = "";
             let name = "";
-
+            var numm1 = "";
+            var shortGd = "";
+            numm1 += `
+            <div class="body">
+                        <h3 class="number count-to m-b-0" data-from="0" data-to="${data.length}" data-speed="2500" data-fresh-interval="1000">${data.length}</h3>
+                        <p class="text-muted">Satisfied Patients</p>
+                        <div class="progress">
+                            <div class="progress-bar l-parpl" role="progressbar" aria-valuenow="68" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"></div>
+                        </div>
+                    </div>`;
             for (var i = 0; i < data.length; i++) {
 
                 if (data[i].fullName == null || data[i].fullName == "") {
@@ -26,14 +39,18 @@ function GetAllPatients() {
                 else {
                     name = `<td>${data[i].fullName}</td>`;
                 }
+                shortGd = shortenGuid(data[i].id);
                 content += `
                  <tr onclick="window.location.href='/Admin/PatientProfile?id=${data[i].id}'">
-                     <td>${data[i].id}</td> 
+                     <td>${shortGd}</td> 
                      <td>${data[i].userName}</td>
                      <td>${data[i].phoneNumber}</td>
+                     <td>${data[i].email}</td>
                  </tr>`;
             }
             $("#patients").html(content);
+            $("#patCount").html(numm1);
+
         }
     })
 }
@@ -51,7 +68,6 @@ function PostFilterAdmin(departmentId) {
 
             let contentPatient = "";
             var imagesPatient = "";
-            //var categoryList = [];
             var arrowPatient = "";
 
             var postCategories = "";
@@ -889,7 +905,7 @@ function PatientDoctorFilterPatient(departmentId) {
 				    	<div class="position-relative doctor-inner-box">
 				    		<div class="doctor-profile">
 				    			<div class="doctor-img">
-				    				<img src="${data[i].avatar}" alt="doctor-image" class="img-fluid w-100">
+				    				<img style="width:90%; height:42vh; margin:auto;" src="${data[i].avatar}" alt="doctor-image" class="img-fluid w-100">
 				    			</div>
 				    		</div>
 				    		<div class="content mt-3">
@@ -905,7 +921,7 @@ function PatientDoctorFilterPatient(departmentId) {
                          <div class="card xl-blue member-card doctor">
                              <div class="body">
                                  <div class="member-thumb">
-                                     <img style="width:90%; height:22vh; margin:auto;" src="${data[i].avatar}" class="img-fluid" alt="profile-image">
+                                     <img style="width:90%; height:42vh; margin:auto;" src="${data[i].avatar}" class="img-fluid" alt="profile-image">
                                  </div>
                                  <div class="detail">
                                      <p class="m-b-0">Dr. ${data[i].firstName}<br/>${data[i].lastName}</p>
@@ -1389,13 +1405,10 @@ function handleChatPeopleSearch() {
                                 <div class="name">${data.doctors[i].firstName} ${data.doctors[i].lastName}</div>
                                 <div class="status"> <i class="zmdi zmdi-circle offline"></i> left 7 mins ago </div>
                             </div>
-                        </li>
-                `;
+                        </li>`;
                     }
                 }
-                //console.log(data.admins);
                 for (var i = 0; i < data.admins.length; i++) {
-                    //console.log("sdf");
                     if (content == "") {
                         content += `
                         <li class="clearfix active" onclick="UserMessageClickDoctor('${data.admins[i].id}')">
@@ -1425,7 +1438,6 @@ function handleChatPeopleSearch() {
 
 
                 $("#doctorInChatContact").html(content);
-                //$("#doctorInchatHeader").html(chatHeader);
                 $("#adminInChatContact").html(content);
             }
         })
@@ -1441,8 +1453,6 @@ function GetChat() {
         method: "GET",
         success: function (data) {
             var content = "";
-            //var chatHeader = "";
-
             for (var i = 0; i < data.doctors.length; i++) {
                 if (i == 0) {
                     content += `
@@ -1502,30 +1512,33 @@ function GetChat() {
 
                 }
             }
-
-
             $("#doctorInChatContact").html(content);
-            //$("#doctorInchatHeader").html(chatHeader);
             $("#adminInChatContact").html(content);
         }
     })
 }
 
 function GetAllDoctors() {
+    console.log("fremjfermigmeri");
     $.ajax({
         url: `/DoctorsShow/GetAllDoctors`,
         method: "GET",
-
         success: function (data) {
             var patientDoctors = "";
             var adminDoctors = "";
             var doctorDoctors = "";
-
             var patientFilter = "";
-
+            var numm = "";
+            numm += `
+            <div class="body">
+                        <h3 class="number count-to m-b-0" data-from="0" data-to="${data.doctors.length}" data-speed="2500" data-fresh-interval="1000">${data.doctors.length}</h3>
+                        <p class="text-muted">Professional Doctors</p>
+                        <div class="progress">
+                            <div class="progress-bar l-parpl" role="progressbar" aria-valuenow="68" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"></div>
+                        </div>
+                    </div>`;
             for (var i = 0; i < data.departments.length; i++) {
                 if (data.departments[i].id == "1") {
-
                     patientFilter += `
                 	<label class="btn active">
                          <input type="radio" name="shuffle-filter" value="${data.departments[i].id}" onchange="checkRadioButton(this)">${data.departments[i].departmentName}</button>
@@ -1548,11 +1561,11 @@ function GetAllDoctors() {
 				    	<div class="position-relative doctor-inner-box">
 				    		<div class="doctor-profile">
 				    			<div class="doctor-img">
-				    				<img style="width:90%; height:22vh; margin:auto;" src="${data.doctors[i].avatar}" alt="doctor-image" class="img-fluid w-100">
+				    				<img style="width:90%; height:42vh; margin:auto;" src="${data.doctors[i].avatar}" alt="doctor-image" class="img-fluid w-100">
 				    			</div>
 				    		</div>
 				    		<div class="content mt-3">
-				    			<h4 class="mb-0"><a href="/DoctorsShow/PatientInDoctorProfile('${data.doctors[i].id}')">${data.doctors[i].firstName}<br/>${data.doctors[i].lastName}</a ></h4 >
+				    			<h4 class="mb-0"><a href="/DoctorsShow/PatientInDoctorProfile?doctorId=${data.doctors[i].id}">${data.doctors[i].firstName}<br/>${data.doctors[i].lastName}</a ></h4 >
 				    			<p>${data.doctors[i].department.departmentName}</p>
 				    		</div>
 				    	</div>
@@ -1565,16 +1578,11 @@ function GetAllDoctors() {
                          <div class="card xl-blue member-card doctor">
                              <div class="body">
                                  <div class="member-thumb">
-                                     <img style="width:90%; height:22vh; margin:auto;" src="${data.doctors[i].avatar}" class="img-fluid" alt="profile-image">
+                                     <img style="width:90%; height:42vh; margin:auto;" src="${data.doctors[i].avatar}" class="img-fluid" alt="profile-image">
                                  </div>
                                  <div class="detail">
                                      <p class="m-b-0">Dr. ${data.doctors[i].firstName}<br/>${data.doctors[i].lastName}</p>
                                      <p class="text-muted">${data.doctors[i].department.departmentName}</p>
-                                     <ul class="social-links list-inline m-t-20">
-                                         <li><a title="facebook" href="#"><i class="zmdi zmdi-facebook"></i></a></li>
-                                         <li><a title="twitter" href="#"><i class="zmdi zmdi-twitter"></i></a></li>
-                                         <li><a title="instagram" href="#"><i class="zmdi zmdi-instagram"></i></a></li>
-                                     </ul>
                                      <a href='/DoctorsShow/AdminInDoctorProfile?doctorId=${data.doctors[i].id}'  class="btn btn-default btn-round btn-simple" >View Profile</a>
                                  </div>
                              </div>
@@ -1588,30 +1596,24 @@ function GetAllDoctors() {
                              <div class="card xl-blue member-card doctor">
                                  <div class="body">
                                      <div class="member-thumb">
-                                         <img style="width:90%; height:22vh; margin:auto;" src="${data.doctors[i].avatar}" class="img-fluid" alt="profile-image">
+                                         <img style="width:90%; height:42vh; margin:auto;" src="${data.doctors[i].avatar}" class="img-fluid" alt="profile-image">
                                      </div>
                                      <div class="detail">
                                          <h4 class="m-b-0">Dr. ${data.doctors[i].firstName}<br/>${data.doctors[i].lastName}</h4>
                                      <p class="text-muted">${data.doctors[i].department.departmentName}</p>
-                                         <ul class="social-links list-inline m-t-20">
-                                             <li><a title="facebook" href="#"><i class="zmdi zmdi-facebook"></i></a></li>
-                                             <li><a title="twitter" href="#"><i class="zmdi zmdi-twitter"></i></a></li>
-                                             <li><a title="instagram" href="#"><i class="zmdi zmdi-instagram"></i></a></li>
-                                         </ul>
                                          <a href='/DoctorsShow/DoctorInDoctorProfile?doctorId=${data.doctors[i].id}'  class="btn btn-default btn-round btn-simple" >View Profile</a>
                                      </div>
                                  </div>
                              </div>
                          </div>
                     `;
-
             }
 
             $("#adminDoctors").html(adminDoctors);
             $("#doctorDoctors").html(doctorDoctors);
             $("#patientDoctors").html(patientDoctors);
             $("#patientDoctorFilter").html(patientFilter);
-
+            $("#dddccc").html(numm);
         }
     })
 }
@@ -1630,12 +1632,21 @@ function DoctorShowPost() {
 
 
 function GetAllAppointments() {
-    //console.log("GetAllAppointments work");
     $.ajax({
         url: `/Admin/ShowAllAppointments`,
         method: "GET",
 
         success: function (data) {
+            var numm2 = "";
+            numm2 += `
+            <div class="body">
+                <h3 class="number count-to m-b-0" data-from="0" data-to="${data.length}" data-speed="2500" data-fresh-interval="1000">${data.length}</h3>
+                <p class="text-muted">Successful Appointments</p>
+                <div class="progress">
+                    <div class="progress-bar l-parpl" role="progressbar" aria-valuenow="68" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"></div>
+                </div>
+            </div>`;
+
             let content = "";
 
             for (var i = 0; i < data.length; i++) {
@@ -1643,18 +1654,18 @@ function GetAllAppointments() {
                 content += `
                   <tr>
                       <td>${data[i].id}</td>
-                      <td>${data[i].appointmentDate} ${data[i].appointmentTime}</td>
+                      <td>${data[i].appointmentDate.toString().split('T')[0]} / ${data[i].appointmentTime}</td>
                       <td>${data[i].patient.userName}</td>
                       <td>${data[i].doctor.firstName} ${data[i].doctor.lastName}</td>
                       <td>${data[i].department.departmentName}</td>
                  </tr>`;
             }
             $("#appointments").html(content);
+            $("#appCount").html(numm2);
+            $("#innn").val(data.length);
         }
     })
 }
-
-
 
 function GetAllDepartment() {
     $.ajax({
@@ -1669,10 +1680,10 @@ function GetAllDepartment() {
             for (var i = 0; i < data.departments.length; i++) {
 
                 doctorAndAdminDepartments += `
-                    <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="col-lg-4 col-md-3 col-sm-3" style="height:20vh;">
                           <div class="card project_widget">
-                              <div class="pw_img" style="text-align:center; padding:7%;">
-                                  <img class="img-fluid" src="${data.departments[i].imageUrl}" alt="About the image">
+                              <div class="pw_img" style="text-align:center; padding:5%;">
+                                  <img style="height:30vh;" class="img-fluid" src="${data.departments[i].imageUrl}" alt="About the image">
                               </div>
                               <div class="pw_content">
                                   <div class="pw_header" style="text-align:center;">
@@ -2157,83 +2168,10 @@ function ChangeMessage() {
     }
 }
 
-//document.getElementById("make").addEventListener("click", function () {
-//    $.ajax({
-//        url: `/Home/CheckInputs?phoneNumber=${p.value}&fullName=${n.value}&date=${date.value}&time=${time.value}&message=${message.value}`,
-//        method: "GET",
-//        success: function (data) {
-
-//            if (data.includes("fullname is null")) {
-//                n.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
-//                emptyName.style.display = "inline-block";
-//            }
-//            if (data.includes("phone is null")) {
-//                p.style.backgroundColor = "rgba(255, 99, 71, 0.8)";
-//                emptyPhone.style.display = "inline-block";
-//                console.log("phone is null");
-//            }
-//            if (data.includes("okay")) {
-
-//            }
-
-//            if (data === "") {
-//                document.getElementById("make").setAttribute('data-target', '#addevent');
-//                document.getElementById("make").setAttribute('data-toggle', 'modal');
-//            }
-//        }
-//    })
-//});
-
-//function handleNameInput() {
-//    emptyName.style.display = "none";
-//    n.style.backgroundColor = "transparent";
-//}
-
 function handlePhoneInput() {
     emptyPhone.style.display = "none";
     p.style.backgroundColor = "transparent";
 }
-
-//var toastId = "myToast";
-
-//function createToast(text) {
-//    let toast = `
-//    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
-//      <div id="${toastId}" class="toast" role="alert" aria-live="assertive" aria-atomic="true" background-color: white; width:50px; height:20px;">
-//        <div class="toast-header">
-//          <strong class="me-auto">Zust</strong>
-//          <small>Now</small>
-//          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-//        </div>
-//        <div class="toast-body">
-//          ${text}
-//        </div>
-//      </div>
-//    </div>
-//  `;
-//    return toast;
-//}
-
-//function showToast(message) {
-//    var existingToast = document.getElementById(toastId);
-//    if (existingToast) {
-//        existingToast.remove();
-//    }
-
-//    var toastHTML = createToast(message);
-//    document.body.insertAdjacentHTML("beforeend", toastHTML);
-//    var toast = document.getElementById(toastId);
-//    var bsToast = new bootstrap.Toast(toast);
-//    bsToast.show();
-//    setTimeout(function () {
-//        toast.style.display = "none";
-//    }, 6000);
-
-//    var closeButton = toast.querySelector(".btn-close");
-//    closeButton.addEventListener("click", function () {
-//        toast.style.display = "none";
-//    });
-//}
 
 document.getElementById("okSuccess").addEventListener("click", function () {
     $.ajax({
@@ -2258,10 +2196,10 @@ function DoctorAppointments() {
             for (var i = 0; i < data.length; i++) {
                 content += `
                   <tr>
-                      <td>${data[i].id}</td>
-                      <td>${data[i].appointmentDate} ${data[i].appointmentTime}</td>
+                      <td>${data[i].appointmentDate.toString().split('T')[0]}</td>
                       <td>${data[i].patient.userName}</td>
                       <td>${data[i].patient.age}</td>
+                      <td>${data[i].appointmentTime}</td>
                  </tr>`;
             }
             $("#doctorAppointments").html(content);
@@ -2345,29 +2283,6 @@ function GetDoctorPatients() {
         }
     })
 }
-
-//function GetAllRecipesOfPatientForP() {
-//    $.ajax({
-//        url: `/Home/GetAllRecipesOfPatient`,
-//        method: "GET",
-
-//        success: function (data) {
-//            let content = "";
-//            for (var i = 0; i < data.length; i++) {
-//                content +=
-//                    `<tr onclick="RecipeView('${data[i].id}')">
-//                     <td>${data[i].recipeHeader}</td>
-//                     <td>${data[i].doctorName}</td>
-//                     <td>${data[i].departmentName}</td>
-//                     <td>${data[i].writeTime}</td>
-//                     </tr>`;
-//            }
-            
-//        }
-//    })
-//}
-
-
 function GetAllRecipesOfPatient(id) {
     $.ajax({
         url: `/Appointment/GetAllRecipesOfCurrent?id=${id}`,
@@ -2445,4 +2360,70 @@ function AddRecipe(id) {
             console.log("Recipe successfully added ", data);
         }
     })
+}
+
+function GetPastPatients() {
+    $.ajax({
+        url: `/Appointment/GetAllAppointmentsDescending`,
+        method: "GET",
+
+        success: function (data) {
+            let content = "";
+            for (var i = 0; i < data.length; i++) {
+                content += `
+                 <tr>
+                     <td>${data[i].patient.userName}</td>
+                     <td>${data[i].patient.phoneNumber}</td>
+                     <td>${data[i].patient.email}</td>
+                 </tr>`
+            }
+            $("#patsddd").html(content);
+        }
+    })
+}
+
+function SearchDoctorFunc() {
+    var inp = document.getElementById("search123");
+    var inp1 = document.getElementById("search345");
+    var valu = "";
+
+    if (inp != null && inp.value != "") {
+        valu = inp.value;
+    }
+    else if (inp1 != null) {
+        valu = inp1.value;
+    }
+
+    if (valu != null) {
+        $.ajax({
+            url: `/Appointment/SearchDoctors?word=${valu}`,
+            method: "GET",
+
+            success: function (data) {
+                let content = "";
+
+                for (var i = 0; i < data.length; i++) {
+                    content += `
+                     <div class="col-lg-3 col-md-4 col-sm-6">
+                         <div class="card xl-blue member-card doctor">
+                             <div class="body">
+                                 <div class="member-thumb">
+                                     <img style="width:90%; height:42vh; margin:auto;" src="${data[i].avatar}" class="img-fluid" alt="profile-image">
+                                 </div>
+                                 <div class="detail">
+                                     <p class="m-b-0">Dr. ${data[i].firstName}<br/>${data[i].lastName}</p>
+                                     <p class="text-muted">${data[i].department.departmentName}</p>
+                                     <a href='/DoctorsShow/AdminInDoctorProfile?doctorId=${data[i].id}'  class="btn btn-default btn-round btn-simple" >View Profile</a>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+                    `;
+                }
+                console.log(content);
+                $("#adminDoctors").html(content);
+                $("#doctorDoctors").html(content);
+            }
+        })
+    }
 }

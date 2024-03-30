@@ -146,9 +146,9 @@
                     </div>
                 </div>
             </div>
-            <div class="tab-pane right_chat stretchLeft" id="chat">
+            <div class="tab-pane right_chat stretchLeft" id="chat"> 
                 <div class="slim_scroll">
-                    <div class="card">
+                    <div style="background-color:transparent; display:inline-block; margin-left:30%;" class="card">
                         <div class="search">
                             <div class="input-group">
                                 <input type="text" class="form-control" placeholder="Search...">
@@ -504,9 +504,7 @@
                     </h2>
                 </div>
                 <div class="col-lg-7 col-md-7 col-sm-12 text-right">
-                    <button class="btn btn-white btn-icon btn-round d-none d-md-inline-block float-right m-l-10" type="button">
-                        <i class="zmdi zmdi-plus"></i>
-                    </button>
+
                     <ul class="breadcrumb float-md-right">
                         <li class="breadcrumb-item"><a href="index-2.html"><i class="zmdi zmdi-home"></i> Oreo</a></li>
                         <li class="breadcrumb-item"><a href="javascript:void(0);">Doctors</a></li>
@@ -519,17 +517,26 @@
             <div class="row clearfix">
                 <div class="col-lg-12">
                     <div class="card">
-                       @*  <div class="body">
-                            <ul class="nav nav-tabs padding-0">
-                                <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#Permanent">Permanent</a></li>
-                                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#Consultant">Consultant</a></li>
-                            </ul>
+                        @*  <div class="body">
+                        <ul class="nav nav-tabs padding-0">
+                        <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#Permanent">Permanent</a></li>
+                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#Consultant">Consultant</a></li>
+                        </ul>
                         </div> *@
                     </div>
                     <div class="tab-content m-t-10">
                         <div class="tab-pane active" id="Permanent">
+                            <div style="background-color:transparent; display:inline-block;" class="card">
+                                <div class="search">
+                                    <div style="width:20%;" class="input-group">
+                                        <input oninput="SearchDoctorFunc()" id="search345" style="width:20%;" type="text" class="form-control" placeholder="Search...">
+                                        <span class="input-group-addon">
+                                            <i style="margin-top:30%;" class="zmdi zmdi-search"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="row clearfix" id="doctorDoctors">
-
                             </div>
                         </div>
                     </div>
