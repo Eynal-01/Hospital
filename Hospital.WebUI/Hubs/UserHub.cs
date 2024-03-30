@@ -23,10 +23,49 @@ namespace Hospital.WebUI.Hubs
         {
             var user = await _userManager.GetUserAsync(_contextAccessor.HttpContext.User);
             var role = await _userManager.GetRolesAsync(user);
+            if (role[0] == "admin")
+            {
+                var admin = await _context.Admins.FirstOrDefaultAsync(d => d.Email == user.Email && d.UserName == user.UserName);
+                admin.IsOnline = true;
+
+                _context.Admins.Update(admin);
+                await _context.SaveChangesAsync();
+            }
+            else if (role[0] == "doctor")
+            {
+                var doctor = await _context.Doctors.FirstOrDefaultAsync(d => d.Email == user.Email && d.UserName == user.UserName);
+                doctor.IsOnline = true;
+
+                _context.Doctors.Update(doctor);
+                await _context.SaveChangesAsync();
+            }
             //string ro = role[0];
             //await Clients.Others.SendAsync("Connect", ro);
             var d = role[0].Trim();
             await Clients.All.SendAsync("Connect", d);
+        }
+
+        public override async Task OnDisconnectedAsync(Exception? exception)
+        {
+            var user = await _userManager.GetUserAsync(_contextAccessor.HttpContext.User);
+            var role = await _userManager.GetRolesAsync(user);
+            if (role[0] == "admin")
+            {
+                var admin = await _context.Admins.FirstOrDefaultAsync(d => d.Email == user.Email && d.UserName == user.UserName);
+                admin.IsOnline = false;
+
+                _context.Admins.Update(admin);
+                await _context.SaveChangesAsync();
+            }
+            else if (role[0] == "doctor")
+            {
+                var doctor = await _context.Doctors.FirstOrDefaultAsync(d => d.Email == user.Email && d.UserName == user.UserName);
+                doctor.IsOnline = false;
+
+                _context.Doctors.Update(doctor);
+                await _context.SaveChangesAsync();
+            }
+            await Clients.Others.SendAsync("Disconnect", "s");
         }
 
         //public async Task LiveChatCall(string id, string id2)

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hospital.Entities.Migrations
 {
     [DbContext(typeof(CustomIdentityDbContext))]
-    [Migration("20240322110713_Init")]
+    [Migration("20240329112416_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -177,6 +177,37 @@ namespace Hospital.Entities.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("AvailableTimes");
+                });
+
+            modelBuilder.Entity("Hospital.Entities.DbEntities.HospitalInfo", b =>
+                {
+                    b.Property<int?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"), 1L, 1);
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("HospitalCloseTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("HospitalOpenTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("HospitalWorkongEndTime")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HospitalWorkongStartTime")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("HospitalInfo");
                 });
 
             modelBuilder.Entity("Hospital.Entities.DbEntities.NoWorkingTime", b =>
@@ -354,6 +385,9 @@ namespace Hospital.Entities.Migrations
 
                     b.Property<string>("Gender")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("IsOnline")
+                        .HasColumnType("bit");
 
                     b.Property<bool?>("IsPostView")
                         .HasColumnType("bit");
@@ -601,6 +635,9 @@ namespace Hospital.Entities.Migrations
 
                     b.Property<string>("Gender")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("IsOnline")
+                        .HasColumnType("bit");
 
                     b.Property<bool?>("IsPostView")
                         .HasColumnType("bit");

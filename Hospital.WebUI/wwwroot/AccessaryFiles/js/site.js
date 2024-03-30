@@ -15,32 +15,40 @@ connection.on("Connect", function (role) {
         GetAllAppointments();
         GetAllDoctors();
     }
-    //if (role === "patient") {
-    //}9
-    DoctorAppointments();
-    GetAllAppointmentOfPatient();
-    GetAllRecipesOfPatientForP();
+    if (role === "doctor") {
+        DoctorAppointments();
+        GetDoctorPatients();
+    }
+
     GetAllDepartment();
-    GetDoctorPatients();
-    //else if (role == "patient") {
-    //    GetAllPostPatient();
-    //}
-    //if (role == "doctor") {
-    //    console.log(role);
     GetAllPostAllUsers();
+
+    GetAllAppointmentOfPatient();
+    //GetAllRecipesOfPatientForP();
+})
+
+connection.on("Disconnect", function (info) {
+    //if (role === "admin") {
+    //    GetAllPatients();
+    //    GetAllAppointments();
+    //    GetAllDoctors();
     //}
-    //else if (role == "admin") {
-    //    console.log(role);
-    //    GetAllPostAdmin();
+    //if (role === "patient") {
+    //    GetAllAppointmentOfPatient();
+    //    GetAllRecipesOfPatientForP();
+    //}
+    //if (role === "doctor") {
+    //    DoctorAppointments();
+    //    GetDoctorPatients();
     //}
 
-    //GetAllUsers();
-    //element.style.display = "block";
-    //element.innerHTML = info;
-    //setTimeout(() => {
-    //    element.innerHTML = "";
-    //    element.style.display = "none";
-    //}, 5000);
+    //GetAllDepartment();
+    ////else if (role == "patient") {
+    ////    GetAllPostPatient();
+    ////}
+    ////if (role == "doctor") {
+    ////    console.log(role);
+    GetAllPostAllUsers();
 })
 
 async function AdminCall(id) {

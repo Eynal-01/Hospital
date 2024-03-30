@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Org.BouncyCastle.Asn1.Mozilla;
+using System.Globalization;
 using System.Security.Cryptography;
 
 namespace Hospital.WebUI.Controllers
@@ -24,8 +25,9 @@ namespace Hospital.WebUI.Controllers
         private readonly IPatientService _patientService;
         private readonly IDataService _dataService;
         private readonly IMediaService _mediaService;
+        private readonly SignInManager<CustomIdentityUser> _signInManager;
 
-        public AdminController(UserManager<CustomIdentityUser> userManager, RoleManager<CustomIdentityRole> roleManager, IWebHostEnvironment webHost, CustomIdentityDbContext context, IPatientService patientService, IDataService dataService, IMediaService mediaService)
+        public AdminController(UserManager<CustomIdentityUser> userManager, RoleManager<CustomIdentityRole> roleManager, IWebHostEnvironment webHost, CustomIdentityDbContext context, IPatientService patientService, IDataService dataService, IMediaService mediaService, SignInManager<CustomIdentityUser> signInManager)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -34,6 +36,7 @@ namespace Hospital.WebUI.Controllers
             _patientService = patientService;
             _dataService = dataService;
             _mediaService = mediaService;
+            _signInManager = signInManager;
         }
 
         public async Task<Admin> CurrentUser()
@@ -63,6 +66,26 @@ namespace Hospital.WebUI.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> AddAdmin()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> AddRoom(string roomNumber)
+        {
+            var room = new Room
+            {
+                RoomNo = roomNumber
+            };
+
+            await _context.Rooms.AddAsync(room);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Doctors","Admin");
+        }
+
+
+        [HttpGet]
         public async Task<IActionResult> NewPost()
         {
             var departments = await _context.Departments.ToListAsync();
@@ -84,6 +107,16 @@ namespace Hospital.WebUI.Controllers
             };
             ViewBag.ViewModel = viewModel;
             return View();
+        }
+
+        public async Task<IActionResult> DoctorDelete(string doctorId)
+        {
+            var doctor = await _context.Doctors.FirstOrDefaultAsync(d => d.Id == doctorId);
+
+            _context.Doctors.Remove(doctor);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Doctors", "Admin");
         }
 
         [HttpGet]
@@ -126,6 +159,98 @@ namespace Hospital.WebUI.Controllers
             return View(allViewModel);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> AddHospitalInfo()
+        {
+            var list = await _context.HospitalInfo.ToListAsync();
+            bool isUpdate;
+            if (list.Count() > 0)
+            {
+                isUpdate = true;
+            }
+            else
+            {
+                isUpdate = false;
+            }
+
+            var viewModel = new AddHospitalInfoViewModel
+            {
+                IsUpdateInfo = isUpdate,
+            };
+
+            if (isUpdate)
+            {
+                string startTimeString = list[0].HospitalWorkongStartTime;
+                string endTimeString = list[0].HospitalWorkongEndTime;
+                //var newDateTime = new DateTime(list[0].HospitalWorkongStartTime);
+                //var startTime = DateTime.Parse(list[0].HospitalWorkongStartTime);
+                //var endTime = DateTime.Parse(list[0].HospitalWorkongEndTime);
+                //viewModel.StartTime = startTime;
+                //viewModel.EndTime = endTime;
+                viewModel.StartTime = (DateTime)list[0].HospitalOpenTime;
+                viewModel.EndTime = (DateTime)list[0].HospitalCloseTime;
+                viewModel.PhoneNumber = list[0].PhoneNumber;
+                viewModel.Email = list[0].Email;
+            }
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddHospitalInfo(AddHospitalInfoViewModel addHospitalInfoViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var startTime = addHospitalInfoViewModel.StartTime.ToShortTimeString();
+                var endTime = addHospitalInfoViewModel.EndTime.ToShortTimeString();
+                var hospitalInfo = new HospitalInfo
+                {
+                    Email = addHospitalInfoViewModel.Email,
+                    PhoneNumber = addHospitalInfoViewModel.PhoneNumber,
+                    HospitalWorkongEndTime = endTime,
+                    HospitalWorkongStartTime = startTime,
+                    HospitalOpenTime = addHospitalInfoViewModel.StartTime,
+                    HospitalCloseTime = addHospitalInfoViewModel.EndTime,
+                };
+
+                await _context.HospitalInfo.AddAsync(hospitalInfo);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("AddHospitalInfo", "Admin");
+            }
+            return RedirectToAction("AddHospitalInfo", "Admin");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateHospitalInfo(AddHospitalInfoViewModel addHospitalInfoViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var startTime = addHospitalInfoViewModel.StartTime.ToShortTimeString();
+                var endTime = addHospitalInfoViewModel.EndTime.ToShortTimeString();
+                //var hospitalInfo = new HospitalInfo
+                //{
+                //    Email = addHospitalInfoViewModel.Email,
+                //    PhoneNumber = addHospitalInfoViewModel.PhoneNumber,
+                //    HospitalWorkongEndTime = endTime,
+                //    HospitalWorkongStartTime = startTime
+                //};
+
+                var info = await _context.HospitalInfo.ToListAsync();
+
+                info[0].HospitalWorkongEndTime = endTime;
+                info[0].HospitalWorkongStartTime = startTime;
+                info[0].PhoneNumber = addHospitalInfoViewModel.PhoneNumber;
+                info[0].Email = addHospitalInfoViewModel.Email;
+                info[0].HospitalOpenTime = addHospitalInfoViewModel.StartTime;
+                info[0].HospitalCloseTime = addHospitalInfoViewModel.EndTime;
+
+                _context.HospitalInfo.Update(info[0]);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction("AddHospitalInfo", "Admin");
+            }
+            return RedirectToAction("AddHospitalInfo", "Admin");
+        }
 
         [HttpPost]
         public async Task<IActionResult> AddAbout(AllAboutViewModel viewModel)
@@ -339,6 +464,29 @@ namespace Hospital.WebUI.Controllers
             return View();
         }
 
+        public async Task<IActionResult> DoctorChangePassword(DoctorChangePasswordViewModel viewModel)
+        {
+            //var user = await _userManager.GetUserAsync(HttpContext.User);
+            if (ModelState.IsValid)
+            {
+                var signIn = await _signInManager.PasswordSignInAsync(viewModel.UserName, viewModel.CurrentPassword, false, false);
+                if (signIn.Succeeded)
+                {
+                    var user = await _context.Users.FirstOrDefaultAsync(d => d.UserName == viewModel.UserName);
+                    var newPassword = HashPassword(viewModel.NewPassword);
+                    user.PasswordHash = newPassword;
+                    user.UserName = viewModel.UserName;
+                    user.NormalizedUserName = viewModel.UserName.ToUpper();
+                    var result = await _userManager.UpdateAsync(user);
+                    _context.Update(user);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Doctors", "Admin");
+                }
+            }
+
+            return RedirectToAction("Doctors", "Admin");
+        }
+
         public async Task<IActionResult> PatientProfile(string id)
         {
             var patient = await _context.Patients.FirstOrDefaultAsync(p => p.Id == id);
@@ -443,6 +591,77 @@ namespace Hospital.WebUI.Controllers
             viewModel.Departments = departments;
             viewModel.Schedules = schedules;
             viewModel.Rooms = rooms;
+            return View(viewModel);
+        }
+
+        public async Task<IActionResult> AddAdmin(AddAdminViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                if (viewModel.Password == viewModel.ConfirmPassword)
+                {
+                    var newPassword = HashPassword(viewModel.Password);
+
+                    if (viewModel.File != null)
+                    {
+                        var helper = new ImageHelper(_webHost);
+
+                        var mediaUrl = await _mediaService.UploadMediaAsync(viewModel.File);
+
+                        if (mediaUrl != string.Empty)
+                        {
+                            var isVideoFile = _mediaService.IsVideoFile(viewModel.File);
+                            viewModel.ImageUrl = mediaUrl;
+                        }
+                        else
+                        {
+                            return BadRequest("error");
+                        }
+                    }
+
+                    var admin = new Admin
+                    {
+                        Address = viewModel.Address,
+                        City = viewModel.City,
+                        Country = viewModel.Country,
+                        Email = viewModel.Email,
+                        NormalizedEmail = viewModel.Email.ToUpper(),
+                        FirstName = viewModel.FirstName,
+                        Gender = viewModel.Gender,
+                        LastName = viewModel.LastName,
+                        UserName = viewModel.Username,
+                        NormalizedUserName = viewModel.Username.ToUpper(),
+                        PhoneNumber = viewModel.MobileNumber.ToString(),
+                        Avatar = viewModel.ImageUrl,
+                        PasswordHash = newPassword,
+                    };
+
+                    var customUser = new CustomIdentityUser
+                    {
+                        Email = viewModel.Email,
+                        UserName = viewModel.Username,
+                        PhoneNumber = viewModel.MobileNumber.ToString(),
+                    };
+
+                    var result = await _userManager.CreateAsync(customUser, viewModel.Password);
+
+                    if (result.Succeeded)
+                    {
+                        if (!await _roleManager.RoleExistsAsync("admin"))
+                        {
+                            var role = new CustomIdentityRole
+                            {
+                                Name = "admin"
+                            };
+                            var resul = await _roleManager.CreateAsync(role);
+                        }
+                    }
+                    await _userManager.AddToRoleAsync(customUser, "admin");
+                    await _context.Admins.AddAsync(admin);
+                    await _context.SaveChangesAsync();
+                }
+            }
+
             return View(viewModel);
         }
 

@@ -220,8 +220,7 @@
                 </div> *@
             </li>
             <li class="float-right">
-                <a href="/Authentication/Login" class="mega-menu" data-close="true"><i class="zmdi zmdi-power"></i></a>
-                @* <a href="javascript:void(0);" class="js-right-sidebar" data-close="true"><i class="zmdi zmdi-settings zmdi-hc-spin"></i></a> *@
+                <a asp-action="Logout" asp-controller="Authentication" asp-route-selected="admin" class="mega-menu" data-close="true"><i class="zmdi zmdi-power"></i></a>
             </li>
         </ul>
     </nav>
@@ -247,6 +246,20 @@
                             </ul>
                         </li>
                         <li>
+                            <a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-account-add"></i><span>Hospital Info</span> </a>
+                            <ul class="ml-menu">
+                                <li><a href="/Admin/AddHospitalInfo">Add Or Hospital</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-account-add"></i><span>Admins</span> </a>
+                            <ul class="ml-menu">
+                                <li><a href="/Admin/AddAdmin">Add Admin</a></li>
+                                @* <li><a href="/Admin/Events">Doctor Schedule</a></li> *@
+                            </ul>
+                        </li>
+
+                        <li>
                             <a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-account-o"></i><span>Patients</span> </a>
                             <ul class="ml-menu">
                                 <li><a href="/Admin/Patients">All Patients</a></li>
@@ -254,14 +267,14 @@
                                 @* <li><a href="/Admin/PatientInvoice">Invoice</a></li> *@
                             </ul>
                         </li>
-                        <li>
+@*                         <li>
                             <a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-balance-wallet"></i><span>Payments</span> </a>
                             <ul class="ml-menu">
                                 <li><a href="/Admin/payments">Payments</a></li>
                                 <li><a href="/Admin/AddPayment">Add Payment</a></li>
                                 <li><a href="/Admin/PatientInvoice">Invoice</a></li>
                             </ul>
-                        </li>
+                        </li> *@
                         <li>
                             <a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-label-alt"></i><span>Departments</span> </a>
                             <ul class="ml-menu">
@@ -269,7 +282,7 @@
                                 <li><a href="/Admin/AllDepartments">All Departments</a></li>
                             </ul>
                         </li>
-                        <li>
+@*                         <li>
                             <a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-lock"></i><span>Authentication</span> </a>
                             <ul class="ml-menu">
                                 <li><a href="/Authentication/Login">Sign In</a> </li>
@@ -280,7 +293,7 @@
                                 <li><a href="/Admin/PageOffline">Page Offline</a> </li>
                                 <li><a href="Admin/Locked">Locked Screen</a> </li>
                             </ul>
-                        </li>
+                        </li> *@
                         <li>
                             <a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-blogger"></i><span>Blog</span></a>
                             <ul class="ml-menu">
@@ -314,7 +327,7 @@
                         <li>
                             <a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-apps"></i><span>App</span> </a>
                             <ul class="ml-menu">
-                                <li><a href="/Admin/Chat">Chat</a></li>
+                                <li id="IsAdminNotification"><a href="/Admin/Chat">Chat</a></li>
                             </ul>
                         </li>
                         @*  <li>

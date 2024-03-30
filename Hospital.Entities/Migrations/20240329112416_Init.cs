@@ -35,6 +35,7 @@ namespace Hospital.Entities.Migrations
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BirthDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Gender = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsOnline = table.Column<bool>(type: "bit", nullable: true),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     City = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Avatar = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -168,6 +169,24 @@ namespace Hospital.Entities.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_DoctorSchedules", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "HospitalInfo",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    HospitalWorkongStartTime = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    HospitalWorkongEndTime = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    HospitalOpenTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    HospitalCloseTime = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_HospitalInfo", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -382,6 +401,7 @@ namespace Hospital.Entities.Migrations
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BirthDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsOnline = table.Column<bool>(type: "bit", nullable: true),
                     Gender = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Avatar = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -939,6 +959,9 @@ namespace Hospital.Entities.Migrations
 
             migrationBuilder.DropTable(
                 name: "DoctorSchedules");
+
+            migrationBuilder.DropTable(
+                name: "HospitalInfo");
 
             migrationBuilder.DropTable(
                 name: "Messages");

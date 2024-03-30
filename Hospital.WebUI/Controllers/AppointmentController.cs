@@ -42,6 +42,7 @@ namespace Hospital.WebUI.Controllers
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
             var pa = await _context.Patients.FirstOrDefaultAsync(f => f.Email == user.Email && f.UserName == user.UserName);
+           
             var appointments = await _context.Appointments.Where(a => a.PatientId == pa.Id).ToListAsync();
 
             for (int i = 0; i < appointments.Count(); i++)

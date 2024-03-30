@@ -198,7 +198,7 @@
                 </div>
             </li> *@
             <li class="float-right">
-                <a asp-action="Logout" asp-controller="Doctor" class="mega-menu" data-close="true"><i class="zmdi zmdi-power"></i></a>
+                <a asp-action="Logout" asp-controller="Authentication" asp-route-selected="doctor" class="mega-menu" data-close="true"><i class="zmdi zmdi-power"></i></a>
             </li>
         </ul>
     </nav>
@@ -286,7 +286,7 @@
                             <a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-apps"></i><span>App</span> </a>
                             <ul class="ml-menu">
                                 @* <li><a  href="mail-inbox.html">Inbox</a></li> *@
-                                <li><a asp-action="Chat" asp-controller="Doctor">Chat</a></li>
+                                <li id="IsDoctorNotification"><a asp-action="Chat" asp-controller="Doctor">Chat</a></li>
                                 @* <li><a href="contact.html">Contact list</a></li> *@
                             </ul>
                         </li>

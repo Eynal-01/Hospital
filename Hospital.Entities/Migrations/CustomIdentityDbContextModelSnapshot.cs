@@ -177,6 +177,37 @@ namespace Hospital.Entities.Migrations
                     b.ToTable("AvailableTimes");
                 });
 
+            modelBuilder.Entity("Hospital.Entities.DbEntities.HospitalInfo", b =>
+                {
+                    b.Property<int?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"), 1L, 1);
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("HospitalCloseTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("HospitalOpenTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("HospitalWorkongEndTime")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HospitalWorkongStartTime")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("HospitalInfo");
+                });
+
             modelBuilder.Entity("Hospital.Entities.DbEntities.NoWorkingTime", b =>
                 {
                     b.Property<int>("Id")
@@ -352,6 +383,9 @@ namespace Hospital.Entities.Migrations
 
                     b.Property<string>("Gender")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("IsOnline")
+                        .HasColumnType("bit");
 
                     b.Property<bool?>("IsPostView")
                         .HasColumnType("bit");
@@ -599,6 +633,9 @@ namespace Hospital.Entities.Migrations
 
                     b.Property<string>("Gender")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("IsOnline")
+                        .HasColumnType("bit");
 
                     b.Property<bool?>("IsPostView")
                         .HasColumnType("bit");
