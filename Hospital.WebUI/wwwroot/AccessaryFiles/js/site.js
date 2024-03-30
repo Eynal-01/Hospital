@@ -17,6 +17,7 @@ connection.on("Connect", function (role) {
         GetAllDoctors();
     }
     if (role === "doctor") {
+<<<<<<< HEAD
         GetDoctorPatients();
         DoctorAppointments();
     }
@@ -25,6 +26,41 @@ connection.on("Connect", function (role) {
     GetAllDepartment();
     GetAllPostAllUsers();
     GetAllAppointmentOfPatient();
+=======
+        DoctorAppointments();
+        GetDoctorPatients();
+    }
+
+    GetAllDepartment();
+    GetAllPostAllUsers();
+
+    GetAllAppointmentOfPatient();
+    //GetAllRecipesOfPatientForP();
+})
+
+connection.on("Disconnect", function (info) {
+    //if (role === "admin") {
+    //    GetAllPatients();
+    //    GetAllAppointments();
+    //    GetAllDoctors();
+    //}
+    //if (role === "patient") {
+    //    GetAllAppointmentOfPatient();
+    //    GetAllRecipesOfPatientForP();
+    //}
+    //if (role === "doctor") {
+    //    DoctorAppointments();
+    //    GetDoctorPatients();
+    //}
+
+    //GetAllDepartment();
+    ////else if (role == "patient") {
+    ////    GetAllPostPatient();
+    ////}
+    ////if (role == "doctor") {
+    ////    console.log(role);
+    GetAllPostAllUsers();
+>>>>>>> Murad_AddAptekTheme
 })
 
 async function AdminCall(id) {

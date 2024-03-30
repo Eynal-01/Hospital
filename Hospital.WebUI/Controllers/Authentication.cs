@@ -190,5 +190,31 @@ namespace HospitalProject.WebUI.Controllers
             }
             return View(registerViewModel);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> LogOut(string selected)
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var role = await _userManager.GetRolesAsync(user);
+
+            if (role[0] == "admin")
+            {
+                var admin = await _customIdentityDbContext.Admins.FirstOrDefaultAsync(d => d.Email == user.Email && d.UserName == user.UserName);
+                admin.IsOnline = false;
+
+                _customIdentityDbContext.Admins.Update(admin);
+                await _customIdentityDbContext.SaveChangesAsync();
+            }
+            else if (role[0] == "doctor")
+            {
+                var doctor = await _customIdentityDbContext.Doctors.FirstOrDefaultAsync(d => d.Email == user.Email && d.UserName == user.UserName);
+                doctor.IsOnline = false;
+
+                _customIdentityDbContext.Doctors.Update(doctor);
+                await _customIdentityDbContext.SaveChangesAsync();
+            }
+
+            return RedirectToAction("Login", "Authentication", new { selected });
+        }
     }
 }

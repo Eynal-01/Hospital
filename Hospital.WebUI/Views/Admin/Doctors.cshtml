@@ -22,11 +22,35 @@
                     <li class="breadcrumb-item active">All Doctors</li>
                 </ul>
             </div>
+<<<<<<< HEAD
             <button class="btn btn-sm btn-round btn-success waves-effect" data-toggle="modal" data-target="#addevent1">Add available days</button>
+=======
+            <button class="btn btn-sm btn-round btn-success waves-effect" data-toggle="modal" data-target="#addevent2">Add available days</button>
+            <button class="btn btn-sm btn-round btn-success waves-effect" data-toggle="modal" data-target="#addevent1">Add room</button>
+        </div>
+    </div>
+    </div>
+    <div class="col-sm-12 col-md-6">
+        <div class="dataTables_length" id="DataTables_Table_0_length">
+            <label>
+                Show
+                <select name="DataTables_Table_0_length" aria-controls="DataTables_Table_0" class="form-control form-control-sm">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+                entries
+            </label>
+>>>>>>> Murad_AddAptekTheme
         </div>
     </div>
 
     <section class="section doctors">
+<<<<<<< HEAD
+=======
+
+>>>>>>> Murad_AddAptekTheme
         <div class="container" style="background-color:transparent;">
             <div class="col-12 text-center  mb-5" style="background-color:transparent;">
                 <div style="background-color:transparent; width:10%;" class="btn-group btn-group-toggle" data-toggle="buttons" id="patientDoctorFilter"></div>
@@ -58,6 +82,29 @@
 </section>
 
 <div class="modal fade" id="addevent1" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <form>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="title" id="defaultModalLabel">Add Room</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div class="form-line">
+                            <input id="addRoomValue" type="text" class="form-control" placeholder="Room No">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button onclick="AddRoom()" id="availableDayBtn" class="btn btn-primary btn-round waves-effect" data-dismiss="modal">Add</button>
+                    <button type="button" class="btn btn-simple btn-round waves-effect" data-dismiss="modal">CLOSE</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal fade" id="addevent2" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">

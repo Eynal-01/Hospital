@@ -15,6 +15,7 @@ namespace HospitalProject.Entities.DbEntities
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public DateTime? BirthDate { get; set; }
+        public bool? IsOnline { get; set; }
         public string? Gender { get; set; }
         public string? Address { get; set; }
         public string? Avatar { get; set; } = "https://res.cloudinary.com/dvcq24ogl/image/upload/v1709901715/oc7rwjbfbbgjq5e2gqso.png";
