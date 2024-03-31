@@ -17,8 +17,8 @@ namespace Hospital.WebUI.Controllers
         private RoleManager<CustomIdentityRole> _roleManager;
         private IWebHostEnvironment _webHost;
         private readonly CustomIdentityDbContext _context;
-        private readonly string accountSid = "AC3e0d0c3d03757e62aa7be691723ca5f7";
-        private readonly string authToken = "ef5007e8c66d5a0ceafeb68f0f49f395";
+        private readonly string accountSid = "ACa25acf39d02f079fc43f5feab218351c";
+        private readonly string authToken = "f92103789cc9722b7ff926953f807d25";
 
         public SendSMSController(UserManager<CustomIdentityUser> userManager, RoleManager<CustomIdentityRole> roleManager, IWebHostEnvironment webHost, CustomIdentityDbContext context)
         {
@@ -31,7 +31,8 @@ namespace Hospital.WebUI.Controllers
         [HttpPost("SendText")]
         public async Task<IActionResult> SendText()
         {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var current = await _userManager.GetUserAsync(HttpContext.User);
+            var user = await _context.Patients.FirstOrDefaultAsync(p => p.Email == current.Email && p.UserName == current.UserName);
             var ids = user.Id;
             var email = user.Email;
             var appointments = await _context.Appointments.Where(a => a.PatientId == ids).OrderByDescending(a => a.Id).ToListAsync();
@@ -49,7 +50,7 @@ namespace Hospital.WebUI.Controllers
             TwilioClient.Init(accountSid, authToken);
             var message = MessageResource.Create(
                 body: $"Your appointment has been set successfully\nRoom No : {room.RoomNo}\nDoctor : {doctor.FirstName} {doctor.LastName}\nDate : {date}\nTime : {lastAppointment.AppointmentTime}",
-                from: new Twilio.Types.PhoneNumber("+15135923952"),
+                from: new Twilio.Types.PhoneNumber("+18144984093"),
                 to: new Twilio.Types.PhoneNumber("+994" + "703088884"));
             return RedirectToAction("Index", "Home");
         }

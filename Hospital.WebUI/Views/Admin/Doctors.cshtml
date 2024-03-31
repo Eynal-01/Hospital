@@ -26,26 +26,11 @@
             <button class="btn btn-sm btn-round btn-success waves-effect" data-toggle="modal" data-target="#addevent1">Add room</button>
         </div>
     </div>
-    </div>
-    <div class="col-sm-12 col-md-6">
-        <div class="dataTables_length" id="DataTables_Table_0_length">
-            <label>
-                Show
-                <select name="DataTables_Table_0_length" aria-controls="DataTables_Table_0" class="form-control form-control-sm">
-                    <option value="10">10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                </select>
-                entries
-            </label>
-        </div>
-    </div>
-    <section class="section doctors">
 
+    <section class="section doctors">
         <div class="container" style="background-color:transparent;">
             <div class="col-12 text-center  mb-5" style="background-color:transparent;">
-                <div class="btn-group btn-group-toggle" data-toggle="buttons" id="patientDoctorFilter"></div>
+                <div style="background-color:transparent; width:10%;" class="btn-group btn-group-toggle" data-toggle="buttons" id="patientDoctorFilter"></div>
             </div>
         </div>
     </section>
@@ -54,12 +39,14 @@
             <div class="col-lg-12">
                 <div class="tab-content m-t-10">
                     <div class="tab-pane active" id="Permanent">
-                        <div class="col-sm-12 col-md-6">
-                            <div id="DataTables_Table_0_filter" class="dataTables_filter">
-                                <label>
-                                    Search:
-                                    <input type="search" class="form-control form-control-sm" placeholder="" aria-controls="DataTables_Table_0">
-                                </label>
+                        <div style="background-color:transparent; display:inline-block; margin-left:30%;" class="card">
+                            <div class="search">
+                                <div style="width:40%;" class="input-group">
+                                    <input oninput="SearchDoctorFunc()" id="search123" style="width:50%;" type="text" class="form-control" placeholder="Search...">
+                                    <span class="input-group-addon">
+                                        <i style="margin-top:30%;" class="zmdi zmdi-search"></i>
+                                    </span>
+                                </div>
                             </div>
                         </div>
                         <div class="row clearfix" style="background-color:transparent;" id="adminDoctors">
@@ -70,6 +57,7 @@
         </div>
     </div>
 </section>
+
 
 <div class="modal fade" id="addevent1" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">

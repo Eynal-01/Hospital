@@ -45,17 +45,10 @@ namespace Hospital.WebUI.Controllers
                 departments.Add(department);
             }
 
-            //for (int i = 0; i < departments.Count(); i++)
-            //{
-            //    for (int k = 0; k < departments.Count(); k++)
-            //    {
-            //        if (departments[i].DepartmentName != departments[k].DepartmentName)
-            //        {
-            //            departmentsNew.Add(departments[i]);
-            //        }
-            //    }
-            //}
-            var viewModel = new DoctorViewModel { Doctors = doctors, Departments = departments };
+            var distinctDepartments = departments.GroupBy(d => d.DepartmentName)
+                                      .Select(g => g.First())
+                                      .ToList();
+            var viewModel = new DoctorViewModel { Doctors = doctors, Departments = distinctDepartments };
 
             return Ok(viewModel);
         }

@@ -56,6 +56,49 @@ namespace Hospital.WebUI.Controllers
             return Ok(appointments);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetAllAppointmentsDescending()
+        {
+            var appos = _context.Appointments
+                    .OrderByDescending(a => a.AppointmentDate)
+                    .Include(a => a.Patient)
+                    .Take(4)
+                    .ToList();
+            return Ok(appos);
+        }
+
+
+        public async Task<IActionResult> SearchDoctors(string word)
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var current = await _context.Doctors.FirstOrDefaultAsync(d => d.UserName == user.UserName && d.Email == user.Email);
+            if (word != null && word.Trim() != "")
+            {
+                List<Doctor> doctors = null;
+                if (current != null)
+                {
+                    doctors = await _context.Doctors.Where(d => d.Id != current.Id && d.FirstName.Contains(word.Trim()) || d.LastName.Contains(word.Trim())).Include(nameof(Doctor.Department)).ToListAsync();
+                }
+                else
+                {
+                    doctors = await _context.Doctors.Where(d => d.FirstName.Contains(word.Trim()) || d.LastName.Contains(word.Trim())).Include(nameof(Doctor.Department)).ToListAsync();
+                }
+                return Ok(doctors);
+            }
+
+            List<Doctor> docss = null;
+            if (current != null)
+            {
+                docss = await _context.Doctors.Include(nameof(Doctor.Department)).Where(d => d.Id != current.Id).ToListAsync();
+            }
+            else
+            {
+                docss = await _context.Doctors.Include(nameof(Doctor.Department)).ToListAsync();
+            }
+
+            return Ok(docss);
+        }
+
         public async Task<IActionResult> GetAllRecipesOfCurrent(string id)
         {
             var pa = await _context.Patients.FirstOrDefaultAsync(f => f.Id == id);

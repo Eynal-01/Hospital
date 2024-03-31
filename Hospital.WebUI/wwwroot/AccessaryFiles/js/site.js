@@ -24,7 +24,6 @@ connection.on("Connect", function (role) {
     GetAllPostAllUsers();
 
     GetAllAppointmentOfPatient();
-    //GetAllRecipesOfPatientForP();
 })
 
 connection.on("Disconnect", function (info) {

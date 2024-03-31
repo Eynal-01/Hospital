@@ -33,7 +33,8 @@ namespace Hospital.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> SendEmailText()
         {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var current = await _userManager.GetUserAsync(HttpContext.User);
+            var user = await _context.Patients.FirstOrDefaultAsync(p => p.Email == current.Email && p.UserName == current.UserName);
             var email = "baxsiyeveynal97@gmail.com";
             var appointments = await _context.Appointments.Where(a => a.PatientId == user.Id).OrderByDescending(a => a.Id).ToListAsync();
             var lastAppointment = new Appointment();

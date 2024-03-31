@@ -17,7 +17,15 @@ function GetAllPatients() {
         success: function (data) {
             let content = "";
             let name = "";
-
+            var ghgh = `<div class="card">
+<div class="body">
+<h3 class="number count-to m-b-0" data-from="0" data-to="${data.length}" data-speed="2500" data-fresh-interval="700">${data.length}</h3>
+<p class="text-muted">Professional Doctors</p>
+<div class="progress">
+<div class="progress-bar l-blush" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"></div>
+</div>
+</div>
+</div>`;
             for (var i = 0; i < data.length; i++) {
 
                 if (data[i].fullName == null || data[i].fullName == "") {
@@ -34,6 +42,8 @@ function GetAllPatients() {
                  </tr>`;
             }
             $("#patients").html(content);
+            $("#patCount").html(ghgh);
+
         }
     })
 }
@@ -711,6 +721,7 @@ function GetAllPostAllUsers() {
             GetAllDoctors();
             GetAllAbouts();
             GetChat();
+            GetPastPatients();
             GetHospital();
 
             for (var i = 0; i < data.posts.length; i++) {
@@ -1858,7 +1869,16 @@ function GetAllDoctors() {
             var patientDoctors = "";
             var adminDoctors = "";
             var doctorDoctors = "";
-
+            var fdfd = `<div class="card">
+<div class="body">
+<h3 class="number count-to m-b-0" data-from="0" data-to="${data.doctors.length}" data-speed="2500" data-fresh-interval="700">${data.doctors.length}</h3>
+<p class="text-muted">Professional Doctors</p>
+<div class="progress">
+<div class="progress-bar l-blush" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"></div>
+</div>
+</div>
+</div>`;
+            console.log(data.doctors.length);
             var patientFilter = "";
 
             for (var i = 0; i < data.departments.length; i++) {
@@ -1957,6 +1977,7 @@ function GetAllDoctors() {
             $("#doctorDoctors").html(doctorDoctors);
             $("#patientDoctors").html(patientDoctors);
             $("#patientDoctorFilter").html(patientFilter);
+            $("#dddccc1").html(fdfd);
 
         }
     })
@@ -1983,7 +2004,15 @@ function GetAllAppointments() {
 
         success: function (data) {
             let content = "";
-
+            var dtdtd = `<div class="card">
+<div class="body">
+<h3 class="number count-to m-b-0" data-from="0" data-to="${data.length}" data-speed="2500" data-fresh-interval="700">${data.length}</h3>
+<p class="text-muted">Professional Doctors</p>
+<div class="progress">
+<div class="progress-bar l-blush" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%"></div>
+</div>
+</div>
+</div>`
             for (var i = 0; i < data.length; i++) {
                 //var doctor = GetAppointmentDoctor(data[i].doctorId)
                 content += `
@@ -1996,6 +2025,8 @@ function GetAllAppointments() {
                  </tr>`;
             }
             $("#appointments").html(content);
+            $("#appCount").html(dtdtd);
+            $("#innn").val(data.length);
         }
     })
 }
@@ -2396,13 +2427,19 @@ function CallAppointment() {
     if (d.value != null && doct.value != " " && p.value != "0"
         && message.value != " " && date.value != " " && time.value != " ") {
         console.log("intro");
-        var s = document.getElementById("success");
-        s.innerHTML = `<div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <button type="submit" onclick="SendSMS()" class="btn btn-primary btn-round waves-effect" style="background-color:rgba(34,58,102,255); border-radius:30px; color:white; margin:20%; width:35%; margin-left:32%;">Send SMS</button>
-                                    <button type="submit" onclick="SendEmail()" class="btn btn-primary btn-round waves-effect" style="background-color:rgba(34,58,102,255); border-radius:30px; color:white; margin-left:32%; margin-bottom:20%; width:35%">Send Email</button>
-                                </div>
-                            </div>`;
+
+
+
+
+
+
+        //var s = document.getElementById("success");
+        //s.innerHTML = `<div class="modal-dialog" role="document">
+        //                        <div class="modal-content">
+        //                            <button type="submit" onclick="SendSMS()" class="btn btn-primary btn-round waves-effect" style="background-color:rgba(34,58,102,255); border-radius:30px; color:white; margin:20%; width:35%; margin-left:32%;">Send SMS</button>
+        //                            <button type="submit" onclick="SendEmail()" class="btn btn-primary btn-round waves-effect" style="background-color:rgba(34,58,102,255); border-radius:30px; color:white; margin-left:32%; margin-bottom:20%; width:35%">Send Email</button>
+        //                        </div>
+        //                    </div>`;
         $.ajax({
             url: `/Home/Appointment`,
             method: "POST",
@@ -2789,4 +2826,71 @@ function AddRecipe(id) {
             console.log("Recipe successfully added ", data);
         }
     })
+}
+
+
+function GetPastPatients() {
+    $.ajax({
+        url: `/Appointment/GetAllAppointmentsDescending`,
+        method: "GET",
+
+        success: function (data) {
+            let content = "";
+            for (var i = 0; i < data.length; i++) {
+                content += `
+                 <tr>
+                     <td>${data[i].patient.userName}</td>
+                     <td>${data[i].patient.phoneNumber}</td>
+                     <td>${data[i].patient.email}</td>
+                 </tr>`
+            }
+            $("#patsddd").html(content);
+        }
+    })
+}
+
+function SearchDoctorFunc() {
+    var inp = document.getElementById("search123");
+    var inp1 = document.getElementById("search345");
+    var valu = "";
+
+    if (inp != null && inp.value != "") {
+        valu = inp.value;
+    }
+    else if (inp1 != null) {
+        valu = inp1.value;
+    }
+
+    if (valu != null) {
+        $.ajax({
+            url: `/Appointment/SearchDoctors?word=${valu}`,
+            method: "GET",
+
+            success: function (data) {
+                let content = "";
+
+                for (var i = 0; i < data.length; i++) {
+                    content += `
+                     <div class="col-lg-3 col-md-4 col-sm-6">
+                         <div class="card xl-blue member-card doctor">
+                             <div class="body">
+                                 <div class="member-thumb">
+                                     <img style="width:90%; height:42vh; margin:auto;" src="${data[i].avatar}" class="img-fluid" alt="profile-image">
+                                 </div>
+                                 <div class="detail">
+                                     <p class="m-b-0">Dr. ${data[i].firstName}<br/>${data[i].lastName}</p>
+                                     <p class="text-muted">${data[i].department.departmentName}</p>
+                                     <a href='/DoctorsShow/AdminInDoctorProfile?doctorId=${data[i].id}'  class="btn btn-default btn-round btn-simple" >View Profile</a>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+                    `;
+                }
+                console.log(content);
+                $("#adminDoctors").html(content);
+                $("#doctorDoctors").html(content);
+            }
+        })
+    }
 }
